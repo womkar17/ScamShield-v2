@@ -1,0 +1,244 @@
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const nodemailer = require('nodemailer');
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const { createClient } = require('@supabase/supabase-js');
+
+const app = express();
+app.use(cors({ origin: 'http://localhost:5173' })); // Allow React frontend
+app.use(express.json());
+
+const PORT = process.env.PORT || 5000;
+const JWT_SECRET = process.env.JWT_SECRET || 'scamshield_super_secret';
+
+// Initialize Supabase Client (Service Role for backend DB access)
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+
+// Nodemailer transport for Brevo
+const transporter = nodemailer.createTransport({
+  host: 'smtp-relay.brevo.com',
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.BREVO_USER,
+    pass: process.env.BREVO_PASS,
+  },
+  debug: true,
+  logger: true,
+});
+
+// Verify SMTP connection on startup
+transporter.verify((err, success) => {
+  if (err) {
+    console.error('❌ SMTP CONNECTION FAILED:', err.message);
+  } else {
+    console.log('✅ SMTP connection verified — ready to send emails');
+  }
+});
+
+// In-memory OTP store: { "email@example.com": { otp: "123456", expiresAt: 169... } }
+const otpStore = new Map();
+
+app.post('/api/auth/send-otp', async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ ok: false, err: 'Email is required' });
+
+  // Generate 6-digit OTP
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  
+  // Store it (expires in 10 minutes)
+  otpStore.set(email.toLowerCase(), {
+    otp,
+    expiresAt: Date.now() + 10 * 60 * 1000
+  });
+
+  try {
+    const senderEmail = process.env.BREVO_SENDER || process.env.BREVO_USER;
+    console.log(`📧 Sending OTP to ${email} from ${senderEmail}...`);
+    
+    const info = await transporter.sendMail({
+      from: `"ScamShield" <${senderEmail}>`,
+      to: email,
+      subject: 'Your ScamShield Login Code',
+      html: `
+        <div style="font-family: sans-serif; text-align: center; padding: 40px; background: #f8f9fa;">
+          <div style="max-width: 400px; margin: 0 auto; background: white; border-radius: 12px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+            <h2 style="color: #1a1a2e; margin-bottom: 8px;">🛡️ ScamShield</h2>
+            <p style="color: #666; margin-bottom: 24px;">Your one-time login code is:</p>
+            <h1 style="font-size: 40px; letter-spacing: 8px; color: #4f46e5; margin: 16px 0; font-family: monospace;">${otp}</h1>
+            <p style="color: #999; font-size: 13px;">This code expires in 10 minutes. Do not share it with anyone.</p>
+          </div>
+        </div>
+      `,
+    });
+    console.log(`✅ OTP sent to ${email} | Message ID: ${info.messageId} | Response: ${info.response}`);
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('Email send error:', err);
+    res.status(500).json({ ok: false, err: 'Failed to send email. Check SMTP settings.' });
+  }
+});
+
+app.post('/api/auth/verify-otp', async (req, res) => {
+  const { email, token } = req.body; // 'token' here means the 6-digit OTP code from frontend
+  if (!email || !token) return res.status(400).json({ ok: false, err: 'Email and OTP are required' });
+
+  const normalizedEmail = email.toLowerCase();
+  const record = otpStore.get(normalizedEmail);
+
+  if (!record) {
+    return res.status(400).json({ ok: false, err: 'No OTP found for this email. Please request a new one.' });
+  }
+
+  if (Date.now() > record.expiresAt) {
+    otpStore.delete(normalizedEmail);
+    return res.status(400).json({ ok: false, err: 'OTP has expired. Please request a new one.' });
+  }
+
+  if (record.otp !== token.toString()) {
+    return res.status(400).json({ ok: false, err: 'Incorrect OTP code.' });
+  }
+
+  // OTP is valid!
+  otpStore.delete(normalizedEmail);
+
+  try {
+    // 1. Check if user exists in Supabase DB
+    let { data: profile, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('email', normalizedEmail)
+      .single();
+
+    let isNewUser = false;
+
+    // 2. If not, create them
+    if (!profile) {
+      isNewUser = true;
+      const defaultUsername = normalizedEmail.split('@')[0];
+      const { data: newProfile, error: insertError } = await supabase
+        .from('profiles')
+        .insert({
+          id: crypto.randomUUID(),
+          email: normalizedEmail,
+          username: defaultUsername,
+          role: 'user', // default role
+          xp: 0,
+          level: 1,
+          streak: 0,
+          theme: 'dark'
+        })
+        .select()
+        .single();
+
+      if (insertError) throw insertError;
+      profile = newProfile;
+    }
+
+    // 3. Generate custom JWT token
+    const authToken = jwt.sign(
+      {
+        sub: profile.id, // Subject matches profile.id
+        email: profile.email,
+        role: profile.role
+      },
+      JWT_SECRET,
+      { expiresIn: '30d' }
+    );
+
+    res.json({
+      ok: true,
+      token: authToken,
+      isNewUser: isNewUser,
+      user: {
+        id: profile.id,
+        email: profile.email,
+        role: profile.role
+      }
+    });
+
+  } catch (err) {
+    console.error('DB/JWT error:', err);
+    res.status(500).json({ ok: false, err: 'Internal server error during login.' });
+  }
+});
+
+// Update Profile Route
+app.post('/api/auth/update-profile', async (req, res) => {
+  try {
+    // 1. Authenticate Request
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ ok: false, err: 'Unauthorized' });
+    }
+    const token = authHeader.split(' ')[1];
+    let decoded;
+    try {
+      decoded = jwt.verify(token, JWT_SECRET);
+    } catch(err) {
+      return res.status(401).json({ ok: false, err: 'Invalid token' });
+    }
+
+    const { username, theme } = req.body;
+
+    // 2. Update Supabase
+    const { data, error } = await supabase
+      .from('profiles')
+      .update({ username, theme })
+      .eq('id', decoded.sub)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    res.json({ ok: true, profile: data });
+  } catch (err) {
+    console.error('Update profile error:', err);
+    res.status(500).json({ ok: false, err: 'Internal Server Error' });
+  }
+});
+
+// Simple middleware to verify our custom JWT
+const authenticate = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(401).json({ ok: false, err: 'No token provided' });
+
+  const token = authHeader.split(' ')[1];
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.user = decoded; // { sub, email, role }
+    next();
+  } catch (err) {
+    res.status(401).json({ ok: false, err: 'Invalid token' });
+  }
+};
+
+app.get('/api/auth/me', authenticate, async (req, res) => {
+  try {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', req.user.sub)
+      .single();
+      
+    res.json({ ok: true, profile });
+  } catch (err) {
+    res.status(500).json({ ok: false, err: 'Server error fetching profile' });
+  }
+});
+
+// Serve static frontend files
+const path = require('path');
+const _dirname = path.resolve();
+app.use(express.static(path.join(_dirname, '../client/dist')));
+
+// Catch-all route to serve index.html for React Router
+app.get('*', (req, res) => {
+  res.sendFile(path.join(_dirname, '../client/dist/index.html'));
+});
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+});
