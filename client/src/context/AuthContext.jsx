@@ -16,16 +16,14 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     let mounted = true;
 
-    // Helper to process a Supabase session (e.g. from Google OAuth)
     const handleSupabaseSession = async (session) => {
       if (!session?.user || !mounted) return false;
       try {
         localStorage.setItem('scamshield_token', session.access_token);
-        
         const username = session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email.split('@')[0];
         let profile = null;
 
-        // 1. Try syncing via backend service_role endpoint (bypasses RLS and handles schema)
+        // Call backend oauth-sync (uses service_role key, bypasses RLS)
         try {
           const syncRes = await fetch(`${API_BASE}/oauth-sync`, {
             method: 'POST',
@@ -37,123 +35,65 @@ export function AuthProvider({ children }) {
             })
           });
           const syncData = await syncRes.json();
+          console.log('oauth-sync response:', syncData?.profile?.email, 'role:', syncData?.profile?.role);
           if (syncData?.ok && syncData?.profile) {
             profile = syncData.profile;
           }
         } catch (backendErr) {
-          console.warn('Backend oauth-sync fallback:', backendErr);
+          console.warn('Backend oauth-sync unreachable:', backendErr);
         }
 
-        // 2. If backend sync failed, try direct Supabase query with smart email merging
+        // Fallback: direct Supabase query by ID (only if backend is completely down)
         if (!profile) {
-          let { data: emailProfiles } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('email', session.user.email);
-
-          if (emailProfiles && emailProfiles.length > 0) {
-            const adminProfile = emailProfiles.find(p => p.role === 'admin');
-            const bestProfile = adminProfile || emailProfiles.sort((a, b) => (b.xp || 0) - (a.xp || 0))[0];
-
-            if (bestProfile.id !== session.user.id) {
-              const dupeRow = emailProfiles.find(p => p.id === session.user.id && p.id !== bestProfile.id);
-              if (dupeRow) {
-                await supabase.from('profiles').delete().eq('id', dupeRow.id);
-              }
-              await supabase.from('profiles').update({ id: session.user.id }).eq('id', bestProfile.id);
-              bestProfile.id = session.user.id;
-            }
-            profile = bestProfile;
-          } else {
-            let { data: dbProfile } = await supabase
-              .from('profiles')
-              .select('*')
-              .eq('id', session.user.id)
-              .single();
-
-            if (!dbProfile) {
-              const newProfile = {
-                id: session.user.id,
-                email: session.user.email,
-                username: username,
-                role: 'user',
-                xp: 0,
-                level: 1,
-                streak: 1
-              };
-              const { data: createdProfile } = await supabase
-                .from('profiles')
-                .upsert([newProfile])
-                .select()
-                .single();
-              profile = createdProfile || newProfile;
-            } else {
-              profile = dbProfile;
-            }
+          console.log('Fallback: querying Supabase directly by id:', session.user.id);
+          const { data } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
+          if (data) {
+            profile = data;
+            console.log('Fallback found profile, role:', data.role);
           }
         }
 
+        // Last resort: create a new user profile
+        if (!profile) {
+          console.log('No profile found anywhere, creating new user');
+          profile = { id: session.user.id, email: session.user.email, username, role: 'user', xp: 0, level: 1, streak: 1 };
+          await supabase.from('profiles').insert([profile]).select().single();
+        }
+
         if (mounted) {
+          console.log('Setting auth state — email:', profile.email, 'role:', profile.role, 'isAdmin:', profile.role === 'admin');
           setCurrentUser(session.user);
           setUserProfile(profile);
           setIsLoggedIn(true);
-          setIsAdmin(profile?.role === 'admin');
+          setIsAdmin(profile.role === 'admin');
           document.documentElement.setAttribute('data-theme', 'dark');
         }
         return true;
       } catch (err) {
-        console.error('Error handling Supabase OAuth session:', err);
+        console.error('handleSupabaseSession error:', err);
         return false;
       }
     };
 
     const initAuth = async () => {
-      // 1. Check if Supabase already has an OAuth or active session
       try {
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
-          const handled = await handleSupabaseSession(session);
-          if (handled) {
-            if (mounted) setLoading(false);
-            return;
-          }
+          await handleSupabaseSession(session);
+          if (mounted) setLoading(false);
+          return;
         }
       } catch (e) {
         console.error('Supabase getSession error:', e);
-      }
-
-      // 2. Fallback to existing custom OTP token in localStorage
-      const token = localStorage.getItem('scamshield_token');
-      if (token) {
-        try {
-          const res = await fetch(`${API_BASE}/me`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          const data = await res.json();
-          
-          if (data.ok && data.profile) {
-            supabase.realtime.setAuth(token);
-            if (mounted) {
-              setCurrentUser({ id: data.profile.id, email: data.profile.email });
-              setUserProfile(data.profile);
-              setIsLoggedIn(true);
-              setIsAdmin(data.profile.role === 'admin');
-              document.documentElement.setAttribute('data-theme', 'dark');
-            }
-          } else {
-            localStorage.removeItem('scamshield_token');
-          }
-        } catch (err) {
-          console.error('Auth check error:', err);
-        }
       }
       if (mounted) setLoading(false);
     };
 
     initAuth();
 
-    // Listen for OAuth login/logout events from Supabase
+    // Listen for Google OAuth login/logout events
     const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('Auth state change:', event);
       if (event === 'SIGNED_IN' && session) {
         await handleSupabaseSession(session);
         if (mounted) setLoading(false);
@@ -196,59 +136,6 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  const sendOtp = useCallback(async (email) => {
-    try {
-      const res = await fetch(`${API_BASE}/send-otp`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-      });
-      const data = await res.json();
-      return data.ok ? { ok: true } : { ok: false, err: data.err };
-    } catch (err) {
-      console.error('Send OTP error:', err);
-      return { ok: false, err: 'Network error. Is the server running?' };
-    }
-  }, []);
-
-  const verifyOtp = useCallback(async (email, tokenStr) => {
-    try {
-      const res = await fetch(`${API_BASE}/verify-otp`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, token: tokenStr })
-      });
-      const data = await res.json();
-
-      if (data.ok) {
-        // Save token
-        localStorage.setItem('scamshield_token', data.token);
-        
-        // Fetch full profile manually or rely on /me endpoint (but let's just do it here to be fast)
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', data.user.id)
-          .single();
-
-        setCurrentUser(data.user);
-        const finalProfile = profile || data.user;
-        setUserProfile(finalProfile);
-        setIsLoggedIn(true);
-        setIsAdmin(data.user.role === 'admin');
-        
-        document.documentElement.setAttribute('data-theme', 'dark');
-
-        return { ok: true, isNewUser: data.isNewUser, profile: finalProfile };
-      } else {
-        return { ok: false, err: data.err };
-      }
-    } catch (err) {
-      console.error('Verify OTP error:', err);
-      return { ok: false, err: 'Network error. Is the server running?' };
-    }
-  }, []);
-
   const logout = useCallback(async () => {
     localStorage.removeItem('scamshield_token');
     setCurrentUser(null);
@@ -257,10 +144,6 @@ export function AuthProvider({ children }) {
     setIsAdmin(false);
     await supabase.auth.signOut().catch(() => {});
   }, []);
-
-  // We are not using the generic password login for this flow anymore
-  const login = async () => { return { ok: false, err: 'Use OTP flow instead.'} };
-  const signUp = async () => { return { ok: false, err: 'Use OTP flow instead.'} };
 
   const updateProfileLocal = (updates) => {
     setUserProfile(prev => ({ ...prev, ...updates }));
@@ -274,10 +157,6 @@ export function AuthProvider({ children }) {
       isAdmin,
       loading,
       loginWithGoogle,
-      sendOtp,
-      verifyOtp,
-      login,
-      signUp,
       logout,
       updateProfileLocal,
     }}>

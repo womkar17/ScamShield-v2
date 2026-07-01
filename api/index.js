@@ -167,43 +167,52 @@ app.post('/api/auth/oauth-sync', async (req, res) => {
   if (!id || !email) return res.status(400).json({ ok: false, err: 'Missing parameters' });
 
   try {
-    // 1. Fetch all profile rows matching this email address
-    let { data: emailProfiles } = await supabase.from('profiles').select('*').eq('email', email);
-    let profile = null;
-
-    if (emailProfiles && emailProfiles.length > 0) {
-      // Prioritize any row that already has admin role, otherwise the one with highest XP/progress
-      const adminProfile = emailProfiles.find(p => p.role === 'admin');
-      const bestProfile = adminProfile || emailProfiles.sort((a, b) => (b.xp || 0) - (a.xp || 0))[0];
-
-      if (bestProfile.id !== id) {
-        // If another empty/duplicate row already took this OAuth ID, delete it so we can reassign ID to bestProfile
-        const dupeRow = emailProfiles.find(p => p.id === id && p.id !== bestProfile.id);
-        if (dupeRow) {
-          await supabase.from('profiles').delete().eq('id', dupeRow.id);
-        }
-        await supabase.from('profiles').update({ id, username: username || bestProfile.username }).eq('email', email).eq('role', bestProfile.role);
-        bestProfile.id = id;
-      }
-      profile = bestProfile;
-    } else {
-      // 2. No email match found, check by ID just in case
-      let { data: idProfile } = await supabase.from('profiles').select('*').eq('id', id).single();
-      if (idProfile) {
-        profile = idProfile;
-      } else {
-        // 3. Brand new user!
-        const defaultName = username || email.split('@')[0];
-        const newProfile = { id, email, username: defaultName, role: 'user', xp: 0, level: 1, streak: 1 };
-        const { data, error } = await supabase.from('profiles').insert([newProfile]).select().single();
-        if (error) {
-          console.error('DB Insert Error in oauth-sync:', error.message);
-          return res.json({ ok: true, profile: newProfile });
-        }
-        profile = data;
-      }
+    // Step 1: Check if a profile already exists with this exact Google OAuth ID
+    let { data: idProfile } = await supabase.from('profiles').select('*').eq('id', id).single();
+    if (idProfile) {
+      console.log('oauth-sync: found profile by id, role:', idProfile.role);
+      return res.json({ ok: true, profile: idProfile });
     }
-    res.json({ ok: true, profile });
+
+    // Step 2: Check if a profile exists by email (admin was set before Google login linked the ID)
+    let { data: emailProfiles } = await supabase.from('profiles').select('*').eq('email', email);
+    if (emailProfiles && emailProfiles.length > 0) {
+      // Pick the admin row if one exists, otherwise the one with the most XP
+      const best = emailProfiles.find(p => p.role === 'admin') || emailProfiles.sort((a, b) => (b.xp || 0) - (a.xp || 0))[0];
+      console.log('oauth-sync: found profile by email, role:', best.role, 'old id:', best.id, 'new id:', id);
+
+      // Delete ALL old rows for this email (can't UPDATE a primary key in Postgres)
+      await supabase.from('profiles').delete().eq('email', email);
+
+      // Re-insert with the correct Google OAuth UUID, preserving role & progress
+      const merged = {
+        id,
+        email,
+        username: username || best.username || email.split('@')[0],
+        role: best.role || 'user',
+        xp: best.xp || 0,
+        level: best.level || 1,
+        streak: best.streak || 1
+      };
+      const { data: inserted, error: insertErr } = await supabase.from('profiles').insert([merged]).select().single();
+      if (insertErr) {
+        console.error('oauth-sync re-insert error:', insertErr.message);
+        return res.json({ ok: true, profile: merged });
+      }
+      console.log('oauth-sync: merged profile created, role:', inserted.role);
+      return res.json({ ok: true, profile: inserted });
+    }
+
+    // Step 3: Brand new user — no profile by ID or email
+    const defaultName = username || email.split('@')[0];
+    const newProfile = { id, email, username: defaultName, role: 'user', xp: 0, level: 1, streak: 1 };
+    const { data: created, error: createErr } = await supabase.from('profiles').insert([newProfile]).select().single();
+    if (createErr) {
+      console.error('oauth-sync insert error:', createErr.message);
+      return res.json({ ok: true, profile: newProfile });
+    }
+    console.log('oauth-sync: new user created, role: user');
+    return res.json({ ok: true, profile: created });
   } catch (err) {
     console.error('oauth-sync exception:', err.message);
     res.status(500).json({ ok: false, err: err.message });
