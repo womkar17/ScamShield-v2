@@ -23,7 +23,8 @@ export default function SettingsPage() {
     
     try {
       const token = localStorage.getItem('scamshield_token');
-      const res = await fetch('http://localhost:5000/api/auth/update-profile', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiUrl}/api/auth/update-profile`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
