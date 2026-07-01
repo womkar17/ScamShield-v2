@@ -213,13 +213,19 @@ export default function CaseStudiesPage() {
         "category": "One of: Deepfake & AI Fraud, Crypto & Social Engineering, SMS & Phishing, Workplace & Shadow IT",
         "date": "Actual date/year of incident (e.g. April 2024)",
         "loss": "Real financial loss and exact number of affected users/victims (e.g. 165 organizations breached, 500M+ customer records leaked, $30M+ ransom demands)",
-        "summary": "2 sentence factual summary of what occurred in real life",
-        "setup": "The real initial access vector and how attackers bypassed security controls",
-        "trap": "The specific climax, payload, and psychological manipulation or credential harvesting technique used",
-        "timeline": ["Factual Step 1", "Factual Step 2", "Factual Step 3", "Factual Step 4"],
-        "redFlags": ["Real Red Flag 1", "Real Red Flag 2", "Real Red Flag 3", "Real Red Flag 4"],
-        "psychologicalBias": "Which cognitive bias or security gap was exploited in this real incident",
-        "prevention": "1 actionable security control that would have prevented this breach",
+        "summary": "A comprehensive 4-5 sentence factual summary explaining the background of the organization, the attackers involved, the initial breach vector, and the aftermath.",
+        "setup": "A thorough, detailed technical breakdown (150-200 words) of the initial access vector, vulnerability exploited, social engineering tactics, and how attackers bypassed perimeter security controls.",
+        "trap": "A detailed analysis (150-200 words) of the exact climax, malware/payload deployment, lateral movement, credential harvesting technique, and how cognitive bias was weaponized against employees or systems.",
+        "timeline": [
+          "Factual Step 1: Detailed description of reconnaissance or initial access with timestamps/dates",
+          "Factual Step 2: Lateral movement and privilege escalation",
+          "Factual Step 3: Data exfiltration and encryption or ransom demand",
+          "Factual Step 4: Discovery, incident response, and public disclosure",
+          "Factual Step 5: Post-mortem remediation and regulatory penalties"
+        ],
+        "redFlags": ["Real Red Flag 1 with technical context", "Real Red Flag 2 with indicator of compromise", "Real Red Flag 3", "Real Red Flag 4"],
+        "psychologicalBias": "Which cognitive bias or security gap was exploited in this real incident and why it succeeded",
+        "prevention": "A detailed 3-part actionable defense roadmap (Technical controls, Employee training, and Policy changes) that would have prevented or mitigated this breach.",
         "quiz": [
           { "q": "Factual Question 1?", "opts": ["Opt 0", "Opt 1 (Correct)", "Opt 2", "Opt 3"], "ans": 1, "exp": "Explanation why 1 is correct based on the real case" },
           { "q": "Factual Question 2?", "opts": ["Opt 0", "Opt 1", "Opt 2 (Correct)", "Opt 3"], "ans": 2, "exp": "Explanation" },
@@ -543,12 +549,6 @@ export default function CaseStudiesPage() {
               e.currentTarget.style.boxShadow = 'none';
             }}
           >
-            {cs.isAIGenerated && (
-              <div style={{ position: 'absolute', top: '16px', right: '-30px', background: 'linear-gradient(90deg, #a855f7, #ec4899)', color: '#fff', fontSize: '9px', fontWeight: '800', padding: '4px 35px', transform: 'rotate(45deg)', boxShadow: '0 2px 10px rgba(0,0,0,0.3)' }} title={cs.aiEngine || 'AI Generated'}>
-                AI GENERATED
-              </div>
-            )}
-
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                 <span style={{ fontSize: '12px', fontWeight: '700', color: '#a855f7', background: 'rgba(168, 85, 247, 0.15)', padding: '4px 10px', borderRadius: '8px', border: '1px solid rgba(168, 85, 247, 0.3)' }}>
@@ -556,12 +556,6 @@ export default function CaseStudiesPage() {
                 </span>
                 <span style={{ fontSize: '12px', color: '#64748b', fontWeight: '600' }}>{cs.date}</span>
               </div>
-
-              {cs.isAIGenerated && (
-                <div style={{ fontSize: '11px', color: '#ec4899', background: 'rgba(236, 72, 153, 0.15)', padding: '3px 8px', borderRadius: '6px', marginBottom: '8px', display: 'inline-block', fontWeight: '700' }}>
-                  ⚡ {cs.aiEngine || 'Cloud AI Engine'}
-                </div>
-              )}
 
               <h3 style={{ fontSize: '20px', fontWeight: '700', color: '#fff', margin: '0 0 12px 0', lineHeight: '1.4' }}>
                 {cs.title}
@@ -660,11 +654,6 @@ export default function CaseStudiesPage() {
               <span style={{ fontSize: '13px', color: '#fca5a5', background: 'rgba(239, 68, 68, 0.15)', padding: '4px 12px', borderRadius: '8px', fontWeight: '700' }}>
                 Loss: {selectedCase.loss}
               </span>
-              {selectedCase.isAIGenerated && (
-                <span style={{ fontSize: '13px', color: '#ec4899', background: 'rgba(236, 72, 153, 0.2)', padding: '4px 12px', borderRadius: '8px', fontWeight: '700', border: '1px solid rgba(236, 72, 153, 0.4)' }}>
-                  ⚡ Generated by: {selectedCase.aiEngine || 'Cloud AI Engine'}
-                </span>
-              )}
             </div>
 
             <h2 style={{ fontSize: '28px', fontWeight: '800', color: '#fff', margin: '0 0 20px 0', lineHeight: '1.3' }}>
