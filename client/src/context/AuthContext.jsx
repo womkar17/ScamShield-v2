@@ -16,12 +16,6 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     let mounted = true;
 
-    // Helper to check if email is an admin/creator account
-    const isSuperAdminEmail = (email = '') => {
-      const e = email.toLowerCase();
-      return e.includes('admin') || e.includes('amay') || e.includes('omkar') || e.includes('scamshield') || e.includes('test') || e.includes('demo');
-    };
-
     // Helper to process a Supabase session (e.g. from Google OAuth)
     const handleSupabaseSession = async (session) => {
       if (!session?.user || !mounted) return false;
@@ -59,6 +53,19 @@ export function AuthProvider({ children }) {
             .single();
 
           if (!dbProfile) {
+            let { data: emailProfile } = await supabase
+              .from('profiles')
+              .select('*')
+              .eq('email', session.user.email)
+              .single();
+            
+            if (emailProfile) {
+              await supabase.from('profiles').update({ id: session.user.id }).eq('email', session.user.email);
+              dbProfile = { ...emailProfile, id: session.user.id };
+            }
+          }
+
+          if (!dbProfile) {
             const newProfile = {
               id: session.user.id,
               email: session.user.email,
@@ -76,13 +83,6 @@ export function AuthProvider({ children }) {
             profile = createdProfile || newProfile;
           } else {
             profile = dbProfile;
-          }
-        }
-
-        if (profile && (isSuperAdminEmail(session.user.email) || isSuperAdminEmail(profile.username))) {
-          if (profile.role !== 'admin') {
-            profile.role = 'admin';
-            supabase.from('profiles').update({ role: 'admin' }).eq('id', session.user.id).then();
           }
         }
 
