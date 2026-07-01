@@ -17,17 +17,20 @@ const JWT_SECRET = process.env.JWT_SECRET || 'scamshield_super_secret';
 // Initialize Supabase Client (Service Role for backend DB access)
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
-// Nodemailer transport for Brevo
+// Nodemailer transport for Brevo with connection pooling for fast cloud delivery
 const transporter = nodemailer.createTransport({
   host: 'smtp-relay.brevo.com',
   port: 587,
   secure: false,
+  pool: true,
+  maxConnections: 5,
+  maxMessages: 100,
   auth: {
     user: process.env.BREVO_USER,
     pass: process.env.BREVO_PASS,
   },
-  debug: true,
-  logger: true,
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
 });
 
 // Verify SMTP connection on startup
