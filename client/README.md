@@ -1,5 +1,7 @@
 # 🛡️ ScamShield — Next-Generation Gamified Cybersecurity & AI Threat Defense Platform
 
+### 🌐 Live Website Demo: [https://scam-shield-v2-two.vercel.app/](https://scam-shield-v2-two.vercel.app/)
+
 Welcome to **ScamShield**, an interactive, gamified cybersecurity web application designed to train users against real-world scams, social engineering attacks, phishing, and deepfake fraud. By combining interactive simulations, arcade mini-games, AI threat copilots, and gamified XP rewards, ScamShield builds muscle memory against digital deception.
 
 ---
