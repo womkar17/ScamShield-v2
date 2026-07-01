@@ -8,7 +8,6 @@ export default function Navbar() {
   const navigate = useNavigate();
   const { currentUser, userProfile, isLoggedIn, isAdmin, logout } = useContext(AuthContext);
   const { xp, level, streak, getProgress } = useContext(GamificationContext);
-  const { connectionStatus, connectionMessage } = useContext(AppContext);
 
   const progress = getProgress();
 
@@ -44,15 +43,8 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Right: User & Connection */}
+        {/* Right: User Menu */}
         <div className="navbar-right">
-          {/* Connection Status */}
-          <div className={`conn-status conn-${connectionStatus}`} title={connectionMessage}>
-            <span className="conn-dot" />
-            <span className="conn-text">{connectionMessage}</span>
-          </div>
-
-          {/* User Menu removed to Sidebar */}
           {!isLoggedIn && (
             <button className="auth-trigger-btn" onClick={() => navigate('/auth')}>
               Log In / Sign Up

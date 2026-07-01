@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { soundEffects } from '../../utils/soundEffects';
 
 const PasswordGame = ({ game, onComplete }) => {
   const [password, setPassword] = useState('');
@@ -40,7 +41,10 @@ const PasswordGame = ({ game, onComplete }) => {
 
   const handleSubmit = () => {
     if (strengthScore === 100) {
+      soundEffects.play('win');
       setShowAnalysis(true);
+    } else {
+      soundEffects.play('error');
     }
   };
 

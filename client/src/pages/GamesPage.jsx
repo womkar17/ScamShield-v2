@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import { GamificationContext } from '../context/GamificationContext';
 import { MINIGAMES } from '../data/minigames';
+import { soundEffects } from '../utils/soundEffects';
 import SwipeGame from '../components/games/SwipeGame';
 import SpotTheFlagGame from '../components/games/SpotTheFlagGame';
 import PasswordGame from '../components/games/PasswordGame';
@@ -16,6 +17,7 @@ const GamesPage = () => {
   const { logAttempt } = useContext(AppContext);
   const { addXP } = useContext(GamificationContext);
   const [activeGame, setActiveGame] = useState(null);
+  const [completedModal, setCompletedModal] = useState(null);
 
   const dailyGames = useMemo(() => {
     const today = new Date().toISOString().split('T')[0];
@@ -33,10 +35,15 @@ const GamesPage = () => {
 
   const handleGameComplete = (success) => {
     if (success && activeGame) {
+      const xp = activeGame.xpReward || 50;
       if (addXP) {
-        addXP(activeGame.xpReward || 50);
+        addXP(xp);
       }
-      alert(`Game Completed! You earned ${activeGame.xpReward || 50} XP!`);
+      soundEffects.play('win');
+      setCompletedModal({ title: activeGame.title, xp, success: true });
+    } else if (activeGame) {
+      soundEffects.play('gameover');
+      setCompletedModal({ title: activeGame.title, xp: 0, success: false });
     }
     setActiveGame(null);
   };
@@ -97,7 +104,7 @@ const GamesPage = () => {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2rem', padding: '1rem' }}>
         {dailyGames.map(game => (
-          <div key={game.id} onClick={() => setActiveGame(game)} style={{ background: 'var(--card-bg, #2a2a2a)', padding: '1.5rem', borderRadius: '12px', cursor: 'pointer', transition: 'transform 0.2s', border: '1px solid var(--border-color, #444)', display: 'flex', flexDirection: 'column' }}>
+          <div key={game.id} onClick={() => { soundEffects.play('click'); setActiveGame(game); }} style={{ background: 'var(--card-bg, #2a2a2a)', padding: '1.5rem', borderRadius: '12px', cursor: 'pointer', transition: 'transform 0.2s', border: '1px solid var(--border-color, #444)', display: 'flex', flexDirection: 'column' }}>
             <div style={{ fontSize: '3rem', textAlign: 'center', marginBottom: '1rem' }}>{game.thumbnail}</div>
             <h3 style={{ margin: '0 0 0.5rem 0', color: 'var(--text)' }}>{game.title}</h3>
             <p style={{ color: 'var(--text2)', flex: 1, fontSize: '0.9rem' }}>{game.description}</p>
@@ -109,6 +116,30 @@ const GamesPage = () => {
         ))}
       </div>
       {renderActiveGame()}
+      {completedModal && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1100 }}>
+          <div style={{ background: 'var(--bg2, #1e1e24)', padding: '2.5rem', borderRadius: '16px', border: '1px solid var(--border)', textAlign: 'center', maxWidth: '420px', width: '90%', boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}>
+            <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>{completedModal.success ? '🏆' : '⚠️'}</div>
+            <h2 style={{ color: completedModal.success ? '#22c55e' : '#ef4444', fontSize: '1.8rem', marginBottom: '0.5rem' }}>
+              {completedModal.success ? 'Challenge Conquered!' : 'Mission Failed'}
+            </h2>
+            <p style={{ color: 'var(--text2)', marginBottom: '1.5rem', fontSize: '1.05rem' }}>
+              {completedModal.success ? `You successfully spotted the scam in "${completedModal.title}"!` : `You fell for the scam tactics in "${completedModal.title}". Stay sharp next time!`}
+            </p>
+            {completedModal.success && (
+              <div style={{ background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.3)', padding: '12px', borderRadius: '12px', marginBottom: '1.5rem' }}>
+                <span style={{ color: '#22c55e', fontWeight: 'bold', fontSize: '1.3rem' }}>+{completedModal.xp} XP Earned!</span>
+              </div>
+            )}
+            <button
+              onClick={() => { soundEffects.play('click'); setCompletedModal(null); }}
+              style={{ padding: '14px 28px', background: completedModal.success ? 'linear-gradient(135deg, #22c55e, #16a34a)' : '#64748b', color: 'white', border: 'none', borderRadius: '10px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer', width: '100%' }}
+            >
+              Continue Arcade
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

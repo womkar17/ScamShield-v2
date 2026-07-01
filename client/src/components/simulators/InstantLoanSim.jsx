@@ -91,7 +91,9 @@ export default function InstantLoanSim({ onComplete }) {
     fontSize: '1rem',
     outline: 'none',
     transition: 'border-color 0.2s ease',
-    background: '#fafafa'
+    background: '#fafafa',
+    color: '#0f172a',
+    fontWeight: '600'
   };
 
   return (

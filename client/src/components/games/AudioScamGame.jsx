@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ThreatAnalysis from './ThreatAnalysis';
+import { soundEffects } from '../../utils/soundEffects';
 
 export default function AudioScamGame({ game, onComplete }) {
   const { data } = game;
@@ -54,6 +55,7 @@ export default function AudioScamGame({ game, onComplete }) {
   };
 
   const startCall = () => {
+    soundEffects.play('click');
     setIsPlaying(true);
     setScore(0);
     timerRef.current = setInterval(() => {
@@ -74,8 +76,10 @@ export default function AudioScamGame({ game, onComplete }) {
     // Evaluate timing
     const currentSegment = script[scriptIndex];
     if (currentSegment && currentSegment.isRedFlag) {
+      soundEffects.play('win');
       setScore(1); 
     } else {
+      soundEffects.play('error');
       setScore(0); 
     }
     
@@ -86,6 +90,7 @@ export default function AudioScamGame({ game, onComplete }) {
     setCallEnded(true);
     clearInterval(timerRef.current);
     if (!userHungUp) {
+      soundEffects.play('error');
       setScore(0); // missed the red flag entirely
     }
     setTimeout(() => setShowThreat(true), 1200);

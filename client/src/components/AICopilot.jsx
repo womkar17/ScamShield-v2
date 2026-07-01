@@ -1,6 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { useLocation } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 export default function AICopilot() {
+  const { isLoggedIn } = useContext(AuthContext);
+  const location = useLocation();
+
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
@@ -108,6 +113,10 @@ export default function AICopilot() {
   const handleQuickScan = () => {
     setInput("Please analyze this suspicious text/URL for scams and red flags: ");
   };
+
+  if (!isLoggedIn || location.pathname === '/' || location.pathname.startsWith('/auth') || location.pathname.startsWith('/login') || location.pathname.startsWith('/register')) {
+    return null;
+  }
 
   return (
     <div style={{ position: 'fixed', bottom: '24px', right: '24px', zIndex: 9999 }}>

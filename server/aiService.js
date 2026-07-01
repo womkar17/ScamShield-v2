@@ -26,7 +26,7 @@ async function callGroq(messages) {
         ...messages
       ],
       temperature: 0.7,
-      max_tokens: 1024
+      max_tokens: 3072
     })
   });
 
@@ -53,7 +53,7 @@ async function callGemini(messages) {
   }));
 
   // Prepend system prompt to the first user message if present, or as system_instruction
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
   
   const response = await fetch(url, {
     method: "POST",
@@ -67,7 +67,7 @@ async function callGemini(messages) {
       contents: contents,
       generationConfig: {
         temperature: 0.7,
-        maxOutputTokens: 1024
+        maxOutputTokens: 3072
       }
     })
   });

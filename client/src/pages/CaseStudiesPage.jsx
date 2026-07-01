@@ -221,14 +221,7 @@ export default function CaseStudiesPage() {
         "quiz": [
           { "q": "Question 1?", "opts": ["Opt 0", "Opt 1 (Correct)", "Opt 2", "Opt 3"], "ans": 1, "exp": "Explanation why 1 is correct" },
           { "q": "Question 2?", "opts": ["Opt 0", "Opt 1", "Opt 2 (Correct)", "Opt 3"], "ans": 2, "exp": "Explanation" },
-          { "q": "Question 3?", "opts": ["Opt 0 (Correct)", "Opt 1", "Opt 2", "Opt 3"], "ans": 0, "exp": "Explanation" },
-          { "q": "Question 4?", "opts": ["Opt 0", "Opt 1 (Correct)", "Opt 2", "Opt 3"], "ans": 1, "exp": "Explanation" },
-          { "q": "Question 5?", "opts": ["Opt 0", "Opt 1", "Opt 2", "Opt 3 (Correct)"], "ans": 3, "exp": "Explanation" },
-          { "q": "Question 6?", "opts": ["Opt 0", "Opt 1 (Correct)", "Opt 2", "Opt 3"], "ans": 1, "exp": "Explanation" },
-          { "q": "Question 7?", "opts": ["Opt 0 (Correct)", "Opt 1", "Opt 2", "Opt 3"], "ans": 0, "exp": "Explanation" },
-          { "q": "Question 8?", "opts": ["Opt 0", "Opt 1", "Opt 2 (Correct)", "Opt 3"], "ans": 2, "exp": "Explanation" },
-          { "q": "Question 9?", "opts": ["Opt 0", "Opt 1 (Correct)", "Opt 2", "Opt 3"], "ans": 1, "exp": "Explanation" },
-          { "q": "Question 10?", "opts": ["Opt 0", "Opt 1", "Opt 2", "Opt 3 (Correct)"], "ans": 3, "exp": "Explanation" }
+          { "q": "Question 3?", "opts": ["Opt 0 (Correct)", "Opt 1", "Opt 2", "Opt 3"], "ans": 0, "exp": "Explanation" }
         ]
       }`;
 
@@ -258,7 +251,8 @@ export default function CaseStudiesPage() {
           body: JSON.stringify({
             model: 'llama-3.3-70b-versatile',
             messages: [{ role: 'user', content: prompt }],
-            temperature: 0.7
+            temperature: 0.7,
+            max_tokens: 3072
           })
         });
         const groqData = await groqRes.json();

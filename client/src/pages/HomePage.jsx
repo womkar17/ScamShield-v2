@@ -5,11 +5,11 @@ import StatsBar from '../components/StatsBar';
 import ProgressMap from '../components/ProgressMap';
 import BadgeGrid from '../components/BadgeGrid';
 import { AuthContext } from '../context/AuthContext';
-import { AppContext } from '../context/AppContext';
+import { GamificationContext } from '../context/GamificationContext';
 
 export default function HomePage() {
   const { currentUser, userProfile } = useContext(AuthContext);
-  const { connectionStatus } = useContext(AppContext);
+  const { xp, getLevelInfo } = useContext(GamificationContext);
   const navigate = useNavigate();
   
   const displayName = userProfile?.username || userProfile?.email?.split('@')[0] || currentUser?.email?.split('@')[0] || 'Defender';
@@ -48,15 +48,6 @@ export default function HomePage() {
           {/* Right Column: Achievements & Extras */}
           <div className="home-col-sidebar">
             <BadgeGrid />
-            
-            {/* Practice area removed, accessed via Sidebar Arcade */}
-            
-            {connectionStatus === 'err' && (
-              <div className="sidebar-widget bg-glass warning-widget">
-                <h3>⚠️ Offline Mode</h3>
-                <p>Your progress is being saved locally. It will sync when the server connects.</p>
-              </div>
-            )}
           </div>
         </div>
       </main>

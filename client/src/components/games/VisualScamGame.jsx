@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ThreatAnalysis from './ThreatAnalysis';
+import { soundEffects } from '../../utils/soundEffects';
 
 export default function VisualScamGame({ game, onComplete }) {
   const { data } = game;
@@ -12,13 +13,24 @@ export default function VisualScamGame({ game, onComplete }) {
   const [scanned, setScanned] = useState(false);
 
   const toggleFilter = () => {
+    soundEffects.play('click');
     setFilterActive(!filterActive);
   };
 
   const handleScanComplete = (userSaidFake) => {
     setScanned(true);
-    setScore(userSaidFake === isFake ? 1 : 0);
-    setTimeout(() => setShowThreat(true), 1500);
+    const correct = userSaidFake === isFake;
+    if (correct) {
+      soundEffects.play('success');
+      setScore(1);
+    } else {
+      soundEffects.play('error');
+      setScore(0);
+    }
+    setTimeout(() => {
+      if (correct) soundEffects.play('win');
+      setShowThreat(true);
+    }, 1500);
   };
 
   const handleComplete = () => {

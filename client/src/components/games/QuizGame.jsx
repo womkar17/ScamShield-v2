@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ThreatAnalysis from './ThreatAnalysis';
+import { soundEffects } from '../../utils/soundEffects';
 
 const QuizGame = ({ game, onComplete }) => {
   const [selectedIdx, setSelectedIdx] = useState(null);
@@ -10,10 +11,16 @@ const QuizGame = ({ game, onComplete }) => {
   const handleSelect = (idx) => {
     setSelectedIdx(idx);
     const isCorrect = game.data.options[idx].isCorrect;
+    if (isCorrect) {
+      soundEffects.play('success');
+    } else {
+      soundEffects.play('error');
+    }
     setFeedback(isCorrect ? 'Correct!' : 'Incorrect.');
     setIsCorrectScore(isCorrect ? 1 : 0);
     
     setTimeout(() => {
+      if (isCorrect) soundEffects.play('win');
       setShowAnalysis(true);
     }, 2000);
   };

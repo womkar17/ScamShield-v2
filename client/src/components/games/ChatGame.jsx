@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ThreatAnalysis from './ThreatAnalysis';
+import { soundEffects } from '../../utils/soundEffects';
 
 export default function ChatGame({ game, onComplete }) {
   const { data } = game;
@@ -36,6 +37,7 @@ export default function ChatGame({ game, onComplete }) {
     setShowChoices(false);
     
     setTimeout(() => {
+      soundEffects.play('click');
       setChatHistory(prev => [...prev, { sender: 'scammer', text: messages[messageIndex].text }]);
       setIsTyping(false);
       setMessageIndex(prev => prev + 1);
@@ -47,10 +49,16 @@ export default function ChatGame({ game, onComplete }) {
     setShowChoices(false);
     
     if (choice.isCorrect) {
+      soundEffects.play('success');
       setScore(1);
+    } else {
+      soundEffects.play('error');
     }
     
-    setTimeout(() => setShowThreat(true), 1500);
+    setTimeout(() => {
+      if (choice.isCorrect) soundEffects.play('win');
+      setShowThreat(true);
+    }, 1500);
   };
 
   const handleComplete = () => {

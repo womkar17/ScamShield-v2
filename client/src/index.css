@@ -109,3 +109,54 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+/* =========================================================
+   UNIVERSAL SIMULATOR & MODAL COLOR CONTRAST FIX
+   Ensures that inside any simulator phone frame or white box,
+   text and form inputs never become white-on-white in dark mode.
+   ========================================================= */
+.simulation-area [style*="background: '#fff'"] h1,
+.simulation-area [style*="background: '#fff'"] h2,
+.simulation-area [style*="background: '#fff'"] h3,
+.simulation-area [style*="background: '#fff'"] h4,
+.simulation-area [style*="background: '#fff'"] p,
+.simulation-area [style*="background: '#fff'"] span,
+.simulation-area [style*="background: '#fff'"] label,
+.simulation-area [style*="background: '#fff'"] strong,
+.simulation-area [style*="background: '#fff'"] div,
+.simulation-area [style*="background: rgb(255, 255, 255)"] h1,
+.simulation-area [style*="background: rgb(255, 255, 255)"] h2,
+.simulation-area [style*="background: rgb(255, 255, 255)"] h3,
+.simulation-area [style*="background: rgb(255, 255, 255)"] p,
+.simulation-area [style*="background: rgb(255, 255, 255)"] span,
+.simulation-area [style*="background: rgb(255, 255, 255)"] label,
+.simulation-area [style*="background: rgb(255, 255, 255)"] strong,
+.simulation-area [style*="background: rgb(255, 255, 255)"] div,
+.simulation-area [style*="background: #fff"] h1,
+.simulation-area [style*="background: #fff"] h2,
+.simulation-area [style*="background: #fff"] h3,
+.simulation-area [style*="background: #fff"] p,
+.simulation-area [style*="background: #fff"] span,
+.simulation-area [style*="background: #fff"] label,
+.simulation-area [style*="background: #fff"] strong,
+.simulation-area [style*="background: #fff"] div {
+  color: #1e293b;
+}
+
+.simulation-area input,
+.simulation-area select,
+.simulation-area textarea,
+.modal-content input,
+.modal-content select,
+.modal-content textarea {
+  color: #0f172a !important;
+  background-color: #ffffff !important;
+  border: 1.5px solid #cbd5e1 !important;
+}
+
+.simulation-area input::placeholder,
+.simulation-area textarea::placeholder,
+.modal-content input::placeholder,
+.modal-content textarea::placeholder {
+  color: #64748b !important;
+}

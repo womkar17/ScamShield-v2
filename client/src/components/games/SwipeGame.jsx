@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { soundEffects } from '../../utils/soundEffects';
 
 const SwipeGame = ({ game, onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -21,12 +22,14 @@ const SwipeGame = ({ game, onComplete }) => {
     const isCorrect = isScamChoice === currentItem.isScam;
 
     if (isCorrect) {
+      soundEffects.play('success');
       setFeedback({ type: 'success', message: 'Correct!', slideOut: true, direction: isScamChoice ? -1 : 1 });
       setScore(s => s + 1);
       setTimeout(() => {
         nextItem(true);
       }, 800);
     } else {
+      soundEffects.play('error');
       setFeedback({ type: 'error', message: currentItem.explanation || 'Incorrect! You lost a life.', slideOut: false });
       setLives(l => l - 1);
       setTimeout(() => {

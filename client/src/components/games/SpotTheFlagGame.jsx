@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { soundEffects } from '../../utils/soundEffects';
 
 const SpotTheFlagGame = ({ game, onComplete }) => {
   const [foundFlags, setFoundFlags] = useState([]);
@@ -17,6 +18,7 @@ const SpotTheFlagGame = ({ game, onComplete }) => {
 
   const handleFlagClick = (flag) => {
     if (!foundFlags.includes(flag.id)) {
+      soundEffects.play('success');
       const newFound = [...foundFlags, flag.id];
       setFoundFlags(newFound);
       setShowTooltip(flag.id);
@@ -25,6 +27,7 @@ const SpotTheFlagGame = ({ game, onComplete }) => {
       setTimeout(() => {
         setShowTooltip(null);
         if (newFound.length === flags.length) {
+          soundEffects.play('win');
           setTimeout(() => {
             setShowAnalysis(true);
           }, 1000);
@@ -106,7 +109,7 @@ const SpotTheFlagGame = ({ game, onComplete }) => {
         {isImage ? (
           <img src={content} alt="Spot the flags" style={styles.contentImg} />
         ) : (
-          <div style={styles.contentHtml}>{content}</div>
+          <div style={styles.contentHtml} dangerouslySetInnerHTML={{ __html: content }} />
         )}
 
         {/* Magnifier */}
@@ -137,7 +140,7 @@ const SpotTheFlagGame = ({ game, onComplete }) => {
               {isImage ? (
                 <img src={content} alt="Magnified content" style={styles.contentImg} />
               ) : (
-                <div style={styles.contentHtml}>{content}</div>
+                <div style={styles.contentHtml} dangerouslySetInnerHTML={{ __html: content }} />
               )}
             </div>
           </div>
