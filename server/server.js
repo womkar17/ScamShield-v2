@@ -81,7 +81,7 @@ app.post('/api/auth/send-otp', async (req, res) => {
     res.json({ ok: true });
   } catch (err) {
     console.error('Email send error:', err);
-    res.status(500).json({ ok: false, err: 'Failed to send email. Check SMTP settings.' });
+    res.status(500).json({ ok: false, err: `SMTP Error: ${err.message || 'Check credentials and settings.'}` });
   }
 });
 
