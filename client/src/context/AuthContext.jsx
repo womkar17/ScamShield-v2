@@ -44,45 +44,52 @@ export function AuthProvider({ children }) {
           console.warn('Backend oauth-sync fallback:', backendErr);
         }
 
-        // 2. If backend sync failed, try direct Supabase query with correct 'username' field
+        // 2. If backend sync failed, try direct Supabase query with smart email merging
         if (!profile) {
-          let { data: dbProfile } = await supabase
+          let { data: emailProfiles } = await supabase
             .from('profiles')
             .select('*')
-            .eq('id', session.user.id)
-            .single();
+            .eq('email', session.user.email);
 
-          if (!dbProfile) {
-            let { data: emailProfile } = await supabase
+          if (emailProfiles && emailProfiles.length > 0) {
+            const adminProfile = emailProfiles.find(p => p.role === 'admin');
+            const bestProfile = adminProfile || emailProfiles.sort((a, b) => (b.xp || 0) - (a.xp || 0))[0];
+
+            if (bestProfile.id !== session.user.id) {
+              const dupeRow = emailProfiles.find(p => p.id === session.user.id && p.id !== bestProfile.id);
+              if (dupeRow) {
+                await supabase.from('profiles').delete().eq('id', dupeRow.id);
+              }
+              await supabase.from('profiles').update({ id: session.user.id }).eq('id', bestProfile.id);
+              bestProfile.id = session.user.id;
+            }
+            profile = bestProfile;
+          } else {
+            let { data: dbProfile } = await supabase
               .from('profiles')
               .select('*')
-              .eq('email', session.user.email)
+              .eq('id', session.user.id)
               .single();
-            
-            if (emailProfile) {
-              await supabase.from('profiles').update({ id: session.user.id }).eq('email', session.user.email);
-              dbProfile = { ...emailProfile, id: session.user.id };
-            }
-          }
 
-          if (!dbProfile) {
-            const newProfile = {
-              id: session.user.id,
-              email: session.user.email,
-              username: username,
-              role: 'user',
-              xp: 0,
-              level: 1,
-              streak: 1
-            };
-            const { data: createdProfile } = await supabase
-              .from('profiles')
-              .upsert([newProfile])
-              .select()
-              .single();
-            profile = createdProfile || newProfile;
-          } else {
-            profile = dbProfile;
+            if (!dbProfile) {
+              const newProfile = {
+                id: session.user.id,
+                email: session.user.email,
+                username: username,
+                role: 'user',
+                xp: 0,
+                level: 1,
+                streak: 1
+              };
+              const { data: createdProfile } = await supabase
+                .from('profiles')
+                .upsert([newProfile])
+                .select()
+                .single();
+              profile = createdProfile || newProfile;
+            } else {
+              profile = dbProfile;
+            }
           }
         }
 

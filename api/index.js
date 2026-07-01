@@ -167,26 +167,41 @@ app.post('/api/auth/oauth-sync', async (req, res) => {
   if (!id || !email) return res.status(400).json({ ok: false, err: 'Missing parameters' });
 
   try {
-    let { data: profile } = await supabase.from('profiles').select('*').eq('id', id).single();
-    
-    // Fallback: check by email if ID match failed (in case admin was set in Supabase table by email)
-    if (!profile) {
-      let { data: emailProfile } = await supabase.from('profiles').select('*').eq('email', email).single();
-      if (emailProfile) {
-        await supabase.from('profiles').update({ id, username: username || emailProfile.username }).eq('email', email);
-        profile = { ...emailProfile, id };
-      }
-    }
+    // 1. Fetch all profile rows matching this email address
+    let { data: emailProfiles } = await supabase.from('profiles').select('*').eq('email', email);
+    let profile = null;
 
-    if (!profile) {
-      const defaultName = username || email.split('@')[0];
-      const newProfile = { id, email, username: defaultName, role: 'user', xp: 0, level: 1, streak: 1 };
-      const { data, error } = await supabase.from('profiles').insert([newProfile]).select().single();
-      if (error) {
-        console.error('DB Insert Error in oauth-sync:', error.message);
-        return res.json({ ok: true, profile: newProfile });
+    if (emailProfiles && emailProfiles.length > 0) {
+      // Prioritize any row that already has admin role, otherwise the one with highest XP/progress
+      const adminProfile = emailProfiles.find(p => p.role === 'admin');
+      const bestProfile = adminProfile || emailProfiles.sort((a, b) => (b.xp || 0) - (a.xp || 0))[0];
+
+      if (bestProfile.id !== id) {
+        // If another empty/duplicate row already took this OAuth ID, delete it so we can reassign ID to bestProfile
+        const dupeRow = emailProfiles.find(p => p.id === id && p.id !== bestProfile.id);
+        if (dupeRow) {
+          await supabase.from('profiles').delete().eq('id', dupeRow.id);
+        }
+        await supabase.from('profiles').update({ id, username: username || bestProfile.username }).eq('email', email).eq('role', bestProfile.role);
+        bestProfile.id = id;
       }
-      profile = data;
+      profile = bestProfile;
+    } else {
+      // 2. No email match found, check by ID just in case
+      let { data: idProfile } = await supabase.from('profiles').select('*').eq('id', id).single();
+      if (idProfile) {
+        profile = idProfile;
+      } else {
+        // 3. Brand new user!
+        const defaultName = username || email.split('@')[0];
+        const newProfile = { id, email, username: defaultName, role: 'user', xp: 0, level: 1, streak: 1 };
+        const { data, error } = await supabase.from('profiles').insert([newProfile]).select().single();
+        if (error) {
+          console.error('DB Insert Error in oauth-sync:', error.message);
+          return res.json({ ok: true, profile: newProfile });
+        }
+        profile = data;
+      }
     }
     res.json({ ok: true, profile });
   } catch (err) {

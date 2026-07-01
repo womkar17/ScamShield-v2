@@ -4,7 +4,7 @@ import { supabase } from '../lib/supabase';
 import { getApiUrl } from '../lib/api';
 
 export default function SettingsPage() {
-  const { userProfile, currentUser, updateProfileLocal, claimAdmin } = useContext(AuthContext);
+  const { userProfile, currentUser, updateProfileLocal } = useContext(AuthContext);
   
   const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(false);
@@ -81,38 +81,6 @@ export default function SettingsPage() {
             </span>
           )}
         </div>
-      </div>
-
-      <div style={{ ...styles.card, marginTop: '24px', border: '1px solid rgba(236, 72, 153, 0.3)', background: 'linear-gradient(135deg, rgba(236,72,153,0.05), rgba(168,85,247,0.05))' }}>
-        <h2 style={{ ...styles.cardTitle, color: '#f472b6' }}>🔐 Developer & Admin Testing Access</h2>
-        <p style={{ color: 'var(--text2)', fontSize: '0.9rem', lineHeight: '1.5', marginBottom: '16px' }}>
-          Need to test the Admin Panel without manually editing the Supabase database? Click below to immediately upgrade your current logged-in account (<strong>{currentUser?.email}</strong>) to Admin status.
-        </p>
-        <button
-          style={{
-            background: 'linear-gradient(135deg, #ec4899, #8b5cf6)',
-            color: 'white',
-            padding: '12px 24px',
-            border: 'none',
-            borderRadius: '10px',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            boxShadow: '0 4px 15px rgba(236, 72, 153, 0.3)',
-            transition: 'transform 0.2s'
-          }}
-          onClick={async () => {
-            if (claimAdmin) {
-              const res = await claimAdmin();
-              if (res?.ok) {
-                alert('🎉 Access Granted! You are now an Admin. Check the left sidebar for the Admin Panel link!');
-              } else {
-                alert('Could not claim admin: ' + (res?.err || 'Try logging out and back in.'));
-              }
-            }
-          }}
-        >
-          🚀 Unlock Admin Privileges Now
-        </button>
       </div>
     </div>
   );
