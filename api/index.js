@@ -162,6 +162,17 @@ app.post('/api/auth/verify-otp', async (req, res) => {
   }
 });
 
+app.get('/api/health', async (req, res) => {
+  const hasUrl = !!supabaseUrl;
+  const hasKey = !!supabaseServiceKey;
+  let dbOk = false;
+  try {
+    const { data, error } = await supabase.from('profiles').select('id').limit(1);
+    dbOk = !error;
+  } catch (e) { dbOk = false; }
+  res.json({ ok: hasUrl && hasKey && dbOk, supabaseUrl: hasUrl, serviceKey: hasKey, dbConnection: dbOk });
+});
+
 app.post('/api/auth/oauth-sync', async (req, res) => {
   const { id, email, username } = req.body;
   if (!id || !email) return res.status(400).json({ ok: false, err: 'Missing parameters' });

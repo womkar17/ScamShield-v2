@@ -23,54 +23,69 @@ export function AuthProvider({ children }) {
         const username = session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email.split('@')[0];
         let profile = null;
 
-        // Call backend oauth-sync (uses service_role key, bypasses RLS)
+        // === ATTEMPT 1: Backend oauth-sync (uses service_role key, bypasses RLS) ===
         try {
           const syncRes = await fetch(`${API_BASE}/oauth-sync`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              id: session.user.id,
-              email: session.user.email,
-              username: username
-            })
+            body: JSON.stringify({ id: session.user.id, email: session.user.email, username })
           });
-          const syncData = await syncRes.json();
-          console.log('oauth-sync response:', syncData?.profile?.email, 'role:', syncData?.profile?.role);
-          if (syncData?.ok && syncData?.profile) {
-            profile = syncData.profile;
+          if (syncRes.ok) {
+            const syncData = await syncRes.json();
+            console.log('[Auth] Backend oauth-sync:', syncData?.profile?.role);
+            if (syncData?.ok && syncData?.profile) {
+              profile = syncData.profile;
+            }
           }
         } catch (backendErr) {
-          console.warn('Backend oauth-sync unreachable:', backendErr);
+          console.warn('[Auth] Backend unreachable:', backendErr.message);
         }
 
-        // Fallback: direct Supabase query by ID (only if backend is completely down)
+        // === ATTEMPT 2: Direct Supabase query by ID ===
         if (!profile) {
-          console.log('Fallback: querying Supabase directly by id:', session.user.id);
-          const { data } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
-          if (data) {
-            profile = data;
-            console.log('Fallback found profile, role:', data.role);
-          }
+          try {
+            const { data } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
+            if (data) {
+              console.log('[Auth] Found profile by ID, role:', data.role);
+              profile = data;
+            }
+          } catch (e) { /* RLS might block this */ }
         }
 
-        // Last resort: create a new user profile
+        // === ATTEMPT 3: Direct Supabase query by EMAIL (handles ID mismatch) ===
         if (!profile) {
-          console.log('No profile found anywhere, creating new user');
+          try {
+            const { data: emailRows } = await supabase.from('profiles').select('*').eq('email', session.user.email);
+            if (emailRows && emailRows.length > 0) {
+              const best = emailRows.find(p => p.role === 'admin') || emailRows[0];
+              console.log('[Auth] Found profile by email, role:', best.role);
+              profile = best;
+            }
+          } catch (e) { /* RLS might block this */ }
+        }
+
+        // === ATTEMPT 4: Create new user (last resort) ===
+        if (!profile) {
+          console.log('[Auth] No profile found, creating new user');
           profile = { id: session.user.id, email: session.user.email, username, role: 'user', xp: 0, level: 1, streak: 1 };
-          await supabase.from('profiles').insert([profile]).select().single();
+          try {
+            const { data: created } = await supabase.from('profiles').insert([profile]).select().single();
+            if (created) profile = created;
+          } catch (e) { /* insert might fail due to RLS, use in-memory profile */ }
         }
 
         if (mounted) {
-          console.log('Setting auth state — email:', profile.email, 'role:', profile.role, 'isAdmin:', profile.role === 'admin');
+          const adminStatus = profile.role === 'admin';
+          console.log('[Auth] FINAL → email:', profile.email, 'role:', profile.role, 'isAdmin:', adminStatus);
           setCurrentUser(session.user);
           setUserProfile(profile);
           setIsLoggedIn(true);
-          setIsAdmin(profile.role === 'admin');
+          setIsAdmin(adminStatus);
           document.documentElement.setAttribute('data-theme', 'dark');
         }
         return true;
       } catch (err) {
-        console.error('handleSupabaseSession error:', err);
+        console.error('[Auth] handleSupabaseSession error:', err);
         return false;
       }
     };
@@ -84,16 +99,15 @@ export function AuthProvider({ children }) {
           return;
         }
       } catch (e) {
-        console.error('Supabase getSession error:', e);
+        console.error('[Auth] getSession error:', e);
       }
       if (mounted) setLoading(false);
     };
 
     initAuth();
 
-    // Listen for Google OAuth login/logout events
     const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('Auth state change:', event);
+      console.log('[Auth] onAuthStateChange:', event);
       if (event === 'SIGNED_IN' && session) {
         await handleSupabaseSession(session);
         if (mounted) setLoading(false);
@@ -120,18 +134,12 @@ export function AuthProvider({ children }) {
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/dashboard`,
-          queryParams: {
-            prompt: 'select_account consent',
-          }
+          queryParams: { prompt: 'select_account consent' }
         }
       });
-      if (error) {
-        console.error('Google login error:', error.message);
-        return { ok: false, err: error.message };
-      }
+      if (error) return { ok: false, err: error.message };
       return { ok: true };
     } catch (err) {
-      console.error('Google login exception:', err);
       return { ok: false, err: 'Failed to initialize Google login.' };
     }
   }, []);
@@ -151,14 +159,8 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={{
-      currentUser,
-      userProfile,
-      isLoggedIn,
-      isAdmin,
-      loading,
-      loginWithGoogle,
-      logout,
-      updateProfileLocal,
+      currentUser, userProfile, isLoggedIn, isAdmin, loading,
+      loginWithGoogle, logout, updateProfileLocal,
     }}>
       {children}
     </AuthContext.Provider>
