@@ -99,7 +99,7 @@ export default function LoginModal() {
 
   return (
     <div style={styles.overlay}>
-      <div style={{...styles.card, ...(success ? styles.cardSuccess : {})}}>
+      <div className="auth-card" style={{...styles.card, ...(success ? styles.cardSuccess : {})}}>
         <button style={styles.closeButton} onClick={closeLogin}>✕</button>
         
         <div style={styles.header}>
@@ -114,15 +114,18 @@ export default function LoginModal() {
 
         {step === 1 ? (
           <form onSubmit={handleSendOtp} style={styles.form}>
-            <input
-              type="email"
-              placeholder="Enter your email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              style={styles.input}
-              disabled={loading}
-              autoFocus
-            />
+            <div style={styles.inputGroup}>
+              <label style={styles.label}>Email Address</label>
+              <input
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); setError(''); }}
+                style={styles.input}
+                disabled={loading}
+                autoFocus
+              />
+            </div>
             <button type="submit" style={styles.submitBtn} disabled={loading}>
               {loading ? <span style={styles.spinner}></span> : 'Send Verification Code'}
             </button>
@@ -135,7 +138,7 @@ export default function LoginModal() {
               </div>
             ) : (
               <>
-                <div style={styles.otpContainer}>
+                <div className="otp-container" style={styles.otpContainer}>
                   {otp.map((digit, idx) => (
                     <input
                       key={idx}
@@ -146,6 +149,7 @@ export default function LoginModal() {
                       value={digit}
                       onChange={(e) => handleOtpChange(idx, e.target.value)}
                       onKeyDown={(e) => handleOtpKeyDown(idx, e)}
+                      className="otp-input"
                       style={styles.otpInput}
                       disabled={loading}
                     />

@@ -132,7 +132,7 @@ export default function AuthPage() {
         ← Back to Home
       </button>
 
-      <div style={{
+      <div className="auth-card" style={{
         ...styles.card,
         ...(success ? styles.cardSuccess : {}),
       }}>
@@ -204,7 +204,7 @@ export default function AuthPage() {
         {/* Step 2: OTP Form */}
         {!success && step === 2 && (
           <form onSubmit={handleVerifyOtp} style={styles.form}>
-            <div style={styles.otpContainer}>
+            <div className="otp-container" style={styles.otpContainer}>
               {otp.map((digit, index) => (
                 <input
                   key={index}
@@ -217,6 +217,7 @@ export default function AuthPage() {
                   onChange={(e) => handleOtpChange(index, e.target.value)}
                   onKeyDown={(e) => handleOtpKeyDown(index, e)}
                   onPaste={handlePaste}
+                  className="otp-input"
                   style={styles.otpInput}
                   disabled={loading}
                 />
