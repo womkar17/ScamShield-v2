@@ -162,6 +162,29 @@ app.post('/api/auth/verify-otp', async (req, res) => {
   }
 });
 
+app.post('/api/auth/oauth-sync', async (req, res) => {
+  const { id, email, username } = req.body;
+  if (!id || !email) return res.status(400).json({ ok: false, err: 'Missing parameters' });
+
+  try {
+    let { data: profile } = await supabase.from('profiles').select('*').eq('id', id).single();
+    if (!profile) {
+      const defaultName = username || email.split('@')[0];
+      const newProfile = { id, email, username: defaultName, role: 'user', xp: 100, level: 1, streak: 1 };
+      const { data, error } = await supabase.from('profiles').insert([newProfile]).select().single();
+      if (error) {
+        console.error('DB Insert Error in oauth-sync:', error.message);
+        return res.json({ ok: true, profile: newProfile });
+      }
+      profile = data;
+    }
+    res.json({ ok: true, profile });
+  } catch (err) {
+    console.error('oauth-sync exception:', err.message);
+    res.status(500).json({ ok: false, err: err.message });
+  }
+});
+
 app.get('/api/admin/users', async (req, res) => {
   try {
     const { data: users, error } = await supabase.from('profiles').select('*').order('created_at', { ascending: false });

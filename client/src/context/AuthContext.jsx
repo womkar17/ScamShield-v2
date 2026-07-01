@@ -21,28 +21,56 @@ export function AuthProvider({ children }) {
       if (!session?.user || !mounted) return false;
       try {
         localStorage.setItem('scamshield_token', session.access_token);
-        let { data: profile } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
+        
+        const username = session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email.split('@')[0];
+        let profile = null;
 
+        // 1. Try syncing via backend service_role endpoint (bypasses RLS and handles schema)
+        try {
+          const syncRes = await fetch(`${API_BASE}/oauth-sync`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id: session.user.id,
+              email: session.user.email,
+              username: username
+            })
+          });
+          const syncData = await syncRes.json();
+          if (syncData?.ok && syncData?.profile) {
+            profile = syncData.profile;
+          }
+        } catch (backendErr) {
+          console.warn('Backend oauth-sync fallback:', backendErr);
+        }
+
+        // 2. If backend sync failed, try direct Supabase query with correct 'username' field
         if (!profile) {
-          const newProfile = {
-            id: session.user.id,
-            email: session.user.email,
-            display_name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email.split('@')[0],
-            role: 'user',
-            xp: 100,
-            level: 1,
-            completed_modules: []
-          };
-          const { data: createdProfile } = await supabase
+          let { data: dbProfile } = await supabase
             .from('profiles')
-            .upsert([newProfile])
-            .select()
+            .select('*')
+            .eq('id', session.user.id)
             .single();
-          profile = createdProfile || newProfile;
+
+          if (!dbProfile) {
+            const newProfile = {
+              id: session.user.id,
+              email: session.user.email,
+              username: username,
+              role: 'user',
+              xp: 100,
+              level: 1,
+              streak: 1
+            };
+            const { data: createdProfile } = await supabase
+              .from('profiles')
+              .upsert([newProfile])
+              .select()
+              .single();
+            profile = createdProfile || newProfile;
+          } else {
+            profile = dbProfile;
+          }
         }
 
         if (mounted) {
