@@ -248,7 +248,7 @@ export default function CaseStudiesPage() {
         if (data.ok) replyText = data.reply;
       } catch (backendErr) {
         // Vercel Serverless Fallback: call Groq API directly!
-        const groqKey = import.meta.env.VITE_GROQ_API_KEY || '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';
+        const groqKey = import.meta.env.VITE_GROQ_API_KEY || '';
         const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
           method: 'POST',
           headers: {

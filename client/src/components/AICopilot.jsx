@@ -54,8 +54,8 @@ export default function AICopilot() {
         }
       } catch (backendErr) {
         // Vercel Serverless Fallback: call Groq / Gemini directly from client!
-        const groqKey = import.meta.env.VITE_GROQ_API_KEY || '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';
-        const geminiKey = import.meta.env.VITE_GEMINI_API_KEY || 'AQ.Ab8RN6LeHwEt6a8ZA2fGCoRkdFaBoRWOJW0L2-yJzM2FOIMGzA';
+        const groqKey = import.meta.env.VITE_GROQ_API_KEY || '';
+        const geminiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
 
         if (engine === 'groq' || !geminiKey) {
           const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
