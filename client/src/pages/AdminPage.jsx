@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
 import { AuthContext } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 
@@ -329,8 +328,7 @@ export default function AdminPage() {
 
   return (
     <div className="app-container">
-      <Navbar />
-      <main style={s.main}>
+      <main style={{ ...s.main, paddingTop: '1rem' }}>
         {/* Header */}
         <div style={s.header}>
           <div>

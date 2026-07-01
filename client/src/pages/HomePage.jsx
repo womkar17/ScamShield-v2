@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import Navbar from '../components/Navbar';
 import StatsBar from '../components/StatsBar';
 import ProgressMap from '../components/ProgressMap';
 import BadgeGrid from '../components/BadgeGrid';
@@ -16,22 +15,16 @@ export default function HomePage() {
 
   return (
     <div className="app-container">
-      <Navbar />
-      
-      <main className="main-content layout-home">
+      <main className="main-content layout-home" style={{ paddingTop: '1rem' }}>
         {/* Hero Section */}
         <div className="hero-section">
-          <div className="hero-content">
-            <h1 className="hero-title">
+          <div className="hero-content" style={{ width: '100%' }}>
+            <h1 className="hero-title" style={{ marginTop: 0 }}>
               Welcome to ScamShield, <span style={styles.usernameHighlight}>{displayName}</span>!
             </h1>
             <p className="hero-subtitle">
               Learn to spot, avoid, and report the latest digital scams through interactive simulations.
             </p>
-          </div>
-          {/* AI Generated Hero Illustration will go here */}
-          <div className="hero-illustration-placeholder">
-            <span className="hero-shield-icon">🛡️</span>
           </div>
         </div>
 

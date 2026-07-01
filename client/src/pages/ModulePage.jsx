@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
 import { MODULES } from '../data/modules';
 import { AppContext } from '../context/AppContext';
 import { GamificationContext } from '../context/GamificationContext';
@@ -215,9 +214,7 @@ export default function ModulePage() {
 
   return (
     <div className="app-container">
-      <Navbar />
-      
-      <main className="main-content">
+      <main className="main-content" style={{ paddingTop: '1rem' }}>
         <div className="module-header">
           <button 
             className="btn back-btn" 
