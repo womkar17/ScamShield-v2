@@ -13,6 +13,8 @@ export function AuthProvider({ children }) {
 
   const API_BASE = `${getApiUrl()}/api/auth`;
 
+  const checkIsAdmin = (role) => String(role || '').trim().toLowerCase() === 'admin';
+
   useEffect(() => {
     let mounted = true;
 
@@ -52,11 +54,11 @@ export function AuthProvider({ children }) {
         } catch (e) { /* RLS or not found */ }
 
         // === ATTEMPT 3: ALWAYS query Supabase directly from frontend by EMAIL ===
-        if (!profile || profile.role !== 'admin') {
+        if (!profile || !checkIsAdmin(profile.role)) {
           try {
             const { data: emailRows } = await supabase.from('profiles').select('*').eq('email', session.user.email);
             if (emailRows && emailRows.length > 0) {
-              const adminRow = emailRows.find(p => p.role === 'admin');
+              const adminRow = emailRows.find(p => checkIsAdmin(p.role));
               if (adminRow) {
                 console.log('[Auth] Found admin profile directly by email!');
                 profile = adminRow;
@@ -79,7 +81,7 @@ export function AuthProvider({ children }) {
         }
 
         if (mounted) {
-          const adminStatus = profile.role === 'admin';
+          const adminStatus = checkIsAdmin(profile.role);
           console.log('[Auth] FINAL → email:', profile.email, 'role:', profile.role, 'isAdmin:', adminStatus);
           setCurrentUser(session.user);
           setUserProfile(profile);
