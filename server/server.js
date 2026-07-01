@@ -245,15 +245,28 @@ app.post('/api/ai/chat', async (req, res) => {
   }
 });
 
-// Serve static frontend files
+// Serve static frontend files if built locally
 const path = require('path');
+const fs = require('fs');
 const _dirname = path.resolve();
-app.use(express.static(path.join(_dirname, '../client/dist')));
+const distPath = path.join(_dirname, '../client/dist');
 
-// Catch-all route to serve index.html for React Router
-app.use((req, res) => {
-  res.sendFile(path.join(_dirname, '../client/dist/index.html'));
-});
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+  app.use((req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+} else {
+  // Cloud Backend Mode (Render API server where frontend is on Vercel)
+  app.get('/', (req, res) => {
+    res.status(200).json({
+      ok: true,
+      status: "online",
+      service: "ScamShield Cyber Platform Backend API 🟢",
+      message: "API server is ready! Please access the frontend via your Vercel URL."
+    });
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
