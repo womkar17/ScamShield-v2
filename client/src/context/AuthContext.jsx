@@ -14,8 +14,67 @@ export function AuthProvider({ children }) {
   const API_BASE = `${getApiUrl()}/api/auth`;
 
   useEffect(() => {
-    // Check for existing token on mount
+    let mounted = true;
+
+    // Helper to process a Supabase session (e.g. from Google OAuth)
+    const handleSupabaseSession = async (session) => {
+      if (!session?.user || !mounted) return false;
+      try {
+        localStorage.setItem('scamshield_token', session.access_token);
+        let { data: profile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .single();
+
+        if (!profile) {
+          const newProfile = {
+            id: session.user.id,
+            email: session.user.email,
+            display_name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email.split('@')[0],
+            role: 'user',
+            xp: 100,
+            level: 1,
+            completed_modules: []
+          };
+          const { data: createdProfile } = await supabase
+            .from('profiles')
+            .upsert([newProfile])
+            .select()
+            .single();
+          profile = createdProfile || newProfile;
+        }
+
+        if (mounted) {
+          setCurrentUser(session.user);
+          setUserProfile(profile);
+          setIsLoggedIn(true);
+          setIsAdmin(profile.role === 'admin');
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+        return true;
+      } catch (err) {
+        console.error('Error handling Supabase OAuth session:', err);
+        return false;
+      }
+    };
+
     const initAuth = async () => {
+      // 1. Check if Supabase already has an OAuth or active session
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          const handled = await handleSupabaseSession(session);
+          if (handled) {
+            if (mounted) setLoading(false);
+            return;
+          }
+        }
+      } catch (e) {
+        console.error('Supabase getSession error:', e);
+      }
+
+      // 2. Fallback to existing custom OTP token in localStorage
       const token = localStorage.getItem('scamshield_token');
       if (token) {
         try {
@@ -25,18 +84,14 @@ export function AuthProvider({ children }) {
           const data = await res.json();
           
           if (data.ok && data.profile) {
-            // Update Supabase client headers to use our custom JWT
-            // This is required so Row Level Security works correctly if enabled later
             supabase.realtime.setAuth(token);
-            // Alternatively if you query DB from frontend directly with supabase-js:
-            // (Since RLS is off for profiles, it works either way)
-
-            setCurrentUser({ id: data.profile.id, email: data.profile.email });
-            setUserProfile(data.profile);
-            setIsLoggedIn(true);
-            setIsAdmin(data.profile.role === 'admin');
-            
-            document.documentElement.setAttribute('data-theme', 'dark');
+            if (mounted) {
+              setCurrentUser({ id: data.profile.id, email: data.profile.email });
+              setUserProfile(data.profile);
+              setIsLoggedIn(true);
+              setIsAdmin(data.profile.role === 'admin');
+              document.documentElement.setAttribute('data-theme', 'dark');
+            }
           } else {
             localStorage.removeItem('scamshield_token');
           }
@@ -44,10 +99,50 @@ export function AuthProvider({ children }) {
           console.error('Auth check error:', err);
         }
       }
-      setLoading(false);
+      if (mounted) setLoading(false);
     };
 
     initAuth();
+
+    // Listen for OAuth login/logout events from Supabase
+    const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        await handleSupabaseSession(session);
+        if (mounted) setLoading(false);
+      } else if (event === 'SIGNED_OUT') {
+        if (mounted) {
+          localStorage.removeItem('scamshield_token');
+          setCurrentUser(null);
+          setUserProfile(null);
+          setIsLoggedIn(false);
+          setIsAdmin(false);
+        }
+      }
+    });
+
+    return () => {
+      mounted = false;
+      authListener?.subscription?.unsubscribe();
+    };
+  }, []);
+
+  const loginWithGoogle = useCallback(async () => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`
+        }
+      });
+      if (error) {
+        console.error('Google login error:', error.message);
+        return { ok: false, err: error.message };
+      }
+      return { ok: true };
+    } catch (err) {
+      console.error('Google login exception:', err);
+      return { ok: false, err: 'Failed to initialize Google login.' };
+    }
   }, []);
 
   const sendOtp = useCallback(async (email) => {
@@ -109,8 +204,7 @@ export function AuthProvider({ children }) {
     setUserProfile(null);
     setIsLoggedIn(false);
     setIsAdmin(false);
-    // Optional: if using supabase for normal queries
-    supabase.auth.signOut().catch(()=> {}); 
+    await supabase.auth.signOut().catch(() => {});
   }, []);
 
   // We are not using the generic password login for this flow anymore
@@ -128,6 +222,7 @@ export function AuthProvider({ children }) {
       isLoggedIn,
       isAdmin,
       loading,
+      loginWithGoogle,
       sendOtp,
       verifyOtp,
       login,

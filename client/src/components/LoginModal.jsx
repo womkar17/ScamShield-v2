@@ -2,7 +2,7 @@ import { useContext, useState, useRef, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
 export default function LoginModal() {
-  const { showLoginModal, closeLogin, sendOtp, verifyOtp } = useContext(AuthContext);
+  const { showLoginModal, closeLogin, sendOtp, verifyOtp, loginWithGoogle } = useContext(AuthContext);
   
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
@@ -23,6 +23,16 @@ export default function LoginModal() {
       setSuccess(false);
     }
   }, [showLoginModal]);
+
+  const handleGoogleLogin = async () => {
+    setError('');
+    setLoading(true);
+    const res = await loginWithGoogle();
+    if (!res?.ok) {
+      setError(res?.err || 'Failed to start Google Sign In');
+      setLoading(false);
+    }
+  };
 
   if (!showLoginModal) return null;
 
@@ -113,23 +123,46 @@ export default function LoginModal() {
         {error && <div style={styles.error}>{error}</div>}
 
         {step === 1 ? (
-          <form onSubmit={handleSendOtp} style={styles.form}>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Email Address</label>
-              <input
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => { setEmail(e.target.value); setError(''); }}
-                style={styles.input}
-                disabled={loading}
-                autoFocus
-              />
-            </div>
-            <button type="submit" style={styles.submitBtn} disabled={loading}>
-              {loading ? <span style={styles.spinner}></span> : 'Send Verification Code'}
+          <div style={{ width: '100%' }}>
+            <button
+              type="button"
+              onClick={handleGoogleLogin}
+              style={styles.googleBtn}
+              disabled={loading}
+            >
+              <svg style={{ width: '20px', height: '20px', marginRight: '10px' }} viewBox="0 0 24 24">
+                <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.8C6.2 7.1 8.9 5 12 5z"/>
+                <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/>
+                <path fill="#FBBC05" d="M5.3 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.6 7.4C.6 9.4 0 11.6 0 14c0 2.4.6 4.6 1.6 6.6l3.7-2.9z"/>
+                <path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.1-6.7-5.2L1.6 15.9C3.5 19.7 7.4 23 12 23z"/>
+              </svg>
+              Continue with Google
             </button>
-          </form>
+
+            <div style={styles.divider}>
+              <span style={styles.dividerLine} />
+              <span style={styles.dividerText}>or continue with email</span>
+              <span style={styles.dividerLine} />
+            </div>
+
+            <form onSubmit={handleSendOtp} style={styles.form}>
+              <div style={styles.inputGroup}>
+                <label style={styles.label}>Email Address</label>
+                <input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => { setEmail(e.target.value); setError(''); }}
+                  style={styles.input}
+                  disabled={loading}
+                  autoFocus
+                />
+              </div>
+              <button type="submit" style={styles.submitBtn} disabled={loading}>
+                {loading ? <span style={styles.spinner}></span> : 'Send Verification Code'}
+              </button>
+            </form>
+          </div>
         ) : (
           <div style={styles.form}>
             {success ? (
@@ -245,6 +278,40 @@ const styles = {
     marginBottom: '1.5rem',
     fontSize: '0.85rem',
     textAlign: 'center',
+  },
+  googleBtn: {
+    width: '100%',
+    padding: '0.9rem 1rem',
+    backgroundColor: '#ffffff',
+    color: '#3c4043',
+    border: '1px solid #dadce0',
+    borderRadius: '12px',
+    fontSize: '1rem',
+    fontWeight: '600',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: '1.2rem',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    transition: 'background-color 0.2s, box-shadow 0.2s',
+  },
+  divider: {
+    display: 'flex',
+    alignItems: 'center',
+    margin: '1.2rem 0',
+  },
+  dividerLine: {
+    flex: 1,
+    height: '1px',
+    backgroundColor: 'rgba(255,255,255,0.15)',
+  },
+  dividerText: {
+    padding: '0 12px',
+    color: 'rgba(255,255,255,0.5)',
+    fontSize: '0.85rem',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
   },
   form: {
     display: 'flex',
