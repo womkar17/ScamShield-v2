@@ -68,7 +68,10 @@ async function sendCloudEmail(toEmail, subject, htmlContent) {
       const errJson = await res.json().catch(() => ({}));
       console.warn(`⚠️ Brevo HTTP API reported (${res.status}): ${errJson.message || 'Attempting SMTP fallback...'}`);
       if (res.status === 401) {
-        throw new Error('Invalid Brevo API/SMTP key. Please check BREVO_PASS in environment variables.');
+        if (apiKey.startsWith('xsmtpsib-')) {
+          throw new Error('You pasted an SMTP key (xsmtpsib-). Brevo HTTP API requires an API key starting with xkeysib-. Get it from app.brevo.com/settings/keys/api and update BREVO_PASS on Render.');
+        }
+        throw new Error('Invalid Brevo API key. Please generate a new API key starting with xkeysib- from app.brevo.com/settings/keys/api and update BREVO_PASS on Render.');
       }
     }
   } catch (httpErr) {
