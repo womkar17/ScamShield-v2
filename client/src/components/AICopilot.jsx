@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { getApiUrl } from '../lib/api';
 
 export default function AICopilot() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -46,7 +47,7 @@ export default function AICopilot() {
       let replyText = null;
 
       try {
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const apiUrl = getApiUrl();
         const res = await fetch(`${apiUrl}/api/ai/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
+import { getApiUrl } from '../lib/api';
 
 export default function SettingsPage() {
   const { userProfile, currentUser, updateProfileLocal } = useContext(AuthContext);
@@ -23,7 +24,7 @@ export default function SettingsPage() {
     
     try {
       const token = localStorage.getItem('scamshield_token');
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const apiUrl = getApiUrl();
       const res = await fetch(`${apiUrl}/api/auth/update-profile`, {
         method: 'POST',
         headers: {

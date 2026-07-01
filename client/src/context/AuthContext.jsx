@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
+import { getApiUrl } from '../lib/api';
 
 export const AuthContext = createContext();
 
@@ -10,7 +11,7 @@ export function AuthProvider({ children }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const API_BASE = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth`;
+  const API_BASE = `${getApiUrl()}/api/auth`;
 
   useEffect(() => {
     // Check for existing token on mount

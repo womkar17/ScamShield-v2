@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { GamificationContext } from '../context/GamificationContext';
+import { getApiUrl } from '../lib/api';
 
 const INITIAL_CASE_STUDIES = [
   {
@@ -204,24 +205,25 @@ export default function CaseStudiesPage() {
     setGenerating(true);
     setGenError('');
     try {
-      const prompt = `Generate 1 thrilling, realistic, highly detailed cybersecurity case study based on the latest 2026 threat trends (e.g. AI voice cloning, SaaS supply chain attacks, QR code smishing, or Cloud storage leaks). 
+      const prompt = `Generate 1 documented, REAL-WORLD cybersecurity scam or data breach case study based on ACTUAL historical facts, verified security reports (e.g. FBI IC3, CISA, FTC, ENISA, or major cybersecurity intelligence reports), and real events from 2023–2026 (such as MGM Resorts ransomware, Change Healthcare breach, Snowflake cloud account takeovers, or 3CX/AnyDesk supply chain compromises).
+      You MUST include real facts and figures: the actual name of the organization or threat actor involved (if publicly documented), the verified financial loss or ransom demand, the realistic or documented number of users/victims affected, and real dates.
       Return ONLY a valid JSON object with EXACTLY these keys:
       {
-        "title": "Catchy title",
+        "title": "Real incident title (e.g. The 2024 Snowflake Cloud Account Takeover)",
         "category": "One of: Deepfake & AI Fraud, Crypto & Social Engineering, SMS & Phishing, Workplace & Shadow IT",
-        "date": "July 2026",
-        "loss": "Estimated financial or data loss",
-        "summary": "2 sentence summary of what happened",
-        "setup": "How the scam started and trust was built",
-        "trap": "The exact climax and psychological manipulation used",
-        "timeline": ["Step 1", "Step 2", "Step 3", "Step 4"],
-        "redFlags": ["Flag 1", "Flag 2", "Flag 3", "Flag 4"],
-        "psychologicalBias": "Which cognitive bias was weaponized and why",
-        "prevention": "1 actionable rule to prevent this",
+        "date": "Actual date/year of incident (e.g. April 2024)",
+        "loss": "Real financial loss and exact number of affected users/victims (e.g. 165 organizations breached, 500M+ customer records leaked, $30M+ ransom demands)",
+        "summary": "2 sentence factual summary of what occurred in real life",
+        "setup": "The real initial access vector and how attackers bypassed security controls",
+        "trap": "The specific climax, payload, and psychological manipulation or credential harvesting technique used",
+        "timeline": ["Factual Step 1", "Factual Step 2", "Factual Step 3", "Factual Step 4"],
+        "redFlags": ["Real Red Flag 1", "Real Red Flag 2", "Real Red Flag 3", "Real Red Flag 4"],
+        "psychologicalBias": "Which cognitive bias or security gap was exploited in this real incident",
+        "prevention": "1 actionable security control that would have prevented this breach",
         "quiz": [
-          { "q": "Question 1?", "opts": ["Opt 0", "Opt 1 (Correct)", "Opt 2", "Opt 3"], "ans": 1, "exp": "Explanation why 1 is correct" },
-          { "q": "Question 2?", "opts": ["Opt 0", "Opt 1", "Opt 2 (Correct)", "Opt 3"], "ans": 2, "exp": "Explanation" },
-          { "q": "Question 3?", "opts": ["Opt 0 (Correct)", "Opt 1", "Opt 2", "Opt 3"], "ans": 0, "exp": "Explanation" }
+          { "q": "Factual Question 1?", "opts": ["Opt 0", "Opt 1 (Correct)", "Opt 2", "Opt 3"], "ans": 1, "exp": "Explanation why 1 is correct based on the real case" },
+          { "q": "Factual Question 2?", "opts": ["Opt 0", "Opt 1", "Opt 2 (Correct)", "Opt 3"], "ans": 2, "exp": "Explanation" },
+          { "q": "Factual Question 3?", "opts": ["Opt 0 (Correct)", "Opt 1", "Opt 2", "Opt 3"], "ans": 0, "exp": "Explanation" }
         ]
       }`;
 
@@ -229,7 +231,7 @@ export default function CaseStudiesPage() {
       let usedEngine = 'Cloud AI Server (Groq Llama 3.3)';
 
       try {
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const apiUrl = getApiUrl();
         const res = await fetch(`${apiUrl}/api/ai/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

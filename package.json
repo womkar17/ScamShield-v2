@@ -1,0 +1,30 @@
+{
+  "name": "client-v2",
+  "version": "1.0.0",
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/womkar17/ScamShield-v2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/womkar17/ScamShield-v2/issues"
+  },
+  "homepage": "https://github.com/womkar17/ScamShield-v2#readme",
+  "dependencies": {
+    "@google/genai": "^2.10.0",
+    "@supabase/supabase-js": "^2.110.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^9.0.3"
+  }
+}

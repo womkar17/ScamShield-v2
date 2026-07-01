@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
+import { getApiUrl } from '../lib/api';
 
 const INITIAL_PHISHING_CAMPAIGNS = [
   {
@@ -142,7 +143,7 @@ export default function AdminPage() {
     setDataLoading(true);
     try {
       let profileData = null;
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const apiUrl = getApiUrl();
       
       try {
         const res = await fetch(`${apiUrl}/api/admin/users`);
@@ -197,7 +198,7 @@ export default function AdminPage() {
   const toggleRole = async (userId, currentRole) => {
     const newRole = currentRole === 'admin' ? 'user' : 'admin';
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const apiUrl = getApiUrl();
       await fetch(`${apiUrl}/api/admin/users/${userId}/role`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -214,7 +215,7 @@ export default function AdminPage() {
   const deleteUser = async (userId) => {
     if (!window.confirm('Are you sure you want to remove this user?')) return;
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const apiUrl = getApiUrl();
       await fetch(`${apiUrl}/api/admin/users/${userId}`, { method: 'DELETE' });
     } catch (e) { /* ignore */ }
     await supabase.from('profiles').delete().eq('id', userId);
