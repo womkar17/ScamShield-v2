@@ -82,7 +82,7 @@ export default function AICopilot() {
           replyText = groqData.choices?.[0]?.message?.content || 'Sorry, AI response could not be generated.';
           setActiveEngineLabel('Groq (Llama-3.3 Cloud)');
         } else {
-          const geminiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`, {
+          const geminiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
