@@ -5,6 +5,7 @@ import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
 import ModulePage from './pages/ModulePage';
 import GamesPage from './pages/GamesPage';
+import CaseStudiesPage from './pages/CaseStudiesPage';
 import AdminPage from './pages/AdminPage';
 import SettingsPage from './pages/SettingsPage';
 import LevelUpModal from './components/LevelUpModal';
@@ -12,6 +13,8 @@ import { GamificationContext } from './context/GamificationContext';
 import { AppContext } from './context/AppContext';
 import { AuthContext } from './context/AuthContext';
 import Sidebar from './components/Sidebar';
+import AICopilot from './components/AICopilot';
+import LiveThreatBanner from './components/LiveThreatBanner';
 import { useState } from 'react';
 
 function ProtectedRoute({ children, isSidebarOpen, setIsSidebarOpen }) {
@@ -53,6 +56,7 @@ export default function App() {
 
   return (
     <>
+      <LiveThreatBanner />
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
@@ -68,6 +72,9 @@ export default function App() {
         <Route path="/games" element={
           <ProtectedRoute isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}><GamesPage /></ProtectedRoute>
         } />
+        <Route path="/case-studies" element={
+          <ProtectedRoute isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}><CaseStudiesPage /></ProtectedRoute>
+        } />
         <Route path="/admin" element={
           <ProtectedRoute isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}><AdminPage /></ProtectedRoute>
         } />
@@ -76,6 +83,7 @@ export default function App() {
         } />
       </Routes>
       <LevelUpModal />
+      <AICopilot />
     </>
   );
 }

@@ -651,5 +651,59 @@ export const MINIGAMES = [
       isFake: true,
       threatAnalysis: { psychology: 'Authority of official-looking financial documents', payload: 'Fraudulent loan approvals, embezzlement, and financial fraud', defense: 'Cross-verify statements with the issuing bank. Check for impossible dates, missing transactions, and metadata from editing tools.' }
     }
+  },
+  {
+    id: 'quiz_8', title: 'The Bias Buster', description: 'Which cognitive bias is the hacker using to manipulate your mind?',
+    type: 'quiz', difficulty: 'Medium', thumbnail: '🧠', xpReward: 60,
+    data: {
+      questions: [
+        {
+          question: 'An email arrives at 4:55 PM: "URGENT: Your domain will be deleted in 10 minutes if you do not click here to renew." Which cognitive bias is this?',
+          options: ['Confirmation Bias', 'Urgency / Panic Bias', 'Halo Effect', 'Sunk Cost Fallacy'],
+          answer: 1,
+          explanation: 'Urgency Bias triggers fight-or-flight emotions, forcing you to act before logical reasoning kicks in.'
+        },
+        {
+          question: 'You receive a WhatsApp message from a profile picture showing your company\'s CEO asking for Apple gift cards for a client meeting. Why do people fall for this?',
+          options: ['Authority Bias — we are conditioned to obey superiors without questioning', 'Scarcity Bias', 'Anchoring Bias', 'Dunning-Kruger Effect'],
+          answer: 0,
+          explanation: 'Authority Bias makes employees bypass standard verification rules out of fear or respect for leaders.'
+        },
+        {
+          question: 'A crypto trading advisor on LinkedIn looks wealthy, speaks articulately, and went to a top university. You assume their investment platform must be safe. What bias is this?',
+          options: ['Urgency Bias', 'Halo Effect', 'Reciprocity Bias', 'Gambler\'s Fallacy'],
+          answer: 1,
+          explanation: 'The Halo Effect occurs when positive impressions in one area (wealth/education) make us incorrectly assume trustworthiness in another.'
+        }
+      ],
+      threatAnalysis: { psychology: 'Weaponized Human Psychology (Urgency, Authority, Halo Effect)', payload: 'Bypassing analytical reasoning to steal funds or credentials', defense: 'Train your brain to recognize emotional triggers. Always take a 60-second tactical pause before responding to urgent requests.' }
+    }
+  },
+  {
+    id: 'quiz_9', title: 'Shadow IT & Workplace Simulator', description: 'Make high-stakes security decisions during a hectic corporate workday.',
+    type: 'quiz', difficulty: 'Hard', thumbnail: '🏢', xpReward: 70,
+    data: {
+      questions: [
+        {
+          question: 'You have 50 confidential NDA agreements to summarize. You find a free online tool called "FastPDF-AI.com". What should you do?',
+          options: ['Upload all 50 agreements immediately to save time', 'Check the site\'s terms of service quickly', 'Do not use it — use only approved corporate AI tools to avoid data leakage', 'Remove the title page and upload the rest'],
+          answer: 2,
+          explanation: 'Unapproved AI utilities (Shadow IT) often store and resell uploaded data, leading to catastrophic corporate leaks.'
+        },
+        {
+          question: 'An external vendor sends you an attachment via Slack titled "Invoice_Update_2026.exe". What is your move?',
+          options: ['Download and double-click it', 'Do not open it — .exe files in chat are classic malware vectors. Report to IT Security.', 'Ask the vendor in chat if it is safe', 'Rename it to .pdf and open it'],
+          answer: 1,
+          explanation: 'External chat attachments are a primary distribution channel for infostealers and ransomware.'
+        },
+        {
+          question: 'You find a USB flash drive in the company parking lot labeled "Executive Salary Bonus Scale 2026". What do you do?',
+          options: ['Plug it into your work laptop to find the owner', 'Plug it into your personal phone via adapter', 'Hand it directly to IT Security without plugging it into any computer', 'Throw it in the trash immediately'],
+          answer: 2,
+          explanation: 'USB baiting is a physical social engineering attack designed to inject keystroke injection payloads or ransomware upon insertion.'
+        }
+      ],
+      threatAnalysis: { psychology: 'Curiosity, Convenience, and Workplace Complacency', payload: 'Corporate data exfiltration, ransomware infection, and API key theft', defense: 'Adhere strictly to approved software policies. Treat unsolicited USBs and chat executables as toxic.' }
+    }
   }
 ];

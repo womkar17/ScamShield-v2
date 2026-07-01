@@ -12,6 +12,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
   const menuItems = [
     { name: 'Dashboard', icon: '🏠', path: '/dashboard' },
     { name: 'Arcade', icon: '🎮', path: '/games' },
+    { name: 'Case Studies', icon: '📚', path: '/case-studies' },
   ];
 
   if (isAdmin) {

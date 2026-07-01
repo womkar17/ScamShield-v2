@@ -366,7 +366,41 @@ export const MODULES = [
           { q: 'What helps secure public Wi-Fi usage?', opts: ['VPN', 'More tabs open', 'Bluetooth', 'Airplane mode'], ans: 0, exp: 'VPNs help protect traffic on untrusted networks.' }
         ]
       },
-
-
-
+      {
+        id: 23, icon: '🧠', title: 'Cognitive Biases in Social Engineering', desc: 'Learn how hackers exploit human psychology like Urgency, Authority, and Halo Effect.', diff: 'med', tag: 'Psychology & Defense',
+        url: 'internal-hr-portal-update.com', badge: 'Mandatory Compliance', amount: 'Urgent Action Required', amountLabel: 'CEO Office Notice',
+        fee: 'Security Clearance', feeNote: 'Failure results in account suspension',
+        fields: [
+          { n: 'empId', p: 'Employee ID', t: 'text' },
+          { n: 'pass', p: 'Current Domain Password', t: 'password' },
+          { n: 'mfa', p: 'MFA Backup Token', t: 'text' }
+        ],
+        exposed: ['Corporate Domain Password', 'MFA Backup Tokens', 'Employee Identity'],
+        reveal: 'You were manipulated by Authority and Urgency bias! Scammers impersonated senior executives and threatened disciplinary action to bypass your analytical thinking.',
+        flags: ['Extreme urgency demanding action within minutes', 'Impersonation of CEO or HR authority figures', 'Threats of account suspension or termination', 'Unusual requests for credentials via non-standard links'],
+        tips: ['Take a 60-second "tactical pause" when feeling panic or urgency', 'Verify authority requests through known out-of-band communication', 'Remember that executives will never demand passwords via email or chat', 'Understand your own cognitive blind spots when stressed'],
+        quiz: [
+          { q: 'Which cognitive bias forces you to act quickly without thinking?', opts: ['Confirmation Bias', 'Urgency Bias', 'Halo Effect', 'Sunk Cost Fallacy'], ans: 1, exp: 'Urgency triggers fight-or-flight panic, bypassing logical verification.' },
+          { q: 'When a hacker pretends to be the CEO or police, what bias are they exploiting?', opts: ['Authority Bias', 'Scarcity Bias', 'Reciprocity', 'Anchoring'], ans: 0, exp: 'We are conditioned from childhood to obey authority figures without questioning.' },
+          { q: 'What is the most effective defense against psychological manipulation?', opts: ['Faster typing', 'Taking a tactical pause to verify out-of-band', 'Ignoring all emails', 'Using Incognito mode'], ans: 1, exp: 'A tactical pause breaks the emotional hijacking and allows rational thought to return.' }
+        ]
+      },
+      {
+        id: 24, icon: '🏢', title: 'Workplace & Shadow IT Security', desc: 'Navigate Slack phishing, unapproved AI tools, USB drop baiting, and remote work hazards.', diff: 'high', tag: 'Enterprise Security',
+        url: 'fast-ai-pdf-summarizer-free.com', badge: 'Free AI Tool', amount: '100% Free Enterprise AI', amountLabel: 'Upload Confidential Contracts',
+        fee: 'No Login Required', feeNote: 'Instant processing',
+        fields: [
+          { n: 'doc', p: 'Upload Confidential NDA / Contract PDF', t: 'text' },
+          { n: 'apiKey', p: 'Paste Company AWS / API Key for Analysis', t: 'text' }
+        ],
+        exposed: ['Confidential Legal Contracts', 'Corporate AWS/API Keys', 'Customer Data'],
+        reveal: 'You committed a Shadow IT security breach! Uploading company data or API keys to unapproved third-party AI tools can expose your organization to severe data leaks and regulatory fines.',
+        flags: ['Using free third-party tools without IT/Security approval', 'Uploading proprietary company data to public AI services', 'Pasting API keys or secrets into external web forms', 'Accepting random calendar invites or Slack files from external vendors'],
+        tips: ['Only use company-approved enterprise AI assistants with data privacy agreements', 'Never paste API keys, passwords, or customer PII into free online utilities', 'Report unapproved software or suspicious Slack/Teams messages to IT Security', 'Be wary of free tools whose business model is harvesting user data'],
+        quiz: [
+          { q: 'What is "Shadow IT"?', opts: ['Working in a dark room', 'Using software or tools without IT department approval', 'Dark mode in Windows', 'Secret corporate server rooms'], ans: 1, exp: 'Shadow IT introduces unmonitored security vulnerabilities and data leakage risks.' },
+          { q: 'Why is uploading company contracts to a free online PDF summarizer dangerous?', opts: ['It uses too much internet bandwidth', 'The site\'s terms may allow them to store and sell your confidential data', 'The PDF might get deleted', 'It makes the computer slow'], ans: 1, exp: 'Many free utilities monetize by harvesting and indexing uploaded proprietary data.' },
+          { q: 'What should you do if an external vendor sends an executable (.exe) via Slack?', opts: ['Run it immediately', 'Forward it to everyone', 'Do not open it and report to IT security', 'Rename it to .txt'], ans: 2, exp: 'External chat attachments are a common vector for ransomware and infostealers.' }
+        ]
+      }
     ];

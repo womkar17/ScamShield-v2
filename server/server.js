@@ -5,9 +5,10 @@ const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const { createClient } = require('@supabase/supabase-js');
+const { generateChatResponse } = require('./aiService');
 
 const app = express();
-app.use(cors({ origin: 'http://localhost:5173' })); // Allow React frontend
+app.use(cors({ origin: '*' })); // Allow React frontend from localhost and Vercel!
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
@@ -229,13 +230,28 @@ app.get('/api/auth/me', authenticate, async (req, res) => {
   }
 });
 
+// AI Chatbot & Threat Scanner Route
+app.post('/api/ai/chat', async (req, res) => {
+  try {
+    const { messages, engine = 'groq' } = req.body;
+    if (!messages || !Array.isArray(messages)) {
+      return res.status(400).json({ ok: false, err: 'Invalid messages format' });
+    }
+    const result = await generateChatResponse(messages, engine);
+    res.json({ ok: true, ...result });
+  } catch (err) {
+    console.error('AI Chat Error:', err);
+    res.status(500).json({ ok: false, err: err.message || 'AI generation failed' });
+  }
+});
+
 // Serve static frontend files
 const path = require('path');
 const _dirname = path.resolve();
 app.use(express.static(path.join(_dirname, '../client/dist')));
 
 // Catch-all route to serve index.html for React Router
-app.get('*', (req, res) => {
+app.use((req, res) => {
   res.sendFile(path.join(_dirname, '../client/dist/index.html'));
 });
 

@@ -46,6 +46,14 @@ const UNITS = [
     color: '#3b82f6',
     moduleIds: [1, 5, 7], // Fake Interview, Credit Card, Reward Points
   },
+  {
+    id: 'psychology_workplace',
+    title: 'Psychology & Workplace Defense',
+    icon: '🧠',
+    description: 'Master cognitive bias defense, shadow IT risks, and enterprise security',
+    color: '#ec4899',
+    moduleIds: [23, 24], // Cognitive Biases, Workplace & Shadow IT
+  },
 ];
 
 export default function ProgressMap() {
