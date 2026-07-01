@@ -34,14 +34,56 @@ const transporter = nodemailer.createTransport({
   greetingTimeout: 15000,
 });
 
-// Verify SMTP connection on startup
-transporter.verify((err, success) => {
-  if (err) {
-    console.error('❌ SMTP CONNECTION FAILED:', err.message);
-  } else {
-    console.log('✅ SMTP connection verified — ready to send emails');
+// Cloud-Safe Email Sender: Uses Brevo HTTP REST API (Port 443 HTTPS) to bypass cloud SMTP port firewalls
+async function sendCloudEmail(toEmail, subject, htmlContent) {
+  const senderEmail = process.env.BREVO_SENDER || process.env.BREVO_USER;
+  const apiKey = process.env.BREVO_PASS || process.env.BREVO_API_KEY;
+
+  if (!apiKey || !senderEmail) {
+    throw new Error('Missing BREVO_SENDER or BREVO_PASS environment variables.');
   }
-});
+
+  // 1. Try Brevo HTTP REST API over standard HTTPS (Port 443 - NEVER blocked by cloud firewalls)
+  try {
+    const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'api-key': apiKey,
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        sender: { name: 'ScamShield Platform', email: senderEmail },
+        to: [{ email: toEmail }],
+        subject: subject,
+        htmlContent: htmlContent
+      })
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      console.log(`✅ Email sent via HTTP API (Port 443) to ${toEmail} | Message ID: ${data.messageId}`);
+      return data;
+    } else {
+      const errJson = await res.json().catch(() => ({}));
+      console.warn(`⚠️ Brevo HTTP API reported (${res.status}): ${errJson.message || 'Attempting SMTP fallback...'}`);
+      if (res.status === 401) {
+        throw new Error('Invalid Brevo API/SMTP key. Please check BREVO_PASS in environment variables.');
+      }
+    }
+  } catch (httpErr) {
+    if (httpErr.message.includes('Invalid Brevo API')) throw httpErr;
+    console.warn(`⚠️ HTTP API exception: ${httpErr.message}. Attempting SMTP fallback...`);
+  }
+
+  // 2. Fallback to Nodemailer SMTP
+  return await transporter.sendMail({
+    from: `"ScamShield" <${senderEmail}>`,
+    to: toEmail,
+    subject: subject,
+    html: htmlContent
+  });
+}
 
 // In-memory OTP store: { "email@example.com": { otp: "123456", expiresAt: 169... } }
 const otpStore = new Map();
@@ -63,26 +105,24 @@ app.post('/api/auth/send-otp', async (req, res) => {
     const senderEmail = process.env.BREVO_SENDER || process.env.BREVO_USER;
     console.log(`📧 Sending OTP to ${email} from ${senderEmail}...`);
     
-    const info = await transporter.sendMail({
-      from: `"ScamShield" <${senderEmail}>`,
-      to: email,
-      subject: 'Your ScamShield Login Code',
-      html: `
+    await sendCloudEmail(
+      email,
+      'Your ScamShield Login Code',
+      `
         <div style="font-family: sans-serif; text-align: center; padding: 40px; background: #f8f9fa;">
           <div style="max-width: 400px; margin: 0 auto; background: white; border-radius: 12px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
-            <h2 style="color: #1a1a2e; margin-bottom: 8px;">🛡️ ScamShield</h2>
+          <h2 style="color: #1a1a2e; margin-bottom: 8px;">🛡️ ScamShield</h2>
             <p style="color: #666; margin-bottom: 24px;">Your one-time login code is:</p>
             <h1 style="font-size: 40px; letter-spacing: 8px; color: #4f46e5; margin: 16px 0; font-family: monospace;">${otp}</h1>
             <p style="color: #999; font-size: 13px;">This code expires in 10 minutes. Do not share it with anyone.</p>
           </div>
         </div>
-      `,
-    });
-    console.log(`✅ OTP sent to ${email} | Message ID: ${info.messageId} | Response: ${info.response}`);
+      `
+    );
     res.json({ ok: true });
   } catch (err) {
     console.error('Email send error:', err);
-    res.status(500).json({ ok: false, err: `SMTP Error: ${err.message || 'Check credentials and settings.'}` });
+    res.status(500).json({ ok: false, err: `Email Error: ${err.message || 'Check credentials and settings.'}` });
   }
 });
 
