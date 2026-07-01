@@ -32,7 +32,7 @@ function ProtectedRoute({ children, isSidebarOpen, setIsSidebarOpen }) {
   }
 
   if (!isLoggedIn) {
-    return <Navigate to="/auth" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return (

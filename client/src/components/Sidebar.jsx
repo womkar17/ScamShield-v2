@@ -69,7 +69,10 @@ export default function Sidebar({ isOpen, setIsOpen }) {
       <div style={styles.footer}>
         <button 
           style={{ ...styles.menuBtn, ...styles.logoutBtn }} 
-          onClick={() => { logout(); navigate('/'); }}
+          onClick={() => {
+            navigate('/');
+            setTimeout(() => logout(), 50);
+          }}
           onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.15)'}
           onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
           title="Logout"
