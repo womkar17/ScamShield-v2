@@ -58,7 +58,7 @@ export function AuthProvider({ children }) {
               email: session.user.email,
               username: username,
               role: 'user',
-              xp: 100,
+              xp: 0,
               level: 1,
               streak: 1
             };
@@ -159,7 +159,10 @@ export function AuthProvider({ children }) {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/dashboard`
+          redirectTo: `${window.location.origin}/dashboard`,
+          queryParams: {
+            prompt: 'select_account consent',
+          }
         }
       });
       if (error) {

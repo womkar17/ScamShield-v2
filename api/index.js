@@ -170,7 +170,7 @@ app.post('/api/auth/oauth-sync', async (req, res) => {
     let { data: profile } = await supabase.from('profiles').select('*').eq('id', id).single();
     if (!profile) {
       const defaultName = username || email.split('@')[0];
-      const newProfile = { id, email, username: defaultName, role: 'user', xp: 100, level: 1, streak: 1 };
+      const newProfile = { id, email, username: defaultName, role: 'user', xp: 0, level: 1, streak: 1 };
       const { data, error } = await supabase.from('profiles').insert([newProfile]).select().single();
       if (error) {
         console.error('DB Insert Error in oauth-sync:', error.message);
