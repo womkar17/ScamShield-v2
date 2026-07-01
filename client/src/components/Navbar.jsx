@@ -17,25 +17,12 @@ export default function Navbar() {
     <nav className="navbar">
       <div className="navbar-inner">
         {/* Logo */}
-        <div className="navbar-brand" onClick={() => navigate('/dashboard')}>
+        <div className="navbar-brand" onClick={() => navigate('/dashboard')} title="Home">
           <span className="navbar-logo" style={{ fontSize: '1.5rem' }}>🛡️</span>
-          <span className="navbar-title" style={{ fontSize: '1.3rem' }}>ScamShield</span>
         </div>
 
         {/* Center: Gamification Stats */}
         <div className="navbar-center">
-          {/* XP Bar */}
-          <div className="xp-bar-container" title={`${xp} / ${level.maxXp} XP`}>
-            <div className="xp-level-badge">{level.name}</div>
-            <div className="xp-bar-track">
-              <div
-                className="xp-bar-fill"
-                style={{ width: `${progress.percentToNextLevel}%` }}
-              />
-            </div>
-            <span className="xp-label">{xp} XP</span>
-          </div>
-
           {/* Streak */}
           <div className={`streak-counter ${streak.isActive ? 'streak-active' : ''}`} title={`${streak.count} day streak`}>
             <span className="streak-fire">🔥</span>

@@ -219,7 +219,11 @@ export default function ModulePage() {
       
       <main className="main-content">
         <div className="module-header">
-          <button className="btn btn-secondary back-btn" onClick={() => navigate('/dashboard')}>
+          <button 
+            className="btn back-btn" 
+            onClick={() => navigate('/dashboard')}
+            style={{ background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)', border: 'none', color: '#fff', padding: '0.6rem 1.4rem', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)', transition: 'all 0.2s' }}
+          >
             ← Back to Home
           </button>
           <div className="module-title-wrap">

@@ -81,6 +81,32 @@ const SpotTheFlagGame = ({ game, onComplete }) => {
   const magnifierSize = 160;
   const zoomLevel = 2;
 
+  const getProcessedHtml = () => {
+    if (isImage || !content || typeof content !== 'string') return content;
+    let processed = content;
+    flags.forEach(flag => {
+      if (flag.text && flag.top === undefined) {
+        const isFound = foundFlags.includes(flag.id);
+        const bg = isFound ? 'rgba(245, 101, 101, 0.3)' : 'transparent';
+        const border = isFound ? '2px solid #f56565' : '1px dashed rgba(66, 153, 225, 0.4)';
+        const shadow = isFound ? '0 0 10px rgba(245, 101, 101, 0.5)' : 'none';
+        const esc = flag.text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(`(${esc})`, 'g');
+        processed = processed.replace(regex, `<span class="spot-target-span" data-flag-id="${flag.id}" style="background-color: ${bg}; border-bottom: ${border}; box-shadow: ${shadow}; border-radius: 4px; padding: 1px 4px; cursor: pointer; transition: all 0.2s; display: inline-block;">$1</span>`);
+      }
+    });
+    return processed;
+  };
+
+  const handleAreaClick = (e) => {
+    const target = e.target.closest('.spot-target-span');
+    if (target) {
+      const flagId = target.getAttribute('data-flag-id');
+      const flag = flags.find(f => f.id === flagId);
+      if (flag) handleFlagClick(flag);
+    }
+  };
+
   return (
     <div style={styles.container}>
       <style>{`
@@ -105,11 +131,12 @@ const SpotTheFlagGame = ({ game, onComplete }) => {
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
+        onClick={handleAreaClick}
       >
         {isImage ? (
           <img src={content} alt="Spot the flags" style={styles.contentImg} />
         ) : (
-          <div style={styles.contentHtml} dangerouslySetInnerHTML={{ __html: content }} />
+          <div style={styles.contentHtml} dangerouslySetInnerHTML={{ __html: getProcessedHtml() }} />
         )}
 
         {/* Magnifier */}
@@ -140,19 +167,19 @@ const SpotTheFlagGame = ({ game, onComplete }) => {
               {isImage ? (
                 <img src={content} alt="Magnified content" style={styles.contentImg} />
               ) : (
-                <div style={styles.contentHtml} dangerouslySetInnerHTML={{ __html: content }} />
+                <div style={styles.contentHtml} dangerouslySetInnerHTML={{ __html: getProcessedHtml() }} />
               )}
             </div>
           </div>
         )}
 
-        {/* Overlays for flags */}
-        {flags.map(flag => {
+        {/* Overlays for flags that have explicit top/left coordinates */}
+        {flags.filter(flag => flag.top !== undefined && flag.left !== undefined).map(flag => {
           const isFound = foundFlags.includes(flag.id);
           return (
             <div
               key={flag.id}
-              onClick={() => handleFlagClick(flag)}
+              onClick={(e) => { e.stopPropagation(); handleFlagClick(flag); }}
               style={{
                 ...styles.flagOverlay,
                 top: flag.top,

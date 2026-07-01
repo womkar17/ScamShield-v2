@@ -277,6 +277,49 @@ app.get('/api/auth/me', authenticate, async (req, res) => {
   }
 });
 
+// Admin Users Management Endpoints
+app.get('/api/admin/users', async (req, res) => {
+  try {
+    const { data: users, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .order('xp', { ascending: false });
+    if (error) throw error;
+    res.json({ ok: true, users: users || [] });
+  } catch (err) {
+    console.error('Fetch users error:', err);
+    res.status(500).json({ ok: false, err: 'Failed to fetch users' });
+  }
+});
+
+app.post('/api/admin/users/:id/role', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { role } = req.body;
+    const { data, error } = await supabase
+      .from('profiles')
+      .update({ role })
+      .eq('id', id)
+      .select()
+      .single();
+    if (error) throw error;
+    res.json({ ok: true, user: data });
+  } catch (err) {
+    res.status(500).json({ ok: false, err: 'Failed to update role' });
+  }
+});
+
+app.delete('/api/admin/users/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { error } = await supabase.from('profiles').delete().eq('id', id);
+    if (error) throw error;
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ ok: false, err: 'Failed to delete user' });
+  }
+});
+
 // AI Chatbot & Threat Scanner Route
 app.post('/api/ai/chat', async (req, res) => {
   try {

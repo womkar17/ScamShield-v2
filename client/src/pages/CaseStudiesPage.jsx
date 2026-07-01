@@ -226,6 +226,7 @@ export default function CaseStudiesPage() {
       }`;
 
       let replyText = null;
+      let usedEngine = 'Cloud AI Server (Groq Llama 3.3)';
 
       try {
         const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
@@ -238,7 +239,12 @@ export default function CaseStudiesPage() {
           })
         });
         const data = await res.json();
-        if (data.ok) replyText = data.reply;
+        if (data.ok && data.reply) {
+          replyText = data.reply;
+          usedEngine = data.engine ? `Cloud AI Server (${data.engine})` : 'Cloud AI Server';
+        } else {
+          throw new Error('Backend AI fallback needed');
+        }
       } catch (backendErr) {
         // Vercel Serverless Fallback: call Groq API directly!
         const groqKey = import.meta.env.VITE_GROQ_API_KEY || '';
@@ -260,7 +266,10 @@ export default function CaseStudiesPage() {
               })
             });
             const groqData = await groqRes.json();
-            replyText = groqData.choices?.[0]?.message?.content || null;
+            if (groqData.choices?.[0]?.message?.content) {
+              replyText = groqData.choices[0].message.content;
+              usedEngine = 'Groq AI (Llama 3.3 70B Direct)';
+            }
           } catch (e) {
             console.warn('Groq client fallback failed:', e);
           }
@@ -277,7 +286,10 @@ export default function CaseStudiesPage() {
               })
             });
             const geminiData = await geminiRes.json();
-            replyText = geminiData.candidates?.[0]?.content?.parts?.[0]?.text || null;
+            if (geminiData.candidates?.[0]?.content?.parts?.[0]?.text) {
+              replyText = geminiData.candidates[0].content.parts[0].text;
+              usedEngine = 'Google Gemini 1.5 Flash';
+            }
           } catch (e) {
             console.warn('Gemini client fallback failed:', e);
           }
@@ -328,63 +340,65 @@ export default function CaseStudiesPage() {
           {
             title: "The Malicious QR Code EV Charging Hijack",
             category: "SMS & Phishing",
-            date: "July 2026",
-            loss: "$4,500 per victim",
-            summary: "Attackers placed realistic fake QR code stickers over legitimate payment terminals at public electric vehicle charging stations across major metro areas.",
-            setup: "Drivers attempting to pay for EV charging scanned the QR code sticker on the charger console, which redirected them to an identical cloned payment portal.",
-            trap: "When users entered their credit card and Apple Pay credentials, the site initiated recurring high-value fraudulent withdrawals while displaying a fake 'Charger Offline' error message.",
+            date: "May 2026",
+            loss: "$12,500",
+            summary: "Drivers at public EV charging stations scanned what appeared to be payment QR codes on chargers, but were directed to lookalike phishing portals that drained their bank accounts.",
+            setup: "Attackers printed high-gloss acrylic stickers with fraudulent QR codes and placed them directly over the legitimate payment QR codes on 40 public charging stations.",
+            trap: "When scanned, the QR code opened a site identical to the official charging network app, requesting Apple Pay or credit card credentials to initiate charging.",
             timeline: [
-              "02:00 AM: Attackers apply weatherproof counterfeit QR stickers over actual charger codes.",
-              "08:30 AM: Morning commuters scan codes to pay for charging sessions.",
-              "08:32 AM: Credentials captured and sold on automated carder marketplaces.",
-              "11:00 AM: Multiple fraudulent international charges hit victim bank accounts."
+              "Midnight: Attackers place lookalike acrylic QR stickers across city charging hubs.",
+              "7:30 AM: Morning commuters scan codes to pay for charging.",
+              "7:32 AM: Credentials captured; automated scripts initiate instant peer-to-peer bank transfers.",
+              "11:00 AM: Station operators notice customer complaints and peel off fake stickers."
             ],
             redFlags: [
-              "Physical QR sticker placed on top of permanent machine engraving or signage",
-              "URL in browser bar slightly misspelled (e.g., charge-pay-portal.net instead of official brand)",
-              "Immediate error message after entering valid payment credentials"
+              "QR code sticker raised above the flat surface of the charging machine",
+              "URL in browser slightly misspelled (e.g., charge-ev-pay.com instead of charge-ev.com)",
+              "Payment page requesting full PIN or bank credentials instead of tokenized wallet pay"
             ],
-            psychologicalBias: "Automation & Habit Bias — consumers routinely scan QR codes without inspecting physical integrity or URLs.",
-            prevention: "Never scan physical stickers placed over official signage; use official brand mobile apps directly to initiate payments.",
+            psychologicalBias: "Automaticity & Trust in Physical Infrastructure — users assume physical signs on official machines are safe.",
+            prevention: "Inspect QR codes for physical tampering (stickers placed over codes) and always use the official mobile app directly rather than scanning random QR codes.",
             quiz: [
-              { q: "What is the technical term for phishing attacks conducted via QR codes?", opts: ["Vishing", "Smishing", "Quishing (QR Phishing)", "Whaling"], ans: 2, exp: "Quishing involves deceptive QR codes that lead victims to credential harvesting sites." },
-              { q: "What physical sign indicated the charging terminal was compromised?", opts: ["The screen was cracked", "A sticker was layered directly over the permanent machine engraving", "The cables were missing", "The machine was painted blue"], ans: 1, exp: "Always check if a QR code is a sticker placed over official manufacturer signage." }
+              { q: "How did attackers deliver the phishing link to victims?", opts: ["By sending spam text messages", "By placing fraudulent physical stickers over legitimate QR codes on chargers", "By hacking the station's Wi-Fi", "By calling them on the phone"], ans: 1, exp: "Physical QR code replacement (Quishing) targets users in high-trust real-world environments." },
+              { q: "What is the safest way to pay at public kiosks without scanning QR codes?", opts: ["Pay with cash only", "Use the official verified mobile app downloaded previously", "Ask a stranger for help", "Scan the QR code twice"], ans: 1, exp: "Using a verified app directly avoids intermediary phishing links completely." }
             ]
           },
           {
-            title: "The Shadow OAuth SaaS Ecosystem Attack",
-            category: "Workplace & Shadow IT",
-            date: "August 2026",
-            loss: "140 GB Confidential Client Data",
-            summary: "A marketing team member authorized an unverified 'AI Presentation Formatter' app with their corporate Google Workspace account, granting it permanent background access.",
-            setup: "The free tool promised to turn raw notes into slide decks in seconds. During signup, it requested OAuth permissions to 'Read and download all Google Drive files'.",
-            trap: "Because it was an OAuth token integration, changing account passwords did not revoke access. The malicious app silently exfiltrated contracts and customer lists over three weeks.",
+            title: "The Shadow OAuth SaaS Ecosystem Compromise",
+            category: "Cloud Security & Identity",
+            date: "April 2026",
+            loss: "$850,000",
+            summary: "A marketing agency employee clicked 'Connect with Google' on a rogue AI productivity tool, inadvertently granting attackers OAuth token access to corporate Google Drive and Gmail.",
+            setup: "Attackers built a functional, free AI meeting summarizer web app and promoted it via LinkedIn ads targeting corporate managers.",
+            trap: "During signup, the app requested OAuth permissions to 'Read and organize Google Drive files and email contacts.' Because it looked like a standard login prompt, the employee approved it.",
             timeline: [
-              "Week 1: Employee finds free AI slide tool through a targeted LinkedIn ad.",
-              "Week 1 (Day 2): Employee clicks 'Allow' on Google permissions screen without reading scope.",
-              "Week 2: Automated backend scraper indexes and downloads confidential Drive folders.",
-              "Week 3: Security team detects abnormal API data egress to an unrecognized IP."
+              "Monday: Employee clicks LinkedIn ad for free AI meeting assistant.",
+              "Tuesday: Employee authorizes Google OAuth login, granting offline token access.",
+              "Wednesday: Automated attacker scripts use the token to download confidential client contracts and financial invoices from Google Drive.",
+              "Friday: Attackers demand $850k extortion ransom, threatening to leak client data."
             ],
             redFlags: [
-              "Third-party tool requesting overly broad permissions (Full Drive access for a simple formatting tool)",
-              "Vendor lacking SOC2 compliance or formal IT procurement vetting",
-              "Free tool advertised heavily via social media with no verifiable corporate address"
+              "Unverified third-party app requesting broad Google Workspace read/write scopes",
+              "New productivity tool promoted through sponsored social media ads without IT approval",
+              "OAuth consent screen asking for access unrelated to core meeting transcription"
             ],
-            psychologicalBias: "Convenience & Friction-Seeking — prioritizing immediate productivity over security policies.",
-            prevention: "Implement strict Google Workspace / Microsoft 365 OAuth app allowlisting to block unapproved third-party integrations.",
+            psychologicalBias: "Convenience Seduction & Familiarity Bias — users trust the familiar 'Sign in with Google' popup without reading permissions.",
+            prevention: "Implement strict enterprise Google Workspace policies blocking unapproved third-party OAuth apps from accessing company data.",
             quiz: [
-              { q: "Why didn't resetting the employee's password stop the data theft?", opts: ["The hacker had their laptop", "OAuth access tokens remain valid even after password changes until explicitly revoked", "The Wi-Fi was hacked", "The files were already printed"], ans: 1, exp: "OAuth tokens grant persistent programmatic access that persists across password resets." },
-              { q: "What permission scope was suspicious for a presentation formatting tool?", opts: ["Read user profile email", "Read and download all Google Drive files", "View calendar events", "Check battery status"], ans: 1, exp: "Apps should follow the principle of least privilege; a formatter does not need full Drive access." }
+              { q: "Why did traditional password resets fail to stop this attack?", opts: ["The password was too short", "Attackers used an OAuth access token, which remains valid even if passwords change until revoked", "The employee did not have a password", "The hacker had physical access to the server"], ans: 1, exp: "OAuth tokens grant direct API access independently of user password credentials." },
+              { q: "What should employees check on a 'Sign in with Google' consent screen?", opts: ["The color of the button", "The specific permissions and scopes requested by the application", "The font size", "The time of day"], ans: 1, exp: "Always review what data the app is asking to read or modify before clicking Allow." }
             ]
           }
         ];
         
         const randomIndex = Math.floor(Math.random() * fallbacks.length);
         newCase = JSON.parse(JSON.stringify(fallbacks[randomIndex]));
+        usedEngine = 'ScamShield 2026 Neural Threat Pool (Built-in Fallback)';
       }
 
       newCase.id = Date.now();
       newCase.isAIGenerated = true;
+      newCase.aiEngine = usedEngine;
       setCaseStudies(prev => [newCase, ...prev]);
       setSelectedCase(newCase);
     } catch (err) {
@@ -528,8 +542,8 @@ export default function CaseStudiesPage() {
             }}
           >
             {cs.isAIGenerated && (
-              <div style={{ position: 'absolute', top: '16px', right: '-30px', background: 'linear-gradient(90deg, #a855f7, #6366f1)', color: '#fff', fontSize: '10px', fontWeight: '800', padding: '4px 35px', transform: 'rotate(45deg)', boxShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>
-                NEW AI
+              <div style={{ position: 'absolute', top: '16px', right: '-30px', background: 'linear-gradient(90deg, #a855f7, #ec4899)', color: '#fff', fontSize: '9px', fontWeight: '800', padding: '4px 35px', transform: 'rotate(45deg)', boxShadow: '0 2px 10px rgba(0,0,0,0.3)' }} title={cs.aiEngine || 'AI Generated'}>
+                AI GENERATED
               </div>
             )}
 
@@ -540,6 +554,12 @@ export default function CaseStudiesPage() {
                 </span>
                 <span style={{ fontSize: '12px', color: '#64748b', fontWeight: '600' }}>{cs.date}</span>
               </div>
+
+              {cs.isAIGenerated && (
+                <div style={{ fontSize: '11px', color: '#ec4899', background: 'rgba(236, 72, 153, 0.15)', padding: '3px 8px', borderRadius: '6px', marginBottom: '8px', display: 'inline-block', fontWeight: '700' }}>
+                  ⚡ {cs.aiEngine || 'Cloud AI Engine'}
+                </div>
+              )}
 
               <h3 style={{ fontSize: '20px', fontWeight: '700', color: '#fff', margin: '0 0 12px 0', lineHeight: '1.4' }}>
                 {cs.title}
@@ -631,13 +651,18 @@ export default function CaseStudiesPage() {
               ✕
             </button>
 
-            <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '16px' }}>
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap' }}>
               <span style={{ fontSize: '13px', fontWeight: '700', color: '#a855f7', background: 'rgba(168, 85, 247, 0.15)', padding: '4px 12px', borderRadius: '8px' }}>
                 {selectedCase.category}
               </span>
               <span style={{ fontSize: '13px', color: '#fca5a5', background: 'rgba(239, 68, 68, 0.15)', padding: '4px 12px', borderRadius: '8px', fontWeight: '700' }}>
                 Loss: {selectedCase.loss}
               </span>
+              {selectedCase.isAIGenerated && (
+                <span style={{ fontSize: '13px', color: '#ec4899', background: 'rgba(236, 72, 153, 0.2)', padding: '4px 12px', borderRadius: '8px', fontWeight: '700', border: '1px solid rgba(236, 72, 153, 0.4)' }}>
+                  ⚡ Generated by: {selectedCase.aiEngine || 'Cloud AI Engine'}
+                </span>
+              )}
             </div>
 
             <h2 style={{ fontSize: '28px', fontWeight: '800', color: '#fff', margin: '0 0 20px 0', lineHeight: '1.3' }}>

@@ -92,7 +92,7 @@ const GamesPage = () => {
       <header className="page-header" style={{ position: 'relative', textAlign: 'center', marginBottom: '3rem', paddingTop: '2rem' }}>
         <button 
           onClick={() => navigate('/dashboard')}
-          style={{ position: 'absolute', top: '1rem', left: '1rem', background: 'transparent', border: '1px solid var(--border-color, #444)', color: 'var(--text, #fff)', padding: '0.5rem 1rem', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+          style={{ position: 'absolute', top: '1rem', left: '1rem', background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)', border: 'none', color: '#fff', padding: '0.6rem 1.4rem', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)', transition: 'all 0.2s', zIndex: 100 }}
         >
           ← Back to Dashboard
         </button>

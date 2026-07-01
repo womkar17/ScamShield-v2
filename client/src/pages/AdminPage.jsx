@@ -88,7 +88,7 @@ const EMAIL_TEMPLATES = {
 
 export default function AdminPage() {
   const navigate = useNavigate();
-  const { isAdmin, loading: authLoading } = useContext(AuthContext);
+  const { isAdmin, loading: authLoading, userProfile } = useContext(AuthContext);
 
   const [activeTab, setActiveTab] = useState('overview');
   const [profiles, setProfiles] = useState([]);
@@ -142,24 +142,45 @@ export default function AdminPage() {
   const loadData = async () => {
     setDataLoading(true);
     try {
-      const { data: profileData } = await supabase
-        .from('profiles')
-        .select('*, user_progress(*)');
-
-      if (profileData) {
-        setProfiles(profileData);
-        const total = profileData.length;
-        const avgXp = Math.round(
-          profileData.reduce((acc, p) => acc + (p.xp || 0), 0) / (total || 1)
-        );
-        let totalGames = 0;
-        profileData.forEach(p => {
-          if (p.user_progress?.[0]?.arcade_games_played) {
-            totalGames += p.user_progress[0].arcade_games_played;
+      let profileData = null;
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      
+      try {
+        const res = await fetch(`${apiUrl}/api/admin/users`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.ok && data.users && data.users.length > 0) {
+            profileData = data.users;
           }
-        });
-        setStats({ totalUsers: total, avgXp, totalGames });
+        }
+      } catch (e) { /* ignore */ }
+
+      if (!profileData || profileData.length === 0) {
+        try {
+          const { data } = await supabase.from('profiles').select('*');
+          if (data && data.length > 0) profileData = data;
+        } catch (e) { /* ignore */ }
       }
+
+      if (!profileData) profileData = [];
+      
+      // Ensure active logged in userProfile is always shown in Cloud DB table
+      if (userProfile && !profileData.some(p => p.id === userProfile.id || p.email === userProfile.email)) {
+        profileData.unshift(userProfile);
+      }
+
+      setProfiles(profileData);
+      const total = profileData.length;
+      const avgXp = Math.round(
+        profileData.reduce((acc, p) => acc + (p.xp || 0), 0) / (total || 1)
+      );
+      let totalGames = 0;
+      profileData.forEach(p => {
+        if (p.user_progress?.[0]?.arcade_games_played) {
+          totalGames += p.user_progress[0].arcade_games_played;
+        }
+      });
+      setStats({ totalUsers: total, avgXp, totalGames });
     } catch (err) {
       console.error('Admin data load error:', err);
     } finally {
@@ -176,14 +197,29 @@ export default function AdminPage() {
 
   const toggleRole = async (userId, currentRole) => {
     const newRole = currentRole === 'admin' ? 'user' : 'admin';
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      await fetch(`${apiUrl}/api/admin/users/${userId}/role`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role: newRole })
+      });
+    } catch (e) { /* ignore */ }
     await supabase.from('profiles').update({ role: newRole }).eq('id', userId);
+    if (userProfile && userProfile.id === userId) {
+      userProfile.role = newRole;
+    }
     loadData();
   };
 
   const deleteUser = async (userId) => {
     if (!window.confirm('Are you sure you want to remove this user?')) return;
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      await fetch(`${apiUrl}/api/admin/users/${userId}`, { method: 'DELETE' });
+    } catch (e) { /* ignore */ }
     await supabase.from('profiles').delete().eq('id', userId);
-    loadData();
+    setProfiles(prev => prev.filter(p => p.id !== userId));
   };
 
   const saveCustomGame = () => {
@@ -298,9 +334,6 @@ export default function AdminPage() {
         {/* Header */}
         <div style={s.header}>
           <div>
-            <span style={{ fontSize: '12px', background: 'rgba(236, 72, 153, 0.2)', color: '#f472b6', padding: '4px 12px', borderRadius: '20px', fontWeight: 'bold' }}>
-              🔐 ENTERPRISE SECURITY COMMAND CENTER
-            </span>
             <h1 style={s.pageTitle}>Admin Dashboard</h1>
           </div>
           <button style={s.backBtn} onClick={() => navigate('/dashboard')}>
@@ -801,13 +834,16 @@ const s = {
     margin: '8px 0 0 0',
   },
   backBtn: {
-    background: 'none',
-    border: '1px solid rgba(255,255,255,0.15)',
-    color: 'rgba(255,255,255,0.7)',
-    padding: '0.6rem 1.2rem',
+    background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)',
+    border: 'none',
+    color: '#ffffff',
+    padding: '0.6rem 1.4rem',
     borderRadius: '8px',
+    fontWeight: 'bold',
     cursor: 'pointer',
     fontSize: '0.9rem',
+    boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
+    transition: 'all 0.2s',
   },
   tabBar: {
     display: 'flex',
