@@ -207,6 +207,28 @@ app.post('/api/admin/users/:id/role', async (req, res) => {
   }
 });
 
+app.post('/api/admin/users/reset-all-xp', async (req, res) => {
+  try {
+    const { data, error } = await supabase.from('profiles').update({ xp: 0, level: 1 }).neq('id', '00000000-0000-0000-0000-000000000000');
+    if (error) throw error;
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ ok: false, err: err.message });
+  }
+});
+
+app.post('/api/admin/users/:id/xp', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { xp = 0, level = 1 } = req.body;
+    const { data, error } = await supabase.from('profiles').update({ xp, level }).eq('id', id).select().single();
+    if (error) throw error;
+    res.json({ ok: true, user: data });
+  } catch (err) {
+    res.status(500).json({ ok: false, err: err.message });
+  }
+});
+
 app.delete('/api/admin/users/:id', async (req, res) => {
   try {
     const { id } = req.params;

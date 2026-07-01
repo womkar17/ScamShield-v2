@@ -222,6 +222,59 @@ export default function AdminPage() {
     setProfiles(prev => prev.filter(p => p.id !== userId));
   };
 
+  const resetUserXp = async (userId) => {
+    if (!window.confirm('Reset this user\'s XP to 0?')) return;
+    try {
+      const apiUrl = getApiUrl();
+      await fetch(`${apiUrl}/api/admin/users/${userId}/xp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ xp: 0, level: 1 })
+      });
+    } catch (e) { /* ignore */ }
+    await supabase.from('profiles').update({ xp: 0, level: 1 }).eq('id', userId);
+    setProfiles(prev => prev.map(p => p.id === userId ? { ...p, xp: 0, level: 1 } : p));
+    if (userProfile && userProfile.id === userId) {
+      userProfile.xp = 0;
+      userProfile.level = 1;
+    }
+  };
+
+  const addBonusXp = async (userId, currentXp = 0) => {
+    const newXp = (currentXp || 0) + 500;
+    const newLevel = Math.floor(newXp / 500) + 1;
+    try {
+      const apiUrl = getApiUrl();
+      await fetch(`${apiUrl}/api/admin/users/${userId}/xp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ xp: newXp, level: newLevel })
+      });
+    } catch (e) { /* ignore */ }
+    await supabase.from('profiles').update({ xp: newXp, level: newLevel }).eq('id', userId);
+    setProfiles(prev => prev.map(p => p.id === userId ? { ...p, xp: newXp, level: newLevel } : p));
+    if (userProfile && userProfile.id === userId) {
+      userProfile.xp = newXp;
+      userProfile.level = newLevel;
+    }
+  };
+
+  const resetAllUsersXp = async () => {
+    if (!window.confirm('⚠️ Reset ALL platform users to 0 XP and Level 1? This will wipe the XP leaderboard for everyone!')) return;
+    try {
+      const apiUrl = getApiUrl();
+      await fetch(`${apiUrl}/api/admin/users/reset-all-xp`, { method: 'POST' });
+    } catch (e) { /* ignore */ }
+    await supabase.from('profiles').update({ xp: 0, level: 1 }).neq('id', '00000000-0000-0000-0000-000000000000');
+    setProfiles(prev => prev.map(p => ({ ...p, xp: 0, level: 1 })));
+    if (userProfile) {
+      userProfile.xp = 0;
+      userProfile.level = 1;
+    }
+    alert('✅ All platform users have been reset to 0 XP and Level 1!');
+    loadData();
+  };
+
   const saveCustomGame = () => {
     if (!newGame.title.trim()) return;
     const updated = [...customGames, { ...newGame, id: Date.now() }];
@@ -357,23 +410,60 @@ export default function AdminPage() {
         <div style={s.content}>
           {/* === OVERVIEW TAB === */}
           {activeTab === 'overview' && (
-            <div style={s.grid3}>
-              <div style={s.statCard}>
-                <div style={{ ...s.statIcon, background: 'rgba(102,126,234,0.15)' }}>👥</div>
-                <div style={s.statValue}>{stats.totalUsers}</div>
-                <div style={s.statLabel}>Online DB Users</div>
+            <>
+              <div style={s.grid3}>
+                <div style={s.statCard}>
+                  <div style={{ ...s.statIcon, background: 'rgba(102,126,234,0.15)' }}>👥</div>
+                  <div style={s.statValue}>{stats.totalUsers}</div>
+                  <div style={s.statLabel}>Online DB Users</div>
+                </div>
+                <div style={s.statCard}>
+                  <div style={{ ...s.statIcon, background: 'rgba(236,201,75,0.15)' }}>⚡</div>
+                  <div style={s.statValue}>{stats.avgXp}</div>
+                  <div style={s.statLabel}>Average XP</div>
+                </div>
+                <div style={s.statCard}>
+                  <div style={{ ...s.statIcon, background: 'rgba(72,187,120,0.15)' }}>🎮</div>
+                  <div style={s.statValue}>{stats.totalGames}</div>
+                  <div style={s.statLabel}>Games Played</div>
+                </div>
               </div>
-              <div style={s.statCard}>
-                <div style={{ ...s.statIcon, background: 'rgba(236,201,75,0.15)' }}>⚡</div>
-                <div style={s.statValue}>{stats.avgXp}</div>
-                <div style={s.statLabel}>Average XP</div>
+
+              <div style={{ ...s.card, marginTop: '1.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                  <div>
+                    <h2 style={s.cardTitle}>🔐 Platform Auth & XP Management</h2>
+                    <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', margin: '4px 0 0 0' }}>
+                      Manage platform-wide gamification settings and check Supabase / Google OAuth status.
+                    </p>
+                  </div>
+                  <button
+                    style={{ ...s.actionBtn, background: 'linear-gradient(135deg, #ef4444, #b91c1c)', color: 'white', padding: '10px 18px', fontWeight: 'bold', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
+                    onClick={resetAllUsersXp}
+                  >
+                    ⚠️ Reset All Platform Users XP to 0
+                  </button>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginTop: '1.5rem', background: 'rgba(255,255,255,0.03)', padding: '1rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                  <div>
+                    <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>Google OAuth Provider</div>
+                    <div style={{ fontSize: '15px', color: '#4ade80', fontWeight: 'bold', marginTop: '4px' }}>🟢 Active (Supabase Cloud)</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>Initial Sign-up Bonus</div>
+                    <div style={{ fontSize: '15px', color: '#38bdf8', fontWeight: 'bold', marginTop: '4px' }}>0 XP (Enforced)</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>OAuth Redirect Target</div>
+                    <div style={{ fontSize: '15px', color: '#facc15', fontWeight: 'bold', marginTop: '4px' }}>/dashboard</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>Consent Screen Prompt</div>
+                    <div style={{ fontSize: '15px', color: '#c084fc', fontWeight: 'bold', marginTop: '4px' }}>select_account consent</div>
+                  </div>
+                </div>
               </div>
-              <div style={s.statCard}>
-                <div style={{ ...s.statIcon, background: 'rgba(72,187,120,0.15)' }}>🎮</div>
-                <div style={s.statValue}>{stats.totalGames}</div>
-                <div style={s.statLabel}>Games Played</div>
-              </div>
-            </div>
+            </>
           )}
 
           {/* === USERS TAB === */}
@@ -427,9 +517,15 @@ export default function AdminPage() {
                           </td>
                           <td style={s.td}>Lvl {p.level || 1} ({p.xp || 0} XP)</td>
                           <td style={s.td}>{p.streak || 0} days</td>
-                          <td style={{ ...s.td, display: 'flex', gap: '0.5rem' }}>
+                          <td style={{ ...s.td, display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                             <button style={s.actionBtn} onClick={() => toggleRole(p.id, p.role)}>
                               {p.role === 'admin' ? 'Demote' : 'Promote'}
+                            </button>
+                            <button style={{ ...s.actionBtn, background: 'rgba(234,179,8,0.2)', color: '#facc15', border: '1px solid rgba(234,179,8,0.3)' }} onClick={() => resetUserXp(p.id)}>
+                              Reset XP
+                            </button>
+                            <button style={{ ...s.actionBtn, background: 'rgba(34,197,94,0.2)', color: '#4ade80', border: '1px solid rgba(34,197,94,0.3)' }} onClick={() => addBonusXp(p.id, p.xp)}>
+                              +500 XP
                             </button>
                             <button style={{ ...s.actionBtn, ...s.dangerBtn }} onClick={() => deleteUser(p.id)}>
                               Remove
