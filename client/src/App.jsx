@@ -36,9 +36,9 @@ function ProtectedRoute({ children, isSidebarOpen, setIsSidebarOpen }) {
   }
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div className="app-root-layout" style={{ display: 'flex' }}>
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
-      <div style={{ flex: 1, marginLeft: isSidebarOpen ? '250px' : '80px', transition: 'margin-left 0.3s ease' }}>
+      <div className={`app-main-content ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`} style={{ flex: 1, transition: 'all 0.3s ease' }}>
         {children}
       </div>
     </div>
@@ -48,7 +48,7 @@ function ProtectedRoute({ children, isSidebarOpen, setIsSidebarOpen }) {
 export default function App() {
   const { checkBadges } = useContext(GamificationContext);
   const { completedModules } = useContext(AppContext);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() => window.innerWidth >= 768);
 
   useEffect(() => {
     checkBadges({ completedModules });

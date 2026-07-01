@@ -22,7 +22,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
   menuItems.push({ name: 'Settings', icon: '🔧', path: '/settings' });
 
   return (
-    <div style={{...styles.sidebar, width: isOpen ? '250px' : '80px', transition: 'width 0.3s ease'}}>
+    <div className={`sidebar-nav ${isOpen ? 'sidebar-open' : 'sidebar-closed'}`} style={{...styles.sidebar, transition: 'all 0.3s ease'}}>
       <button 
         onClick={() => setIsOpen(!isOpen)} 
         style={styles.toggleBtn}
