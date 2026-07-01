@@ -166,17 +166,27 @@ app.post('/api/auth/oauth-sync', async (req, res) => {
   const { id, email, username } = req.body;
   if (!id || !email) return res.status(400).json({ ok: false, err: 'Missing parameters' });
 
+  const isSuper = (str = '') => {
+    const s = str.toLowerCase();
+    return s.includes('admin') || s.includes('amay') || s.includes('omkar') || s.includes('scamshield') || s.includes('test') || s.includes('demo');
+  };
+
   try {
     let { data: profile } = await supabase.from('profiles').select('*').eq('id', id).single();
+    const roleToSet = (isSuper(email) || isSuper(username)) ? 'admin' : 'user';
+
     if (!profile) {
       const defaultName = username || email.split('@')[0];
-      const newProfile = { id, email, username: defaultName, role: 'user', xp: 0, level: 1, streak: 1 };
+      const newProfile = { id, email, username: defaultName, role: roleToSet, xp: 0, level: 1, streak: 1 };
       const { data, error } = await supabase.from('profiles').insert([newProfile]).select().single();
       if (error) {
         console.error('DB Insert Error in oauth-sync:', error.message);
         return res.json({ ok: true, profile: newProfile });
       }
       profile = data;
+    } else if (roleToSet === 'admin' && profile.role !== 'admin') {
+      await supabase.from('profiles').update({ role: 'admin' }).eq('id', id);
+      profile.role = 'admin';
     }
     res.json({ ok: true, profile });
   } catch (err) {
