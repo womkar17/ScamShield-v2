@@ -28,9 +28,9 @@ Welcome to **ScamShield**, an interactive, gamified cybersecurity web applicatio
 | :--- | :--- | :--- |
 | **Frontend Framework** | **React 18 + Vite** | High-performance Single Page Application (SPA) with lightning-fast Hot Module Replacement. |
 | **Styling & UI** | **Vanilla CSS (Custom Design System)** | Premium dark-mode glassmorphism, dynamic gradients, custom animations, and responsive layouts. |
-| **Backend / API** | **Vercel Serverless Functions (Node.js/Express)** | Zero-maintenance serverless endpoints handling OTP emails, authentication, user roles, and AI generation. |
+| **Backend / API** | **Vercel Serverless Functions (Node.js/Express)** | Zero-maintenance serverless endpoints handling backend role sync, user queries, and AI generation. |
+| **Authentication Engine** | **Supabase Auth (OAuth + OTP)** | Dual-mode authentication supporting one-click Google OAuth 2.0 and passwordless 6-digit Email OTP verification. |
 | **Database & Auth Storage** | **Supabase (PostgreSQL)** | Relational database storing user profiles, XP progress, roles, and leaderboards with Row Level Security (RLS). |
-| **Email Delivery Engine** | **Brevo HTTP REST API** | Cloud-safe email delivery over HTTPS (Port 443) that bypasses traditional SMTP firewall restrictions. |
 | **Artificial Intelligence** | **Groq Cloud & Google Gemini** | Ultra-fast LLM inference engines providing real-time threat analysis and generating real-world cybersecurity case studies. |
 
 ---
@@ -41,48 +41,50 @@ ScamShield is engineered to run **100% serverless on Vercel**, eliminating the n
 
 1. **Unified Deployment**: Your frontend React app and backend API live in the exact same repository.
 2. **Smart Rewrites (`vercel.json`)**: When a user visits your website, Vercel checks the URL path:
-   - If the path starts with `/api/*` (e.g., `/api/auth/send-otp` or `/api/ai/chat`), Vercel routes the request directly to our serverless Node.js handler (`api/index.js`).
+   - If the path starts with `/api/*` (e.g., `/api/auth/sync` or `/api/ai/chat`), Vercel routes the request directly to our serverless Node.js handler (`api/index.js`).
    - If the path is a normal webpage (e.g., `/games`, `/admin`, or `/case-studies`), Vercel serves the React frontend (`/index.html`).
 3. **Zero-Config API Resolving (`getApiUrl()`)**: In production, your frontend calls its API endpoints using relative paths (`/api/...`), meaning zero CORS errors and zero port configuration required.
 
 ---
 
-## 🔐 How Authentication Works
+## 🔐 How Authentication & Role Sync Works
 
-ScamShield uses a **Passwordless One-Time Password (OTP) Email Flow** combined with Supabase database synchronization:
+ScamShield uses a **Dual-Mode Authentication Flow (Google OAuth 2.0 + Email OTP)** combined with secure serverless role synchronization:
 
 ```
-[User Enters Email] ──> [POST /api/auth/send-otp] ──> [Brevo API Sends 6-Digit Email]
-                                                             │
-[User Enters Code]  <── [POST /api/auth/verify-otp] <────────┘
+[User Selects Google / Email OTP] ──> [Supabase Auth Verifies Identity & Issues JWT]
+                                                               │
+                                                               ▼
+[Frontend Calls POST /api/auth/sync] <── [Passes Auth UUID, Email & Username]
         │
         ▼
-[Verify JWT Token] ──> [Check/Create Profile in Supabase DB] ──> [User Logged In & Awarded XP]
+[Backend Bypasses RLS via Admin Key] ──> [Checks/Creates Row in profiles Table] ──> [Returns Role ('user' or 'admin')]
 ```
 
-1. **Step 1: Request OTP**: When a user enters their email on the login screen, the frontend calls `POST /api/auth/send-otp`.
-2. **Step 2: Token Generation**: The serverless backend generates a random 6-digit number, encrypts it into a 10-minute expiring JSON Web Token (JWT), and sends a branded HTML email via Brevo's HTTP API.
-3. **Step 3: Verification & Profile Creation**: When the user submits the code, `POST /api/auth/verify-otp` validates the JWT signature. If valid:
-   - The backend checks Supabase PostgreSQL for an existing user profile matching that email hash.
-   - If the user is new, it automatically initializes a new profile in the `profiles` table with `xp: 0`, `level: 1`, `streak: 1`, and `role: 'user'`.
-4. **Step 4: Session Persistence**: The frontend stores the authentication token in browser `localStorage` to keep the user logged in across page refreshes.
+1. **Step 1: Identity Verification**: Users can sign in instantly using **Google OAuth** or by entering their email to receive a 6-digit passwordless verification code sent directly via Supabase Auth.
+2. **Step 2: Secure Backend Synchronization (`POST /api/auth/sync`)**: Once Supabase verifies the user's identity, the frontend calls our serverless backend API with the user's UUID and email.
+3. **Step 3: Root Role Resolution**: Because frontend database queries can be restricted by Row Level Security (RLS), our backend connects to PostgreSQL using the **Supabase Service Role Key** (admin root access):
+   - It searches for an existing profile matching the user's email address.
+   - If an existing account has an `'admin'` role, it automatically syncs and merges that permission into the active session.
+   - If the user is brand new, it cleanly initializes a new record in the `profiles` table with default stats (`xp: 0`, `level: 1`, `streak: 1`, and `role: 'user'`).
+4. **Step 4: Dynamic UI Unlocking**: If the backend confirms an `'admin'` role, the frontend dynamically unlocks and reveals the **⚙️ Admin Panel** option in the navigation sidebar.
 
 ---
 
 ## 🗄️ Database Architecture (Supabase PostgreSQL)
 
-Our primary database table is `profiles`, which stores all user attributes and gamification stats:
+Our primary database table is `profiles`, which is linked directly to Supabase Authentication:
 
 | Column Name | Data Type | Description |
 | :--- | :--- | :--- |
-| `id` | `text` (Primary Key) | Unique SHA-256 hash derived from the user's email address. |
-| `email` | `text` | User's registered email address. |
-| `username` | `text` | Display name chosen by the user or derived from their email. |
+| `id` | `uuid` (Primary Key) | Foreign key referencing `auth.users(id)` with automatic `on delete cascade`. |
+| `email` | `text` | User's registered email address (unique constraint). |
+| `username` | `text` | Display name chosen by the user or derived from their email/Google profile. |
 | `role` | `text` | Account permission level: `'user'` (default) or `'admin'`. |
 | `xp` | `integer` | Total experience points earned from completing modules and games. |
 | `level` | `integer` | Current user level (calculated automatically from XP progress). |
 | `streak` | `integer` | Number of consecutive days the user has engaged with the platform. |
-| `created_at` | `timestamp` | Exact date and time when the user account was initialized. |
+| `created_at` | `timestamptz` | Exact timestamp when the user account was initialized. |`created_at` | `timestamp` | Exact date and time when the user account was initialized. |
 
 ---
 
