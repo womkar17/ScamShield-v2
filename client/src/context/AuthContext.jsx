@@ -55,6 +55,7 @@ export function AuthProvider({ children }) {
       if (!session?.user || !mounted) return false;
       try {
         localStorage.setItem('scamshield_token', session.access_token);
+        const username = session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'CyberUser';
         let profile = null;
 
         // Step 1: Query Supabase directly by ID
