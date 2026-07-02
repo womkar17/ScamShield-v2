@@ -64,14 +64,24 @@ export function AuthProvider({ children }) {
           if (data) profile = data;
         } catch (e) { /* RLS or not found */ }
 
-        // Step 2: If not found by ID, check by email (and link ID if found)
-        if (!profile) {
+        // Step 2: If no profile OR if current profile is NOT admin, check by email for any admin row!
+        if (!profile || !checkIsAdmin(profile.role)) {
           try {
             const { data: emailRows } = await supabase.from('profiles').select('*').eq('email', session.user.email);
             if (emailRows && emailRows.length > 0) {
-              profile = emailRows.find(p => checkIsAdmin(p.role)) || emailRows[0];
-              if (profile.id !== session.user.id) {
-                await supabase.from('profiles').update({ id: session.user.id }).eq('email', session.user.email).catch(() => {});
+              const adminRow = emailRows.find(p => checkIsAdmin(p.role));
+              if (adminRow) {
+                profile = adminRow;
+                if (profile.id !== session.user.id) {
+                  await supabase.from('profiles').update({ id: session.user.id }).eq('email', session.user.email).catch(() => {});
+                  profile.id = session.user.id;
+                }
+              } else if (!profile) {
+                profile = emailRows[0];
+                if (profile.id !== session.user.id) {
+                  await supabase.from('profiles').update({ id: session.user.id }).eq('email', session.user.email).catch(() => {});
+                  profile.id = session.user.id;
+                }
               }
             }
           } catch (e) { /* RLS or not found */ }
@@ -84,6 +94,16 @@ export function AuthProvider({ children }) {
             const { data: created } = await supabase.from('profiles').insert([profile]).select().single();
             if (created) profile = created;
           } catch (e) { /* use default in-memory profile */ }
+        }
+
+        // Step 4: Automatic Admin fallback for owner email or environment admin emails
+        const ownerEmails = ['womkar17@gmail.com', ...(import.meta.env.VITE_ADMIN_EMAILS ? import.meta.env.VITE_ADMIN_EMAILS.split(',') : [])].map(e => e.trim().toLowerCase());
+        if (session.user.email && ownerEmails.includes(session.user.email.trim().toLowerCase())) {
+          if (profile && !checkIsAdmin(profile.role)) {
+            profile.role = 'admin';
+            await supabase.from('profiles').update({ role: 'admin' }).eq('id', profile.id).catch(() => {});
+            await supabase.from('profiles').update({ role: 'admin' }).eq('email', session.user.email).catch(() => {});
+          }
         }
 
         if (mounted) {
