@@ -108,59 +108,6 @@ async function generateChatResponse(messages, preferredEngine = 'groq') {
 }
 
 // Routes
-app.post('/api/auth/send-otp', async (req, res) => {
-  const { email } = req.body;
-  if (!email) return res.status(400).json({ ok: false, err: 'Email required' });
-
-  const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  const token = jwt.sign({ email, otp }, JWT_SECRET, { expiresIn: '10m' });
-
-  try {
-    await sendCloudEmail(
-      email,
-      'Your ScamShield Login OTP 🛡️',
-      `<div style="font-family: Arial, sans-serif; padding: 20px; background: #0f172a; color: #fff; border-radius: 10px;">
-        <h2 style="color: #38bdf8;">Welcome to ScamShield!</h2>
-        <p>Your one-time login verification code is:</p>
-        <h1 style="background: #1e293b; padding: 15px; border-radius: 8px; letter-spacing: 4px; color: #f59e0b; width: fit-content;">${otp}</h1>
-        <p style="color: #94a3b8; font-size: 12px;">This code expires in 10 minutes. If you did not request this, please ignore this email.</p>
-      </div>`
-    );
-    res.json({ ok: true, token });
-  } catch (err) {
-    console.error('OTP Send Error:', err.message);
-    res.status(500).json({ ok: false, err: err.message });
-  }
-});
-
-app.post('/api/auth/verify-otp', async (req, res) => {
-  const { email, otp, token, username } = req.body;
-  if (!email || !otp || !token) return res.status(400).json({ ok: false, err: 'Missing required parameters' });
-
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    if (decoded.email !== email || decoded.otp !== otp) {
-      return res.status(401).json({ ok: false, err: 'Invalid OTP code' });
-    }
-
-    const userId = crypto.createHash('sha256').update(email).digest('hex');
-    let { data: profile } = await supabase.from('profiles').select('*').eq('id', userId).single();
-
-    if (!profile) {
-      const defaultName = username || email.split('@')[0];
-      const newProfile = { id: userId, email, username: defaultName, role: 'user', xp: 0, level: 1, streak: 1 };
-      const { data, error } = await supabase.from('profiles').insert([newProfile]).select().single();
-      if (error) {
-        return res.json({ ok: true, session: { user: { id: userId, email } }, userProfile: newProfile });
-      }
-      profile = data;
-    }
-
-    res.json({ ok: true, session: { user: { id: userId, email } }, userProfile: profile });
-  } catch (err) {
-    res.status(401).json({ ok: false, err: 'Expired or invalid OTP token' });
-  }
-});
 
 app.get('/api/health', async (req, res) => {
   const hasUrl = !!supabaseUrl;
@@ -171,63 +118,6 @@ app.get('/api/health', async (req, res) => {
     dbOk = !error;
   } catch (e) { dbOk = false; }
   res.json({ ok: hasUrl && hasKey && dbOk, supabaseUrl: hasUrl, serviceKey: hasKey, dbConnection: dbOk });
-});
-
-app.post('/api/auth/oauth-sync', async (req, res) => {
-  const { id, email, username } = req.body;
-  if (!id || !email) return res.status(400).json({ ok: false, err: 'Missing parameters' });
-
-  try {
-    // Step 1: Check if a profile already exists with this exact Google OAuth ID
-    let { data: idProfile } = await supabase.from('profiles').select('*').eq('id', id).single();
-    if (idProfile) {
-      console.log('oauth-sync: found profile by id, role:', idProfile.role);
-      return res.json({ ok: true, profile: idProfile });
-    }
-
-    // Step 2: Check if a profile exists by email (admin was set before Google login linked the ID)
-    let { data: emailProfiles } = await supabase.from('profiles').select('*').eq('email', email);
-    if (emailProfiles && emailProfiles.length > 0) {
-      // Pick the admin row if one exists, otherwise the one with the most XP
-      const best = emailProfiles.find(p => p.role === 'admin') || emailProfiles.sort((a, b) => (b.xp || 0) - (a.xp || 0))[0];
-      console.log('oauth-sync: found profile by email, role:', best.role, 'old id:', best.id, 'new id:', id);
-
-      // Delete ALL old rows for this email (can't UPDATE a primary key in Postgres)
-      await supabase.from('profiles').delete().eq('email', email);
-
-      // Re-insert with the correct Google OAuth UUID, preserving role & progress
-      const merged = {
-        id,
-        email,
-        username: username || best.username || email.split('@')[0],
-        role: best.role || 'user',
-        xp: best.xp || 0,
-        level: best.level || 1,
-        streak: best.streak || 1
-      };
-      const { data: inserted, error: insertErr } = await supabase.from('profiles').insert([merged]).select().single();
-      if (insertErr) {
-        console.error('oauth-sync re-insert error:', insertErr.message);
-        return res.json({ ok: true, profile: merged });
-      }
-      console.log('oauth-sync: merged profile created, role:', inserted.role);
-      return res.json({ ok: true, profile: inserted });
-    }
-
-    // Step 3: Brand new user — no profile by ID or email
-    const defaultName = username || email.split('@')[0];
-    const newProfile = { id, email, username: defaultName, role: 'user', xp: 0, level: 1, streak: 1 };
-    const { data: created, error: createErr } = await supabase.from('profiles').insert([newProfile]).select().single();
-    if (createErr) {
-      console.error('oauth-sync insert error:', createErr.message);
-      return res.json({ ok: true, profile: newProfile });
-    }
-    console.log('oauth-sync: new user created, role: user');
-    return res.json({ ok: true, profile: created });
-  } catch (err) {
-    console.error('oauth-sync exception:', err.message);
-    res.status(500).json({ ok: false, err: err.message });
-  }
 });
 
 app.get('/api/admin/users', async (req, res) => {

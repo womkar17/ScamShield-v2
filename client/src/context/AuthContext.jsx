@@ -55,62 +55,34 @@ export function AuthProvider({ children }) {
       if (!session?.user || !mounted) return false;
       try {
         localStorage.setItem('scamshield_token', session.access_token);
-        const username = session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email.split('@')[0];
         let profile = null;
-        let backendProfile = null;
 
-        // === ATTEMPT 1: Call Backend oauth-sync ===
+        // Step 1: Query Supabase directly by ID
         try {
-          const syncRes = await fetch(`${API_BASE}/oauth-sync`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: session.user.id, email: session.user.email, username })
-          });
-          if (syncRes.ok) {
-            const syncData = await syncRes.json();
-            console.log('[Auth] Backend oauth-sync:', syncData?.profile?.role);
-            if (syncData?.ok && syncData?.profile) {
-              backendProfile = syncData.profile;
-            }
-          }
-        } catch (backendErr) {
-          console.warn('[Auth] Backend unreachable:', backendErr.message);
-        }
-
-        // === ATTEMPT 2: ALWAYS query Supabase directly from frontend by ID ===
-        try {
-          const { data } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
-          if (data) {
-            console.log('[Auth] Found profile directly by ID, role:', data.role);
-            profile = data;
-          }
+          const { data } = await supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
+          if (data) profile = data;
         } catch (e) { /* RLS or not found */ }
 
-        // === ATTEMPT 3: ALWAYS query Supabase directly from frontend by EMAIL ===
-        if (!profile || !checkIsAdmin(profile.role)) {
+        // Step 2: If not found by ID, check by email (and link ID if found)
+        if (!profile) {
           try {
             const { data: emailRows } = await supabase.from('profiles').select('*').eq('email', session.user.email);
             if (emailRows && emailRows.length > 0) {
-              const adminRow = emailRows.find(p => checkIsAdmin(p.role));
-              if (adminRow) {
-                console.log('[Auth] Found admin profile directly by email!');
-                profile = adminRow;
-              } else if (!profile) {
-                profile = emailRows[0];
+              profile = emailRows.find(p => checkIsAdmin(p.role)) || emailRows[0];
+              if (profile.id !== session.user.id) {
+                await supabase.from('profiles').update({ id: session.user.id }).eq('email', session.user.email).catch(() => {});
               }
             }
           } catch (e) { /* RLS or not found */ }
         }
 
-        // === ATTEMPT 4: Fallback to backend profile or default new user ===
+        // Step 3: If still no profile, insert clean new row
         if (!profile) {
-          profile = backendProfile || { id: session.user.id, email: session.user.email, username, role: 'user', xp: 0, level: 1, streak: 1 };
-          if (!backendProfile) {
-            try {
-              const { data: created } = await supabase.from('profiles').insert([profile]).select().single();
-              if (created) profile = created;
-            } catch (e) { /* use in-memory profile */ }
-          }
+          profile = { id: session.user.id, email: session.user.email, username, role: 'user', xp: 0, level: 1, streak: 1 };
+          try {
+            const { data: created } = await supabase.from('profiles').insert([profile]).select().single();
+            if (created) profile = created;
+          } catch (e) { /* use default in-memory profile */ }
         }
 
         if (mounted) {
