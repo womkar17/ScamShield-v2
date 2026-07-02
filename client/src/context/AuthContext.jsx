@@ -10,10 +10,43 @@ export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const API_BASE = `${getApiUrl()}/api/auth`;
 
   const checkIsAdmin = (role) => String(role || '').trim().toLowerCase() === 'admin';
+
+  const openLogin = useCallback(() => setShowLoginModal(true), []);
+  const closeLogin = useCallback(() => setShowLoginModal(false), []);
+
+  const sendOtp = useCallback(async (email) => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOtp({
+        email: email.trim(),
+        options: {
+          shouldCreateUser: true
+        }
+      });
+      if (error) return { ok: false, err: error.message };
+      return { ok: true };
+    } catch (err) {
+      return { ok: false, err: err.message || 'Failed to send verification code.' };
+    }
+  }, []);
+
+  const verifyOtp = useCallback(async (email, token) => {
+    try {
+      const { data, error } = await supabase.auth.verifyOtp({
+        email: email.trim(),
+        token: token.trim(),
+        type: 'email'
+      });
+      if (error) return { ok: false, err: error.message };
+      return { ok: true, data };
+    } catch (err) {
+      return { ok: false, err: err.message || 'Failed to verify OTP code.' };
+    }
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -166,7 +199,8 @@ export function AuthProvider({ children }) {
   return (
     <AuthContext.Provider value={{
       currentUser, userProfile, isLoggedIn, isAdmin, loading,
-      loginWithGoogle, logout, updateProfileLocal,
+      showLoginModal, openLogin, closeLogin,
+      loginWithGoogle, sendOtp, verifyOtp, logout, updateProfileLocal,
     }}>
       {children}
     </AuthContext.Provider>
