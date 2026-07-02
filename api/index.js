@@ -120,6 +120,51 @@ app.get('/api/health', async (req, res) => {
   res.json({ ok: hasUrl && hasKey && dbOk, supabaseUrl: hasUrl, serviceKey: hasKey, dbConnection: dbOk });
 });
 
+app.post('/api/auth/sync', async (req, res) => {
+  const { id, email, username } = req.body;
+  if (!id || !email) return res.status(400).json({ ok: false, err: 'Missing parameters' });
+
+  try {
+    // 1. Check if profile exists by email (using admin Service Key, bypasses RLS)
+    const { data: rows, error: searchErr } = await supabase.from('profiles').select('*').eq('email', email);
+    if (searchErr) throw searchErr;
+
+    if (rows && rows.length > 0) {
+      // If user has an admin row, prioritize it
+      const profile = rows.find(p => String(p.role || '').trim().toLowerCase() === 'admin') || rows[0];
+      
+      // If the auth UUID changed (e.g. from old test login), update it in profiles
+      if (profile.id !== id) {
+        await supabase.from('profiles').delete().eq('email', email).neq('id', profile.id).catch(() => {});
+        await supabase.from('profiles').update({ id }).eq('email', email).catch(() => {});
+        profile.id = id;
+      }
+      return res.json({ ok: true, profile });
+    }
+
+    // 2. If not found by email, check by ID
+    const { data: idProfile } = await supabase.from('profiles').select('*').eq('id', id).maybeSingle();
+    if (idProfile) {
+      return res.json({ ok: true, profile: idProfile });
+    }
+
+    // 3. Brand new user -> Create profile with role 'user' (no hardcoded admins!)
+    const cleanName = username || email.split('@')[0] || 'User';
+    const newProfile = { id, email, username: cleanName, role: 'user', xp: 0, level: 1, streak: 1 };
+    const { data: created, error: insertErr } = await supabase.from('profiles').insert([newProfile]).select().single();
+    
+    if (insertErr) {
+      console.error('[auth/sync] insert error:', insertErr.message);
+      return res.json({ ok: true, profile: newProfile });
+    }
+
+    return res.json({ ok: true, profile: created });
+  } catch (err) {
+    console.error('[auth/sync] exception:', err.message);
+    res.status(500).json({ ok: false, err: err.message });
+  }
+});
+
 app.get('/api/admin/users', async (req, res) => {
   try {
     const { data: users, error } = await supabase.from('profiles').select('*').order('created_at', { ascending: false });

@@ -58,52 +58,36 @@ export function AuthProvider({ children }) {
         const username = session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'CyberUser';
         let profile = null;
 
-        // Step 1: Query Supabase directly by ID
+        // 1. Call secure Backend API (uses Admin Service Key to bypass RLS and sync roles)
         try {
-          const { data } = await supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
-          if (data) profile = data;
-        } catch (e) { /* RLS or not found */ }
-
-        // Step 2: If no profile OR if current profile is NOT admin, check by email for any admin row!
-        if (!profile || !checkIsAdmin(profile.role)) {
-          try {
-            const { data: emailRows } = await supabase.from('profiles').select('*').eq('email', session.user.email);
-            if (emailRows && emailRows.length > 0) {
-              const adminRow = emailRows.find(p => checkIsAdmin(p.role));
-              if (adminRow) {
-                profile = adminRow;
-                if (profile.id !== session.user.id) {
-                  await supabase.from('profiles').update({ id: session.user.id }).eq('email', session.user.email).catch(() => {});
-                  profile.id = session.user.id;
-                }
-              } else if (!profile) {
-                profile = emailRows[0];
-                if (profile.id !== session.user.id) {
-                  await supabase.from('profiles').update({ id: session.user.id }).eq('email', session.user.email).catch(() => {});
-                  profile.id = session.user.id;
-                }
-              }
+          const syncRes = await fetch(`${API_BASE}/auth/sync`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: session.user.id, email: session.user.email, username })
+          });
+          if (syncRes.ok) {
+            const syncData = await syncRes.json();
+            if (syncData?.ok && syncData?.profile) {
+              profile = syncData.profile;
             }
-          } catch (e) { /* RLS or not found */ }
+          }
+        } catch (backendErr) {
+          console.warn('[Auth] Backend sync failed, falling back to direct query:', backendErr.message);
         }
 
-        // Step 3: If still no profile, insert clean new row
+        // 2. Direct query fallback if backend is offline
+        if (!profile) {
+          try {
+            const { data } = await supabase.from('profiles').select('*').eq('email', session.user.email);
+            if (data && data.length > 0) {
+              profile = data.find(p => checkIsAdmin(p.role)) || data[0];
+            }
+          } catch (e) { /* ignore */ }
+        }
+
+        // 3. In-memory fallback if all queries fail
         if (!profile) {
           profile = { id: session.user.id, email: session.user.email, username, role: 'user', xp: 0, level: 1, streak: 1 };
-          try {
-            const { data: created } = await supabase.from('profiles').insert([profile]).select().single();
-            if (created) profile = created;
-          } catch (e) { /* use default in-memory profile */ }
-        }
-
-        // Step 4: Automatic Admin fallback for owner email or environment admin emails
-        const ownerEmails = ['womkar17@gmail.com', ...(import.meta.env.VITE_ADMIN_EMAILS ? import.meta.env.VITE_ADMIN_EMAILS.split(',') : [])].map(e => e.trim().toLowerCase());
-        if (session.user.email && ownerEmails.includes(session.user.email.trim().toLowerCase())) {
-          if (profile && !checkIsAdmin(profile.role)) {
-            profile.role = 'admin';
-            await supabase.from('profiles').update({ role: 'admin' }).eq('id', profile.id).catch(() => {});
-            await supabase.from('profiles').update({ role: 'admin' }).eq('email', session.user.email).catch(() => {});
-          }
         }
 
         if (mounted) {
