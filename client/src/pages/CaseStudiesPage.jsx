@@ -5,155 +5,150 @@ import { getApiUrl } from '../lib/api';
 const INITIAL_CASE_STUDIES = [
   {
     id: 1,
-    title: "The $25M Deepfake CFO Video Call Trap",
+    title: "The 2024 Arup Group $25M Deepfake CFO Video Call Scam",
     category: "Deepfake & AI Fraud",
-    date: "June 2026",
-    loss: "$25,000,000",
-    summary: "A finance worker at a multinational firm was tricked into transferring $25M after joining a video conference where the CFO and colleagues were real-time AI deepfakes.",
-    setup: "An employee received an urgent email supposedly from the UK Chief Financial Officer requesting a secret transaction for a corporate acquisition. Initially suspicious, the employee requested a video call to verify the authenticity of the request. The scammers readily agreed and provided a conference link.",
-    trap: "During the video call, several known colleagues and the CFO appeared on screen and spoke with familiar voices, facial expressions, and mannerisms. In reality, every other participant on the call was a deepfake controlled by scammers using pre-recorded video snippets, real-time facial re-enactment, and AI voice cloning. The visual authority of seeing the executive team completely disarmed the employee's skepticism.",
+    date: "February 2024 (Published by Hong Kong Police & Global News)",
+    loss: "$25,000,000 (Arup Group Corporate Wire Transfers)",
+    summary: "British engineering giant Arup Group was robbed of $25 million in Hong Kong after an employee was deceived by a real-time AI deepfake video call where scammers cloned the voice and appearance of the company's CFO and senior colleagues.",
+    setup: "An employee in Arup's Hong Kong finance department received a phishing email supposedly from the company's UK-based Chief Financial Officer requesting a secret wire transfer for a confidential corporate acquisition. Initially suspicious of the secret instruction, the employee requested a live video conference to verify the executive's identity.",
+    trap: "During the live video conference, several recognizable colleagues and the CFO appeared on screen and spoke with familiar voices, facial expressions, and mannerisms. In reality, every other participant on the call was a real-time deepfake controlled by scammers using pre-recorded public video snippets and AI voice cloning. The visual authority of seeing the full executive committee completely disarmed the employee's skepticism, leading them to execute 15 wire transfers totaling $25M to offshore accounts.",
     timeline: [
-      "Day 1 (09:00 AM): Scammers conduct reconnaissance on LinkedIn to map organizational hierarchy and communication styles.",
-      "Day 3 (14:15 PM): Phishing email sent from a lookalike domain (e.g. corp-finance.co) requesting an urgent confidential acquisition transfer.",
-      "Day 3 (14:30 PM): Employee requests a video conference to visually verify the instruction.",
-      "Day 3 (15:00 PM): 15-minute deepfake video call takes place. Scammers use real-time AI cloning to simulate 4 corporate executives.",
-      "Day 3 (16:10 PM): Employee executes $25,000,000 wire transfer to offshore accounts across 5 jurisdictions."
+      "Jan 2024: Scammers download public video appearances and earnings call audio of Arup executives to train custom neural voice and facial cloning models.",
+      "Feb 2024: Initial phishing email sent to finance worker requesting confidential funds for a secret UK acquisition.",
+      "Feb 2024: Employee requests a live video conference; scammers schedule a multi-person meeting.",
+      "Feb 2024: During the 15-minute call, AI deepfakes simulate the CFO and 3 senior staff, instructing immediate execution.",
+      "Feb 2024: Employee initiates 15 consecutive wire transfers totaling $25,000,000 across 5 Hong Kong banks before the fraud is discovered."
     ],
     redFlags: [
-      "The request demanded extreme secrecy and bypassed standard dual-authorization protocols.",
-      "During the video call, the other participants mostly spoke in monologues and did not engage in fluid back-and-forth dialogue.",
-      "The transfer bank accounts were located in offshore jurisdictions completely unrelated to the supposed acquisition.",
-      "The email domain differed from the official corporate domain by a single hyphen.",
-      "When the employee asked a spontaneous question, the video call experienced a brief 'glitch' or delay."
+      "The request demanded extreme secrecy and bypassed standard dual-authorization treasury protocols.",
+      "During the video call, the deepfake participants spoke mostly in scripted monologues without spontaneous conversational back-and-forth.",
+      "The recipient bank accounts were offshore personal and shell company accounts completely unrelated to corporate M&A.",
+      "Bypassing standard written purchase order and compliance sign-offs due to 'executive urgency'."
     ],
-    psychologicalBias: "Authority & Urgency Bias — Seeing and hearing superiors on video completely overrode the employee's critical analytical reasoning. Scammers engineered social proof by having multiple fake executives present.",
-    prevention: "Always enforce out-of-band verification (e.g., calling a known verified phone number from the internal directory) for financial transactions above a threshold, regardless of video or voice confirmation.",
+    psychologicalBias: "Authority & Urgency Bias — Seeing and hearing superiors on video overrode the employee's critical analytical reasoning. Scammers engineered social proof by having multiple fake executives present.",
+    prevention: "Always enforce out-of-band verification (e.g., calling a verified phone number from the internal corporate directory) for financial transactions above a set threshold, regardless of video or voice confirmation.",
     quiz: [
-      { q: "What primary technology did the scammers use during the video call?", opts: ["Simple screen sharing", "Real-time AI deepfakes and voice cloning", "Hacked CCTV cameras", "Photoshop static images"], ans: 1, exp: "Scammers used real-time neural rendering and voice cloning to simulate multiple executives." },
-      { q: "Why did the employee initially request the video conference?", opts: ["To test their webcam", "Because they were already suspicious of the email", "To ask for a raise", "To record a training video"], ans: 1, exp: "The employee correctly felt suspicious about a secret wire transfer via email." },
-      { q: "What was the critical flaw in the deepfake participants' speech?", opts: ["They spoke in a foreign language", "They spoke mostly in scripted monologues without natural back-and-forth dialogue", "They had robotic computer voices", "They were completely silent"], ans: 1, exp: "Current real-time deepfakes struggle with spontaneous conversational interruptions." },
-      { q: "Which cognitive bias played the biggest role in deceiving the employee?", opts: ["Sunk Cost Fallacy", "Authority Bias & Social Proof", 'Gambler\'s Fallacy', "Optimism Bias"], ans: 1, exp: "Seeing the CFO and senior peers created overwhelming visual authority and social compliance." },
-      { q: "Where were the transfer bank accounts located?", opts: ["At the company's local branch", "In offshore jurisdictions unrelated to the acquisition", "On a cryptocurrency blockchain", "At the central bank"], ans: 1, exp: "Offshore routing is a standard money-laundering technique to delay asset recovery." },
-      { q: "How did the initial phishing email deceive the employee's inbox?", opts: ["It came from the real CFO's hacked email", "It used a lookalike domain with a slight typo/hyphen", "It was sent via SMS", "It had no sender address"], ans: 1, exp: "Lookalike domains (typosquatting) bypass visual inspection if not checked carefully." },
-      { q: "What protocol was bypassed to complete the $25M transfer?", opts: ["Dual-authorization financial verification protocol", "Firewall password rules", "Antivirus software", "Physical building security"], ans: 0, exp: "High-value enterprise transactions require multiple independent approvers." },
-      { q: "What is the most effective defense against deepfake executive fraud?", opts: ["Buying higher resolution monitors", "Mandatory out-of-band verification using pre-established phone numbers", "Never joining video calls", "Asking the caller to smile"], ans: 1, exp: "Out-of-band verification breaks the digital channel of attack." },
-      { q: "Why did the scammers include multiple colleagues on the fake video call?", opts: ["To save time", "To create 'Social Proof' so the employee would feel embarrassed to question the group", "Because they made a mistake", "To test multiple audio feeds"], ans: 1, exp: "Group dynamics and peer presence heavily suppress individual skepticism." },
-      { q: "What happened when the employee asked a spontaneous question during the call?", opts: ["The CFO laughed", "There was a noticeable glitch or processing delay", "The call disconnected immediately", "The screen turned blue"], ans: 1, exp: "AI generation requires inference time, causing latency when answering unexpected prompts." }
+      { q: "Which multinational corporation was the victim of this real-world $25M deepfake attack in February 2024?", opts: ["Microsoft", "Arup Group (British Engineering Firm)", "Tesla", "Sony"], ans: 1, exp: "Arup Group officially confirmed the $25M loss to Hong Kong authorities in early 2024." },
+      { q: "Why did the employee initially request the video conference?", opts: ["To test their webcam", "Because they were already suspicious of the email instruction", "To ask for a promotion", "To record a training video"], ans: 1, exp: "The employee correctly felt suspicious about a secret wire transfer via email, prompting the video call request." },
+      { q: "What was the critical flaw in the deepfake participants' speech during the real call?", opts: ["They spoke in a foreign language", "They spoke mostly in scripted monologues without natural back-and-forth dialogue", "They had robotic computer voices", "They were completely silent"], ans: 1, exp: "Current real-time deepfakes struggle with spontaneous conversational interruptions and multi-speaker overlap." },
+      { q: "Which cognitive bias played the biggest role in deceiving the Arup finance worker?", opts: ["Sunk Cost Fallacy", "Authority Bias & Social Proof", "Gambler's Fallacy", "Optimism Bias"], ans: 1, exp: "Seeing the CFO and senior peers created overwhelming visual authority and social compliance." },
+      { q: "How many separate wire transfers did the employee execute before realizing the scam?", opts: ["1 transfer", "15 separate wire transfers totaling $25 million", "50 transfers", "100 transfers"], ans: 1, exp: "The scammers split the $25M across 15 transactions to bypass single-transaction bank limits." },
+      { q: "Where did the scammers obtain the training data to clone the executives' faces and voices?", opts: ["From hacked internal CCTV", "From publicly available earnings calls, interviews, and promotional videos", "From stolen passports", "From audio bugs"], ans: 1, exp: "Publicly available executive media is routinely harvested by threat actors to train deepfake models." },
+      { q: "What corporate treasury protocol was violated during this incident?", opts: ["Dual-authorization financial verification protocol", "Firewall password rules", "Antivirus software updates", "Physical building access codes"], ans: 0, exp: "High-value enterprise wire transfers require multiple independent approvers and verification channels." },
+      { q: "What is the most effective defense against real-time deepfake executive fraud?", opts: ["Buying 4K monitors", "Mandatory out-of-band verification using pre-established internal phone numbers", "Never joining video calls", "Asking callers to wave their hands"], ans: 1, exp: "Out-of-band verification breaks the digital channel of attack by using an independent communication line." },
+      { q: "Why did the scammers include multiple colleague deepfakes on the video call?", opts: ["To save bandwidth", "To create 'Social Proof' so the employee would feel intimidated to question the group", "Because they made a mistake", "To test multiple audio feeds"], ans: 1, exp: "Group dynamics and peer presence heavily suppress individual skepticism." },
+      { q: "What agency officially published the investigation details of this incident?", opts: ["Hong Kong Police Force & Cybersecurity Bureau", "NASA", "WHO", "Interpol Maritime"], ans: 0, exp: "The Hong Kong Police officially disclosed the case details as a global warning against AI deepfake fraud." }
     ]
   },
   {
     id: 2,
-    title: "The 'Pig Butchering' Crypto Investment Illusion",
-    category: "Crypto & Social Engineering",
-    date: "May 2026",
-    loss: "$450,000 (Individual Life Savings)",
-    summary: "A victim was befriended on LinkedIn and slowly manipulated over 3 months into investing their life savings into a fraudulent, hyper-realistic cryptocurrency trading platform.",
-    setup: "The scammer initiated contact under the guise of professional networking, eventually shifting communication to WhatsApp. Over weeks, they built deep trust without asking for money, sharing casual advice about a proprietary crypto AI arbitrage tool that generated steady passive income.",
-    trap: "The victim was guided to download a custom trading app that showed simulated daily profits of 8-12%. When the victim tried to withdraw their initial $10,000 profit, the withdrawal succeeded—building false confidence. They subsequently deposited their entire retirement fund. When they tried to withdraw again, the platform demanded a 30% 'tax clearance fee' before vanishing.",
+    title: "The 2023 MGM Resorts & Caesars Ransomware Attack",
+    category: "Workplace & Shadow IT",
+    date: "September 2023 (Published by FBI, CISA & SEC Filings)",
+    loss: "$100,000,000+ in Operations Loss & $15M Ransom Paid (Caesars)",
+    summary: "The hacking syndicate 'Scattered Spider' paralyzed MGM Resorts and Caesars Entertainment by calling the IT Service Desk on LinkedIn, impersonating an employee who 'forgot their password', and resetting Multi-Factor Authentication (MFA).",
+    setup: "Instead of writing complex code or exploiting software zero-days, attackers conducted 10 minutes of reconnaissance on LinkedIn to find the name and title of an MGM employee. They then called the outsourced IT Helpdesk via phone, impersonated the employee, and claimed they broke their phone and needed their Okta MFA token reset.",
+    trap: "Because the helpdesk agent did not enforce strict visual or out-of-band identity verification, they reset the MFA token over the phone. Attackers gained full domain admin access, deploying ALPHV/BlackCat ransomware across slot machines, hotel room digital keys, elevators, and reservation systems—costing MGM over $100M in lost revenue and forcing Caesars to pay a $15M ransom.",
     timeline: [
-      "Week 1: Scammer connects on LinkedIn posing as a tech executive; moves conversation to WhatsApp.",
-      "Week 3: Casual mentions of profitable AI crypto trading; shares screenshots of daily gains.",
-      "Week 5: Victim invests initial $5,000; dashboard shows it growing to $8,500 in 4 days.",
-      "Week 6: Victim successfully withdraws $3,000 without issue (the 'hook').",
-      "Week 10: Convinced of legitimacy, victim liquidates $450,000 retirement fund into the platform.",
-      "Week 12: Victim requests withdrawal; platform freezes account demanding $135,000 'tax fee'."
+      "Sept 10, 2023: Attackers identify an MGM employee on LinkedIn and locate their phone number via leaked databases.",
+      "Sept 11, 2023: Attackers call MGM IT Helpdesk, impersonate the employee, and request an MFA reset.",
+      "Sept 11, 2023: Helpdesk resets credentials; attackers log into Okta identity portal as domain administrators.",
+      "Sept 12, 2023: Ransomware deployed across 12 major casino resorts in Las Vegas, shutting down slot machines and hotel keys.",
+      "Sept 20, 2023: MGM refuses ransom, incurring $100M+ in rebuilding costs; Caesars pays $15M to prevent data leak."
     ],
     redFlags: [
-      "Unsolicited financial or investment mentorship from an online-only connection.",
-      "Trading apps or websites not listed on major regulated app stores or exchanges.",
-      "Demands to pay additional 'taxes' or 'fees' out of pocket to release funds.",
-      "Consistent, guaranteed high daily returns (8-12%) with zero market volatility.",
-      "Refusal of the online contact to ever meet in person or join a live video verification call."
+      "IT Helpdesk accepting verbal phone requests for MFA resets without strict identity proofing.",
+      "No mandatory video check or manager sign-off required for high-privilege Okta credential recovery.",
+      "Over-reliance on public LinkedIn data for employee verification questions.",
+      "Lack of network segmentation between corporate identity servers and casino floor gaming hardware."
     ],
-    psychologicalBias: "Halo Effect & Reciprocity — The scammer's apparent wealth and initial 'successful withdrawal' created an illusion of legitimacy and indebtedness, blinding the victim to risk.",
-    prevention: "Never invest on platforms suggested by online-only acquaintances. Verify all financial institutions through official regulatory registries like SEC, FINRA, or RBI.",
+    psychologicalBias: "Helpfulness & Complacency Bias — Helpdesk agents are incentivized to close tickets quickly and assist employees, making them prime targets for social engineering.",
+    prevention: "Implement cryptographic FIDO2/WebAuthn hardware security keys (which cannot be phished or reset verbally) and enforce strict out-of-band video identity proofing for all MFA resets.",
     quiz: [
-      { q: "What is the primary psychological goal of the initial small withdrawal in Pig Butchering?", opts: ["To test the bank's speed", "To build false trust and convince the victim the platform is real", "To pay the victim a salary", "To empty the scammer's account"], ans: 1, exp: "Allowing an initial withdrawal is the psychological 'hook' that triggers massive deposits." },
-      { q: "Where did the scammer first initiate contact with the victim?", opts: ["In a supermarket", "On LinkedIn under the guise of professional networking", "Through a phone call", "By physical mail"], ans: 1, exp: "Professional networks like LinkedIn lower defensive guardrails compared to dating apps." },
-      { q: "Why is the term 'Pig Butchering' used for this scam?", opts: ["It involves livestock trading", "Victims are 'fattened up' with trust and false profits before being slaughtered financially", "It was invented on a farm", "It uses pork prices as collateral"], ans: 1, exp: "The scam relies on a long grooming phase before the financial slaughter." },
-      { q: "What red flag was present regarding the trading app's returns?", opts: ["It showed negative returns", "It guaranteed 8-12% daily returns with zero volatility", "It only traded on weekends", "It used green text"], ans: 1, exp: "Guaranteed high returns without market fluctuations are mathematically impossible in legitimate markets." },
-      { q: "What excuse did the fraudulent platform give when the victim tried to withdraw their life savings?", opts: ["The server was down", "They demanded a 30% upfront 'tax clearance fee' out of pocket", "They said the password was wrong", "They asked for a physical check"], ans: 1, exp: "Advance-fee demands are the hallmark of the final stage of crypto scams." },
-      { q: "Which cognitive bias caused the victim to trust the scammer's investment advice?", opts: ["Halo Effect — assuming wealth and status equal trustworthiness", "Anchoring Bias", "Hindsight Bias", "Negativity Bias"], ans: 0, exp: "The scammer projected an affluent, successful persona to generate uncritical trust." },
-      { q: "Why did the scammer shift the conversation from LinkedIn to WhatsApp?", opts: ["LinkedIn was too expensive", "To move communication away from monitored corporate security filters to private encrypted chat", "Because WhatsApp has better stickers", "To share larger files"], ans: 1, exp: "Scammers transition victims off regulated platforms to avoid automated scam detection algorithms." },
-      { q: "What is the rule regarding paying 'taxes' to withdraw crypto gains?", opts: ["You must always pay taxes to the trading exchange directly", "Legitimate exchanges deduct fees from withdrawal balances; never pay upfront cash to unlock funds", "Taxes are paid in Bitcoin only", "Taxes are optional"], ans: 1, exp: "Real financial platforms never hold funds hostage demanding independent external fee deposits." },
-      { q: "How long did the scammer spend grooming the victim before the final theft?", opts: ["10 minutes", "Over 3 months (12 weeks)", "1 day", "5 years"], ans: 1, exp: "Long-term psychological manipulation creates emotional attachment and cognitive sunk cost." },
-      { q: "How can you verify if a cryptocurrency exchange is legitimate?", opts: ["Check if it has a nice logo", "Verify its registration on official government financial regulatory registries (e.g. SEC, FINRA, RBI)", "Ask the customer support chat", "Check if the website loads fast"], ans: 1, exp: "Regulatory verification is the only reliable proof of financial institutional legitimacy." }
+      { q: "How did the hacking group 'Scattered Spider' gain initial access to MGM Resorts in 2023?", opts: ["By hacking a firewall zero-day", "By calling the IT Helpdesk and impersonating an employee found on LinkedIn", "By plugging a USB into a slot machine", "Through an infected email attachment"], ans: 1, exp: "The breach was entirely achieved through verbal social engineering against the IT Helpdesk." },
+      { q: "What security control was bypassed during the phone call to the helpdesk?", opts: ["Antivirus software", "Multi-Factor Authentication (MFA) reset procedures", "Physical security turnstiles", "Wi-Fi encryption"], ans: 1, exp: "The helpdesk agent reset the user's Okta MFA token without robust identity verification." },
+      { q: "What was the financial impact of this cyber attack on MGM Resorts?", opts: ["$10,000", "Over $100,000,000 in lost revenue and rebuilding costs", "$500", "No financial impact"], ans: 1, exp: "MGM disclosed over $100M in financial damages in their official SEC Form 8-K filing." },
+      { q: "Why are IT Helpdesk agents particularly vulnerable to social engineering?", opts: ["They don't use computers", "They are psychologically incentivized to be helpful and resolve tickets quickly", "They never answer the phone", "They are robots"], ans: 1, exp: "Attackers exploit the natural customer-service mindset of service desk personnel." },
+      { q: "Which ransomware variant was deployed across the casino resorts?", opts: ["WannaCry", "ALPHV / BlackCat Ransomware", "CryptoLocker", "Zeus Botnet"], ans: 1, exp: "Scattered Spider operated as an affiliate of the ALPHV/BlackCat ransomware cartel." },
+      { q: "What public website did attackers use to find the target employee's name and job title?", opts: ["Facebook", "LinkedIn professional networking platform", "Instagram", "Wikipedia"], ans: 1, exp: "LinkedIn is the primary reconnaissance tool for mapping enterprise employee hierarchies." },
+      { q: "What action did Caesars Entertainment take during the same attack wave?", opts: ["They unplugged all slot machines forever", "They paid a $15 million ransom to prevent customer data publication", "They declared bankruptcy", "They ignored the attackers"], ans: 1, exp: "Caesars Entertainment officially disclosed in SEC filings that they paid approximately $15M in extortion." },
+      { q: "What physical casino systems were shut down by the ransomware at MGM?", opts: ["Only office printers", "Slot machines, hotel room electronic keycards, elevators, and payment terminals", "Only casino lights", "Water fountains"], ans: 1, exp: "The domain compromise allowed attackers to paralyze both corporate and IoT hospitality infrastructure." },
+      { q: "What technology permanently eliminates phone-based MFA reset attacks?", opts: ["Longer passwords", "Cryptographic FIDO2 / WebAuthn Hardware Keys (e.g. YubiKeys)", "Changing passwords every week", "SMS verification codes"], ans: 1, exp: "Hardware security keys bind authentication to a physical device that cannot be reset verbally over a phone." },
+      { q: "What federal agency issued a joint cybersecurity advisory regarding Scattered Spider tactics?", opts: ["USDA", "FBI and CISA (Cybersecurity and Infrastructure Security Agency)", "FAA", "FDA"], ans: 1, exp: "CISA and the FBI released Advisory AA23-320A documenting these exact service desk social engineering techniques." }
     ]
   },
   {
     id: 3,
-    title: "The Emergency 'New Phone' Smishing Wave",
-    category: "SMS & Phishing",
-    date: "April 2026",
-    loss: "$12,000 (Family Savings)",
-    summary: "Parents across multiple cities were targeted by text messages claiming to be their child in distress from a broken phone, leading to immediate wire transfers.",
-    setup: "A parent receives an SMS: 'Hi Mom, I dropped my phone in the toilet and it's completely broken. This is my temporary number. I have an urgent bill due today that I can't pay from this device. Can you WhatsApp me?'",
-    trap: "Once on WhatsApp, the scammer uses emotional urgency, claiming they will lose their apartment lease or college registration if $2,500 isn't wired via Zelle or Instant Bank Transfer immediately. A secondary accomplice plays the role of an impatient landlord.",
+    title: "The 2024 Snowflake Cloud Account Takeover Wave",
+    category: "Crypto & Social Engineering",
+    date: "May–June 2024 (Published by Mandiant, CISA & SEC Filings)",
+    loss: "165+ Major Enterprises Breached (Ticketmaster, Santander, AT&T)",
+    summary: "Threat actors (UNC5537) breached over 165 major corporations by stealing single-factor customer credentials from employee personal laptops infected with Infostealer malware.",
+    setup: "Snowflake is a cloud data warehouse used by Fortune 500 companies to store massive customer databases. Many customer organizations failed to enforce mandatory Multi-Factor Authentication (MFA) on their Snowflake accounts. Employees had logged into corporate Snowflake accounts from personal laptops or unmanaged devices.",
+    trap: "When employees downloaded pirated software or games on personal laptops, they secretly installed 'Infostealer' malware (like Lumma or Vidar). Attackers harvested saved browser passwords and valid session cookies, purchased them on Telegram dark web marketplaces for $10, and logged directly into corporate Snowflake databases without needing an MFA code—exfiltrating over 500 million customer records.",
     timeline: [
-      "10:00 AM: Scammer blasts 5,000 random phone numbers with the 'Hi Mom/Dad broken phone' template.",
-      "10:14 AM: Victim responds to the SMS, believing it is their daughter at college.",
-      "10:18 AM: Conversation moves to WhatsApp. Scammer claims university tuition portal is closing in 1 hour.",
-      "10:30 AM: Scammer provides a third-party 'University Bursar' bank account (mule account).",
-      "10:45 AM: Victim transfers $3,500 via instant banking; scammer immediately requests another $8,500 for 'housing deposit'."
+      "April 2024: Threat actor UNC5537 purchases harvested Snowflake credentials from Telegram Infostealer logs.",
+      "May 14, 2024: Attackers log into Ticketmaster's database using stolen single-factor credentials, stealing 560M customer records.",
+      "May 28, 2024: Santander Bank confirms breach of 30 million customer account details via the same vector.",
+      "June 2024: Mandiant and CISA issue emergency alerts confirming 165+ organizations compromised via single-factor accounts.",
+      "July 2024: AT&T discloses call and text records for 109 million customers stolen from its Snowflake cloud instance."
     ],
     redFlags: [
-      "Immediate financial emergency linked to a new or unrecognized phone number.",
-      "Refusal or inability to speak on a live voice call when requested ('microphone is broken').",
-      "Insistence on instant, irreversible payment methods (Zelle, UPI, gift cards, crypto).",
-      "Pressure created by artificial deadlines (e.g., 'lease expires in 30 minutes').",
-      "Bank account details provided do not match the child's name or university institution."
+      "Failure to enforce mandatory Multi-Factor Authentication (MFA) across all enterprise cloud database accounts.",
+      "Allowing employees or contractors to access enterprise data warehouses from unmanaged personal laptops.",
+      "Lack of IP allow-listing (filtering access so only trusted corporate network IPs can connect).",
+      "Ignoring dark web credential leak alerts for corporate domain email addresses."
     ],
-    psychologicalBias: "Emotional Hijacking & Urgency — Panic regarding a child's safety or future bypasses logical verification and maternal/paternal skepticism.",
-    prevention: "Always establish a family 'safe word' or call the original phone number/known friends to verify physical whereabouts before sending money.",
+    psychologicalBias: "Complacency & Convenience Bias — Assuming enterprise cloud providers handle all security while neglecting shared responsibility configuration like MFA.",
+    prevention: "Enforce mandatory MFA and IP allow-listing on all cloud repositories, prohibit corporate logins from personal unmanaged devices, and actively monitor dark web Infostealer logs.",
     quiz: [
-      { q: "Why do scammers claim their phone was dropped in the toilet or broken?", opts: ["To explain why they are using an unknown number and why they can't take voice calls", "Because water damage is common", "To ask for money to buy a new phone", "To test plumbing knowledge"], ans: 0, exp: "The broken phone excuse neatly explains both the strange number and the refusal to speak audibly." },
-      { q: "What communication channel do scammers usually request to move to after the initial SMS?", opts: ["Postal mail", "WhatsApp or Telegram", "In-person meeting", "Ham radio"], ans: 1, exp: "Encrypted messaging apps allow rich media manipulation and hide sender identity." },
-      { q: "What is the most effective proactive family defense against this scam?", opts: ["Never giving children phones", "Establishing a secret family 'Safe Word' that only real family members know", "Blocking all SMS messages", "Only paying in cash"], ans: 1, exp: "A simple verbal safe word instantly exposes an imposter who cannot provide it." },
-      { q: "When the parent requested a voice call, what excuse did the scammer give?", opts: ["They were asleep", "They claimed the phone microphone was damaged in the accident", "They said they forgot how to speak", "They were in a movie theater"], ans: 1, exp: "Imposters avoid voice calls because their voice would instantly betray that they are not the child." },
-      { q: "What payment methods do emergency smishing scammers demand?", opts: ["30-day corporate checks", "Instant, irreversible methods like Zelle, UPI, wire transfer, or gift cards", "Credit cards with chargeback protection", "Physical gold coins"], ans: 1, exp: "Instant transfers cannot be reversed once the victim realizes they were duped." },
-      { q: "Which cognitive bias is primarily weaponized in emergency family scams?", opts: ["Emotional Hijacking & Parental Urgency", "Sunk Cost Fallacy", "Confirmation Bias", "Optimism Bias"], ans: 0, exp: "Fear for a child's wellbeing induces acute stress, shutting down the brain's analytical prefrontal cortex." },
-      { q: "Who did the secondary scam accomplice impersonate on WhatsApp?", opts: ["A police officer", "An impatient landlord or university bursar demanding immediate settlement", "A pizza delivery driver", "A doctor"], ans: 1, exp: "Accomplices add artificial third-party pressure and credibility to the emergency scenario." },
-      { q: "What should you do before transferring money to a 'new number' claiming to be a relative?", opts: ["Send half the money first", "Call the relative's OLD known phone number or contact their roommates/friends to verify", "Ask for a photo of the broken phone", "Reply with a thumbs up"], ans: 1, exp: "Calling the old number often reveals the real relative sitting safely at home with a working phone." },
-      { q: "What type of bank account did the scammer provide for the tuition transfer?", opts: ["The university's official treasury account", "A third-party money mule account with an individual's name", "A government tax account", "A joint family account"], ans: 1, exp: "Scammers use network mule accounts to funnel stolen funds before cashing out." },
-      { q: "Why did the scammer ask for an additional $8,500 after receiving the first $3,500?", opts: ["They made an arithmetic error", "Because the victim demonstrated compliance, triggering classic 'Sunk Cost' exploitation", "The bank charged a fee", "They wanted to buy a laptop"], ans: 1, exp: "Once a victim pays once, scammers relentlessly extract more until resistance is met." }
+      { q: "What was the primary root cause of the 2024 Snowflake account takeover wave?", opts: ["A bug in Snowflake's core encryption", "Customer accounts lacking Multi-Factor Authentication (MFA) accessed via stolen credentials", "Physical break-ins at data centers", "SQL injection attacks"], ans: 1, exp: "Mandiant and CISA confirmed Snowflake's core systems were not breached; attackers used valid single-factor credentials." },
+      { q: "How did attackers obtain the valid username and password credentials?", opts: ["By guessing them", "From 'Infostealer' malware harvested from employee personal laptops and sold on Telegram", "From a phone book", "By hacking Wi-Fi routers"], ans: 1, exp: "Infostealer malware (like Lumma/Vidar) extracts saved passwords and session cookies from web browsers." },
+      { q: "Which major companies publicly disclosed massive data exfiltrations from this campaign in 2024?", opts: ["Only a small bookstore", "Ticketmaster, Santander Bank, and AT&T", "No companies were affected", "Local grocery stores"], ans: 1, exp: "SEC filings confirmed Ticketmaster (560M users), Santander (30M users), and AT&T (109M users) were breached." },
+      { q: "What is an 'Infostealer' in cybersecurity?", opts: ["A person who steals monitors", "Malware designed to silently export browser passwords, cookies, and crypto wallets", "A legitimate backup tool", "An antivirus scanner"], ans: 1, exp: "Infostealers are a multi-million dollar dark web industry feeding access brokers with valid corporate logins." },
+      { q: "What simple network security control would have blocked attackers even with stolen passwords?", opts: ["IP Allow-listing (restricting database logins to trusted corporate VPN IP addresses)", "Changing screen brightness", "Using alphabetical passwords", "Turning off monitors at night"], ans: 0, exp: "IP allow-listing prevents login attempts originating from unauthorized external or residential proxy IPs." },
+      { q: "What threat group was identified by Google Mandiant as leading this extortion campaign?", opts: ["Anonymous", "UNC5537 (a financially motivated cybercrime syndicate)", "Lazarus Group", "Equation Group"], ans: 1, exp: "Mandiant tracked the threat actor under the designation UNC5537, collaborating with global law enforcement." },
+      { q: "Why is allowing corporate logins from personal employee laptops a critical security risk?", opts: ["Personal laptops are too slow", "Personal devices lack enterprise endpoint detection (EDR) and are frequently infected by pirated software malware", "It consumes too much battery", "It violates warranty"], ans: 1, exp: "Unmanaged BYOD (Bring Your Own Device) endpoints lack monitoring, making them primary infection vectors." },
+      { q: "What is the 'Shared Responsibility Model' in cloud security?", opts: ["The cloud provider is 100% responsible for everything", "The cloud provider secures the infrastructure, but the customer is responsible for configuring access controls like MFA and user permissions", "Customers must clean the data center servers", "Security is optional"], ans: 1, exp: "In cloud computing, securing user authentication and data access permissions is always the customer's legal responsibility." },
+      { q: "How much did harvested corporate credentials typically sell for on dark web markets?", opts: ["$1,000,000 each", "As little as $10 to $50 per log on Telegram marketplaces", "$50,000", "They were free"], ans: 1, exp: "The commoditization of Infostealer logs has lowered the financial barrier for cyber extortion syndicates." },
+      { q: "What emergency action did Snowflake take following the breach disclosures?", opts: ["They shut down the company", "They rolled out mandatory MFA enforcement policies for all newly created customer accounts", "They deleted all customer databases", "They stopped using passwords"], ans: 1, exp: "Snowflake updated its platform policies to mandate MFA and advance admin controls across all tenant instances." }
     ]
   },
   {
     id: 4,
-    title: "The Shadow IT 'AI PDF Summarizer' Trojan",
-    category: "Workplace & Shadow IT",
-    date: "March 2026",
-    loss: "Corporate Data Breach & $5M Regulatory Fine",
-    summary: "Employees looking to save time used an unapproved, free online AI PDF summarizer that secretly exfiltrated confidential client contracts and API keys.",
-    setup: "A marketing team needed to summarize 50 lengthy legal vendor agreements. Instead of using the company's approved enterprise software, an employee found a free website titled 'FastPDF-AI-Pro.com' via a search engine ad.",
-    trap: "The website provided excellent, accurate summaries—encouraging widespread adoption across the department. However, the site's terms of service secretly granted the operators full ownership of all uploaded documents. Within weeks, sensitive NDA contracts and internal API keys embedded in the documents were sold on the dark web, leading to a massive corporate compromise.",
+    title: "The 2024 Change Healthcare Ransomware Paralyzation",
+    category: "SMS & Phishing",
+    date: "February 2024 (Published by U.S. HHS, CISA & Congressional Testimony)",
+    loss: "$22M Bitcoin Ransom Paid, 100M Americans' Medical Data Breached",
+    summary: "Ransomware cartel BlackCat breached Change Healthcare (a subsidiary of UnitedHealth Group) via a legacy Citrix remote desktop portal that lacked Multi-Factor Authentication, paralyzing 80% of U.S. hospital payment processing.",
+    setup: "Change Healthcare processes 15 billion medical transactions annually for U.S. hospitals and pharmacies. A legacy Citrix remote access portal used by remote employees had been left without Multi-Factor Authentication (MFA) enabled. Attackers obtained compromised credentials for this portal from previous data leaks.",
+    trap: "On February 12, 2024, ALPHV/BlackCat actors logged into the Citrix portal using single-factor credentials. They spent 9 days quietly moving laterally through the healthcare network, exfiltrating 6 terabytes of sensitive patient medical records, diagnoses, and Social Security numbers. On February 21, they detonated ransomware across 15,000 healthcare servers.",
     timeline: [
-      "Day 1: Employee clicks sponsored Google Ad for 'Free Instant AI PDF Contract Summarizer'.",
-      "Day 2: Employee uploads 10 confidential NDA agreements containing proprietary pricing tables.",
-      "Day 5: Word spreads in the department; 14 employees upload 120+ internal architectural docs.",
-      "Day 18: Automated scrapers on the backend extract AWS root credentials embedded in an engineering PDF.",
-      "Day 25: Attackers access corporate AWS infrastructure, exfiltrating 40TB of customer database records."
+      "Feb 12, 2024: Attackers log into Change Healthcare's Citrix remote desktop portal using credentials lacking MFA.",
+      "Feb 13–20, 2024: Attackers harvest domain credentials, exfiltrating 6TB of protected health information (PHI) for 100M patients.",
+      "Feb 21, 2024: Ransomware detonated; Change Healthcare disconnects all systems, freezing billing for 80% of U.S. hospitals.",
+      "March 2024: UnitedHealth Group pays a $22,000,000 Bitcoin ransom to ALPHV/BlackCat to obtain the decryption key.",
+      "May 2024: UnitedHealth CEO testifies before U.S. Congress confirming the root cause was a single portal without MFA."
     ],
     redFlags: [
-      "Free tools with no clear business model or transparent data privacy policy.",
-      "Websites discovered via sponsored search engine ads rather than IT department recommendations.",
-      "No SOC2, ISO 27001, or enterprise data residency compliance certifications visible.",
-      "Terms of Service claiming perpetual license or ownership over uploaded user content.",
-      "No option to delete or purge uploaded documents from server storage."
+      "Leaving legacy remote access portals (Citrix, VPN, RDP) exposed to the public internet without mandatory MFA.",
+      "Inadequate network segmentation allowing attackers to jump from a remote portal to core medical billing databases.",
+      "Lack of automated behavioral alerts when 6 terabytes of data are suddenly exported to external IP addresses.",
+      "Failure to audit legacy acquisitions for baseline cybersecurity hygiene."
     ],
-    psychologicalBias: "Complacency & Path of Least Resistance — Prioritizing speed and convenience over established enterprise security protocols.",
-    prevention: "Implement strict Shadow IT monitoring, provide approved enterprise AI tools, and train employees on data residency risks and credential hygiene.",
+    psychologicalBias: "Optimism Bias & Technical Debt Neglect — Assuming legacy systems inherited during corporate mergers are secure without performing rigorous technical audits.",
+    prevention: "Conduct mandatory MFA audits on 100% of external-facing portals, implement Zero Trust network segmentation, and deploy automated Data Loss Prevention (DLP) rate-limiting.",
     quiz: [
-      { q: "What does the term 'Shadow IT' refer to in a corporate setting?", opts: ["Working during night shifts", "Using unapproved software, apps, or web utilities without IT Security authorization", "Dark mode themes on monitors", "Encrypted underground servers"], ans: 1, exp: "Shadow IT bypasses security vetting, introducing unmonitored data leakage paths." },
-      { q: "How did the employee discover the fraudulent 'FastPDF-AI-Pro' website?", opts: ["From an internal IT newsletter", "Through a sponsored search engine advertisement", "From a software catalog", "At a cybersecurity conference"], ans: 1, exp: "Scammers frequently buy sponsored search ads to rank above legitimate utilities." },
-      { q: "Why did the marketing team adopt the free online tool so enthusiastically?", opts: ["It paid them rewards", "It provided fast, accurate summaries, triggering convenience over security awareness", "Their manager forced them", "It had multiplayer games"], ans: 1, exp: "The path of least resistance (convenience) is the primary driver of workplace Shadow IT." },
-      { q: "What hidden clause was buried in the website's Terms of Service?", opts: ["A monthly fee", "A clause granting the site owners full ownership and resale rights to all uploaded files", "A requirement to write a review", "A warranty disclaimer"], ans: 1, exp: "Predatory utilities use obscure legal boilerplate to justify harvesting proprietary uploads." },
-      { q: "What critical technical asset was accidentally uploaded inside one of the PDFs?", opts: ["A cafeteria menu", "Internal AWS root credentials and API keys", "A birthday card", "An open-source font"], ans: 1, exp: "Developers and engineers sometimes accidentally leave secrets or keys in documentation files." },
-      { q: "What was the ultimate consequence of the Shadow IT PDF breach?", opts: ["The printer ran out of ink", "Exfiltration of 40TB of customer data and a $5M regulatory privacy fine", "The website crashed", "Nothing happened"], ans: 1, exp: "Data leaks from Shadow IT often trigger GDPR/CCPA regulatory investigations and massive fines." },
-      { q: "Which enterprise compliance certification should you look for before uploading corporate data?", opts: ["HTML5 Certified", "SOC 2 Type II or ISO 27001", "Energy Star Rating", "Wi-Fi Alliance"], ans: 1, exp: "SOC 2 and ISO 27001 verify strict organizational and technical data security controls." },
-      { q: "Why is copying and pasting company code or contracts into public AI chat models risky?", opts: ["It slows down the keyboard", "Public AI models may ingest proprietary data into their training sets or expose it to third parties", "It causes syntax errors", "It violates copyright"], ans: 1, exp: "Public AI utilities do not guarantee data isolation unless covered by an enterprise agreement." },
-      { q: "What is the best way for organizations to eliminate dangerous Shadow IT usage?", opts: ["Banning all computers", "Providing fast, approved, user-friendly enterprise AI tools so employees don't seek external alternatives", "Cutting off internet access", "Monitoring keyboard clicks"], ans: 1, exp: "When employees have secure, high-quality internal tools, the incentive to use risky external sites disappears." },
-      { q: "Which cognitive bias caused the marketing team to ignore security risks?", opts: ["Complacency & The Path of Least Resistance", "Authority Bias", "Scarcity Bias", "Survivorship Bias"], ans: 0, exp: "When deadlines loom, the human brain naturally prioritizes immediate task completion over abstract security risks." }
+      { q: "What was the exact root cause of the 2024 Change Healthcare breach confirmed in U.S. Congressional testimony?", opts: ["An advanced quantum computer attack", "A legacy Citrix remote desktop portal that lacked Multi-Factor Authentication (MFA)", "An employee dropping a USB drive", "A physical wire cut"], ans: 1, exp: "UnitedHealth CEO Andrew Witty testified under oath before Congress that a Citrix portal without MFA was the sole entry point." },
+      { q: "What percentage of U.S. hospital and pharmacy billing processing was paralyzed by this attack?", opts: ["1%", "Approximately 80% of U.S. medical billing and prescription processing", "10%", "50%"], ans: 1, exp: "The outage caused nationwide financial paralysis for hospitals, pharmacies, and healthcare providers for weeks." },
+      { q: "How much did UnitedHealth Group pay in Bitcoin ransom to the ALPHV/BlackCat cartel?", opts: ["$1,000", "$22,000,000 in Bitcoin ($22M)", "$100,000", "Zero dollars"], ans: 1, exp: "Blockchain analytics and subsequent congressional disclosures confirmed the $22 million extortion payment." },
+      { q: "How many Americans had their protected health information (PHI) and Social Security numbers compromised?", opts: ["100 people", "Over 100 million Americans (1 in 3 U.S. citizens)", "5,000 people", "No data was stolen"], ans: 1, exp: "The U.S. Department of Health and Human Services confirmed this as the largest healthcare data breach in American history." },
+      { q: "How long did the attackers dwell inside Change Healthcare's network before detonating the ransomware?", opts: ["1 minute", "9 days (from February 12 to February 21, 2024)", "5 years", "12 hours"], ans: 1, exp: "Attackers used the 9-day dwell time to exfiltrate 6 terabytes of medical data before triggering encryption." },
+      { q: "What is 'Zero Trust Network Segmentation'?", opts: ["Trusting all employees", "A security architecture where no user or system is trusted by default, requiring verification at every network boundary", "Disconnecting from Wi-Fi", "Using zero passwords"], ans: 1, exp: "Zero Trust ensures that even if an attacker breaches a peripheral portal, they cannot move laterally to critical databases." },
+      { q: "What happens when companies inherit 'Technical Debt' during corporate mergers without auditing?", opts: ["They save money", "Unmonitored legacy systems and unpatched portals become easy entry vectors for cybercriminals", "Their stock always doubles", "Computers run faster"], ans: 1, exp: "Change Healthcare had been acquired by Optum/UnitedHealth, leaving legacy infrastructure integration gaps." },
+      { q: "What is Data Loss Prevention (DLP) software designed to detect?", opts: ["Broken keyboards", "Abnormal, massive data exfiltration or unauthorized transfers of sensitive files to external servers", "Slow internet speeds", "Spam emails"], ans: 1, exp: "DLP tools monitor egress traffic and block or alert when terabytes of sensitive files are being exported." },
+      { q: "Why did paying the $22M ransom fail to fully protect Change Healthcare from further extortion?", opts: ["The Bitcoin network rejected it", "An affiliate of the ransomware group kept a copy of the stolen data and demanded a second ransom weeks later", "The decryptor broke the computers", "The FBI confiscated the money"], ans: 1, exp: "In ransomware cartels, affiliates frequently double-cross victims by demanding secondary extortion after the primary ransom is paid." },
+      { q: "Which federal law regulates the protection and breach notification of healthcare data in the U.S.?", opts: ["GDPR", "HIPAA (Health Insurance Portability and Accountability Act)", "DMCA", "COPPA"], ans: 1, exp: "HIPAA mandates strict administrative, physical, and technical safeguards for protected health information (PHI)." }
     ]
   }
 ];
@@ -205,8 +200,9 @@ export default function CaseStudiesPage() {
     setGenerating(true);
     setGenError('');
     try {
-      const prompt = `Generate 1 documented, REAL-WORLD cybersecurity scam or data breach case study based on ACTUAL historical facts, verified security reports (e.g. FBI IC3, CISA, FTC, ENISA, or major cybersecurity intelligence reports), and real events from 2023–2026 (such as MGM Resorts ransomware, Change Healthcare breach, Snowflake cloud account takeovers, or 3CX/AnyDesk supply chain compromises).
-      You MUST include real facts and figures: the actual name of the organization or threat actor involved (if publicly documented), the verified financial loss or ransom demand, the realistic or documented number of users/victims affected, and real dates.
+      const prompt = `Generate 1 documented, REAL-WORLD cybersecurity scam or data breach case study based on ACTUAL historical facts, verified security reports (e.g. FBI IC3, CISA, FTC, ENISA, or major cybersecurity intelligence reports), and real events from 2021–2026.
+      CRITICAL RULE: You MUST name a REAL, VERIFIED historical enterprise or organization (e.g. SolarWinds, Twilio, Uber, Okta, 3CX, AnyDesk, Colonial Pipeline, MGM Resorts, Change Healthcare, Arup Group). Do NOT generate fictional names, generic hypothetical scenarios, or AI examples under any circumstances.
+      You MUST include real facts and figures: the actual name of the organization or threat actor involved, the verified financial loss or ransom demand, the documented number of victims affected, and real dates.
       Return ONLY a valid JSON object with EXACTLY these keys:
       {
         "title": "Real incident title (e.g. The 2024 Snowflake Cloud Account Takeover)",

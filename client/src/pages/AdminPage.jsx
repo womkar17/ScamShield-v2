@@ -565,13 +565,32 @@ export default function AdminPage() {
                   </div>
                   <div style={s.formGroup}>
                     <label style={s.formLabel}>Target User Email Address</label>
-                    <input
-                      type="email"
-                      style={s.formInput}
-                      value={newCampaign.targetEmail}
-                      onChange={e => setNewCampaign({ ...newCampaign, targetEmail: e.target.value })}
-                      placeholder="e.g. employee@company.com (or all@company.com)"
-                    />
+                    <div style={{ display: 'flex', gap: '8px', flexDirection: 'column' }}>
+                      <select
+                        style={{ ...s.formInput, cursor: 'pointer', background: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}
+                        value={profiles.some(p => p.email === newCampaign.targetEmail) ? newCampaign.targetEmail : ""}
+                        onChange={e => {
+                          if (e.target.value) {
+                            setNewCampaign({ ...newCampaign, targetEmail: e.target.value });
+                          }
+                        }}
+                      >
+                        <option value="" style={{ background: '#1e1e2e', color: '#fff' }}>-- Select from Registered Users ({profiles.length}) --</option>
+                        <option value="all@company.com" style={{ background: '#1e1e2e', color: '#38bdf8' }}>🌐 All Registered Users (Broadcast Drill)</option>
+                        {profiles.map(p => (
+                          <option key={p.id || p.email} value={p.email} style={{ background: '#1e1e2e', color: '#fff' }}>
+                            👤 {p.username || p.email?.split('@')[0]} ({p.email}) [{p.role || 'user'}]
+                          </option>
+                        ))}
+                      </select>
+                      <input
+                        type="email"
+                        style={s.formInput}
+                        value={newCampaign.targetEmail}
+                        onChange={e => setNewCampaign({ ...newCampaign, targetEmail: e.target.value })}
+                        placeholder="Or type custom email address (e.g. employee@company.com)"
+                      />
+                    </div>
                   </div>
                   <div style={s.formGroup}>
                     <label style={s.formLabel}>Phishing Template Vector</label>
