@@ -1,4 +1,4 @@
-import React, { useState, useContext, useMemo } from 'react';
+import React, { useState, useEffect, useContext, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import { GamificationContext } from '../context/GamificationContext';
@@ -18,7 +18,6 @@ const GamesPage = () => {
   const { addXP } = useContext(GamificationContext);
   const [activeGame, setActiveGame] = useState(null);
   const [completedModal, setCompletedModal] = useState(null);
-  const [generatingAi, setGeneratingAi] = useState(false);
 
   const [customGames, setCustomGames] = useState(() => {
     try {
@@ -50,63 +49,21 @@ const GamesPage = () => {
     };
   };
 
-  const handleAIGenerateGame = async () => {
-    setGeneratingAi(true);
-    try {
-      const apiUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
-      const prompt = `Generate an innovative, fun cybersecurity scam awareness mini-game challenge.
-Return ONLY a JSON object with this exact schema:
-{
-  "title": "Short catchy game title",
-  "description": "2 sentence scenario describing an attempted social engineering scam",
-  "difficulty": "Medium",
-  "xpReward": 100,
-  "type": "quiz",
-  "thumbnail": "🤖",
-  "data": {
-    "scenario": "Detailed scenario context",
-    "question": "What is the critical red flag in this situation?",
-    "options": [
-      { "text": "The correct red flag identification", "isCorrect": true },
-      { "text": "Plausible incorrect assumption A", "isCorrect": false },
-      { "text": "Plausible incorrect assumption B", "isCorrect": false }
-    ],
-    "threatAnalysis": {
-      "psychology": "Psychological manipulation technique used",
-      "payload": "Consequences if user falls for it",
-      "defense": "Best defensive action to take"
-    }
-  }
-}`;
-      const res = await fetch(`${apiUrl}/api/ai/chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [{ role: 'user', content: prompt }] })
-      });
-      const data = await res.json();
-      if (data.ok && data.reply) {
-        let parsed = null;
-        try {
-          const match = data.reply.match(/\{[\s\S]*\}/);
-          if (match) parsed = JSON.parse(match[0]);
-        } catch (e) {}
-        if (parsed && parsed.title) {
-          const newGame = { ...parsed, id: Date.now() };
-          const updated = [newGame, ...customGames];
-          setCustomGames(updated);
-          localStorage.setItem('ss_custom_games', JSON.stringify(updated));
-          soundEffects.play('success');
-          alert(`✨ AI Generated a brand new game: "${newGame.title}"! It is now playable below in the Community Games section!`);
-        } else {
-          alert("AI generated a scenario, but JSON formatting was slightly off. Please try again!");
-        }
-      }
-    } catch (err) {
-      alert("AI Game Generation failed: " + err.message);
-    } finally {
-      setGeneratingAi(false);
-    }
-  };
+  useEffect(() => {
+    const loadSaved = () => {
+      try {
+        const saved = localStorage.getItem('ss_custom_games');
+        if (saved) setCustomGames(JSON.parse(saved));
+      } catch (e) {}
+    };
+    loadSaved();
+    window.addEventListener('storage', loadSaved);
+    window.addEventListener('focus', loadSaved);
+    return () => {
+      window.removeEventListener('storage', loadSaved);
+      window.removeEventListener('focus', loadSaved);
+    };
+  }, []);
 
   const dailyGames = useMemo(() => {
     const today = new Date().toISOString().split('T')[0];
@@ -162,9 +119,8 @@ Return ONLY a JSON object with this exact schema:
       case 'visual':
         GameComponent = VisualScamGame;
         break;
-      // New engines go here
       default:
-        return <div>Unknown game type: {activeGame.type}</div>;
+        GameComponent = QuizGame;
     }
     return (
       <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.9)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, overflow: 'auto', padding: '2rem' }}>
@@ -189,28 +145,6 @@ Return ONLY a JSON object with this exact schema:
         <p style={{ fontSize: '1.2rem', color: 'var(--text2)', maxWidth: '600px', margin: '0 auto' }}>
           Test your instincts with interactive challenges. Earn XP, unlock badges, and sharpen your scam-spotting skills.
         </p>
-        <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-          <button
-            onClick={handleAIGenerateGame}
-            disabled={generatingAi}
-            style={{
-              background: 'linear-gradient(135deg, #a855f7, #ec4899)',
-              border: 'none',
-              color: '#fff',
-              padding: '0.8rem 1.8rem',
-              borderRadius: '20px',
-              fontWeight: 'bold',
-              cursor: generatingAi ? 'wait' : 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              boxShadow: '0 4px 15px rgba(168, 85, 247, 0.4)',
-              fontSize: '1rem'
-            }}
-          >
-            <span>{generatingAi ? '🤖 AI is inventing a new scam scenario...' : '✨ AI Generate Custom Game Challenge (Groq/Gemini)'}</span>
-          </button>
-        </div>
       </header>
 
       {customGames.length > 0 && (

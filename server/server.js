@@ -19,32 +19,32 @@ let activeThreatBroadcast = null;
 // Initialize Supabase Client (Service Role for backend DB access)
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
-// Universal SMTP Email Sender (Supports Google SMTP / Gmail & Brevo SMTP)
+// Universal SMTP Email Sender (Supports Google SMTP / Gmail)
 async function sendCloudEmail(toEmail, subject, htmlContent) {
-  // Check if using Brevo vs Google SMTP / Gmail
-  const isBrevo = process.env.BREVO_USER || (process.env.BREVO_PASS && process.env.BREVO_PASS.startsWith('xsmtpsib-'));
-  const smtpHost = process.env.SMTP_HOST || (isBrevo ? 'smtp-relay.brevo.com' : 'smtp.gmail.com');
-  const smtpPort = parseInt(process.env.SMTP_PORT || (isBrevo ? '587' : '465'));
-  const smtpUser = process.env.SMTP_USER || process.env.GMAIL_USER || process.env.BREVO_USER || process.env.BREVO_SENDER;
-  const smtpPass = process.env.SMTP_PASS || process.env.GMAIL_PASS || process.env.GMAIL_APP_PASSWORD || process.env.BREVO_PASS;
+  const smtpUser = process.env.SMTP_USER || process.env.GMAIL_USER || process.env.EMAIL_USER || process.env.BREVO_SENDER || process.env.BREVO_USER;
+  const smtpPass = process.env.SMTP_PASS || process.env.GMAIL_PASS || process.env.EMAIL_PASS || process.env.GMAIL_APP_PASSWORD || process.env.BREVO_PASS;
 
   if (!smtpUser || !smtpPass) {
-    throw new Error('Missing SMTP credentials in .env file (SMTP_USER/SMTP_PASS or GMAIL_USER/GMAIL_PASS or BREVO_USER/BREVO_PASS).');
+    throw new Error('Missing SMTP credentials in .env file (SMTP_USER/SMTP_PASS or GMAIL_USER/GMAIL_PASS).');
   }
+
+  // Automatically detect Gmail / Google accounts to force smtp.gmail.com over SSL Port 465
+  const isGmail = smtpUser.toLowerCase().includes('gmail.com') || smtpUser.toLowerCase().includes('googlemail.com') || process.env.GMAIL_USER;
+  const smtpHost = process.env.SMTP_HOST || (isGmail ? 'smtp.gmail.com' : 'smtp-relay.brevo.com');
+  const smtpPort = parseInt(process.env.SMTP_PORT || (isGmail ? '465' : '587'));
 
   const transporter = nodemailer.createTransport({
     host: smtpHost,
     port: smtpPort,
-    secure: smtpPort === 465, // true for 465 (SSL), false for 587 (TLS)
+    secure: smtpPort === 465, // true for 465 (SSL/TLS), false for 587
     auth: {
       user: smtpUser,
       pass: smtpPass
     }
   });
 
-  const senderName = process.env.BREVO_SENDER || smtpUser;
   const mailOptions = {
-    from: `"ScamShield Platform" <${senderName}>`,
+    from: `"ScamShield Platform" <${smtpUser}>`,
     to: toEmail,
     subject: subject,
     html: htmlContent

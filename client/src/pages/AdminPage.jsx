@@ -704,12 +704,8 @@ Return ONLY a valid JSON object with exactly two keys:
                     <div style={{ display: 'flex', gap: '8px', flexDirection: 'column' }}>
                       <select
                         style={{ ...s.formInput, cursor: 'pointer', background: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}
-                        value={profiles.some(p => p.email === newCampaign.targetEmail) ? newCampaign.targetEmail : ""}
-                        onChange={e => {
-                          if (e.target.value) {
-                            setNewCampaign({ ...newCampaign, targetEmail: e.target.value });
-                          }
-                        }}
+                        value={newCampaign.targetEmail}
+                        onChange={e => setNewCampaign({ ...newCampaign, targetEmail: e.target.value })}
                       >
                         <option value="" style={{ background: '#1e1e2e', color: '#fff' }}>-- Select from Registered Users ({profiles.length}) --</option>
                         <option value="all@company.com" style={{ background: '#1e1e2e', color: '#38bdf8' }}>🌐 All Registered Users (Broadcast Drill)</option>
@@ -719,13 +715,6 @@ Return ONLY a valid JSON object with exactly two keys:
                           </option>
                         ))}
                       </select>
-                      <input
-                        type="email"
-                        style={s.formInput}
-                        value={newCampaign.targetEmail}
-                        onChange={e => setNewCampaign({ ...newCampaign, targetEmail: e.target.value })}
-                        placeholder="Or type custom email address (e.g. employee@company.com)"
-                      />
                     </div>
                   </div>
                   <div style={s.formGroup}>
