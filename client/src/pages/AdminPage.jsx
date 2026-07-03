@@ -168,6 +168,7 @@ export default function AdminPage() {
   });
   const [previewTemplate, setPreviewTemplate] = useState(null);
   const [aiCrafting, setAiCrafting] = useState(false);
+  const [aiGameCrafting, setAiGameCrafting] = useState(false);
   const [previewGame, setPreviewGame] = useState(null);
 
   // Live Threat Broadcast State
@@ -243,11 +244,23 @@ export default function AdminPage() {
   };
 
   const loadCustomGames = async () => {
+    // 1. Direct Supabase cloud database check
+    try {
+      const { data, error } = await supabase.from('custom_games').select('*').order('created_at', { ascending: false });
+      if (!error && data && data.length > 0) {
+        const clean = data.filter(g => g.title !== 'Phishy Email Alert');
+        setCustomGames(clean);
+        localStorage.setItem('ss_custom_games', JSON.stringify(clean));
+        return;
+      }
+    } catch (e) {}
+
+    // 2. Server API fallback
     try {
       const apiUrl = getApiUrl();
       const res = await fetch(`${apiUrl}/api/games/custom`);
       const data = await res.json();
-      if (data.ok && Array.isArray(data.games)) {
+      if (data.ok && Array.isArray(data.games) && data.games.length > 0) {
         const clean = data.games.filter(g => g.title !== 'Phishy Email Alert');
         setCustomGames(clean);
         localStorage.setItem('ss_custom_games', JSON.stringify(clean));
@@ -255,6 +268,7 @@ export default function AdminPage() {
       }
     } catch (e) {}
 
+    // 3. Local storage fallback
     try {
       const saved = localStorage.getItem('ss_custom_games');
       if (saved) {
@@ -352,6 +366,9 @@ export default function AdminPage() {
     setCustomGames(updated);
     localStorage.setItem('ss_custom_games', JSON.stringify(updated));
 
+    // Try direct Supabase client upsert for 100% cloud reliability across all devices
+    try { await supabase.from('custom_games').upsert([created]); } catch (e) {}
+
     try {
       const apiUrl = getApiUrl();
       await fetch(`${apiUrl}/api/admin/games/custom`, {
@@ -362,17 +379,55 @@ export default function AdminPage() {
     } catch (e) {}
 
     setNewGame({ title: '', description: '', type: 'quiz', difficulty: 'Easy', xpReward: 50 });
-    alert("✅ Custom Game saved to Cloud Database! It is now live and playable in the Arcade for all users!");
+    alert("✅ Custom Game saved! If hosted online, make sure you created the 'custom_games' table in Supabase so other users' devices can see it!");
   };
 
   const deleteCustomGame = async (id) => {
     const updated = customGames.filter(g => g.id !== id);
     setCustomGames(updated);
     localStorage.setItem('ss_custom_games', JSON.stringify(updated));
+    try { await supabase.from('custom_games').delete().eq('id', id); } catch (e) {}
     try {
       const apiUrl = getApiUrl();
       await fetch(`${apiUrl}/api/admin/games/custom/${id}`, { method: 'DELETE' });
     } catch (e) {}
+  };
+
+  const handleAIGenerateGameDescription = async () => {
+    if (!newGame.title && !newGame.type) {
+      alert("Please enter a game Title or select a Type first!");
+      return;
+    }
+    setAiGameCrafting(true);
+    try {
+      const apiUrl = getApiUrl();
+      const prompt = `Write a compelling, realistic cybersecurity minigame scenario description for a game titled "${newGame.title || 'Cyber Challenge'}" of type "${newGame.type || 'quiz'}". Keep it engaging, educational, and around 2 to 3 sentences long. Return ONLY the description text without quotes or markdown.`;
+      const res = await fetch(`${apiUrl}/api/ai/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: [{ role: 'user', content: prompt }] })
+      });
+      const data = await res.json();
+      if (data.ok && data.reply) {
+        const clean = data.reply.replace(/^["']|["']$/g, '').trim();
+        setNewGame(prev => ({ ...prev, description: clean }));
+      } else {
+        throw new Error("AI Fallback");
+      }
+    } catch (e) {
+      const fallbacks = {
+        quiz: `Test your defensive reflexes! Analyze a real-world social engineering attack vector and choose the correct mitigation strategy to protect corporate data.`,
+        swipe: `Tinder for Cyber Threats! Swipe right if the email or URL is verified and safe, or swipe left immediately if you spot spoofed domains and phishing lures!`,
+        password: `Enter the Hacker Terminal! Craft an unbreakable passphrase and watch our real-time entropy calculator test your defense against brute-force dictionary attacks.`,
+        'spot-flag': `Visual Inspection Challenge! Examine this suspicious corporate screenshot and click on all the hidden red flags before the hacker infiltrates your network!`,
+        chat: `Simulated SMS Smishing Attack! Navigate a suspicious WhatsApp/SMS conversation from an executive impersonator and avoid revealing sensitive credentials.`,
+        audio: `Vishing Audio Interception! Listen to this AI voice clone phone call from "IT Support" and press HANG UP immediately when you hear the social engineering trigger!`,
+        visual: `Deepfake & Steganography Scanner! Use your forensic contrast tools to analyze an executive video call screen and uncover hidden visual artifacts.`
+      };
+      setNewGame(prev => ({ ...prev, description: fallbacks[newGame.type] || fallbacks.quiz }));
+    } finally {
+      setAiGameCrafting(false);
+    }
   };
 
   // AI Craft Phishing Email Assistant
@@ -825,6 +880,27 @@ Return ONLY a valid JSON object with exactly two keys:
                     <span>Preview What Email Looks Like</span>
                   </button>
                 </div>
+
+                {/* How to Fix Google SMTP Error on Vercel */}
+                <div style={{ marginTop: '1.5rem', background: 'rgba(234, 179, 8, 0.08)', border: '1px solid rgba(234, 179, 8, 0.3)', padding: '16px', borderRadius: '12px' }}>
+                  <h3 style={{ color: '#facc15', marginTop: 0, display: 'flex', alignItems: 'center', gap: '8px', fontSize: '15px' }}>
+                    <span>💡</span>
+                    <span>Getting "Missing Google SMTP credentials in Vercel"? Here is how to fix it:</span>
+                  </h3>
+                  <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '13.5px', lineHeight: '1.6', margin: '8px 0' }}>
+                    To send live emails when your application is hosted on Vercel, you must add your Google SMTP credentials to your Vercel Project Environment Variables:
+                  </p>
+                  <ol style={{ color: 'rgba(255,255,255,0.75)', fontSize: '13px', lineHeight: '1.7', paddingLeft: '20px', margin: '0 0 10px 0' }}>
+                    <li>Go to your Google Account → <strong>Security</strong> → Enable <strong>2-Step Verification</strong>.</li>
+                    <li>Search for <strong>App Passwords</strong> in your Google Account security settings and generate a 16-character app password (e.g., <code style={{ color: '#fff', background: 'rgba(0,0,0,0.4)', padding: '2px 6px', borderRadius: '4px' }}>abcd efgh ijkl mnop</code>).</li>
+                    <li>Open your <strong>Vercel Dashboard</strong> → Select your Project → <strong>Settings</strong> → <strong>Environment Variables</strong>.</li>
+                    <li>Add two environment variables: <br/>
+                      • <strong><code style={{ color: '#38bdf8' }}>SMTP_USER</code></strong> = Your Gmail address (e.g., <code style={{ color: '#fff' }}>yourname@gmail.com</code>)<br/>
+                      • <strong><code style={{ color: '#38bdf8' }}>SMTP_PASS</code></strong> = Your 16-character App Password without spaces (e.g., <code style={{ color: '#fff' }}>abcdefghijklmnop</code>)
+                    </li>
+                    <li>Click <strong>Save</strong> and redeploy your Vercel project! Your emails will immediately send to real user inboxes.</li>
+                  </ol>
+                </div>
               </div>
 
               <div style={{ ...s.card, marginTop: '1.5rem' }}>
@@ -994,17 +1070,75 @@ Return ONLY a valid JSON object with exactly two keys:
                   </div>
                 </div>
                 <div style={{ ...s.formGroup, marginTop: '1rem' }}>
-                  <label style={s.formLabel}>Description</label>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '8px' }}>
+                    <label style={{ ...s.formLabel, margin: 0 }}>Description & Scenario</label>
+                    <button
+                      type="button"
+                      onClick={handleAIGenerateGameDescription}
+                      disabled={aiGameCrafting}
+                      style={{
+                        background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+                        color: '#fff',
+                        border: 'none',
+                        padding: '6px 14px',
+                        borderRadius: '6px',
+                        fontSize: '12px',
+                        fontWeight: 'bold',
+                        cursor: aiGameCrafting ? 'wait' : 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        boxShadow: '0 2px 8px rgba(168, 85, 247, 0.3)'
+                      }}
+                    >
+                      {aiGameCrafting ? '🤖 Generating Scenario...' : '✨ AI Generate Description & Scenario'}
+                    </button>
+                  </div>
                   <input
                     style={s.formInput}
                     value={newGame.description}
                     onChange={e => setNewGame({ ...newGame, description: e.target.value })}
-                    placeholder="Describe the game scenario..."
+                    placeholder="Describe the game scenario or click '✨ AI Generate' above..."
                   />
                 </div>
                 <button style={{ ...s.submitBtn, marginTop: '1rem' }} onClick={saveCustomGame}>
-                  + Add Game
+                  + Add Game to Arcade
                 </button>
+              </div>
+
+              {/* Detailed Explanation of How Custom Games Work & Get Layouts */}
+              <div style={{ ...s.card, marginTop: '1.5rem', background: 'rgba(56, 189, 248, 0.05)', border: '1px solid rgba(56, 189, 248, 0.2)' }}>
+                <h3 style={{ color: '#38bdf8', marginTop: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span>⚙️</span>
+                  <span>How Custom Games Working & Layouts Function</span>
+                </h3>
+                <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '13.5px', lineHeight: '1.6', margin: '8px 0 12px 0' }}>
+                  When you create a custom game here, the system dynamically pairs your title, difficulty, and scenario description with one of <strong>7 interactive React Game Engines</strong> built into the Cyber Arcade (`/games`):
+                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px', fontSize: '12.5px', color: 'rgba(255,255,255,0.7)' }}>
+                  <div style={{ background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '8px', borderLeft: '3px solid #38bdf8' }}>
+                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>⚡ Quiz Engine (`quiz`)</strong>
+                    Presents a situational scenario where users must pick the safest defense strategy from multiple choices.
+                  </div>
+                  <div style={{ background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '8px', borderLeft: '3px solid #a855f7' }}>
+                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>🃏 Swipe Engine (`swipe`)</strong>
+                    A Tinder-style card deck where users drag left/right to judge whether emails and domains are Safe or Scams.
+                  </div>
+                  <div style={{ background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '8px', borderLeft: '3px solid #4ade80' }}>
+                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>💻 Terminal Engine (`password`)</strong>
+                    A hacker console measuring real-time entropy and brute-force resistance as users type passwords.
+                  </div>
+                  <div style={{ background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '8px', borderLeft: '3px solid #facc15' }}>
+                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>🚩 Visual Flag Engine (`spot-flag`)</strong>
+                    A UI mock where users inspect corporate interfaces and click on hidden phishing indicators.
+                  </div>
+                </div>
+                <div style={{ marginTop: '12px', padding: '10px', background: 'rgba(234, 179, 8, 0.1)', borderRadius: '8px', color: '#fef08a', fontSize: '12.5px' }}>
+                  <strong>🌐 Cloud Sync Note:</strong> If your games do not appear on other devices when hosted online, run this 1-line SQL in your Supabase SQL Editor: <br/>
+                  <code style={{ background: 'rgba(0,0,0,0.4)', padding: '2px 6px', borderRadius: '4px', color: '#fff', display: 'inline-block', marginTop: '4px' }}>
+                    CREATE TABLE IF NOT EXISTS custom_games (id BIGINT PRIMARY KEY, title TEXT, description TEXT, type TEXT, difficulty TEXT, xpReward INT, created_at TIMESTAMPTZ DEFAULT NOW());
+                  </code>
+                </div>
               </div>
 
               {customGames.length > 0 && (

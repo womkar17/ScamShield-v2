@@ -4,6 +4,8 @@ import { AppContext } from '../context/AppContext';
 import { GamificationContext } from '../context/GamificationContext';
 import { MINIGAMES } from '../data/minigames';
 import { soundEffects } from '../utils/soundEffects';
+import { supabase } from '../lib/supabase';
+import { getApiUrl } from '../lib/api';
 import SwipeGame from '../components/games/SwipeGame';
 import SpotTheFlagGame from '../components/games/SpotTheFlagGame';
 import PasswordGame from '../components/games/PasswordGame';
@@ -51,11 +53,23 @@ const GamesPage = () => {
 
   useEffect(() => {
     const loadSaved = async () => {
+      // 1. Try querying Supabase database directly from client for cloud sync across all devices
       try {
-        const apiUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+        const { data, error } = await supabase.from('custom_games').select('*').order('created_at', { ascending: false });
+        if (!error && data && data.length > 0) {
+          const clean = data.filter(g => g.title !== 'Phishy Email Alert');
+          setCustomGames(clean);
+          localStorage.setItem('ss_custom_games', JSON.stringify(clean));
+          return;
+        }
+      } catch (e) {}
+
+      // 2. Try API fallback
+      try {
+        const apiUrl = getApiUrl();
         const res = await fetch(`${apiUrl}/api/games/custom`);
         const data = await res.json();
-        if (data.ok && Array.isArray(data.games)) {
+        if (data.ok && Array.isArray(data.games) && data.games.length > 0) {
           const clean = data.games.filter(g => g.title !== 'Phishy Email Alert');
           setCustomGames(clean);
           localStorage.setItem('ss_custom_games', JSON.stringify(clean));
@@ -63,6 +77,7 @@ const GamesPage = () => {
         }
       } catch (e) {}
 
+      // 3. Try localStorage fallback
       try {
         const saved = localStorage.getItem('ss_custom_games');
         if (saved) {
