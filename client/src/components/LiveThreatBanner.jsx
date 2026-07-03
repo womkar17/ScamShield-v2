@@ -6,8 +6,22 @@ export default function LiveThreatBanner() {
   const [broadcast, setBroadcast] = useState(null);
   const [dismissed, setDismissed] = useState(false);
 
-  const checkBroadcast = () => {
+  const checkBroadcast = async () => {
     try {
+      // 1. Check global server backend first so all users see broadcasts
+      try {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+        const res = await fetch(`${apiUrl}/api/broadcast`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.broadcast && data.broadcast.active) {
+            setBroadcast(data.broadcast);
+            return;
+          }
+        }
+      } catch (err) { /* ignore network error, fallback to localStorage */ }
+
+      // 2. Fallback to localStorage for single-browser offline tests
       const saved = localStorage.getItem('ss_live_threat_broadcast');
       if (saved) {
         const parsed = JSON.parse(saved);

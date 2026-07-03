@@ -18,6 +18,95 @@ const GamesPage = () => {
   const { addXP } = useContext(GamificationContext);
   const [activeGame, setActiveGame] = useState(null);
   const [completedModal, setCompletedModal] = useState(null);
+  const [generatingAi, setGeneratingAi] = useState(false);
+
+  const [customGames, setCustomGames] = useState(() => {
+    try {
+      const saved = localStorage.getItem('ss_custom_games');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) { return []; }
+  });
+
+  const normalizeGame = (g) => {
+    if (g.data && g.data.threatAnalysis) return g;
+    const desc = g.description || "Can you spot the social engineering manipulation in this scenario?";
+    return {
+      ...g,
+      thumbnail: g.thumbnail || '🎯',
+      data: g.data || {
+        scenario: desc,
+        question: `Why is "${g.title}" suspicious and potentially dangerous?`,
+        options: [
+          { text: "It uses urgent language and demands immediate action without verification.", isCorrect: true },
+          { text: "It is from an internal domain with a valid certificate.", isCorrect: false },
+          { text: "It offers a standard company benefit through normal HR portals.", isCorrect: false }
+        ],
+        threatAnalysis: {
+          psychology: "Scammers rely on authority and artificial urgency to trigger impulse reactions without double-checking.",
+          payload: "May lead to credential theft, ransomware download, or financial wire fraud.",
+          defense: "Always verify unexpected requests via a separate communication channel before acting."
+        }
+      }
+    };
+  };
+
+  const handleAIGenerateGame = async () => {
+    setGeneratingAi(true);
+    try {
+      const apiUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+      const prompt = `Generate an innovative, fun cybersecurity scam awareness mini-game challenge.
+Return ONLY a JSON object with this exact schema:
+{
+  "title": "Short catchy game title",
+  "description": "2 sentence scenario describing an attempted social engineering scam",
+  "difficulty": "Medium",
+  "xpReward": 100,
+  "type": "quiz",
+  "thumbnail": "🤖",
+  "data": {
+    "scenario": "Detailed scenario context",
+    "question": "What is the critical red flag in this situation?",
+    "options": [
+      { "text": "The correct red flag identification", "isCorrect": true },
+      { "text": "Plausible incorrect assumption A", "isCorrect": false },
+      { "text": "Plausible incorrect assumption B", "isCorrect": false }
+    ],
+    "threatAnalysis": {
+      "psychology": "Psychological manipulation technique used",
+      "payload": "Consequences if user falls for it",
+      "defense": "Best defensive action to take"
+    }
+  }
+}`;
+      const res = await fetch(`${apiUrl}/api/ai/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: [{ role: 'user', content: prompt }] })
+      });
+      const data = await res.json();
+      if (data.ok && data.reply) {
+        let parsed = null;
+        try {
+          const match = data.reply.match(/\{[\s\S]*\}/);
+          if (match) parsed = JSON.parse(match[0]);
+        } catch (e) {}
+        if (parsed && parsed.title) {
+          const newGame = { ...parsed, id: Date.now() };
+          const updated = [newGame, ...customGames];
+          setCustomGames(updated);
+          localStorage.setItem('ss_custom_games', JSON.stringify(updated));
+          soundEffects.play('success');
+          alert(`✨ AI Generated a brand new game: "${newGame.title}"! It is now playable below in the Community Games section!`);
+        } else {
+          alert("AI generated a scenario, but JSON formatting was slightly off. Please try again!");
+        }
+      }
+    } catch (err) {
+      alert("AI Game Generation failed: " + err.message);
+    } finally {
+      setGeneratingAi(false);
+    }
+  };
 
   const dailyGames = useMemo(() => {
     const today = new Date().toISOString().split('T')[0];
@@ -81,7 +170,7 @@ const GamesPage = () => {
       <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.9)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, overflow: 'auto', padding: '2rem' }}>
         <div style={{ background: '#1e1e1e', padding: '2rem', borderRadius: '12px', position: 'relative', width: '100%', maxWidth: '800px', maxHeight: '90vh', overflowY: 'auto' }}>
           <button onClick={() => setActiveGame(null)} style={{ position: 'absolute', top: '10px', right: '10px', background: 'transparent', border: 'none', color: 'white', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
-          <GameComponent game={activeGame} onComplete={handleGameComplete} />
+          <GameComponent game={normalizeGame(activeGame)} onComplete={handleGameComplete} />
         </div>
       </div>
     );
@@ -98,13 +187,61 @@ const GamesPage = () => {
         </button>
         <h1 style={{ fontSize: '3rem', color: 'var(--blue)', marginBottom: '1rem' }}>Cyber Arcade</h1>
         <p style={{ fontSize: '1.2rem', color: 'var(--text2)', maxWidth: '600px', margin: '0 auto' }}>
-          Test your instincts with today's <strong>Daily 10</strong> challenges. Earn XP, unlock badges, and sharpen your scam-spotting skills.
+          Test your instincts with interactive challenges. Earn XP, unlock badges, and sharpen your scam-spotting skills.
         </p>
+        <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'center' }}>
+          <button
+            onClick={handleAIGenerateGame}
+            disabled={generatingAi}
+            style={{
+              background: 'linear-gradient(135deg, #a855f7, #ec4899)',
+              border: 'none',
+              color: '#fff',
+              padding: '0.8rem 1.8rem',
+              borderRadius: '20px',
+              fontWeight: 'bold',
+              cursor: generatingAi ? 'wait' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              boxShadow: '0 4px 15px rgba(168, 85, 247, 0.4)',
+              fontSize: '1rem'
+            }}
+          >
+            <span>{generatingAi ? '🤖 AI is inventing a new scam scenario...' : '✨ AI Generate Custom Game Challenge (Groq/Gemini)'}</span>
+          </button>
+        </div>
       </header>
 
+      {customGames.length > 0 && (
+        <div style={{ marginBottom: '3rem', background: 'rgba(59, 130, 246, 0.05)', padding: '1.5rem', borderRadius: '16px', border: '1px solid rgba(59, 130, 246, 0.2)' }}>
+          <h2 style={{ color: '#38bdf8', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span>🌟</span>
+            <span>Admin & Community Custom Games ({customGames.length})</span>
+          </h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2rem' }}>
+            {customGames.map(game => (
+              <div key={game.id} onClick={() => { soundEffects.play('click'); setActiveGame(normalizeGame(game)); }} style={{ background: 'var(--card-bg, #2a2a2a)', padding: '1.5rem', borderRadius: '12px', cursor: 'pointer', transition: 'transform 0.2s', border: '1px solid #38bdf8', display: 'flex', flexDirection: 'column', boxShadow: '0 4px 12px rgba(56, 189, 248, 0.1)' }}>
+                <div style={{ fontSize: '3rem', textAlign: 'center', marginBottom: '1rem' }}>{game.thumbnail || '🎯'}</div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                  <h3 style={{ margin: 0, color: 'var(--text)' }}>{game.title}</h3>
+                  <span style={{ background: 'rgba(168, 85, 247, 0.2)', color: '#d8b4fe', padding: '2px 8px', borderRadius: '8px', fontSize: '11px', fontWeight: 'bold' }}>{game.type?.toUpperCase()}</span>
+                </div>
+                <p style={{ color: 'var(--text2)', flex: 1, fontSize: '0.9rem' }}>{game.description}</p>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem', fontSize: '0.8rem', fontWeight: 'bold' }}>
+                  <span style={{ color: game.difficulty === 'Easy' ? '#00C851' : game.difficulty === 'Medium' ? '#ffbb33' : '#ff4444' }}>{game.difficulty || 'Medium'}</span>
+                  <span style={{ color: 'var(--blue)' }}>+{game.xpReward || 50} XP</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <h2 style={{ color: 'var(--text)', marginBottom: '1.5rem' }}>🎯 Today's Daily 10 Challenge</h2>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2rem', padding: '1rem' }}>
         {dailyGames.map(game => (
-          <div key={game.id} onClick={() => { soundEffects.play('click'); setActiveGame(game); }} style={{ background: 'var(--card-bg, #2a2a2a)', padding: '1.5rem', borderRadius: '12px', cursor: 'pointer', transition: 'transform 0.2s', border: '1px solid var(--border-color, #444)', display: 'flex', flexDirection: 'column' }}>
+          <div key={game.id} onClick={() => { soundEffects.play('click'); setActiveGame(normalizeGame(game)); }} style={{ background: 'var(--card-bg, #2a2a2a)', padding: '1.5rem', borderRadius: '12px', cursor: 'pointer', transition: 'transform 0.2s', border: '1px solid var(--border-color, #444)', display: 'flex', flexDirection: 'column' }}>
             <div style={{ fontSize: '3rem', textAlign: 'center', marginBottom: '1rem' }}>{game.thumbnail}</div>
             <h3 style={{ margin: '0 0 0.5rem 0', color: 'var(--text)' }}>{game.title}</h3>
             <p style={{ color: 'var(--text2)', flex: 1, fontSize: '0.9rem' }}>{game.description}</p>

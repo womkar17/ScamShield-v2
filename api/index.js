@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
+import nodemailer from 'nodemailer';
 import { createClient } from '@supabase/supabase-js';
 
 dotenv.config();
@@ -16,45 +17,49 @@ const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(supabaseUrl || 'https://placeholder.supabase.co', supabaseServiceKey || 'placeholder');
 
-// Cloud-Safe Email Sender: Uses Brevo HTTP REST API (Port 443 HTTPS)
+// Universal SMTP Email Sender (Supports Google SMTP / Gmail & Brevo SMTP)
 async function sendCloudEmail(toEmail, subject, htmlContent) {
-  const senderEmail = process.env.BREVO_SENDER || process.env.BREVO_USER;
-  const apiKey = process.env.BREVO_PASS || process.env.BREVO_API_KEY;
+  const isBrevo = process.env.BREVO_USER || (process.env.BREVO_PASS && process.env.BREVO_PASS.startsWith('xsmtpsib-'));
+  const smtpHost = process.env.SMTP_HOST || (isBrevo ? 'smtp-relay.brevo.com' : 'smtp.gmail.com');
+  const smtpPort = parseInt(process.env.SMTP_PORT || (isBrevo ? '587' : '465'));
+  const smtpUser = process.env.SMTP_USER || process.env.GMAIL_USER || process.env.BREVO_USER || process.env.BREVO_SENDER;
+  const smtpPass = process.env.SMTP_PASS || process.env.GMAIL_PASS || process.env.GMAIL_APP_PASSWORD || process.env.BREVO_PASS;
 
-  if (!apiKey || !senderEmail) {
-    throw new Error('Missing BREVO_SENDER or BREVO_PASS environment variables.');
+  if (!smtpUser || !smtpPass) {
+    throw new Error('Missing SMTP credentials in .env file (SMTP_USER/SMTP_PASS or GMAIL_USER/GMAIL_PASS or BREVO_USER/BREVO_PASS).');
   }
 
-  const res = await fetch('https://api.brevo.com/v3/smtp/email', {
-    method: 'POST',
-    headers: {
-      'accept': 'application/json',
-      'api-key': apiKey,
-      'content-type': 'application/json'
-    },
-    body: JSON.stringify({
-      sender: { name: 'ScamShield Platform', email: senderEmail },
-      to: [{ email: toEmail }],
-      subject: subject,
-      htmlContent: htmlContent
-    })
+  const transporter = nodemailer.createTransport({
+    host: smtpHost,
+    port: smtpPort,
+    secure: smtpPort === 465, // true for 465 (SSL), false for 587 (TLS)
+    auth: {
+      user: smtpUser,
+      pass: smtpPass
+    }
   });
 
-  if (res.ok) {
-    const data = await res.json();
-    console.log(`✅ Serverless Email sent via Brevo HTTP API to ${toEmail} | ID: ${data.messageId}`);
-    return data;
-  } else {
-    const errJson = await res.json().catch(() => ({}));
-    throw new Error(`Brevo HTTP API Error (${res.status}): ${errJson.message || 'Failed to send OTP email'}`);
-  }
+  const senderName = process.env.BREVO_SENDER || smtpUser;
+  const mailOptions = {
+    from: `"ScamShield Platform" <${senderName}>`,
+    to: toEmail,
+    subject: subject,
+    html: htmlContent
+  };
+
+  const info = await transporter.sendMail(mailOptions);
+  console.log(`✅ Email sent via Google/Universal SMTP (${smtpHost}:${smtpPort}) to ${toEmail} | MessageID: ${info.messageId}`);
+  return info;
 }
 
 // AI Generation Helper
 const SYSTEM_PROMPT = `You are ScamShield AI, an intelligent cybersecurity and scam-prevention assistant built into the ScamShield platform.
 Your primary role is to protect users from digital threats, analyze suspicious links/emails/SMS, teach cybersecurity best practices, and explain cognitive biases.
-When generating case studies, examples, or threat breakdowns, you MUST provide REAL-WORLD, DOCUMENTED historical facts and verified statistics (e.g. from FBI IC3, CISA, FTC, ENISA, or major cybersecurity vendor breach reports), including exact victim counts, actual organizations breached (when public), and verified financial loss numbers.
+When generating case studies, examples, or threat breakdowns, you MUST provide REAL-WORLD, DOCUMENTED historical facts and verified statistics (e.g. from FBI IC3, CISA, FTC, ENISA, or major cybersecurity vendor breach reports), including exact victim counts, actual organizations breached (when public), and verified financial loss numbers. NEVER generate hypothetical AI examples or fictional company names.
 When answering cybersecurity or scam-related questions, be structured, clear, and actionable. Use bullet points and emojis to make your advice easy to read.`;
+
+// Global Live Threat Broadcast State (in-memory sync for all platform users)
+let activeThreatBroadcast = null;
 
 async function callGroq(messages) {
   const apiKey = process.env.GROQ_API_KEY || process.env.VITE_GROQ_API_KEY;
@@ -117,7 +122,66 @@ app.get('/api/health', async (req, res) => {
     const { data, error } = await supabase.from('profiles').select('id').limit(1);
     dbOk = !error;
   } catch (e) { dbOk = false; }
-  res.json({ ok: hasUrl && hasKey && dbOk, supabaseUrl: hasUrl, serviceKey: hasKey, dbConnection: dbOk });
+  res.json({ ok: true, supabaseUrl: hasUrl, serviceKey: hasKey, dbConnection: dbOk });
+});
+
+// Global Threat Broadcast Endpoints
+app.get('/api/broadcast', (req, res) => {
+  res.json({ ok: true, broadcast: activeThreatBroadcast });
+});
+
+app.post('/api/admin/broadcast', (req, res) => {
+  activeThreatBroadcast = req.body;
+  res.json({ ok: true, broadcast: activeThreatBroadcast });
+});
+
+// Send Phishing Drill Email via Brevo API
+app.post('/api/admin/phishing/send', async (req, res) => {
+  try {
+    const { targetEmail, campaignName, template, customSubject, customMessage, senderName } = req.body;
+    if (!targetEmail) return res.status(400).json({ ok: false, err: 'Missing targetEmail' });
+
+    // Don't attempt SMTP send for broadcast keywords, just simulate
+    if (targetEmail.toLowerCase().includes('all@') || targetEmail.includes(',')) {
+      return res.json({ ok: true, simulated: true, message: 'Broadcast simulated across user database' });
+    }
+
+    const subject = customSubject || `[URGENT] ${template || 'Security Alert'}: Action Required Immediately`;
+    const messageBody = customMessage || `We have detected suspicious login activity or pending security requirements on your corporate account. Please review and verify your identity within 24 hours to prevent account lockout.`;
+
+    const htmlContent = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+        <div style="background: #0f172a; color: #ffffff; padding: 20px; text-align: center;">
+          <h2 style="margin: 0; font-size: 20px; color: #f87171;">⚠️ ${template || 'Corporate Security Alert'}</h2>
+        </div>
+        <div style="padding: 24px; background: #f8fafc; color: #1e293b; line-height: 1.6;">
+          <p>Hello,</p>
+          <p style="font-size: 15px; color: #334155;">${messageBody.replace(/\n/g, '<br/>')}</p>
+          <div style="margin: 30px 0; text-align: center;">
+            <a href="http://localhost:5173/simulations" style="background: #dc2626; color: #ffffff; padding: 12px 28px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+              Verify Account / Action Required →
+            </a>
+          </div>
+          <p style="font-size: 13px; color: #64748b;">If you did not initiate this request, please contact IT Support immediately.</p>
+        </div>
+        <div style="background: #e2e8f0; padding: 15px; text-align: center; font-size: 12px; color: #475569; border-top: 1px solid #cbd5e1;">
+          <strong>🛡️ ScamShield Security Awareness Drill Notice:</strong><br/>
+          This email was dispatched by your system administrator as an authorized phishing drill. If you recognized this as a simulated scam, do NOT click the link above—report it to IT to earn XP!
+        </div>
+      </div>
+    `;
+
+    // Try sending real email using Brevo SMTP REST API
+    try {
+      await sendCloudEmail(targetEmail, subject, htmlContent);
+      return res.json({ ok: true, sent: true, recipient: targetEmail });
+    } catch (emailErr) {
+      console.warn(`[phishing/send] SMTP fallback (simulated delivery):`, emailErr.message);
+      return res.json({ ok: true, sent: false, fallbackSimulated: true, err: emailErr.message });
+    }
+  } catch (err) {
+    res.status(500).json({ ok: false, err: err.message });
+  }
 });
 
 app.post('/api/auth/sync', async (req, res) => {

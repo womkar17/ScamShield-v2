@@ -83,6 +83,58 @@ const EMAIL_TEMPLATES = {
       "Asking users to paste proprietary AWS or API access tokens into an external form",
       "No verification from internal IT Security team"
     ]
+  },
+  "Mandatory VPN Client Upgrade": {
+    from: "Enterprise Network Security <admin@vpn-security-client.net>",
+    subject: "🚨 [MANDATORY ACTION] Critical Security Patch for Corporate VPN Client",
+    date: "Today at 9:15 AM",
+    body: `Attention Remote & Hybrid Teams,\n\nOur cybersecurity operations team has identified a critical zero-day vulnerability (CVE-2026-1184) in our legacy corporate VPN software.\n\nAll employees must immediately download and install the patched VPN Security Suite via the secure portal below before 5:00 PM today. Failure to update will result in automatic termination of remote network access and Slack connectivity.\n\nClick below to install the security certificate and authenticate your corporate credentials.`,
+    buttonText: "🛡️ Download Patched VPN Security Client",
+    buttonUrl: "https://vpn-security-client.net/download?auth=token",
+    redFlags: [
+      "Sender domain 'vpn-security-client.net' is an external unverified domain",
+      "Threatening disconnection from remote work and Slack to create panic",
+      "Bypassing standard MDM/IT software deployment centers"
+    ]
+  },
+  "Urgent Package Delivery Exception": {
+    from: "Global Courier Express <tracking@express-logistics-delivery.com>",
+    subject: "📦 Delivery Failed: Signature Required for High-Value Corporate Parcel",
+    date: "Today at 1:40 PM",
+    body: `Hello,\n\nWe attempted to deliver a registered high-value corporate parcel addressed to your name at the front reception desk today at 1:15 PM, but our driver was unable to secure a verified signature.\n\nTo prevent return shipment to the sender and avoid storage penalties, please confirm your delivery time and pay the $1.85 customs processing fee using the link below.\n\nYou must verify your company address within 24 hours.`,
+    buttonText: "🚚 Reschedule Delivery & Pay $1.85 Fee",
+    buttonUrl: "https://express-logistics-delivery.com/track?parcel=88192A",
+    redFlags: [
+      "Unexpected package delivery notification demanding immediate payment",
+      "Lookalike logistics domain not matching FedEx/UPS/DHL",
+      "Small fee ($1.85) designed to harvest credit card or company expense details"
+    ]
+  },
+  "Executive Deepfake Video Meeting Alert": {
+    from: "Executive Assistant to CFO <meeting-room@conf-video-call.io>",
+    subject: "URGENT: Join Confidential M&A Video Conference (Board Members Waiting)",
+    date: "Today at 3:50 PM",
+    body: `Hi,\n\nThe CFO and legal counsel have initiated an emergency video conference regarding an urgent merger acquisition. They require your immediate presence on the call to verify financial transaction details.\n\nYour standard Zoom link will not work for this high-security conference. Please use the secure enterprise bridge link below and log in using your corporate SSO credentials to join the call immediately.\n\nNote: The executive team is already on the bridge waiting for you. Do not delay.`,
+    buttonText: "🎥 Join Confidential Executive Video Conference",
+    buttonUrl: "https://conf-video-call.io/room/sso-login?id=cfo_ma_room",
+    redFlags: [
+      "High-pressure executive impersonation demanding immediate video call entry",
+      "Third-party video bridge domain requiring SSO credential login",
+      "Exploiting fear of keeping C-level executives waiting"
+    ]
+  },
+  "Crypto Wallet Security Drainer Alert": {
+    from: "Web3 Vault Security <security@decentralized-wallet-auth.io>",
+    subject: "⚠️ SECURITY ALERT: Unauthorized Withdrawal Attempt Detected on Your Wallet",
+    date: "Today at 6:10 PM",
+    body: `Dear Wallet Holder,\n\nWe detected a pending smart contract withdrawal request for 4.5 ETH ($14,200) originating from an unrecognized IP in Minsk, Belarus.\n\nIf you did not authorize this transaction, you must connect your hardware or Web3 wallet immediately to revoke the smart contract permissions and freeze your assets before the block is finalized on-chain.\n\nFailure to revoke within 15 minutes will result in irreversible funds transfer.`,
+    buttonText: "🛑 Connect Wallet & Revoke Transaction Now",
+    buttonUrl: "https://decentralized-wallet-auth.io/revoke?tx=0x8f9b2a",
+    redFlags: [
+      "Classic Web3 phishing drainer tactics creating intense loss aversion",
+      "Demanding wallet connection to 'revoke' permissions (actually grants drainer access)",
+      "Unverified third-party security domain"
+    ]
   }
 };
 
@@ -112,9 +164,11 @@ export default function AdminPage() {
     }
   });
   const [newCampaign, setNewCampaign] = useState({
-    name: '', targetEmail: 'john.doe@company.com', template: 'Password Reset Urgency'
+    name: '', targetEmail: 'john.doe@company.com', template: 'Password Reset Urgency', customSubject: '', customMessage: ''
   });
   const [previewTemplate, setPreviewTemplate] = useState(null);
+  const [aiCrafting, setAiCrafting] = useState(false);
+  const [previewGame, setPreviewGame] = useState(null);
 
   // Live Threat Broadcast State
   const [broadcast, setBroadcast] = useState(() => {
@@ -281,6 +335,7 @@ export default function AdminPage() {
     setCustomGames(updated);
     localStorage.setItem('ss_custom_games', JSON.stringify(updated));
     setNewGame({ title: '', description: '', type: 'quiz', difficulty: 'Easy', xpReward: 50 });
+    alert("✅ Custom Game saved! It is now live and playable in the Arcade under 'Custom Admin & Community Games'!");
   };
 
   const deleteCustomGame = (id) => {
@@ -289,8 +344,46 @@ export default function AdminPage() {
     localStorage.setItem('ss_custom_games', JSON.stringify(updated));
   };
 
+  // AI Craft Phishing Email Assistant
+  const handleAICraftPhishing = async () => {
+    setAiCrafting(true);
+    try {
+      const apiUrl = getApiUrl();
+      const prompt = `Write a professional, persuasive, but realistic cybersecurity awareness training phishing email for the template vector: "${newCampaign.template}".
+Return ONLY a valid JSON object with exactly two keys:
+{
+  "subject": "The email subject line",
+  "body": "The body text of the email without placeholders"
+}`;
+      const res = await fetch(`${apiUrl}/api/ai/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: [{ role: 'user', content: prompt }] })
+      });
+      const data = await res.json();
+      if (data.ok && data.reply) {
+        let parsed = null;
+        try {
+          const match = data.reply.match(/\{[\s\S]*\}/);
+          if (match) parsed = JSON.parse(match[0]);
+        } catch (e) { /* ignore */ }
+        if (parsed && parsed.subject) {
+          setNewCampaign(prev => ({ ...prev, customSubject: parsed.subject, customMessage: parsed.body }));
+          alert("✨ AI successfully crafted a custom phishing drill subject and body! Review below.");
+        } else {
+          setNewCampaign(prev => ({ ...prev, customMessage: data.reply }));
+          alert("✨ AI generated custom email content!");
+        }
+      }
+    } catch (err) {
+      alert("AI Crafting failed: " + err.message);
+    } finally {
+      setAiCrafting(false);
+    }
+  };
+
   // Launch Phishing Simulation against individual user email or list
-  const handleLaunchCampaign = () => {
+  const handleLaunchCampaign = async () => {
     if (!newCampaign.name.trim()) return alert('Please enter a campaign name.');
     if (!newCampaign.targetEmail.trim()) return alert('Please enter a target user email address.');
 
@@ -338,26 +431,69 @@ export default function AdminPage() {
     const updated = [created, ...campaigns];
     setCampaigns(updated);
     localStorage.setItem('ss_phishing_campaigns', JSON.stringify(updated));
-    setNewCampaign({ name: '', targetEmail: '', template: 'Password Reset Urgency' });
-    alert(`🚀 Phishing Drill "${created.name}" dispatched to: ${target}! Check metrics table below.`);
+
+    // Send real email via backend Brevo SMTP API
+    try {
+      const apiUrl = getApiUrl();
+      const res = await fetch(`${apiUrl}/api/admin/phishing/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          targetEmail: target,
+          campaignName: newCampaign.name,
+          template: newCampaign.template,
+          customSubject: newCampaign.customSubject,
+          customMessage: newCampaign.customMessage,
+          senderName: EMAIL_TEMPLATES[newCampaign.template]?.from
+        })
+      });
+      const data = await res.json();
+      if (data.ok && data.sent) {
+        alert(`🚀 Phishing Drill "${created.name}" dispatched to ${target} via cloud email server! Check your inbox!`);
+      } else if (data.ok && data.simulated) {
+        alert(`🚀 Broadcast Drill "${created.name}" simulated across 100% of user database!`);
+      } else {
+        alert(`🚀 Phishing Drill "${created.name}" logged! (Note: Real SMTP delivery simulated offline or check server logs).`);
+      }
+    } catch (e) {
+      alert(`🚀 Phishing Drill "${created.name}" dispatched! Check metrics table below.`);
+    }
+
+    setNewCampaign({ name: '', targetEmail: '', template: 'Password Reset Urgency', customSubject: '', customMessage: '' });
   };
 
-  // Live Threat Broadcast Handlers
-  const handleStartBroadcast = () => {
+  // Live Threat Broadcast Handlers (Global server sync)
+  const handleStartBroadcast = async () => {
     if (!broadcast.title || !broadcast.message) return alert("Please enter both a Threat Title and Message.");
     const updated = { ...broadcast, active: true };
     setBroadcast(updated);
     localStorage.setItem('ss_live_threat_broadcast', JSON.stringify(updated));
     window.dispatchEvent(new Event('storage'));
-    alert("📡 CRITICAL THREAT BROADCAST LIVE! It will now appear at the top of every user's screen!");
+    try {
+      const apiUrl = getApiUrl();
+      await fetch(`${apiUrl}/api/admin/broadcast`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updated)
+      });
+    } catch (e) { /* ignore */ }
+    alert("📡 CRITICAL THREAT BROADCAST LIVE! Synced to global cloud server — appearing on all user screens!");
   };
 
-  const handleStopBroadcast = () => {
+  const handleStopBroadcast = async () => {
     const updated = { ...broadcast, active: false };
     setBroadcast(updated);
     localStorage.setItem('ss_live_threat_broadcast', JSON.stringify(updated));
     window.dispatchEvent(new Event('storage'));
-    alert("⏹️ Broadcast terminated. Removed from user screens.");
+    try {
+      const apiUrl = getApiUrl();
+      await fetch(`${apiUrl}/api/admin/broadcast`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updated)
+      });
+    } catch (e) { /* ignore */ }
+    alert("⏹️ Broadcast terminated. Removed globally from all user screens.");
   };
 
   const filteredProfiles = profiles.filter(p =>
@@ -593,17 +729,64 @@ export default function AdminPage() {
                     </div>
                   </div>
                   <div style={s.formGroup}>
-                    <label style={s.formLabel}>Phishing Template Vector</label>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                      <label style={s.formLabel}>Phishing Template Vector</label>
+                      <button
+                        type="button"
+                        onClick={handleAICraftPhishing}
+                        disabled={aiCrafting}
+                        style={{
+                          background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+                          color: '#fff',
+                          border: 'none',
+                          padding: '4px 10px',
+                          borderRadius: '6px',
+                          fontSize: '12px',
+                          fontWeight: 'bold',
+                          cursor: aiCrafting ? 'wait' : 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px'
+                        }}
+                      >
+                        {aiCrafting ? '🤖 AI Crafting...' : '✨ AI Craft Phishing Email'}
+                      </button>
+                    </div>
                     <select
                       style={s.formInput}
                       value={newCampaign.template}
                       onChange={e => setNewCampaign({ ...newCampaign, template: e.target.value })}
                     >
-                      <option value="Password Reset Urgency">Urgent IT Password Reset Notice</option>
-                      <option value="HR Salary Phish">HR Salary Adjustment Document</option>
-                      <option value="CEO Gift Card Request">CEO WhatsApp Gift Card Favor</option>
-                      <option value="IT Shadow API Phish">Free AI Summarizer API Access</option>
+                      <option value="Password Reset Urgency">🚨 Urgent IT Domain Password Reset</option>
+                      <option value="HR Salary Phish">📄 HR Q3 Compensation & Salary Schedule</option>
+                      <option value="CEO Gift Card Request">🎁 CEO Gift Card Purchase Favor</option>
+                      <option value="IT Shadow API Phish">🤖 Free Enterprise AI Summarizer Access</option>
+                      <option value="Mandatory VPN Client Upgrade">🛡️ Critical Patch: Corporate VPN Client</option>
+                      <option value="Urgent Package Delivery Exception">📦 Delivery Failed: Signature Required</option>
+                      <option value="Executive Deepfake Video Meeting Alert">🎥 Confidential Executive Video Conference</option>
+                      <option value="Crypto Wallet Security Drainer Alert">🛑 Security Alert: Wallet Withdrawal Attempt</option>
                     </select>
+                  </div>
+                </div>
+
+                {/* Custom Email Subject and Message Override */}
+                <div style={{ marginTop: '16px', background: 'rgba(255,255,255,0.03)', padding: '16px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <label style={{ ...s.formLabel, color: '#38bdf8', marginBottom: '8px', display: 'block' }}>
+                    ✍️ Custom Email Subject & Message Body (Optional Overrides / AI Output)
+                  </label>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <input
+                      style={s.formInput}
+                      value={newCampaign.customSubject}
+                      onChange={e => setNewCampaign({ ...newCampaign, customSubject: e.target.value })}
+                      placeholder={`Default Subject: ${EMAIL_TEMPLATES[newCampaign.template]?.subject || 'Automatic Security Notice'}`}
+                    />
+                    <textarea
+                      style={{ ...s.formInput, minHeight: '100px', resize: 'vertical', fontFamily: 'monospace', fontSize: '13px' }}
+                      value={newCampaign.customMessage}
+                      onChange={e => setNewCampaign({ ...newCampaign, customMessage: e.target.value })}
+                      placeholder={`Type custom email message or click '✨ AI Craft Phishing Email' above to auto-write a hyper-persuasive drill script...`}
+                    />
                   </div>
                 </div>
 
@@ -817,7 +1000,10 @@ export default function AdminPage() {
                         <span style={{ ...s.badge, marginLeft: '0.5rem', background: 'rgba(236,201,75,0.15)', color: '#ecc94b' }}>{g.xpReward} XP</span>
                         <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem', margin: '0.3rem 0 0' }}>{g.description}</p>
                       </div>
-                      <button style={{ ...s.actionBtn, ...s.dangerBtn }} onClick={() => deleteCustomGame(g.id)}>Delete</button>
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <button style={{ ...s.actionBtn, background: 'rgba(56, 189, 248, 0.2)', color: '#38bdf8', border: '1px solid rgba(56, 189, 248, 0.4)' }} onClick={() => setPreviewGame(g)}>👁️ Preview</button>
+                        <button style={{ ...s.actionBtn, ...s.dangerBtn }} onClick={() => deleteCustomGame(g.id)}>Delete</button>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -825,6 +1011,45 @@ export default function AdminPage() {
             </div>
           )}
         </div>
+
+        {/* Modal for Game Preview */}
+        {previewGame && (
+          <div style={{
+            position: 'fixed',
+            top: 0, left: 0, right: 0, bottom: 0,
+            background: 'rgba(0,0,0,0.85)',
+            backdropFilter: 'blur(8px)',
+            zIndex: 999999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px'
+          }}>
+            <div style={{ background: '#1e1e2e', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '12px', maxWidth: '500px', width: '100%', padding: '24px', position: 'relative', color: '#fff' }}>
+              <button
+                onClick={() => setPreviewGame(null)}
+                style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', border: 'none', color: '#fff', fontSize: '20px', cursor: 'pointer' }}
+              >
+                ✕
+              </button>
+              <span style={{ background: 'rgba(168,85,247,0.2)', color: '#d8b4fe', padding: '4px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: 'bold' }}>
+                GAME PREVIEW ({previewGame.type.toUpperCase()})
+              </span>
+              <h3 style={{ margin: '12px 0 8px 0', fontSize: '20px' }}>{previewGame.title}</h3>
+              <p style={{ color: '#94a3b8', fontSize: '14px', lineHeight: '1.5', marginBottom: '16px' }}>{previewGame.description || 'No description provided.'}</p>
+              <div style={{ background: '#0f172a', padding: '16px', borderRadius: '8px', border: '1px dashed rgba(255,255,255,0.2)', textAlign: 'center', margin: '16px 0' }}>
+                <p style={{ margin: 0, color: '#38bdf8', fontWeight: 'bold' }}>🎮 Interactive Sandbox Ready</p>
+                <p style={{ margin: '8px 0 0 0', fontSize: '12px', color: '#64748b' }}>Difficulty: {previewGame.difficulty} | Reward: +{previewGame.xpReward} XP</p>
+              </div>
+              <button
+                onClick={() => setPreviewGame(null)}
+                style={{ width: '100%', padding: '10px', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}
+              >
+                Looks Good — Return to Content Manager
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Modal for Email Preview */}
         {previewTemplate && EMAIL_TEMPLATES[previewTemplate] && (

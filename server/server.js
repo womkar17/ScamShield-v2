@@ -14,78 +14,45 @@ app.use(express.json());
 const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || 'scamshield_super_secret';
 
+let activeThreatBroadcast = null;
+
 // Initialize Supabase Client (Service Role for backend DB access)
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
-// Nodemailer transport for Brevo over Port 465 (SSL) to bypass cloud provider port 587 firewalls
-const smtpPort = parseInt(process.env.SMTP_PORT) || 465;
-const transporter = nodemailer.createTransport({
-  host: 'smtp-relay.brevo.com',
-  port: smtpPort,
-  secure: smtpPort === 465, // true for 465 (direct SSL), false for 587/2525
-  pool: true,
-  maxConnections: 5,
-  maxMessages: 100,
-  auth: {
-    user: process.env.BREVO_USER,
-    pass: process.env.BREVO_PASS,
-  },
-  connectionTimeout: 15000,
-  greetingTimeout: 15000,
-});
-
-// Cloud-Safe Email Sender: Uses Brevo HTTP REST API (Port 443 HTTPS) to bypass cloud SMTP port firewalls
+// Universal SMTP Email Sender (Supports Google SMTP / Gmail & Brevo SMTP)
 async function sendCloudEmail(toEmail, subject, htmlContent) {
-  const senderEmail = process.env.BREVO_SENDER || process.env.BREVO_USER;
-  const apiKey = process.env.BREVO_PASS || process.env.BREVO_API_KEY;
+  // Check if using Brevo vs Google SMTP / Gmail
+  const isBrevo = process.env.BREVO_USER || (process.env.BREVO_PASS && process.env.BREVO_PASS.startsWith('xsmtpsib-'));
+  const smtpHost = process.env.SMTP_HOST || (isBrevo ? 'smtp-relay.brevo.com' : 'smtp.gmail.com');
+  const smtpPort = parseInt(process.env.SMTP_PORT || (isBrevo ? '587' : '465'));
+  const smtpUser = process.env.SMTP_USER || process.env.GMAIL_USER || process.env.BREVO_USER || process.env.BREVO_SENDER;
+  const smtpPass = process.env.SMTP_PASS || process.env.GMAIL_PASS || process.env.GMAIL_APP_PASSWORD || process.env.BREVO_PASS;
 
-  if (!apiKey || !senderEmail) {
-    throw new Error('Missing BREVO_SENDER or BREVO_PASS environment variables.');
+  if (!smtpUser || !smtpPass) {
+    throw new Error('Missing SMTP credentials in .env file (SMTP_USER/SMTP_PASS or GMAIL_USER/GMAIL_PASS or BREVO_USER/BREVO_PASS).');
   }
 
-  // 1. Try Brevo HTTP REST API over standard HTTPS (Port 443 - NEVER blocked by cloud firewalls)
-  try {
-    const res = await fetch('https://api.brevo.com/v3/smtp/email', {
-      method: 'POST',
-      headers: {
-        'accept': 'application/json',
-        'api-key': apiKey,
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify({
-        sender: { name: 'ScamShield Platform', email: senderEmail },
-        to: [{ email: toEmail }],
-        subject: subject,
-        htmlContent: htmlContent
-      })
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      console.log(`✅ Email sent via HTTP API (Port 443) to ${toEmail} | Message ID: ${data.messageId}`);
-      return data;
-    } else {
-      const errJson = await res.json().catch(() => ({}));
-      console.warn(`⚠️ Brevo HTTP API reported (${res.status}): ${errJson.message || 'Attempting SMTP fallback...'}`);
-      if (res.status === 401) {
-        if (apiKey.startsWith('xsmtpsib-')) {
-          throw new Error('You pasted an SMTP key (xsmtpsib-). Brevo HTTP API requires an API key starting with xkeysib-. Get it from app.brevo.com/settings/keys/api and update BREVO_PASS on Render.');
-        }
-        throw new Error('Invalid Brevo API key. Please generate a new API key starting with xkeysib- from app.brevo.com/settings/keys/api and update BREVO_PASS on Render.');
-      }
+  const transporter = nodemailer.createTransport({
+    host: smtpHost,
+    port: smtpPort,
+    secure: smtpPort === 465, // true for 465 (SSL), false for 587 (TLS)
+    auth: {
+      user: smtpUser,
+      pass: smtpPass
     }
-  } catch (httpErr) {
-    if (httpErr.message.includes('Invalid Brevo API')) throw httpErr;
-    console.warn(`⚠️ HTTP API exception: ${httpErr.message}. Attempting SMTP fallback...`);
-  }
+  });
 
-  // 2. Fallback to Nodemailer SMTP
-  return await transporter.sendMail({
-    from: `"ScamShield" <${senderEmail}>`,
+  const senderName = process.env.BREVO_SENDER || smtpUser;
+  const mailOptions = {
+    from: `"ScamShield Platform" <${senderName}>`,
     to: toEmail,
     subject: subject,
     html: htmlContent
-  });
+  };
+
+  const info = await transporter.sendMail(mailOptions);
+  console.log(`✅ Email sent via Google/Universal SMTP (${smtpHost}:${smtpPort}) to ${toEmail} | MessageID: ${info.messageId}`);
+  return info;
 }
 
 // In-memory OTP store: { "email@example.com": { otp: "123456", expiresAt: 169... } }
@@ -317,6 +284,63 @@ app.delete('/api/admin/users/:id', async (req, res) => {
     res.json({ ok: true });
   } catch (err) {
     res.status(500).json({ ok: false, err: 'Failed to delete user' });
+  }
+});
+
+// Global Threat Broadcast Endpoints
+app.get('/api/broadcast', (req, res) => {
+  res.json({ ok: true, broadcast: activeThreatBroadcast });
+});
+
+app.post('/api/admin/broadcast', (req, res) => {
+  activeThreatBroadcast = req.body;
+  res.json({ ok: true, broadcast: activeThreatBroadcast });
+});
+
+// Send Phishing Drill Email via Google SMTP / Universal SMTP
+app.post('/api/admin/phishing/send', async (req, res) => {
+  try {
+    const { targetEmail, campaignName, template, customSubject, customMessage, senderName } = req.body;
+    if (!targetEmail) return res.status(400).json({ ok: false, err: 'Missing targetEmail' });
+
+    if (targetEmail.toLowerCase().includes('all@') || targetEmail.includes(',')) {
+      return res.json({ ok: true, simulated: true, message: 'Broadcast simulated across user database' });
+    }
+
+    const subject = customSubject || `[URGENT] ${template || 'Security Alert'}: Action Required Immediately`;
+    const messageBody = customMessage || `We have detected suspicious login activity or pending security requirements on your corporate account. Please review and verify your identity within 24 hours to prevent account lockout.`;
+
+    const htmlContent = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+        <div style="background: #0f172a; color: #ffffff; padding: 20px; text-align: center;">
+          <h2 style="margin: 0; font-size: 20px; color: #f87171;">⚠️ ${template || 'Corporate Security Alert'}</h2>
+        </div>
+        <div style="padding: 24px; background: #f8fafc; color: #1e293b; line-height: 1.6;">
+          <p>Hello,</p>
+          <p style="font-size: 15px; color: #334155;">${messageBody.replace(/\n/g, '<br/>')}</p>
+          <div style="margin: 30px 0; text-align: center;">
+            <a href="http://localhost:5173/simulations" style="background: #dc2626; color: #ffffff; padding: 12px 28px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+              Verify Account / Action Required →
+            </a>
+          </div>
+          <p style="font-size: 13px; color: #64748b;">If you did not initiate this request, please contact IT Support immediately.</p>
+        </div>
+        <div style="background: #e2e8f0; padding: 15px; text-align: center; font-size: 12px; color: #475569; border-top: 1px solid #cbd5e1;">
+          <strong>🛡️ ScamShield Security Awareness Drill Notice:</strong><br/>
+          This email was dispatched by your system administrator as an authorized phishing drill. If you recognized this as a simulated scam, do NOT click the link above—report it to IT to earn XP!
+        </div>
+      </div>
+    `;
+
+    try {
+      await sendCloudEmail(targetEmail, subject, htmlContent);
+      return res.json({ ok: true, sent: true, recipient: targetEmail });
+    } catch (emailErr) {
+      console.warn(`[phishing/send] SMTP fallback (simulated delivery):`, emailErr.message);
+      return res.json({ ok: true, sent: false, fallbackSimulated: true, err: emailErr.message });
+    }
+  } catch (err) {
+    res.status(500).json({ ok: false, err: err.message });
   }
 });
 
