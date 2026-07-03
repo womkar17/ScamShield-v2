@@ -17,24 +17,29 @@ const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(supabaseUrl || 'https://placeholder.supabase.co', supabaseServiceKey || 'placeholder');
 
-// Universal SMTP Email Sender (Supports Google SMTP / Gmail)
+// Universal Google SMTP Email Sender
 async function sendCloudEmail(toEmail, subject, htmlContent) {
-  const smtpUser = process.env.SMTP_USER || process.env.GMAIL_USER || process.env.EMAIL_USER || process.env.BREVO_SENDER || process.env.BREVO_USER;
-  const smtpPass = process.env.SMTP_PASS || process.env.GMAIL_PASS || process.env.EMAIL_PASS || process.env.GMAIL_APP_PASSWORD || process.env.BREVO_PASS;
+  const smtpUser = process.env.SMTP_USER || process.env.GMAIL_USER || process.env.EMAIL_USER;
+  const smtpPass = process.env.SMTP_PASS || process.env.GMAIL_PASS || process.env.EMAIL_PASS || process.env.GMAIL_APP_PASSWORD;
 
   if (!smtpUser || !smtpPass) {
-    throw new Error('Missing SMTP credentials in .env file (SMTP_USER/SMTP_PASS or GMAIL_USER/GMAIL_PASS).');
+    throw new Error('Missing Google SMTP credentials in Vercel environment variables (SMTP_USER/SMTP_PASS or GMAIL_USER/GMAIL_PASS).');
   }
 
-  // Automatically detect Gmail / Google accounts to force smtp.gmail.com over SSL Port 465
-  const isGmail = smtpUser.toLowerCase().includes('gmail.com') || smtpUser.toLowerCase().includes('googlemail.com') || process.env.GMAIL_USER;
-  const smtpHost = process.env.SMTP_HOST || (isGmail ? 'smtp.gmail.com' : 'smtp-relay.brevo.com');
-  const smtpPort = parseInt(process.env.SMTP_PORT || (isGmail ? '465' : '587'));
+  // Force Google SMTP (smtp.gmail.com) over SSL Port 465, ignoring any legacy Brevo host in Vercel env
+  let smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
+  if (smtpHost.toLowerCase().includes('brevo') || smtpHost.toLowerCase().includes('sendinblue')) {
+    smtpHost = 'smtp.gmail.com';
+  }
+  let smtpPort = parseInt(process.env.SMTP_PORT || '465');
+  if (smtpHost === 'smtp.gmail.com') {
+    smtpPort = 465; // Force SSL for Gmail
+  }
 
   const transporter = nodemailer.createTransport({
     host: smtpHost,
     port: smtpPort,
-    secure: smtpPort === 465, // true for 465 (SSL/TLS), false for 587
+    secure: smtpPort === 465,
     auth: {
       user: smtpUser,
       pass: smtpPass
@@ -42,14 +47,14 @@ async function sendCloudEmail(toEmail, subject, htmlContent) {
   });
 
   const mailOptions = {
-    from: `"ScamShield Platform" <${smtpUser}>`,
+    from: `"ScamShield Security" <${smtpUser}>`,
     to: toEmail,
     subject: subject,
     html: htmlContent
   };
 
   const info = await transporter.sendMail(mailOptions);
-  console.log(`✅ Email sent via Google/Universal SMTP (${smtpHost}:${smtpPort}) to ${toEmail} | MessageID: ${info.messageId}`);
+  console.log(`✅ Email sent via Google SMTP (${smtpHost}:${smtpPort}) to ${toEmail} | MessageID: ${info.messageId}`);
   return info;
 }
 
@@ -136,7 +141,73 @@ app.post('/api/admin/broadcast', (req, res) => {
   res.json({ ok: true, broadcast: activeThreatBroadcast });
 });
 
-// Send Phishing Drill Email via Brevo API
+let activeCustomGames = [];
+
+// Global Custom Games Sync Endpoints (Syncs across all users & screens)
+app.get('/api/games/custom', async (req, res) => {
+  try {
+    const { data, error } = await supabase.from('custom_games').select('*').order('created_at', { ascending: false });
+    if (!error && data) {
+      activeCustomGames = data;
+      return res.json({ ok: true, games: data });
+    }
+  } catch (e) {}
+
+  try {
+    const { data: sysRow } = await supabase.from('profiles').select('username').eq('email', 'system_custom_games@scamshield.internal').maybeSingle();
+    if (sysRow && sysRow.username) {
+      const parsed = JSON.parse(sysRow.username);
+      activeCustomGames = parsed;
+      return res.json({ ok: true, games: parsed });
+    }
+  } catch (e) {}
+
+  res.json({ ok: true, games: activeCustomGames });
+});
+
+app.post('/api/admin/games/custom', async (req, res) => {
+  const game = req.body;
+  if (!game || !game.title) return res.status(400).json({ ok: false, err: 'Missing game title' });
+
+  activeCustomGames = [game, ...activeCustomGames.filter(g => g.id !== game.id)];
+
+  try { await supabase.from('custom_games').insert([game]); } catch (e) {}
+
+  try {
+    const jsonStr = JSON.stringify(activeCustomGames);
+    const { data: existing } = await supabase.from('profiles').select('id').eq('email', 'system_custom_games@scamshield.internal').maybeSingle();
+    if (existing) {
+      await supabase.from('profiles').update({ username: jsonStr }).eq('id', existing.id);
+    } else {
+      await supabase.from('profiles').insert([{
+        id: '11111111-1111-1111-1111-111111111111',
+        email: 'system_custom_games@scamshield.internal',
+        username: jsonStr,
+        role: 'system_storage',
+        xp: 0,
+        level: 1
+      }]);
+    }
+  } catch (e) {}
+
+  res.json({ ok: true, games: activeCustomGames });
+});
+
+app.delete('/api/admin/games/custom/:id', async (req, res) => {
+  const { id } = req.params;
+  activeCustomGames = activeCustomGames.filter(g => String(g.id) !== String(id));
+
+  try { await supabase.from('custom_games').delete().eq('id', id); } catch (e) {}
+
+  try {
+    const jsonStr = JSON.stringify(activeCustomGames);
+    await supabase.from('profiles').update({ username: jsonStr }).eq('email', 'system_custom_games@scamshield.internal');
+  } catch (e) {}
+
+  res.json({ ok: true, games: activeCustomGames });
+});
+
+// Send Phishing Drill Email via Google SMTP
 app.post('/api/admin/phishing/send', async (req, res) => {
   try {
     const { targetEmail, campaignName, template, customSubject, customMessage, senderName } = req.body;
@@ -172,7 +243,7 @@ app.post('/api/admin/phishing/send', async (req, res) => {
       </div>
     `;
 
-    // Try sending real email using Brevo SMTP REST API
+    // Try sending real email using Google SMTP
     try {
       await sendCloudEmail(targetEmail, subject, htmlContent);
       return res.json({ ok: true, sent: true, recipient: targetEmail });

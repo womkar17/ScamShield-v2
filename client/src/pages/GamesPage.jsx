@@ -50,16 +50,34 @@ const GamesPage = () => {
   };
 
   useEffect(() => {
-    const loadSaved = () => {
+    const loadSaved = async () => {
+      try {
+        const apiUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+        const res = await fetch(`${apiUrl}/api/games/custom`);
+        const data = await res.json();
+        if (data.ok && Array.isArray(data.games)) {
+          const clean = data.games.filter(g => g.title !== 'Phishy Email Alert');
+          setCustomGames(clean);
+          localStorage.setItem('ss_custom_games', JSON.stringify(clean));
+          return;
+        }
+      } catch (e) {}
+
       try {
         const saved = localStorage.getItem('ss_custom_games');
-        if (saved) setCustomGames(JSON.parse(saved));
+        if (saved) {
+          const parsed = JSON.parse(saved).filter(g => g.title !== 'Phishy Email Alert');
+          setCustomGames(parsed);
+          localStorage.setItem('ss_custom_games', JSON.stringify(parsed));
+        }
       } catch (e) {}
     };
     loadSaved();
+    const interval = setInterval(loadSaved, 4000); // Live poll so custom games appear instantly on all screens
     window.addEventListener('storage', loadSaved);
     window.addEventListener('focus', loadSaved);
     return () => {
+      clearInterval(interval);
       window.removeEventListener('storage', loadSaved);
       window.removeEventListener('focus', loadSaved);
     };

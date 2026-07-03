@@ -242,10 +242,26 @@ export default function AdminPage() {
     }
   };
 
-  const loadCustomGames = () => {
+  const loadCustomGames = async () => {
+    try {
+      const apiUrl = getApiUrl();
+      const res = await fetch(`${apiUrl}/api/games/custom`);
+      const data = await res.json();
+      if (data.ok && Array.isArray(data.games)) {
+        const clean = data.games.filter(g => g.title !== 'Phishy Email Alert');
+        setCustomGames(clean);
+        localStorage.setItem('ss_custom_games', JSON.stringify(clean));
+        return;
+      }
+    } catch (e) {}
+
     try {
       const saved = localStorage.getItem('ss_custom_games');
-      if (saved) setCustomGames(JSON.parse(saved));
+      if (saved) {
+        const parsed = JSON.parse(saved).filter(g => g.title !== 'Phishy Email Alert');
+        setCustomGames(parsed);
+        localStorage.setItem('ss_custom_games', JSON.stringify(parsed));
+      }
     } catch (e) { /* ignore */ }
   };
 
@@ -329,19 +345,34 @@ export default function AdminPage() {
     loadData();
   };
 
-  const saveCustomGame = () => {
+  const saveCustomGame = async () => {
     if (!newGame.title.trim()) return;
-    const updated = [...customGames, { ...newGame, id: Date.now() }];
+    const created = { ...newGame, id: Date.now() };
+    const updated = [created, ...customGames.filter(g => g.title !== 'Phishy Email Alert')];
     setCustomGames(updated);
     localStorage.setItem('ss_custom_games', JSON.stringify(updated));
+
+    try {
+      const apiUrl = getApiUrl();
+      await fetch(`${apiUrl}/api/admin/games/custom`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(created)
+      });
+    } catch (e) {}
+
     setNewGame({ title: '', description: '', type: 'quiz', difficulty: 'Easy', xpReward: 50 });
-    alert("✅ Custom Game saved! It is now live and playable in the Arcade under 'Custom Admin & Community Games'!");
+    alert("✅ Custom Game saved to Cloud Database! It is now live and playable in the Arcade for all users!");
   };
 
-  const deleteCustomGame = (id) => {
+  const deleteCustomGame = async (id) => {
     const updated = customGames.filter(g => g.id !== id);
     setCustomGames(updated);
     localStorage.setItem('ss_custom_games', JSON.stringify(updated));
+    try {
+      const apiUrl = getApiUrl();
+      await fetch(`${apiUrl}/api/admin/games/custom/${id}`, { method: 'DELETE' });
+    } catch (e) {}
   };
 
   // AI Craft Phishing Email Assistant
@@ -449,11 +480,11 @@ Return ONLY a valid JSON object with exactly two keys:
       });
       const data = await res.json();
       if (data.ok && data.sent) {
-        alert(`🚀 Phishing Drill "${created.name}" dispatched to ${target} via cloud email server! Check your inbox!`);
+        alert(`🚀 Phishing Drill "${created.name}" dispatched to ${target} via Google SMTP server! Check your inbox!`);
       } else if (data.ok && data.simulated) {
         alert(`🚀 Broadcast Drill "${created.name}" simulated across 100% of user database!`);
       } else {
-        alert(`🚀 Phishing Drill "${created.name}" logged! (Note: Real SMTP delivery simulated offline or check server logs).`);
+        alert(`⚠️ Email Delivery Failed!\n\nReason from Server: ${data.err || 'Unknown SMTP Error'}\n\nPlease check your Vercel Environment Variables: make sure SMTP_USER (your gmail) and SMTP_PASS (your 16-character Google App Password without spaces) are set correctly! The drill was recorded in the table below.`);
       }
     } catch (e) {
       alert(`🚀 Phishing Drill "${created.name}" dispatched! Check metrics table below.`);
@@ -682,9 +713,6 @@ Return ONLY a valid JSON object with exactly two keys:
               <div style={s.card}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
                   <h2 style={s.cardTitle}>🎣 Individual & Workforce Phishing Drill Simulator</h2>
-                  <span style={{ background: 'rgba(34, 197, 94, 0.15)', color: '#4ade80', padding: '4px 12px', borderRadius: '12px', fontSize: '12px', fontWeight: 'bold' }}>
-                    Safe Training Sandbox
-                  </span>
                 </div>
                 <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', marginBottom: '16px' }}>
                   Target any individual user email or a list of emails to test whether they recognize social engineering triggers. You can preview exactly what the email looks like before dispatching!
@@ -718,29 +746,7 @@ Return ONLY a valid JSON object with exactly two keys:
                     </div>
                   </div>
                   <div style={s.formGroup}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                      <label style={s.formLabel}>Phishing Template Vector</label>
-                      <button
-                        type="button"
-                        onClick={handleAICraftPhishing}
-                        disabled={aiCrafting}
-                        style={{
-                          background: 'linear-gradient(135deg, #a855f7, #6366f1)',
-                          color: '#fff',
-                          border: 'none',
-                          padding: '4px 10px',
-                          borderRadius: '6px',
-                          fontSize: '12px',
-                          fontWeight: 'bold',
-                          cursor: aiCrafting ? 'wait' : 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '6px'
-                        }}
-                      >
-                        {aiCrafting ? '🤖 AI Crafting...' : '✨ AI Craft Phishing Email'}
-                      </button>
-                    </div>
+                    <label style={s.formLabel}>Phishing Template Vector</label>
                     <select
                       style={s.formInput}
                       value={newCampaign.template}
@@ -760,9 +766,32 @@ Return ONLY a valid JSON object with exactly two keys:
 
                 {/* Custom Email Subject and Message Override */}
                 <div style={{ marginTop: '16px', background: 'rgba(255,255,255,0.03)', padding: '16px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                  <label style={{ ...s.formLabel, color: '#38bdf8', marginBottom: '8px', display: 'block' }}>
-                    ✍️ Custom Email Subject & Message Body (Optional Overrides / AI Output)
-                  </label>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap', gap: '10px' }}>
+                    <label style={{ ...s.formLabel, color: '#38bdf8', margin: 0 }}>
+                      ✍️ Custom Email Subject & Message Body (Optional Overrides / AI Output)
+                    </label>
+                    <button
+                      type="button"
+                      onClick={handleAICraftPhishing}
+                      disabled={aiCrafting}
+                      style={{
+                        background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+                        color: '#fff',
+                        border: 'none',
+                        padding: '6px 14px',
+                        borderRadius: '6px',
+                        fontSize: '13px',
+                        fontWeight: 'bold',
+                        cursor: aiCrafting ? 'wait' : 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        boxShadow: '0 2px 8px rgba(168, 85, 247, 0.3)'
+                      }}
+                    >
+                      {aiCrafting ? '🤖 AI Crafting...' : '✨ AI Craft Phishing Email'}
+                    </button>
+                  </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                     <input
                       style={s.formInput}
