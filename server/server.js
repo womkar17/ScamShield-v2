@@ -25,7 +25,8 @@ async function sendCloudEmail(toEmail, subject, htmlContent) {
   const smtpPass = process.env.SMTP_PASS || process.env.SMPT_PASS || process.env.GMAIL_PASS || process.env.GMAIL_PASSWORD || process.env.EMAIL_PASS || process.env.GMAIL_APP_PASSWORD;
 
   if (!smtpUser || !smtpPass) {
-    throw new Error('Missing Google SMTP credentials in Vercel environment variables. Make sure SMTP_USER and SMTP_PASS are added in Vercel, and that you REDEPLOY your app in Vercel Deployments tab!');
+    const keysFound = Object.keys(process.env).filter(k => k.includes('SMTP') || k.includes('GMAIL') || k.includes('EMAIL') || k.includes('PASS') || k.includes('USER')).join(', ') || 'None found';
+    throw new Error(`Vercel Server cannot find SMTP_USER or SMTP_PASS! (Related environment variables seen by Vercel container: [${keysFound}]). Remember: When you add or change variables in Vercel Settings, you MUST go to the Deployments tab and manually click 'Redeploy' on your latest deployment!`);
   }
 
   // Force Google SMTP (smtp.gmail.com) over SSL Port 465, ignoring any legacy Brevo host in Vercel env
