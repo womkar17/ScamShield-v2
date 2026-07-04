@@ -19,11 +19,11 @@ const supabase = createClient(supabaseUrl || 'https://placeholder.supabase.co', 
 
 // Universal Google SMTP Email Sender
 async function sendCloudEmail(toEmail, subject, htmlContent) {
-  const smtpUser = process.env.SMTP_USER || process.env.GMAIL_USER || process.env.EMAIL_USER;
-  const smtpPass = process.env.SMTP_PASS || process.env.GMAIL_PASS || process.env.EMAIL_PASS || process.env.GMAIL_APP_PASSWORD;
+  const smtpUser = process.env.SMTP_USER || process.env.SMPT_USER || process.env.GMAIL_USER || process.env.GMAIL_ADDRESS || process.env.EMAIL_USER;
+  const smtpPass = process.env.SMTP_PASS || process.env.SMPT_PASS || process.env.GMAIL_PASS || process.env.GMAIL_PASSWORD || process.env.EMAIL_PASS || process.env.GMAIL_APP_PASSWORD;
 
   if (!smtpUser || !smtpPass) {
-    throw new Error('Missing Google SMTP credentials in Vercel environment variables (SMTP_USER/SMTP_PASS or GMAIL_USER/GMAIL_PASS).');
+    throw new Error('Missing Google SMTP credentials in Vercel environment variables. Make sure SMTP_USER and SMTP_PASS are added in Vercel, and that you REDEPLOY your app in Vercel Deployments tab!');
   }
 
   // Force Google SMTP (smtp.gmail.com) over SSL Port 465, ignoring any legacy Brevo host in Vercel env
