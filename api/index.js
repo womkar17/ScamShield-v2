@@ -400,4 +400,9 @@ app.get('/api/status', (req, res) => {
   res.json({ ok: true, status: 'online', service: 'ScamShield Serverless Vercel Backend ⚡' });
 });
 
+// Debug catch-all - shows what URL Express sees
+app.all('*', (req, res) => {
+  res.json({ debug: true, method: req.method, url: req.url, path: req.path, originalUrl: req.originalUrl });
+});
+
 export default app;
