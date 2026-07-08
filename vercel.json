@@ -1,5 +1,11 @@
 {
   "outputDirectory": "client/dist",
+  "functions": {
+    "api/index.js": {
+      "runtime": "@vercel/node@3.0.0",
+      "includeFiles": "api/**"
+    }
+  },
   "rewrites": [
     {
       "source": "/api/(.*)",
