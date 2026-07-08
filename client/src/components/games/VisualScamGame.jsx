@@ -6,6 +6,7 @@ export default function VisualScamGame({ game, onComplete }) {
   const rawData = typeof game.data === 'string'
     ? (() => { try { return JSON.parse(game.data); } catch (e) { return {}; } })()
     : (game.data || {});
+  const data = rawData; // alias used in JSX
 
   const content = rawData.content || `<div style="background:#1a1a2e;padding:30px;border-radius:12px;text-align:center;color:white;border:2px solid #e94560"><div style="background:#16213e;padding:20px;border-radius:8px;margin-bottom:15px"><h3 style="color:#e94560">EMERGENCY WIRE REQUEST</h3><p>CEO Executive Office</p><p style="font-size:12px;color:#888">Server connection: meet-secure-external.io</p></div><p style="color:#e94560;font-size:14px">Notice: Deepfake artifacts and latency mismatch detected</p></div>`;
   const isFake = rawData.isFake !== false;

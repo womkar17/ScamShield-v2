@@ -6,6 +6,7 @@ export default function ChatGame({ game, onComplete }) {
   const rawData = typeof game.data === 'string'
     ? (() => { try { return JSON.parse(game.data); } catch (e) { return {}; } })()
     : (game.data || {});
+  const data = rawData; // alias used in JSX
 
   const messages = (Array.isArray(rawData.messages) && rawData.messages.length > 0)
     ? rawData.messages

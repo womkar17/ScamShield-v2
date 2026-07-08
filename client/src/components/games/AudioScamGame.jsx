@@ -6,6 +6,7 @@ export default function AudioScamGame({ game, onComplete }) {
   const rawData = typeof game.data === 'string'
     ? (() => { try { return JSON.parse(game.data); } catch (e) { return {}; } })()
     : (game.data || {});
+  const data = rawData; // alias used in JSX
 
   const script = (Array.isArray(rawData.script) && rawData.script.length > 0)
     ? rawData.script
