@@ -11,9 +11,22 @@ const SpotTheFlagGame = ({ game, onComplete }) => {
   const [isHovering, setIsHovering] = useState(false);
   const areaRef = useRef(null);
 
-  const data = game.data || {};
-  const content = data.content || '';
-  const flags = data.flags || [];
+  const rawData = typeof game.data === 'string'
+    ? (() => { try { return JSON.parse(game.data); } catch (e) { return {}; } })()
+    : (game.data || {});
+
+  const fallbackContent = `<div style="font-family:Arial,sans-serif;padding:24px;background:#ffffff;color:#222222;border-radius:12px;border:1px solid #e2e8f0;box-shadow:0 4px 6px rgba(0,0,0,0.05)"><div style="background:#1a73e8;color:white;padding:16px;border-radius:8px 8px 0 0;margin:-24px -24px 20px -24px"><strong>From:</strong> security@g00gle-verify.net</div><p>Dear Valued Custmer,</p><p>We detected unusual login activity. Your account will be <b style="color:#dc2626">PERMANENTLY BLOCKED</b> within 24 hours.</p><p style="margin:20px 0"><a style="background:#1a73e8;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;display:inline-block">Verify Identity Now</a></p><p style="font-size:12px;color:#64748b">Link target: http://g00gle-verify.net/login.php</p></div>`;
+
+  const fallbackFlags = [
+    { id: 'f1', text: 'Custmer', hint: 'Spelling typo in customer greeting.' },
+    { id: 'f2', text: 'PERMANENTLY BLOCKED', hint: 'Artificial extreme urgency language.' },
+    { id: 'f3', text: 'g00gle-verify.net', hint: 'Fake lookalike domain with zeros instead of o\'s.' }
+  ];
+
+  const content = rawData.content || rawData.html || rawData.emailContent || game.content || fallbackContent;
+  const flags = (Array.isArray(rawData.flags) && rawData.flags.length > 0)
+    ? rawData.flags
+    : (Array.isArray(game.flags) && game.flags.length > 0 ? game.flags : fallbackFlags);
   const isImage = typeof content === 'string' && (content.startsWith('http') || content.startsWith('/'));
 
   const handleFlagClick = (flag) => {
@@ -26,7 +39,7 @@ const SpotTheFlagGame = ({ game, onComplete }) => {
       // Hide tooltip after a bit
       setTimeout(() => {
         setShowTooltip(null);
-        if (newFound.length === flags.length) {
+        if (newFound.length === flags.length && flags.length > 0) {
           soundEffects.play('win');
           setTimeout(() => {
             setShowAnalysis(true);

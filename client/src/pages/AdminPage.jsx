@@ -151,8 +151,9 @@ export default function AdminPage() {
   // Content Manager state
   const [customGames, setCustomGames] = useState([]);
   const [newGame, setNewGame] = useState({
-    title: '', description: '', type: 'quiz', difficulty: 'Easy', xpReward: 50
+    title: '', description: '', type: 'quiz', difficulty: 'Easy', xpReward: 50, data: null
   });
+  const [aiGeneratingContent, setAiGeneratingContent] = useState(false);
 
   // Simulated Phishing State
   const [campaigns, setCampaigns] = useState(() => {
@@ -168,6 +169,7 @@ export default function AdminPage() {
   });
   const [previewTemplate, setPreviewTemplate] = useState(null);
   const [aiCrafting, setAiCrafting] = useState(false);
+  const [smtpHelpOpen, setSmtpHelpOpen] = useState(false);
   const [aiGameCrafting, setAiGameCrafting] = useState(false);
   const [previewGame, setPreviewGame] = useState(null);
 
@@ -244,23 +246,21 @@ export default function AdminPage() {
   };
 
   const loadCustomGames = async () => {
-    // 1. Direct Supabase cloud database check
+    // 1. Instant local display
     try {
-      const { data, error } = await supabase.from('custom_games').select('*').order('created_at', { ascending: false });
-      if (!error && data && data.length > 0) {
-        const clean = data.filter(g => g.title !== 'Phishy Email Alert');
-        setCustomGames(clean);
-        localStorage.setItem('ss_custom_games', JSON.stringify(clean));
-        return;
+      const saved = localStorage.getItem('ss_custom_games');
+      if (saved) {
+        const parsed = JSON.parse(saved).filter(g => g.title !== 'Phishy Email Alert');
+        setCustomGames(parsed);
       }
     } catch (e) {}
 
-    // 2. Server API fallback
+    // 2. Unified Server API check (merges memory + Supabase DB + backup storage)
     try {
       const apiUrl = getApiUrl();
       const res = await fetch(`${apiUrl}/api/games/custom`);
       const data = await res.json();
-      if (data.ok && Array.isArray(data.games) && data.games.length > 0) {
+      if (data.ok && Array.isArray(data.games)) {
         const clean = data.games.filter(g => g.title !== 'Phishy Email Alert');
         setCustomGames(clean);
         localStorage.setItem('ss_custom_games', JSON.stringify(clean));
@@ -268,15 +268,18 @@ export default function AdminPage() {
       }
     } catch (e) {}
 
-    // 3. Local storage fallback
+    // 3. Direct Supabase fallback
     try {
-      const saved = localStorage.getItem('ss_custom_games');
-      if (saved) {
-        const parsed = JSON.parse(saved).filter(g => g.title !== 'Phishy Email Alert');
-        setCustomGames(parsed);
-        localStorage.setItem('ss_custom_games', JSON.stringify(parsed));
+      const { data, error } = await supabase.from('custom_games').select('*').order('created_at', { ascending: false });
+      if (!error && Array.isArray(data) && data.length > 0) {
+        const clean = data.filter(g => g.title !== 'Phishy Email Alert').map(g => ({
+          ...g,
+          xpReward: g.xpReward ?? g.xpreward ?? 50
+        }));
+        setCustomGames(clean);
+        localStorage.setItem('ss_custom_games', JSON.stringify(clean));
       }
-    } catch (e) { /* ignore */ }
+    } catch (e) {}
   };
 
   const toggleRole = async (userId, currentRole) => {
@@ -365,9 +368,16 @@ export default function AdminPage() {
     const updated = [created, ...customGames.filter(g => g.title !== 'Phishy Email Alert')];
     setCustomGames(updated);
     localStorage.setItem('ss_custom_games', JSON.stringify(updated));
+    window.dispatchEvent(new Event('storage'));
 
-    // Try direct Supabase client upsert for 100% cloud reliability across all devices
-    try { await supabase.from('custom_games').upsert([created]); } catch (e) {}
+    try {
+      const dbRow = { id: created.id, title: created.title, description: created.description, type: created.type, difficulty: created.difficulty, xpreward: created.xpReward, data: created.data || null };
+      const { error } = await supabase.from('custom_games').upsert([dbRow]);
+      if (error && error.message?.includes('data')) {
+        const dbRowNoData = { id: created.id, title: created.title, description: created.description, type: created.type, difficulty: created.difficulty, xpreward: created.xpReward };
+        await supabase.from('custom_games').upsert([dbRowNoData]);
+      }
+    } catch (e) {}
 
     try {
       const apiUrl = getApiUrl();
@@ -378,14 +388,15 @@ export default function AdminPage() {
       });
     } catch (e) {}
 
-    setNewGame({ title: '', description: '', type: 'quiz', difficulty: 'Easy', xpReward: 50 });
-    alert("✅ Custom Game saved! If hosted online, make sure you created the 'custom_games' table in Supabase so other users' devices can see it!");
+    setNewGame({ title: '', description: '', type: 'quiz', difficulty: 'Easy', xpReward: 50, data: null });
+    alert("✅ Custom Game saved with full playable content! Other users will see it in the Arcade immediately.");
   };
 
   const deleteCustomGame = async (id) => {
-    const updated = customGames.filter(g => g.id !== id);
+    const updated = customGames.filter(g => String(g.id) !== String(id));
     setCustomGames(updated);
     localStorage.setItem('ss_custom_games', JSON.stringify(updated));
+    window.dispatchEvent(new Event('storage'));
     try { await supabase.from('custom_games').delete().eq('id', id); } catch (e) {}
     try {
       const apiUrl = getApiUrl();
@@ -393,44 +404,98 @@ export default function AdminPage() {
     } catch (e) {}
   };
 
-  const handleAIGenerateGameDescription = async () => {
-    if (!newGame.title && !newGame.type) {
-      alert("Please enter a game Title or select a Type first!");
-      return;
-    }
-    setAiGameCrafting(true);
+  // AI Craft Phishing Email Assistant
+
+  // AI Generate Full Game Content (type-specific, styled exactly like existing minigames.js games)
+  const handleAIGenerateGameContent = async () => {
+    const t = newGame.type;
+    const title = newGame.title || 'Cyber Security Challenge';
+    const diff = newGame.difficulty || 'Medium';
+    setAiGeneratingContent(true);
     try {
       const apiUrl = getApiUrl();
-      const prompt = `Write a compelling, realistic cybersecurity minigame scenario description for a game titled "${newGame.title || 'Cyber Challenge'}" of type "${newGame.type || 'quiz'}". Keep it engaging, educational, and around 2 to 3 sentences long. Return ONLY the description text without quotes or markdown.`;
+      const prompts = {
+        quiz: `Generate a cybersecurity quiz game about "${title}" (${diff} difficulty) styled like an existing high-quality arcade challenge. Return ONLY valid JSON:\n{"description":"Engaging 1-2 sentence scenario description","thumbnail":"🧠","data":{"question":"Clear cybersecurity scenario question?","options":[{"text":"Wrong option A","isCorrect":false,"explanation":"Why wrong"},{"text":"Correct secure action","isCorrect":true,"explanation":"Why correct"},{"text":"Wrong option B","isCorrect":false,"explanation":"Why wrong"}],"threatAnalysis":{"psychology":"Psychological manipulation tactic used","payload":"What attacker gains","defense":"Best defense habit"}}}`,
+        swipe: `Generate a swipe card cybersecurity game about "${title}" (${diff} difficulty) styled like Tinder for Scam vs Safe items. Return ONLY valid JSON:\n{"description":"Engaging 1-2 sentence description inviting players to swipe Safe or Scam","thumbnail":"🎣","data":{"items":[{"content":"sender@example.com - Subject: Urgent Account Lockout","isScam":true,"explanation":"Domain lookalike and urgency."},{"content":"Legitimate notification item","isScam":false,"explanation":"Why safe."},{"content":"Suspicious SMS/URL item","isScam":true,"explanation":"Why scam."},{"content":"Official safe portal link","isScam":false,"explanation":"Why safe."},{"content":"Phishing bait message","isScam":true,"explanation":"Why scam."}],"threatAnalysis":{"psychology":"Urgency & Brand Trust","payload":"Credential theft","defense":"Always check full sender domain and URL."}}}`,
+        chat: `Generate a WhatsApp-style chat scam simulation about "${title}" (${diff} difficulty). Return ONLY valid JSON:\n{"description":"Engaging 1-2 sentence scenario description","thumbnail":"💬","data":{"messages":[{"sender":"scammer","text":"Hi! This is IT support..."},{"sender":"scammer","text":"We need you to verify your password immediately..."}],"choices":[{"text":"Sure, sending credentials now.","isCorrect":false,"explanation":"Never share passwords in chat."},{"text":"I will verify through official IT support desk first.","isCorrect":true,"explanation":"Always verify through official channels."},{"text":"Can you send a link instead?","isCorrect":false,"explanation":"Links can lead to phishing."}],"threatAnalysis":{"psychology":"Authority Impersonation","payload":"Account takeover","defense":"IT Support never asks for passwords via chat."}}}`,
+        audio: `Generate a vishing (voice phishing) phone call script about "${title}" (${diff} difficulty). Return ONLY valid JSON:\n{"description":"Engaging 1-2 sentence description of the phone call scenario","thumbnail":"📞","data":{"script":[{"text":"Hello, this is the fraud department calling...","isRedFlag":false},{"text":"We detected suspicious activity on your card...","isRedFlag":false},{"text":"Please read out the OTP sent to your phone immediately to block it.","isRedFlag":true},{"text":"Failure to read the OTP will result in permanent account freeze.","isRedFlag":true}],"threatAnalysis":{"psychology":"Fear of financial loss + urgency","payload":"OTP authorization for scam transfer","defense":"Banks never ask for OTP over the phone."}}}`,
+        'spot-flag': `Generate a Spot The Flag cybersecurity game about "${title}" (${diff} difficulty).
+Return ONLY valid JSON matching this exact structure:
+{
+  "description": "Examine this suspicious email/document. Click all the red flags to win.",
+  "thumbnail": "📧",
+  "data": {
+    "scenario": "Suspicious Email Notification",
+    "content": "<div style='font-family:Arial,sans-serif;padding:24px;background:#ffffff;color:#222222;border-radius:12px;border:1px solid #e2e8f0;box-shadow:0 4px 6px rgba(0,0,0,0.05)'><div style='background:#1a73e8;color:white;padding:16px;border-radius:8px 8px 0 0;margin:-24px -24px 20px -24px'><strong>From:</strong> security@g00gle-verify.net</div><p>Dear Valued Custmer,</p><p>We detected unusual login activity. Your account will be <b style='color:#dc2626'>PERMANENTLY BLOCKED</b> within 24 hours.</p><p style='margin:20px 0'><a style='background:#1a73e8;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;display:inline-block'>Verify Identity Now</a></p><p style='font-size:12px;color:#64748b'>Link target: http://g00gle-verify.net/login.php</p></div>",
+    "flags": [
+      { "id": "f1", "text": "Custmer", "hint": "Spelling typo in customer greeting." },
+      { "id": "f2", "text": "PERMANENTLY BLOCKED", "hint": "Artificial extreme urgency language." },
+      { "id": "f3", "text": "g00gle-verify.net", "hint": "Fake lookalike domain with zeros instead of o's." }
+    ],
+    "threatAnalysis": {
+      "psychology": "Fear + Authority Impersonation",
+      "payload": "Credential harvesting",
+      "defense": "Check sender address and look for typos."
+    }
+  }
+}
+CRITICAL REQUIREMENTS FOR spot-flag:
+1. You MUST include an HTML string inside 'content' representing a realistic email or notification.
+2. You MUST include an array inside 'flags' with at least 3 flag objects.
+3. Every single 'text' value in 'flags' MUST be an EXACT, literal substring inside the 'content' HTML string so the player can click on it!`,
+        visual: `Generate a visual deepfake / forgery detection game about "${title}" (${diff} difficulty). Create an HTML mockup. Return ONLY valid JSON:\n{"description":"Examine this suspicious video call or payment screenshot. Can you detect the forgery?","thumbnail":"🔍","data":{"content":"<div style='background:#1a1a2e;padding:30px;border-radius:12px;text-align:center;color:white;border:2px solid #e94560'><div style='background:#16213e;padding:20px;border-radius:8px;margin-bottom:15px'><h3 style='color:#e94560'>EMERGENCY VIDEO CONFERENCE</h3><div style='font-size:70px;margin:15px'>👤</div><p>Executive Officer</p><p style='font-size:12px;color:#888'>Connected server: meet-secure-external.io</p></div><p style='color:#e94560;font-size:14px'>Notice: Audio latency mismatch and unnatural blinking patterns</p></div>","flaws":["meet-secure-external.io — unverified external server","Unnatural lip-sync and audio latency mismatch","Urgent demand to wire funds during low-quality video call"],"isFake":true,"threatAnalysis":{"psychology":"Executive authority impersonation via deepfake","payload":"Unauthorized wire transfer","defense":"Verify executive financial requests via a secondary communication channel."}}}`,
+        password: `Generate a password security challenge about "${title}" (${diff} difficulty). Return ONLY valid JSON:\n{"description":"Test your password security against modern cracking tools.","thumbnail":"🔐","data":{"threatAnalysis":{"psychology":"Users choose convenience over security","payload":"Brute force dictionary attacks","defense":"Use 16+ character passphrases with mixed symbols and numbers."}}}`
+      };
+      const prompt = prompts[t] || prompts.quiz;
       const res = await fetch(`${apiUrl}/api/ai/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: [{ role: 'user', content: prompt }] })
       });
-      const data = await res.json();
-      if (data.ok && data.reply) {
-        const clean = data.reply.replace(/^["']|["']$/g, '').trim();
-        setNewGame(prev => ({ ...prev, description: clean }));
+      const result = await res.json();
+      if (result.ok && result.reply) {
+        const match = result.reply.match(/\{[\s\S]*\}/);
+        if (match) {
+          const parsed = JSON.parse(match[0]);
+          let gameData = parsed.data || parsed;
+
+          // Strict validation & auto-healing for spot-flag to ensure playable flags and non-blank UI
+          if (t === 'spot-flag') {
+            const contentHtml = gameData.content || parsed.content || `<div style="font-family:Arial,sans-serif;padding:24px;background:#ffffff;color:#222222;border-radius:12px;border:1px solid #e2e8f0;box-shadow:0 4px 6px rgba(0,0,0,0.05)"><div style="background:#1a73e8;color:white;padding:16px;border-radius:8px 8px 0 0;margin:-24px -24px 20px -24px"><strong>From:</strong> security@g00gle-verify.net</div><p>Dear Valued Custmer,</p><p>We detected unusual login activity. Your account will be <b style="color:#dc2626">PERMANENTLY BLOCKED</b> within 24 hours.</p><p style="margin:20px 0"><a style="background:#1a73e8;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;display:inline-block">Verify Identity Now</a></p><p style="font-size:12px;color:#64748b">Link target: http://g00gle-verify.net/login.php</p></div>`;
+            const flagList = (Array.isArray(gameData.flags) && gameData.flags.length > 0)
+              ? gameData.flags
+              : (Array.isArray(parsed.flags) && parsed.flags.length > 0 ? parsed.flags : [
+                  { id: 'f1', text: 'Custmer', hint: 'Spelling typo in customer greeting.' },
+                  { id: 'f2', text: 'PERMANENTLY BLOCKED', hint: 'Artificial extreme urgency language.' },
+                  { id: 'f3', text: 'g00gle-verify.net', hint: 'Fake lookalike domain with zeros instead of o\'s.' }
+                ]);
+            gameData = {
+              ...gameData,
+              content: contentHtml,
+              flags: flagList
+            };
+          }
+
+          setNewGame(prev => ({
+            ...prev,
+            description: parsed.description || prev.description || 'Can you spot the social engineering manipulation in this scenario?',
+            thumbnail: parsed.thumbnail || prev.thumbnail || '🎯',
+            data: gameData
+          }));
+          alert(`✨ AI generated full ${t.toUpperCase()} game content matching Arcade style! Description, emoji & scenario are ready.`);
+        } else {
+          throw new Error('No JSON found in AI response');
+        }
       } else {
-        throw new Error("AI Fallback");
+        throw new Error(result.error || 'AI unavailable');
       }
     } catch (e) {
-      const fallbacks = {
-        quiz: `Test your defensive reflexes! Analyze a real-world social engineering attack vector and choose the correct mitigation strategy to protect corporate data.`,
-        swipe: `Tinder for Cyber Threats! Swipe right if the email or URL is verified and safe, or swipe left immediately if you spot spoofed domains and phishing lures!`,
-        password: `Enter the Hacker Terminal! Craft an unbreakable passphrase and watch our real-time entropy calculator test your defense against brute-force dictionary attacks.`,
-        'spot-flag': `Visual Inspection Challenge! Examine this suspicious corporate screenshot and click on all the hidden red flags before the hacker infiltrates your network!`,
-        chat: `Simulated SMS Smishing Attack! Navigate a suspicious WhatsApp/SMS conversation from an executive impersonator and avoid revealing sensitive credentials.`,
-        audio: `Vishing Audio Interception! Listen to this AI voice clone phone call from "IT Support" and press HANG UP immediately when you hear the social engineering trigger!`,
-        visual: `Deepfake & Steganography Scanner! Use your forensic contrast tools to analyze an executive video call screen and uncover hidden visual artifacts.`
-      };
-      setNewGame(prev => ({ ...prev, description: fallbacks[newGame.type] || fallbacks.quiz }));
+      console.error('AI game content error:', e);
+      alert('⚠️ AI content generation failed: ' + e.message + '. You can still add content manually below.');
     } finally {
-      setAiGameCrafting(false);
+      setAiGeneratingContent(false);
     }
   };
-
-  // AI Craft Phishing Email Assistant
   const handleAICraftPhishing = async () => {
     setAiCrafting(true);
     try {
@@ -880,27 +945,6 @@ Return ONLY a valid JSON object with exactly two keys:
                     <span>Preview What Email Looks Like</span>
                   </button>
                 </div>
-
-                {/* How to Fix Google SMTP Error on Vercel */}
-                <div style={{ marginTop: '1.5rem', background: 'rgba(234, 179, 8, 0.08)', border: '1px solid rgba(234, 179, 8, 0.3)', padding: '16px', borderRadius: '12px' }}>
-                  <h3 style={{ color: '#facc15', marginTop: 0, display: 'flex', alignItems: 'center', gap: '8px', fontSize: '15px' }}>
-                    <span>💡</span>
-                    <span>Getting "Missing Google SMTP credentials in Vercel"? Here is how to fix it:</span>
-                  </h3>
-                  <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '13.5px', lineHeight: '1.6', margin: '8px 0' }}>
-                    To send live emails when your application is hosted on Vercel, you must add your Google SMTP credentials to your Vercel Project Environment Variables:
-                  </p>
-                  <ol style={{ color: 'rgba(255,255,255,0.75)', fontSize: '13px', lineHeight: '1.7', paddingLeft: '20px', margin: '0 0 10px 0' }}>
-                    <li>Go to your Google Account → <strong>Security</strong> → Enable <strong>2-Step Verification</strong>.</li>
-                    <li>Search for <strong>App Passwords</strong> in your Google Account security settings and generate a 16-character app password (e.g., <code style={{ color: '#fff', background: 'rgba(0,0,0,0.4)', padding: '2px 6px', borderRadius: '4px' }}>abcd efgh ijkl mnop</code>).</li>
-                    <li>Open your <strong>Vercel Dashboard</strong> → Select your Project → <strong>Settings</strong> → <strong>Environment Variables</strong>.</li>
-                    <li>Add two environment variables: <br/>
-                      • <strong><code style={{ color: '#38bdf8' }}>SMTP_USER</code></strong> = Your Gmail address (e.g., <code style={{ color: '#fff' }}>yourname@gmail.com</code>)<br/>
-                      • <strong><code style={{ color: '#38bdf8' }}>SMTP_PASS</code></strong> = Your 16-character App Password without spaces (e.g., <code style={{ color: '#fff' }}>abcdefghijklmnop</code>)
-                    </li>
-                    <li>Click <strong>Save</strong> and redeploy your Vercel project! Your emails will immediately send to real user inboxes.</li>
-                  </ol>
-                </div>
               </div>
 
               <div style={{ ...s.card, marginTop: '1.5rem' }}>
@@ -1070,37 +1114,110 @@ Return ONLY a valid JSON object with exactly two keys:
                   </div>
                 </div>
                 <div style={{ ...s.formGroup, marginTop: '1rem' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '8px' }}>
-                    <label style={{ ...s.formLabel, margin: 0 }}>Description & Scenario</label>
-                    <button
-                      type="button"
-                      onClick={handleAIGenerateGameDescription}
-                      disabled={aiGameCrafting}
-                      style={{
-                        background: 'linear-gradient(135deg, #a855f7, #6366f1)',
-                        color: '#fff',
-                        border: 'none',
-                        padding: '6px 14px',
-                        borderRadius: '6px',
-                        fontSize: '12px',
-                        fontWeight: 'bold',
-                        cursor: aiGameCrafting ? 'wait' : 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        boxShadow: '0 2px 8px rgba(168, 85, 247, 0.3)'
-                      }}
-                    >
-                      {aiGameCrafting ? '🤖 Generating Scenario...' : '✨ AI Generate Description & Scenario'}
-                    </button>
-                  </div>
+                  <label style={{ ...s.formLabel, margin: '0 0 8px 0', display: 'block' }}>Description & Scenario (Auto-populated by AI Content Generator)</label>
                   <input
                     style={s.formInput}
                     value={newGame.description}
                     onChange={e => setNewGame({ ...newGame, description: e.target.value })}
-                    placeholder="Describe the game scenario or click '✨ AI Generate' above..."
+                    placeholder="Brief scenario description..."
                   />
                 </div>
+
+                {/* === GAME CONTENT EDITOR === */}
+                <div style={{ marginTop: '1rem', background: 'rgba(168, 85, 247, 0.06)', border: '1px solid rgba(168, 85, 247, 0.25)', borderRadius: '12px', padding: '16px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap', gap: '10px' }}>
+                    <div>
+                      <label style={{ ...s.formLabel, color: '#d8b4fe', margin: 0, fontSize: '14px', fontWeight: 'bold' }}>
+                        🎮 Game Content & Questions ({newGame.type.toUpperCase()} Engine)
+                      </label>
+                      <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px', margin: '4px 0 0' }}>
+                        {newGame.type === 'quiz' && 'Add a question with multiple-choice options. One must be correct.'}
+                        {newGame.type === 'swipe' && 'Add email/URL items for users to swipe Safe or Scam.'}
+                        {newGame.type === 'chat' && 'Create a scammer conversation with reply choices.'}
+                        {newGame.type === 'audio' && 'Write a phone call script with red flag triggers.'}
+                        {newGame.type === 'spot-flag' && 'Design an HTML email mockup with hidden flags to click.'}
+                        {newGame.type === 'visual' && 'Create an HTML visual with deepfake detection elements.'}
+                        {newGame.type === 'password' && 'Password games are self-contained — no content needed! Just add a description.'}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAIGenerateGameContent}
+                      disabled={aiGeneratingContent || newGame.type === 'password'}
+                      style={{
+                        background: aiGeneratingContent ? 'rgba(168, 85, 247, 0.3)' : 'linear-gradient(135deg, #ec4899, #a855f7)',
+                        color: '#fff',
+                        border: 'none',
+                        padding: '8px 16px',
+                        borderRadius: '8px',
+                        fontSize: '13px',
+                        fontWeight: 'bold',
+                        cursor: aiGeneratingContent ? 'wait' : 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        boxShadow: '0 2px 12px rgba(236, 72, 153, 0.3)',
+                        opacity: newGame.type === 'password' ? 0.5 : 1
+                      }}
+                    >
+                      {aiGeneratingContent ? '🤖 AI Generating Content...' : '✨ AI Generate Full Game Content'}
+                    </button>
+                  </div>
+
+                  {/* Content Status Indicator */}
+                  {newGame.data ? (
+                    <div style={{ background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.3)', borderRadius: '8px', padding: '10px 14px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ color: '#4ade80', fontWeight: 'bold', fontSize: '13px' }}>✅ Game content loaded!</span>
+                      <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px' }}>
+                        {newGame.type === 'quiz' && `Question: "${(newGame.data.question || '').substring(0, 60)}..."`}
+                        {newGame.type === 'swipe' && `${(newGame.data.items || []).length} swipe items`}
+                        {newGame.type === 'chat' && `${(newGame.data.messages || []).length} messages, ${(newGame.data.choices || []).length} choices`}
+                        {newGame.type === 'audio' && `${(newGame.data.script || []).length} script segments`}
+                        {newGame.type === 'spot-flag' && `${(newGame.data.flags || []).length} flags to find`}
+                        {newGame.type === 'visual' && `Deepfake: ${newGame.data.isFake ? 'Yes' : 'No'}`}
+                        {newGame.type === 'password' && 'Self-contained engine'}
+                      </span>
+                      <button
+                        onClick={() => setNewGame(prev => ({ ...prev, data: null }))}
+                        style={{ marginLeft: 'auto', background: 'rgba(239,68,68,0.2)', color: '#f87171', border: '1px solid rgba(239,68,68,0.3)', borderRadius: '6px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer' }}
+                      >
+                        ✕ Clear
+                      </button>
+                    </div>
+                  ) : newGame.type !== 'password' && (
+                    <div style={{ background: 'rgba(234, 179, 8, 0.1)', border: '1px solid rgba(234, 179, 8, 0.2)', borderRadius: '8px', padding: '10px 14px', marginBottom: '12px' }}>
+                      <span style={{ color: '#facc15', fontSize: '12px' }}>⚠️ No custom content yet — click "✨ AI Generate" above or paste JSON below. Without content, the game will use a generic default quiz.</span>
+                    </div>
+                  )}
+
+                  {/* Manual JSON Editor */}
+                  {newGame.type !== 'password' && (
+                    <div>
+                      <label style={{ fontSize: '11px', color: 'rgba(255,255,255,0.4)', display: 'block', marginBottom: '6px' }}>
+                        Advanced: Edit game data JSON (auto-populated by AI, or paste your own)
+                      </label>
+                      <textarea
+                        style={{ ...s.formInput, minHeight: '120px', resize: 'vertical', fontFamily: 'monospace', fontSize: '12px', lineHeight: '1.5', background: 'rgba(0,0,0,0.3)' }}
+                        value={newGame.data ? JSON.stringify(newGame.data, null, 2) : ''}
+                        onChange={e => {
+                          try {
+                            const parsed = JSON.parse(e.target.value);
+                            setNewGame(prev => ({ ...prev, data: parsed }));
+                          } catch (err) {
+                            // Allow typing — only update state when valid JSON
+                          }
+                        }}
+                        placeholder={`Click "✨ AI Generate Full Game Content" to auto-fill, or paste valid JSON here...\n\nExample for ${newGame.type}:\n${newGame.type === 'quiz' ? '{"question":"...","options":[{"text":"...","isCorrect":true}],"threatAnalysis":{...}}' : ''
+                        }${newGame.type === 'swipe' ? '{"items":[{"content":"...","isScam":true,"explanation":"..."}]}' : ''
+                        }${newGame.type === 'chat' ? '{"messages":[{"text":"..."}],"choices":[{"text":"...","isCorrect":true}]}' : ''
+                        }${newGame.type === 'audio' ? '{"script":[{"text":"...","isRedFlag":true}],"threatAnalysis":{...}}' : ''
+                        }${newGame.type === 'spot-flag' ? '{"content":"<html>...","flags":[{"id":"f1","label":"...","x":50,"y":50}]}' : ''
+                        }${newGame.type === 'visual' ? '{"content":"<html>...","isFake":true,"threatAnalysis":{...}}' : ''}`}
+                      />
+                    </div>
+                  )}
+                </div>
+
                 <button style={{ ...s.submitBtn, marginTop: '1rem' }} onClick={saveCustomGame}>
                   + Add Game to Arcade
                 </button>
@@ -1132,12 +1249,6 @@ Return ONLY a valid JSON object with exactly two keys:
                     <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>🚩 Visual Flag Engine (`spot-flag`)</strong>
                     A UI mock where users inspect corporate interfaces and click on hidden phishing indicators.
                   </div>
-                </div>
-                <div style={{ marginTop: '12px', padding: '10px', background: 'rgba(234, 179, 8, 0.1)', borderRadius: '8px', color: '#fef08a', fontSize: '12.5px' }}>
-                  <strong>🌐 Cloud Sync Note:</strong> If your games do not appear on other devices when hosted online, run this 1-line SQL in your Supabase SQL Editor: <br/>
-                  <code style={{ background: 'rgba(0,0,0,0.4)', padding: '2px 6px', borderRadius: '4px', color: '#fff', display: 'inline-block', marginTop: '4px' }}>
-                    CREATE TABLE IF NOT EXISTS custom_games (id BIGINT PRIMARY KEY, title TEXT, description TEXT, type TEXT, difficulty TEXT, xpReward INT, created_at TIMESTAMPTZ DEFAULT NOW());
-                  </code>
                 </div>
               </div>
 
@@ -1252,8 +1363,11 @@ Return ONLY a valid JSON object with exactly two keys:
                 </div>
                 <div style={{ marginBottom: '8px', fontSize: '14px' }}>
                   <strong style={{ color: '#64748b' }}>Subject: </strong>
-                  <span style={{ color: '#dc2626', fontWeight: '700' }}>{EMAIL_TEMPLATES[previewTemplate].subject}</span>
+                  <span style={{ color: '#dc2626', fontWeight: '700' }}>{newCampaign.customSubject || EMAIL_TEMPLATES[previewTemplate].subject}</span>
                 </div>
+                {newCampaign.customSubject && (
+                  <div style={{ fontSize: '11px', color: '#a855f7', marginBottom: '4px' }}>✨ AI / Custom Subject Override Active</div>
+                )}
                 <div style={{ fontSize: '12px', color: '#94a3b8' }}>
                   {EMAIL_TEMPLATES[previewTemplate].date}
                 </div>
@@ -1261,7 +1375,12 @@ Return ONLY a valid JSON object with exactly two keys:
 
               {/* Email Body */}
               <div style={{ padding: '28px 24px', fontSize: '15px', lineHeight: '1.6', color: '#334155', whiteSpace: 'pre-line' }}>
-                {EMAIL_TEMPLATES[previewTemplate].body}
+                {newCampaign.customMessage || EMAIL_TEMPLATES[previewTemplate].body}
+                {newCampaign.customMessage && (
+                  <div style={{ marginTop: '16px', padding: '8px 12px', background: '#f3e8ff', border: '1px solid #d8b4fe', borderRadius: '8px', fontSize: '12px', color: '#7c3aed' }}>
+                    ✨ This preview reflects your custom / AI-crafted message. The actual email sent to the target will use this content.
+                  </div>
+                )}
 
                 <div style={{ marginTop: '28px', textAlign: 'center' }}>
                   <button

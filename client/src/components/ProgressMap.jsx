@@ -84,7 +84,7 @@ export default function ProgressMap() {
           : 0;
 
         // Units unlock based on level: first 2 always open, rest need higher levels
-        const isUnlocked = unitIndex < 2 || level.number >= unitIndex;
+        const isUnlocked = true; // unitIndex < 2 || level.number >= unitIndex;
 
         return (
           <div
@@ -134,8 +134,8 @@ export default function ProgressMap() {
                   const prevCompleted =
                     modIndex === 0 ||
                     completedModules.includes(unitModules[modIndex - 1]?.id);
-                  const isActive = !isCompleted && prevCompleted;
-                  const isModLocked = !isCompleted && !isActive;
+                  const isActive = !isCompleted; // XP Barrier removed
+                  const isModLocked = false; // XP Barrier removed
 
                   const diffColors = {
                     low: 'var(--green)',

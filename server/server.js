@@ -307,11 +307,16 @@ let activeCustomGames = [];
 
 // Global Custom Games Sync Endpoints (Syncs across all users & screens)
 app.get('/api/games/custom', async (req, res) => {
+  let combined = [...activeCustomGames];
+
   try {
     const { data, error } = await supabase.from('custom_games').select('*').order('created_at', { ascending: false });
-    if (!error && data) {
-      activeCustomGames = data;
-      return res.json({ ok: true, games: data });
+    if (!error && Array.isArray(data)) {
+      data.forEach(g => {
+        if (!combined.some(existing => String(existing.id) === String(g.id) || existing.title === g.title)) {
+          combined.push(g);
+        }
+      });
     }
   } catch (e) {}
 
@@ -319,11 +324,17 @@ app.get('/api/games/custom', async (req, res) => {
     const { data: sysRow } = await supabase.from('profiles').select('username').eq('email', 'system_custom_games@scamshield.internal').maybeSingle();
     if (sysRow && sysRow.username) {
       const parsed = JSON.parse(sysRow.username);
-      activeCustomGames = parsed;
-      return res.json({ ok: true, games: parsed });
+      if (Array.isArray(parsed)) {
+        parsed.forEach(g => {
+          if (!combined.some(existing => String(existing.id) === String(g.id) || existing.title === g.title)) {
+            combined.push(g);
+          }
+        });
+      }
     }
   } catch (e) {}
 
+  activeCustomGames = combined.filter(g => g.title !== 'Phishy Email Alert');
   res.json({ ok: true, games: activeCustomGames });
 });
 
@@ -331,9 +342,25 @@ app.post('/api/admin/games/custom', async (req, res) => {
   const game = req.body;
   if (!game || !game.title) return res.status(400).json({ ok: false, err: 'Missing game title' });
 
-  activeCustomGames = [game, ...activeCustomGames.filter(g => g.id !== game.id)];
+  activeCustomGames = [game, ...activeCustomGames.filter(g => String(g.id) !== String(game.id) && g.title !== 'Phishy Email Alert')];
 
-  try { await supabase.from('custom_games').insert([game]); } catch (e) {}
+  // Try saving with full data column
+  try {
+    const dbRow = {
+      id: game.id,
+      title: game.title,
+      description: game.description,
+      type: game.type,
+      difficulty: game.difficulty,
+      xpreward: game.xpReward || game.xpreward || 50,
+      data: game.data || null
+    };
+    const { error } = await supabase.from('custom_games').upsert([dbRow]);
+    if (error && error.message?.includes('data')) {
+      const dbRowNoData = { id: game.id, title: game.title, description: game.description, type: game.type, difficulty: game.difficulty, xpreward: game.xpReward || game.xpreward || 50 };
+      await supabase.from('custom_games').upsert([dbRowNoData]);
+    }
+  } catch (e) {}
 
   try {
     const jsonStr = JSON.stringify(activeCustomGames);
