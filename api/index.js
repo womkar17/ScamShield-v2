@@ -1,10 +1,10 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
-import nodemailer from 'nodemailer';
-import { createClient } from '@supabase/supabase-js';
+const express = require('express');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+const { createClient } = require('@supabase/supabase-js');
 
 dotenv.config();
 const app = express();
@@ -401,4 +401,4 @@ app.get('/api/status', (req, res) => {
   res.json({ ok: true, status: 'online', service: 'ScamShield Serverless Vercel Backend ⚡' });
 });
 
-export default app;
+module.exports = app;
