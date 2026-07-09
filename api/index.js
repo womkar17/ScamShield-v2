@@ -27,8 +27,8 @@ const supabase = createClient(supabaseUrl || 'https://placeholder.supabase.co', 
 
 // Universal Google SMTP Email Sender
 async function sendCloudEmail(toEmail, subject, htmlContent) {
-  const smtpUser = process.env.SMTP_USER || process.env.SMPT_USER || process.env.GMAIL_USER || process.env.GMAIL_ADDRESS || process.env.EMAIL_USER;
-  const smtpPass = process.env.SMTP_PASS || process.env.SMPT_PASS || process.env.GMAIL_PASS || process.env.GMAIL_PASSWORD || process.env.EMAIL_PASS || process.env.GMAIL_APP_PASSWORD;
+  const smtpUser = process.env.SMTP_USER || process.env.SMPT_USER || process.env.GMAIL_USER || process.env.GMAIL_ADDRESS || process.env.EMAIL_USER || process.env.BREVO_USER;
+  const smtpPass = process.env.SMTP_PASS || process.env.SMPT_PASS || process.env.GMAIL_PASS || process.env.GMAIL_PASSWORD || process.env.EMAIL_PASS || process.env.GMAIL_APP_PASSWORD || process.env.BREVO_PASS;
 
   if (!smtpUser || !smtpPass) {
     const keysFound = Object.keys(process.env).filter(k => k.includes('SMTP') || k.includes('GMAIL') || k.includes('EMAIL') || k.includes('PASS') || k.includes('USER')).join(', ') || 'None found';
