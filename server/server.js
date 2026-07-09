@@ -446,7 +446,13 @@ app.post('/api/admin/phishing/send', async (req, res) => {
 // AI Chatbot & Threat Scanner Route
 app.post('/api/ai/chat', async (req, res) => {
   try {
-    const { messages, engine = 'groq' } = req.body;
+    const { engine = 'groq' } = req.body;
+    let messages = req.body.messages;
+    if (!messages && req.body.message) {
+      messages = [{ role: 'user', content: req.body.message }];
+    } else if (!messages && req.body.prompt) {
+      messages = [{ role: 'user', content: req.body.prompt }];
+    }
     if (!messages || !Array.isArray(messages)) {
       return res.status(400).json({ ok: false, err: 'Invalid messages format' });
     }
