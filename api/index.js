@@ -12,6 +12,14 @@ const app = express();
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
+// Ensure Vercel serverless requests match Express '/api/...' route definitions
+app.use((req, res, next) => {
+  if (req.url && !req.url.startsWith('/api')) {
+    req.url = '/api' + (req.url.startsWith('/') ? req.url : '/' + req.url);
+  }
+  next();
+});
+
 const JWT_SECRET = process.env.JWT_SECRET || 'scamshield_super_secret';
 const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -400,9 +408,9 @@ app.get('/api/status', (req, res) => {
   res.json({ ok: true, status: 'online', service: 'ScamShield Serverless Vercel Backend ⚡' });
 });
 
-// Debug catch-all - shows what URL Express sees
-app.all('*', (req, res) => {
-  res.json({ debug: true, method: req.method, url: req.url, path: req.path, originalUrl: req.originalUrl });
+// Catch-all fallback handler compatible with Express 5
+app.use((req, res) => {
+  res.status(404).json({ debug: true, method: req.method, url: req.url, path: req.path, originalUrl: req.originalUrl });
 });
 
 export default app;
