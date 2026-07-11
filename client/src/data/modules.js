@@ -395,12 +395,250 @@ export const MODULES = [
         ],
         exposed: ['Confidential Legal Contracts', 'Corporate AWS/API Keys', 'Customer Data'],
         reveal: 'You committed a Shadow IT security breach! Uploading company data or API keys to unapproved third-party AI tools can expose your organization to severe data leaks and regulatory fines.',
-        flags: ['Using free third-party tools without IT/Security approval', 'Uploading proprietary company data to public AI services', 'Pasting API keys or secrets into external web forms', 'Accepting random calendar invites or Slack files from external vendors'],
+flags: ['Using free third-party tools without IT/Security approval', 'Uploading proprietary company data to public AI services', 'Pasting API keys or secrets into external web forms', 'Accepting random calendar invites or Slack files from external vendors'],
         tips: ['Only use company-approved enterprise AI assistants with data privacy agreements', 'Never paste API keys, passwords, or customer PII into free online utilities', 'Report unapproved software or suspicious Slack/Teams messages to IT Security', 'Be wary of free tools whose business model is harvesting user data'],
         quiz: [
           { q: 'What is "Shadow IT"?', opts: ['Working in a dark room', 'Using software or tools without IT department approval', 'Dark mode in Windows', 'Secret corporate server rooms'], ans: 1, exp: 'Shadow IT introduces unmonitored security vulnerabilities and data leakage risks.' },
           { q: 'Why is uploading company contracts to a free online PDF summarizer dangerous?', opts: ['It uses too much internet bandwidth', 'The site\'s terms may allow them to store and sell your confidential data', 'The PDF might get deleted', 'It makes the computer slow'], ans: 1, exp: 'Many free utilities monetize by harvesting and indexing uploaded proprietary data.' },
           { q: 'What should you do if an external vendor sends an executable (.exe) via Slack?', opts: ['Run it immediately', 'Forward it to everyone', 'Do not open it and report to IT security', 'Rename it to .txt'], ans: 2, exp: 'External chat attachments are a common vector for ransomware and infostealers.' }
+        ]
+      },
+      {
+        id: 126,
+        icon: '🖥️',
+        title: 'Tech Support Remote Access Scam',
+        desc: 'Fake tech support calls claiming your computer is infected.',
+        diff: 'med',
+        tag: 'Tech Support',
+        safetyTip: 'Legitimate tech companies never call unsolicited. Hang up.',
+        quiz: [
+          { q: 'Do legitimate companies like Microsoft or Apple make unsolicited calls claiming your PC is infected?', opts: ['Yes, always', 'Never', 'Only for premium users', 'Only on weekends'], ans: 1, exp: 'Legitimate tech companies never initiate unsolicited phone calls or popups asking for remote access.' },
+          { q: 'What is the primary danger of downloading remote access tools like AnyDesk for an unknown caller?', opts: ['It slows down your internet', 'They gain full control of your screen, files, and banking sessions', 'It deletes your wallpaper', 'It increases electricity bill'], ans: 1, exp: 'Remote desktop software grants the scammer complete administrative control over your device.' },
+          { q: 'What should you do if a browser popup shows a loud siren and a toll-free support number?', opts: ['Call the number immediately', 'Pay the fee shown', 'Close the browser tab or restart your computer', 'Download their repair tool'], ans: 2, exp: 'Scary popups are malicious web ads designed to induce panic; closing the tab stops the alert.' }
+        ]
+      },
+      {
+        id: 127,
+        icon: '🔔',
+        title: 'Browser Notification Scam',
+        desc: 'Malicious software that infects devices to steal data or ransom.',
+        diff: 'low',
+        tag: 'Malware',
+        safetyTip: 'Install reputable antivirus and keep software updated.',
+        quiz: [
+          { q: 'Why do suspicious streaming or download websites ask you to click "Allow" notifications?', opts: ['To check internet speed', 'To flood your desktop with fake virus alerts and adware', 'To improve video resolution', 'To verify your age'], ans: 1, exp: 'Abusive push notifications display fake system warnings to trick you into purchasing malware.' },
+          { q: 'Can a website notification scan your computer hard drive for viruses?', opts: ['Yes, browsers scan hardware', 'No, notifications are just text alerts sent by web servers', 'Only on Windows 11', 'Only if you use Chrome'], ans: 1, exp: 'Web push notifications have no access to scan your local disk or detect real viruses.' },
+          { q: 'How do you stop persistent fake antivirus popups appearing in the corner of your screen?', opts: ['Buy the antivirus they advertise', 'Revoke notification permissions for unknown sites in browser settings', 'Format your hard drive', 'Unplug your monitor'], ans: 1, exp: 'Removing the site from your browser\'s Allowed Notifications list instantly stops the popups.' }
+        ]
+      },
+      {
+        id: 128,
+        icon: '📋',
+        title: 'Clipboard Hijacking Malware',
+        desc: 'Malicious software that infects devices to steal data or ransom.',
+        diff: 'high',
+        tag: 'Malware',
+        safetyTip: 'Install reputable antivirus and keep software updated.',
+        quiz: [
+          { q: 'What does a "Clipper" or clipboard hijacking trojan do?', opts: ['Deletes your copy-paste history', 'Monitors clipboard memory and replaces copied crypto/bank addresses with the attacker\'s address', 'Locks your keyboard', 'Speeds up typing'], ans: 1, exp: 'Clipper malware intercepts copy-paste actions to divert high-value transactions to attacker accounts.' },
+          { q: 'Why do attackers generate addresses with matching first and last characters?', opts: ['Because of blockchain rules', 'To trick users who only glance at the start and end of a pasted address', 'To make transfers faster', 'To lower transaction fees'], ans: 1, exp: 'Scammers use vanity address generators so lookalike addresses fool superficial inspections.' },
+          { q: 'What is the best habit before confirming any large cryptocurrency transfer?', opts: ['Only check the first 2 characters', 'Verify the entire recipient address character-by-character on a trusted hardware display', 'Paste it 5 times rapidly', 'Turn off Wi-Fi before sending'], ans: 1, exp: 'Full character-by-character verification prevents loss from clipboard replacement.' }
+        ]
+      },
+      {
+        id: 129,
+        icon: '🦊',
+        title: 'Crypto Wallet Drainer',
+        desc: 'Cryptocurrency scams, fake exchanges, or investment fraud.',
+        diff: 'high',
+        tag: 'Crypto',
+        safetyTip: 'Invest only through regulated exchanges. Avoid guaranteed returns.',
+        quiz: [
+          { q: 'What happens when you sign a `setApprovalForAll` permission on a malicious Web3 dApp?', opts: ['You receive free airdrop tokens', 'You grant the smart contract permission to withdraw all tokens and NFTs from your wallet', 'Your wallet gets upgraded', 'You pay zero gas fees'], ans: 1, exp: 'Unlimited approval permissions allow malicious contracts to drain your entire token balance.' },
+          { q: 'How do crypto drainer scams typically lure victims?', opts: ['Offering free token airdrops, NFT mints, or urgent reward claims', 'Sending physical letters', 'Calling on landlines', 'Offering bank loans'], ans: 0, exp: 'Free crypto airdrops and FOMO tactics induce users to sign unverified wallet signatures.' },
+          { q: 'What should you do if you accidentally connect your wallet to a suspicious dApp?', opts: ['Send more ETH to test it', 'Use a trusted revocation tool (like Revoke.cash) to immediately cancel open token allowances', 'Delete the browser app', 'Wait 24 hours'], ans: 1, exp: 'Revoking smart contract allowances immediately removes their ability to move your assets.' }
+        ]
+      },
+      {
+        id: 130,
+        icon: '🛡️',
+        title: 'Fake Antivirus Subscription',
+        desc: 'Malicious software that infects devices to steal data or ransom.',
+        diff: 'med',
+        tag: 'Malware',
+        safetyTip: 'Install reputable antivirus and keep software updated.',
+        quiz: [
+          { q: 'How can you distinguish a fake antivirus popup from real security software?', opts: ['Real antivirus software runs locally on your OS, not inside website ad banners', 'Fake ones use green text', 'Real ones always ask for Bitcoin', 'Fake ones only appear on Tuesdays'], ans: 0, exp: 'Legitimate OS security alerts come from system notifications, never from website ad frames.' },
+          { q: 'Why do scammers impersonate well-known brands like Norton or McAfee?', opts: ['To build false trust and panic victims into entering credit card details', 'Because they work for those companies', 'To offer legitimate discounts', 'To repair your computer for free'], ans: 0, exp: 'Brand spoofing leverages established reputation to lower victim skepticism.' },
+          { q: 'What should you do if an email or popup claims you will be charged $399 for antivirus renewal?', opts: ['Click the refund link inside the email', 'Call the number listed in the alert', 'Log into your official account directly or check your real bank statement independently', 'Reply with your card number'], ans: 2, exp: 'Independent verification via official channels prevents falling for refund extortion traps.' }
+        ]
+      },
+      {
+        id: 131,
+        icon: '📱',
+        title: 'eSIM Hijacking',
+        desc: 'SIM swap or SIM card fraud.',
+        diff: 'high',
+        tag: 'SIM',
+        safetyTip: 'Contact your mobile provider immediately if SIM stops working.',
+        quiz: [
+          { q: 'What is eSIM hijacking or SIM swap fraud?', opts: ['Upgrading to 5G speed', 'Scammers tricking you or your carrier into transferring your phone number to their eSIM device', 'Buying a new phone case', 'Losing your phone charger'], ans: 1, exp: 'SIM hijacking redirects all incoming calls and SMS OTPs to the attacker\'s phone.' },
+          { q: 'What is the most immediate warning sign of a successful SIM swap?', opts: ['Phone battery drains fast', 'Your phone suddenly loses cellular network service ("No Service / Emergency Calls Only")', 'Screen brightness increases', 'Wi-Fi disconnects'], ans: 1, exp: 'When your number is activated on an attacker\'s eSIM, your physical SIM loses network connection.' },
+          { q: 'Should you ever share a 6-digit eSIM activation code or EID with an SMS caller?', opts: ['Yes, if they claim to be 5G support', 'Never under any circumstances', 'Only if they know your name', 'Only after 6 PM'], ans: 1, exp: 'Activation codes allow unauthorized devices to clone your mobile connection.' }
+        ]
+      },
+      {
+        id: 132,
+        icon: '📞',
+        title: 'Missed Call Scam',
+        desc: 'Voice phishing via phone calls to steal personal information.',
+        diff: 'low',
+        tag: 'Vishing',
+        safetyTip: 'Hang up and call back using official numbers. Never share OTP.',
+        quiz: [
+          { q: 'What is the "Wangiri" or One-Ring Missed Call scam?', opts: ['A free international greeting service', 'Scammers calling once from premium-rate overseas numbers so you call back and get billed exorbitant rates', 'A telecom network test', 'A wrong number'], ans: 1, exp: 'Wangiri bots rely on human curiosity to generate expensive international callback tolls.' },
+          { q: 'What happens if you return a missed call to an unknown international satellite number (+882 / +234)?', opts: ['You get connected to customer care', 'Your phone bill is charged premium per-minute fees that get funneled to scammers', 'Your phone gets upgraded', 'Nothing happens'], ans: 1, exp: 'Premium-rate numbers charge high connection fees shared between carriers and fraudsters.' },
+          { q: 'What is the safest response to repeated one-ring missed calls from unknown foreign prefixes?', opts: ['Call back immediately', 'Send a WhatsApp message asking who it is', 'Do not call back and block the number', 'Answer before the first ring ends'], ans: 2, exp: 'Blocking international Wangiri numbers prevents accidental callback charges.' }
+        ]
+      },
+      {
+        id: 133,
+        icon: '🎙️',
+        title: 'International Call Scam',
+        desc: 'Voice phishing via phone calls to steal personal information.',
+        diff: 'med',
+        tag: 'Vishing',
+        safetyTip: 'Hang up and call back using official numbers. Never share OTP.',
+        quiz: [
+          { q: 'Why do international scammers threaten victims with fake Interpol or Customs arrest warrants over the phone?', opts: ['To enforce real international laws', 'To induce extreme psychological panic so victims transfer money without thinking', 'To verify address details', 'To recruit police officers'], ans: 1, exp: 'Fear and urgency bypass rational judgment during high-pressure Vishing calls.' },
+          { q: 'Do real law enforcement agencies demand immediate "security deposits" via phone calls to cancel warrants?', opts: ['Yes, always', 'Never; legal procedures never involve transferring money over phone calls', 'Only for international parcels', 'Only on public holidays'], ans: 1, exp: 'No police or customs department asks for money or crypto transfers over the telephone.' },
+          { q: 'What should you do if an international caller claims your identity was used in illegal parcel trafficking?', opts: ['Stay on the line and argue', 'Transfer the requested verification bond', 'Hang up immediately and report the number to cyber crime authorities', 'Give your bank account number'], ans: 2, exp: 'Disconnecting immediately breaks the scammer\'s psychological manipulation.' }
+        ]
+      },
+      {
+        id: 134,
+        icon: '💬',
+        title: 'WhatsApp OTP Theft',
+        desc: 'Fraudulent messages or calls via WhatsApp.',
+        diff: 'med',
+        tag: 'WhatsApp',
+        safetyTip: 'Ignore forwarded offers. Verify with official sources.',
+        quiz: [
+          { q: 'Why would a "friend" on WhatsApp ask you to forward a 6-digit SMS code you just received?', opts: ['Their phone screen is broken', 'Their account was hacked, and they are trying to log into YOUR WhatsApp account using that OTP', 'They want to send you money', 'It is a WhatsApp software update'], ans: 1, exp: 'Forwarding a WhatsApp registration code gives the attacker full takeover of your account.' },
+          { q: 'How can you protect your WhatsApp account even if someone intercepts your SMS OTP?', opts: ['Change your profile photo', 'Enable Two-Step Verification (2FA PIN) in WhatsApp Settings', 'Turn off read receipts', 'Use dark theme'], ans: 1, exp: 'Two-Step Verification requires a custom PIN that scammers cannot get from SMS OTPs.' },
+          { q: 'What should you do if a contact suddenly asks for emergency money or OTP codes via chat?', opts: ['Send it immediately', 'Call them directly on their standard phone number to verify their voice and situation', 'Forward the message to groups', 'Block all your contacts'], ans: 1, exp: 'Direct voice verification exposes account takeover scams immediately.' }
+        ]
+      },
+      {
+        id: 135,
+        icon: '✉️',
+        title: 'SMS Spoofing',
+        desc: 'Fraudulent SMS messages with malicious links or fake offers.',
+        diff: 'med',
+        tag: 'SMS',
+        safetyTip: 'Delete suspicious SMS. Don\'t click links or call back unknown numbers.',
+        quiz: [
+          { q: 'Can scammers send SMS messages that appear under your real bank\'s official Sender ID header?', opts: ['No, Sender IDs are unhackable', 'Yes, SMS spoofing allows attackers to forge alphanumeric sender names like AD-HDFCBK', 'Only on older phones', 'Only via email'], ans: 1, exp: 'SMS protocols allow sender name manipulation via third-party bulk messaging gateways.' },
+          { q: 'What is the key indicator that an urgent KYC SMS is fraudulent?', opts: ['It contains a suspicious shortened or non-official web domain URL', 'It is delivered during daytime', 'It mentions your bank\'s name', 'It uses correct English grammar'], ans: 0, exp: 'Banks never send external `.top`, `.xyz`, or unverified links for KYC updates.' },
+          { q: 'What is the safest way to update your bank KYC details?', opts: ['Click the link in the SMS message', 'Log directly into your official banking mobile app or visit your bank branch', 'Reply to the SMS with your Aadhaar number', 'Call the number given in the text'], ans: 1, exp: 'Using official, authenticated channels ensures you never submit data to phishing portals.' }
+        ]
+      },
+      {
+        id: 136,
+        icon: '📧',
+        title: 'Email Spoofing',
+        desc: 'Fake communication (email/SMS) tricking you into revealing credentials.',
+        diff: 'med',
+        tag: 'Phishing',
+        safetyTip: 'Never click links in unsolicited emails/SMS. Type the URL manually.',
+        quiz: [
+          { q: 'What is Email Display Name Spoofing?', opts: ['Changing your font size', 'Setting the email display name to "IT Helpdesk" or "CEO" while the actual sender address is an external domain', 'Encrypting an email attachment', 'Sending emails faster'], ans: 1, exp: 'Attackers rely on email clients prominently showing display names while hiding raw addresses.' },
+          { q: 'How can you inspect the true origin of a suspicious corporate email?', opts: ['Look at the subject line color', 'Check the full email headers (`Return-Path` and actual domain address)', 'Print the email on paper', 'Forward it to yourself'], ans: 1, exp: 'Email headers reveal the true sending server and Reply-To destination.' },
+          { q: 'Why do phishing emails often warn that your account will be locked within 24 hours?', opts: ['To help you manage time', 'To create urgency so you click without checking URLs or consulting IT security', 'Because servers shut down daily', 'To save server storage'], ans: 1, exp: 'Artificial deadlines induce cognitive hurry, suppressing analytical vigilance.' }
+        ]
+      },
+      {
+        id: 137,
+        icon: '☎️',
+        title: 'Caller ID Spoofing',
+        desc: 'Voice phishing via phone calls to steal personal information.',
+        diff: 'high',
+        tag: 'Vishing',
+        safetyTip: 'Hang up and call back using official numbers. Never share OTP.',
+        quiz: [
+          { q: 'If your incoming phone display shows your bank\'s exact official 1800 helpline number, does that prove it is your bank?', opts: ['Yes, phone networks verify all caller IDs', 'No, Caller ID spoofing allows fraudsters to display any number on your screen', 'Only if the call is recorded', 'Only on landlines'], ans: 1, exp: 'Caller ID information can be easily manipulated using VoIP spoofing services.' },
+          { q: 'Will a genuine bank customer service agent ever ask you to read out an OTP over the phone to cancel a transaction?', opts: ['Yes, for emergencies', 'Never; OTPs are confidential and banks never ask for them verbally', 'Only for credit cards', 'Only for amounts above ₹50,000'], ans: 1, exp: 'OTPs authenticate transactions; sharing them authorizes whatever charge the scammer initiated.' },
+          { q: 'What should you do if an agent on a spoofed call claims your account is under active fraud attack?', opts: ['Stay on the line and share your OTP', 'Hang up immediately and dial the official number on the back of your card yourself', 'Read out your debit card PIN', 'Transfer funds to a "safe account"'], ans: 1, exp: 'Initiating a fresh call yourself guarantees you are speaking to authentic bank systems.' }
+        ]
+      },
+      {
+        id: 138,
+        icon: '🤖',
+        title: 'Robocall Scam',
+        desc: 'Voice phishing via phone calls to steal personal information.',
+        diff: 'low',
+        tag: 'Vishing',
+        safetyTip: 'Hang up and call back using official numbers. Never share OTP.',
+        quiz: [
+          { q: 'Why do scammers use automated robocalls claiming illegal parcels or customs seizures?', opts: ['To test phone speaker volume', 'To automatically filter thousands of calls for scared victims who press 1', 'To conduct government surveys', 'To offer courier discounts'], ans: 1, exp: 'Robocalls enable fraudsters to scale phishing campaigns to thousands of numbers simultaneously.' },
+          { q: 'What happens when you press "1" during an automated customs or narcotics robocall alert?', opts: ['Your parcel gets delivered', 'You are routed to a scam call center where fake officers demand extortion payments', 'The call disconnects safely', 'Your phone number is hidden'], ans: 1, exp: 'Pressing 1 signals to the scam syndicate that you are receptive to their intimidation script.' },
+          { q: 'Do customs or law enforcement departments notify citizens of criminal indictments via automated press-1 robocalls?', opts: ['Yes, it is standard procedure', 'Never; official legal notices follow formal documented judicial processes', 'Only for international shipments', 'Only on weekends'], ans: 1, exp: 'No legitimate enforcement agency uses pre-recorded press-1 robocall threats.' }
+        ]
+      },
+      {
+        id: 139,
+        icon: '✈️',
+        title: 'Fake Flight Ticket',
+        desc: 'Fake travel bookings, flight tickets, or holiday packages.',
+        diff: 'med',
+        tag: 'Travel',
+        safetyTip: 'Book directly through official airline/railway/hotel websites.',
+        quiz: [
+          { q: 'What is a major red flag when buying flight tickets from an unfamiliar online portal?', opts: ['Airfares that are 75-80% cheaper than every official airline website with countdown timers', 'Accepting credit cards', 'Showing flight schedules', 'Sending email confirmations'], ans: 0, exp: 'Unrealistic discounts coupled with high-pressure flash timers are classic travel scam markers.' },
+          { q: 'Why do fake travel agency portals insist on direct UPI or QR code bank transfers instead of card gateways?', opts: ['UPI is faster for planes', 'Direct bank transfers lack credit card chargeback protection, making stolen funds irreversible', 'Airlines do not accept credit cards', 'To save paper'], ans: 1, exp: 'Scammers avoid merchant gateways because card payments can be disputed and reversed.' },
+          { q: 'How can you verify if a flight ticket PNR issued by a third-party agent is authentic?', opts: ['Look at the PDF logo', 'Enter the PNR and surname directly on the official airline\'s "Manage Booking" website', 'Check the ticket color', 'Ask the travel agent on WhatsApp'], ans: 1, exp: 'Verifying directly on the carrier\'s official database confirms whether a genuine seat exists.' }
+        ]
+      },
+      {
+        id: 140,
+        icon: '🏨',
+        title: 'Fake Hotel Booking',
+        desc: 'Fake travel bookings, flight tickets, or holiday packages.',
+        diff: 'med',
+        tag: 'Travel',
+        safetyTip: 'Book directly through official airline/railway/hotel websites.',
+        quiz: [
+          { q: 'Why would a resort host ask you to cancel an official platform booking and pay advance via direct WhatsApp transfer?', opts: ['To give you better room service', 'To bypass platform protection and pocket your advance for a non-existent or double-booked room', 'To register your ID faster', 'To avoid local taxes legally'], ans: 1, exp: 'Off-platform payments strip away booking platform guarantees and refund protections.' },
+          { q: 'What often happens when travelers arrive at a property booked via an unverified social media direct transfer?', opts: ['They receive a free upgrade', 'The property does not exist, or the real owners have no record of the booking', 'They get complimentary breakfast', 'The host greets them at the airport'], ans: 1, exp: 'Scammers frequently misappropriate photos of real villas to advertise phantom rentals.' },
+          { q: 'What is the safest practice when booking peak-season vacation rentals?', opts: ['Pay 100% upfront to an individual UPI ID via Instagram DM', 'Complete all messaging and payments exclusively within trusted, verified booking platforms', 'Transfer money to a personal bank account', 'Never check reviews'], ans: 1, exp: 'Official booking platforms hold funds in escrow and offer verified guest protections.' }
+        ]
+      },
+      {
+        id: 141,
+        icon: '🛂',
+        title: 'Fake Visa Approval',
+        desc: 'Fake travel bookings, flight tickets, or holiday packages.',
+        diff: 'high',
+        tag: 'Travel',
+        safetyTip: 'Book directly through official airline/railway/hotel websites.',
+        quiz: [
+          { q: 'Can a private online agency guarantee 100% visa approval or bypass mandatory embassy interviews?', opts: ['Yes, if you pay express fees', 'No; sovereign embassies strictly control visa issuance and no agency can guarantee approval', 'Only for tourist visas', 'Only for online e-visas'], ans: 1, exp: 'Consular authorities alone decide visa outcomes; "guaranteed approval" claims are always fraudulent.' },
+          { q: 'What domain extension should official government visa application websites typically use?', opts: ['.org or .net', 'Official government domains (.gov, .gov.uk, or verified diplomatic portals)', '.top or .xyz', '.shop'], ans: 1, exp: 'Government diplomatic services operate exclusively on verified sovereign web domains.' },
+          { q: 'What is the double risk of submitting passport scans and fees to a fake visa expedition site?', opts: ['Losing internet bookmarks', 'Financial theft combined with identity theft (stolen passport documents used for fraud)', 'Receiving too many promotional emails', 'Slow browser loading'], ans: 1, exp: 'Identity thieves harvest uploaded passport credentials to open fraudulent accounts.' }
+        ]
+      },
+      {
+        id: 142,
+        icon: '🏝️',
+        title: 'Fake Travel Package',
+        desc: 'Fake travel bookings, flight tickets, or holiday packages.',
+        diff: 'med',
+        tag: 'Travel',
+        safetyTip: 'Book directly through official airline/railway/hotel websites.',
+        quiz: [
+          { q: 'How do fake social media travel agencies lure holidaymakers?', opts: ['Posting stolen luxury resort photos with unbelievably low all-inclusive package prices', 'Sending paper brochures', 'Advertising on television only', 'Offering free bus rides'], ans: 0, exp: 'Visual luxury combined with extreme discounts triggers impulse buying on social media.' },
+          { q: 'Why should you be cautious if a travel agency only operates via Instagram DM and UPI QR codes?', opts: ['They are too modern', 'Legitimate tour operators provide registered office addresses, GST/license numbers, and verified payment gateways', 'Instagram is slow', 'UPI does not work on weekends'], ans: 1, exp: 'Lack of verifiable business credentials or physical presence is a hallmark of fly-by-night scams.' },
+          { q: 'What step should you take before booking an all-inclusive tour package with an unfamiliar company?', opts: ['Pay the deposit immediately before slots run out', 'Verify their travel association registration (IATA/TAFI) and read independent third-party reviews', 'Ask them if they are genuine on chat', 'Share your credit card CVV'], ans: 1, exp: 'Verifying trade accreditation ensures the agency is legally registered and accountable.' }
         ]
       }
     ];

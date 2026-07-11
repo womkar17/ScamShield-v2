@@ -22,6 +22,23 @@ import CopyrightSim from './CopyrightSim';
 import ParcelSim from './ParcelSim';
 import CharityScamSim from './CharityScamSim';
 import WiFiSim from './WiFiSim';
+import TechSupportSim from './TechSupportSim';
+import BrowserNotificationSim from './BrowserNotificationSim';
+import ClipboardHijackSim from './ClipboardHijackSim';
+import CryptoDrainerSim from './CryptoDrainerSim';
+import FakeAntivirusSim from './FakeAntivirusSim';
+import ESIMHijackSim from './ESIMHijackSim';
+import MissedCallSim from './MissedCallSim';
+import InternationalCallSim from './InternationalCallSim';
+import WhatsAppOTPSim from './WhatsAppOTPSim';
+import SMSSpoofingSim from './SMSSpoofingSim';
+import EmailSpoofingSim from './EmailSpoofingSim';
+import CallerIDSpoofingSim from './CallerIDSpoofingSim';
+import RobocallSim from './RobocallSim';
+import FakeFlightTicketSim from './FakeFlightTicketSim';
+import FakeHotelBookingSim from './FakeHotelBookingSim';
+import FakeVisaApprovalSim from './FakeVisaApprovalSim';
+import FakeTravelPackageSim from './FakeTravelPackageSim';
 
 const SIM_MAP = {
   0: InstantLoanSim,
@@ -47,6 +64,23 @@ const SIM_MAP = {
   20: ParcelSim,
   21: CharityScamSim,
   22: WiFiSim,
+  126: TechSupportSim,
+  127: BrowserNotificationSim,
+  128: ClipboardHijackSim,
+  129: CryptoDrainerSim,
+  130: FakeAntivirusSim,
+  131: ESIMHijackSim,
+  132: MissedCallSim,
+  133: InternationalCallSim,
+  134: WhatsAppOTPSim,
+  135: SMSSpoofingSim,
+  136: EmailSpoofingSim,
+  137: CallerIDSpoofingSim,
+  138: RobocallSim,
+  139: FakeFlightTicketSim,
+  140: FakeHotelBookingSim,
+  141: FakeVisaApprovalSim,
+  142: FakeTravelPackageSim,
 };
 
 export default function ScamSimulatorEngine({ moduleId, moduleData, formData, handleInputChange, handleSimulationSubmit }) {

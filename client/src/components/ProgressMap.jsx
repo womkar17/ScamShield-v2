@@ -7,12 +7,20 @@ import { MODULES } from '../data/modules';
 // Group modules into themed units for the Duolingo-style progress map
 const UNITS = [
   {
+    id: 'live_threat_sims',
+    title: 'Live Threat Simulations (#124 – #142)',
+    icon: '🚨',
+    description: 'Interactive real-world scam simulations: AI Voice Clones, QR Quishing, Crypto Drainers, Digital Arrests & more',
+    color: '#00d2d3',
+    moduleIds: [124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142],
+  },
+  {
     id: 'financial',
     title: 'Financial Frauds',
     icon: '💰',
     description: 'Learn to spot loan scams, investment traps, and payment fraud',
     color: '#ff6b6b',
-    moduleIds: [0, 3, 9, 15, 8], // Instant Loan, Fake Gold Coin, Investment, Tax Refund, Job Offer
+    moduleIds: [0, 3, 9, 15, 8, 124, 129, 137, 138],
   },
   {
     id: 'identity',
@@ -20,7 +28,7 @@ const UNITS = [
     icon: '🔐',
     description: 'Protect your personal data, accounts, and digital identity',
     color: '#4ecdc4',
-    moduleIds: [12, 22, 17, 16, 13], // Bank KYC, WiFi Login, SIM Upgrade, Corp Password, Instagram
+    moduleIds: [12, 22, 17, 16, 13, 128, 131, 136, 142],
   },
   {
     id: 'social',
@@ -28,7 +36,7 @@ const UNITS = [
     icon: '🎭',
     description: 'Recognize manipulation tactics used by scammers',
     color: '#a855f7',
-    moduleIds: [10, 11, 14, 19, 21], // Digital Arrest, Deepfake, Electricity, Copyright, Charity
+    moduleIds: [10, 11, 14, 19, 21, 127, 132, 135],
   },
   {
     id: 'shopping',
@@ -36,7 +44,7 @@ const UNITS = [
     icon: '🛒',
     description: 'Stay safe while shopping, dealing, and receiving parcels online',
     color: '#f1c40f',
-    moduleIds: [2, 6, 4, 20, 18], // Phone Deal, E-Commerce, Lucky Draw, Parcel Customs, Scholarship
+    moduleIds: [2, 6, 4, 20, 18, 125, 133, 134, 141],
   },
   {
     id: 'advanced',
@@ -44,7 +52,7 @@ const UNITS = [
     icon: '🤖',
     description: 'Master emerging threats: deepfakes, crypto scams, and AI attacks',
     color: '#3b82f6',
-    moduleIds: [1, 5, 7], // Fake Interview, Credit Card, Reward Points
+    moduleIds: [1, 5, 7, 126, 139],
   },
   {
     id: 'psychology_workplace',
@@ -52,7 +60,7 @@ const UNITS = [
     icon: '🧠',
     description: 'Master cognitive bias defense, shadow IT risks, and enterprise security',
     color: '#ec4899',
-    moduleIds: [23, 24], // Cognitive Biases, Workplace & Shadow IT
+    moduleIds: [23, 24, 130, 140],
   },
 ];
 
