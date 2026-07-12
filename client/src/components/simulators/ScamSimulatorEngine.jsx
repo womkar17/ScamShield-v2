@@ -87,7 +87,7 @@ export default function ScamSimulatorEngine({ moduleId, moduleData, formData, ha
   const SimComponent = SIM_MAP[moduleId];
   
   if (SimComponent) {
-    return <SimComponent onComplete={handleSimulationSubmit} />;
+    return <SimComponent onComplete={(data, outcome) => handleSimulationSubmit(data, outcome)} />;
   }
 
   // Fallback for any module without a custom simulator

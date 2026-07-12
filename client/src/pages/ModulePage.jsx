@@ -143,6 +143,7 @@ export default function ModulePage() {
   const [quizAnswered, setQuizAnswered] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [exposedItems, setExposedItems] = useState([]);
+  const [isSafeOutcome, setIsSafeOutcome] = useState(false);
 
   useEffect(() => {
     if (!moduleData) {
@@ -159,16 +160,35 @@ export default function ModulePage() {
     setRiskScore(newRisk);
   };
 
-  const handleSimulationSubmit = (exposedDataOrEvent) => {
-    // Simulators can call onComplete(['Card Number', 'CVV', ...]) with specific leaked data
+  const handleSimulationSubmit = (exposedDataOrEvent, outcome) => {
+    let items = [];
     if (Array.isArray(exposedDataOrEvent)) {
+      items = exposedDataOrEvent;
       setExposedItems(exposedDataOrEvent);
     } else {
-      // Fallback to static module data
       if (exposedDataOrEvent && exposedDataOrEvent.preventDefault) exposedDataOrEvent.preventDefault();
-      setExposedItems(moduleData.exposed || []);
+      items = moduleData.exposed || [];
+      setExposedItems(items);
     }
-    setRiskScore(100);
+
+    const isSafe = outcome === 'safe' || (Array.isArray(items) && items.some(item => 
+      typeof item === 'string' && (
+        item.toLowerCase().includes('successfully') ||
+        item.toLowerCase().includes('identified') ||
+        item.toLowerCase().includes('avoided') ||
+        item.toLowerCase().includes('refused') ||
+        item.toLowerCase().includes('hung up') ||
+        item.toLowerCase().includes('disconnected') ||
+        item.toLowerCase().includes('verified') ||
+        item.toLowerCase().includes('detected') ||
+        item.toLowerCase().includes('recognized') ||
+        item.toLowerCase().includes('ignored') ||
+        item.toLowerCase().includes('blocked')
+      )
+    ));
+
+    setIsSafeOutcome(isSafe);
+    setRiskScore(isSafe ? 0 : 100);
     setPhase('alert');
   };
 
@@ -329,52 +349,58 @@ export default function ModulePage() {
           </div>
         )}
 
-        {/* ═══════════ PHASE: ALERT (Scam Reveal) ═══════════ */}
+        {/* ═══════════ PHASE: ALERT (Scam Reveal / Safe Outcome) ═══════════ */}
         {phase === 'alert' && (
           <div style={{ maxWidth: '750px', margin: '2rem auto', padding: '0 1rem' }}>
             <div style={{
               borderRadius: '16px',
               overflow: 'hidden',
-              border: '2px solid var(--accent)',
-              boxShadow: '0 0 40px rgba(255,107,107,0.15)'
+              border: isSafeOutcome ? '2px solid #10b981' : '2px solid var(--accent)',
+              boxShadow: isSafeOutcome ? '0 0 40px rgba(16,185,129,0.25)' : '0 0 40px rgba(255,107,107,0.15)'
             }}>
-              {/* Red Banner */}
+              {/* Banner */}
               <div style={{
-                background: 'linear-gradient(135deg, #e74c3c, #c0392b)',
+                background: isSafeOutcome 
+                  ? 'linear-gradient(135deg, #10b981, #059669)' 
+                  : 'linear-gradient(135deg, #e74c3c, #c0392b)',
                 padding: '2.5rem',
                 textAlign: 'center'
               }}>
-                <div style={{ fontSize: '4rem', marginBottom: '0.5rem' }}>🚨</div>
-                <h2 style={{ color: '#fff', fontSize: '2rem', margin: '0 0 0.5rem', letterSpacing: '3px' }}>YOU GOT SCAMMED</h2>
-                <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '1.1rem', margin: 0 }}>
-                  Don't worry — this was a simulation. But in real life, here's what would have happened:
+                <div style={{ fontSize: '4rem', marginBottom: '0.5rem' }}>{isSafeOutcome ? '🛡️' : '🚨'}</div>
+                <h2 style={{ color: '#fff', fontSize: '2rem', margin: '0 0 0.5rem', letterSpacing: '2px' }}>
+                  {isSafeOutcome ? 'SCAM AVOIDED — WELL DONE!' : 'YOU GOT SCAMMED'}
+                </h2>
+                <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: '1.1rem', margin: 0 }}>
+                  {isSafeOutcome 
+                    ? 'Excellent vigilance! You spotted the red flags and defended yourself from this scam.' 
+                    : "Don't worry — this was a simulation. But in real life, here's what would have happened:"}
                 </p>
               </div>
 
               <div style={{ padding: '2rem 2.5rem', background: 'var(--bg2)' }}>
-                {/* What You Gave Away */}
+                {/* Actions / What You Exposed */}
                 <div style={{
-                  background: 'rgba(255,107,107,0.08)',
-                  border: '1px solid rgba(255,107,107,0.25)',
+                  background: isSafeOutcome ? 'rgba(16,185,129,0.08)' : 'rgba(255,107,107,0.08)',
+                  border: isSafeOutcome ? '1px solid rgba(16,185,129,0.3)' : '1px solid rgba(255,107,107,0.25)',
                   borderRadius: '12px',
                   padding: '1.5rem',
                   marginBottom: '1.5rem'
                 }}>
-                  <h3 style={{ color: 'var(--accent)', marginBottom: '1rem', fontSize: '1.1rem' }}>
-                    💀 Data You Exposed to the Scammer:
+                  <h3 style={{ color: isSafeOutcome ? '#10b981' : 'var(--accent)', marginBottom: '1rem', fontSize: '1.1rem' }}>
+                    {isSafeOutcome ? '✅ Defensive Action Taken:' : '💀 Data You Exposed to the Scammer:'}
                   </h3>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.8rem' }}>
-                    {(exposedItems.length > 0 ? exposedItems : moduleData.exposed).map((item, i) => (
+                    {((exposedItems && exposedItems.length > 0) ? exposedItems : (moduleData.exposed || ['Sensitive Personal Information', 'Account Credentials', 'Financial Access'])).map((item, i) => (
                       <span key={i} style={{
-                        background: 'rgba(255,107,107,0.15)',
-                        color: 'var(--accent)',
+                        background: isSafeOutcome ? 'rgba(16,185,129,0.15)' : 'rgba(255,107,107,0.15)',
+                        color: isSafeOutcome ? '#10b981' : 'var(--accent)',
                         padding: '0.5rem 1rem',
                         borderRadius: '20px',
                         fontSize: '0.95rem',
                         fontWeight: '600',
-                        border: '1px solid rgba(255,107,107,0.3)'
+                        border: isSafeOutcome ? '1px solid rgba(16,185,129,0.3)' : '1px solid rgba(255,107,107,0.3)'
                       }}>
-                        ❌ {item}
+                        {isSafeOutcome ? '✅ ' : '❌ '}{item}
                       </span>
                     ))}
                   </div>
@@ -386,13 +412,13 @@ export default function ModulePage() {
                   borderRadius: '12px',
                   padding: '1.5rem',
                   marginBottom: '2rem',
-                  borderLeft: '4px solid var(--accent)'
+                  borderLeft: isSafeOutcome ? '4px solid #10b981' : '4px solid var(--accent)'
                 }}>
                   <h3 style={{ color: 'var(--text)', marginBottom: '0.8rem', fontSize: '1.1rem' }}>
-                    🔍 What Actually Happened:
+                    {isSafeOutcome ? '💡 Scam Anatomy & How Attackers Work:' : '🔍 What Actually Happened:'}
                   </h3>
                   <p style={{ color: 'var(--text)', lineHeight: '1.8', margin: 0, fontSize: '1.05rem' }}>
-                    {moduleData.reveal}
+                    {moduleData.reveal || "You exposed your device or data to a scam trap! Attackers use deceptive alerts, urgency, and lookalike interfaces to steal your sensitive credentials or money."}
                   </p>
                 </div>
 
@@ -442,7 +468,11 @@ export default function ModulePage() {
                 🚩 Red Flags to Watch For
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                {moduleData.flags.map((flag, i) => (
+                {(moduleData.flags || [
+                  'Unexpected unsolicited contact, phone call, or alert popup',
+                  'High pressure demanding immediate action or payment under threat',
+                  'Request to download unverified tools, share OTPs, or pay upfront'
+                ]).map((flag, i) => (
                   <div key={i} style={{
                     display: 'flex',
                     alignItems: 'flex-start',
@@ -487,7 +517,11 @@ export default function ModulePage() {
                 ✅ How to Stay Safe
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                {moduleData.tips.map((tip, i) => (
+                {(moduleData.tips || [
+                  moduleData.safetyTip || 'Always verify unexpected messages through official apps or trusted websites.',
+                  'Never share OTPs, passwords, or remote desktop access with anyone.',
+                  'Stop and verify independently before transferring money or clicking links.'
+                ]).map((tip, i) => (
                   <div key={i} style={{
                     display: 'flex',
                     alignItems: 'flex-start',
