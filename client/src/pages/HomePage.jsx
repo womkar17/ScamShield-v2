@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import StatsBar from '../components/StatsBar';
 import ProgressMap from '../components/ProgressMap';
@@ -10,7 +10,7 @@ export default function HomePage() {
   const { currentUser, userProfile } = useContext(AuthContext);
   const { xp, getLevelInfo } = useContext(GamificationContext);
   const navigate = useNavigate();
-  
+
   const displayName = userProfile?.username || userProfile?.email?.split('@')[0] || currentUser?.email?.split('@')[0] || 'Defender';
 
   return (

@@ -3,7 +3,7 @@ import { AuthContext } from '../context/AuthContext';
 import AuthForm from './AuthForm';
 
 export default function LoginModal() {
-  const { showLoginModal, closeLogin } = useContext(AuthContext);
+  const { showLoginModal, closeLogin, isDev, devBypassLogin } = useContext(AuthContext);
 
   if (!showLoginModal) return null;
 
@@ -22,6 +22,15 @@ export default function LoginModal() {
 
         <div style={{ width: '100%', marginTop: '1.25rem' }}>
           <AuthForm onSuccess={closeLogin} />
+          
+          {isDev && (
+            <button 
+              onClick={devBypassLogin}
+              style={{ ...styles.button, marginTop: '1rem', background: '#3b82f6', color: 'white', fontWeight: 'bold' }}
+            >
+              🛠️ Quick Login (Local Dev Mode)
+            </button>
+          )}
         </div>
 
         <div style={styles.footer}>
@@ -59,6 +68,19 @@ const styles = {
     position: 'relative',
     transition: 'all 0.3s ease',
     textAlign: 'center',
+  },
+  button: {
+    width: '100%',
+    padding: '0.875rem',
+    borderRadius: '12px',
+    border: 'none',
+    cursor: 'pointer',
+    fontSize: '1rem',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '0.75rem',
+    transition: 'all 0.2s',
   },
   closeButton: {
     position: 'absolute',

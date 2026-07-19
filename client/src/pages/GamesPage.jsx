@@ -29,13 +29,12 @@ const GamesPage = () => {
   });
 
   const normalizeGame = (g) => {
-    // If the game already has populated data with real content, use it as-is
-    if (g.data && (g.data.threatAnalysis || g.data.question || g.data.items || g.data.messages || g.data.script || g.data.flags || g.data.content)) return { ...g, thumbnail: g.thumbnail || '🎯' };
+    if (g.data && g.data.threatAnalysis) return g;
     const desc = g.description || "Can you spot the social engineering manipulation in this scenario?";
     return {
       ...g,
       thumbnail: g.thumbnail || '🎯',
-      data: {
+      data: g.data || {
         scenario: desc,
         question: `Why is "${g.title}" suspicious and potentially dangerous?`,
         options: [
@@ -54,21 +53,23 @@ const GamesPage = () => {
 
   useEffect(() => {
     const loadSaved = async () => {
-      // 1. Instant sync from local session/storage
+      // 1. Try querying Supabase database directly from client for cloud sync across all devices
       try {
-        const saved = localStorage.getItem('ss_custom_games');
-        if (saved) {
-          const parsed = JSON.parse(saved).filter(g => g.title !== 'Phishy Email Alert');
-          setCustomGames(parsed);
+        const { data, error } = await supabase.from('custom_games').select('*').order('created_at', { ascending: false });
+        if (!error && data && data.length > 0) {
+          const clean = data.filter(g => g.title !== 'Phishy Email Alert');
+          setCustomGames(clean);
+          localStorage.setItem('ss_custom_games', JSON.stringify(clean));
+          return;
         }
       } catch (e) {}
 
-      // 2. Unified Server API check (merges server memory + Supabase DB + backup profile storage)
+      // 2. Try API fallback
       try {
         const apiUrl = getApiUrl();
         const res = await fetch(`${apiUrl}/api/games/custom`);
         const data = await res.json();
-        if (data.ok && Array.isArray(data.games)) {
+        if (data.ok && Array.isArray(data.games) && data.games.length > 0) {
           const clean = data.games.filter(g => g.title !== 'Phishy Email Alert');
           setCustomGames(clean);
           localStorage.setItem('ss_custom_games', JSON.stringify(clean));
@@ -76,16 +77,13 @@ const GamesPage = () => {
         }
       } catch (e) {}
 
-      // 3. Direct Supabase database sync fallback
+      // 3. Try localStorage fallback
       try {
-        const { data, error } = await supabase.from('custom_games').select('*').order('created_at', { ascending: false });
-        if (!error && Array.isArray(data) && data.length > 0) {
-          const clean = data.filter(g => g.title !== 'Phishy Email Alert').map(g => ({
-            ...g,
-            xpReward: g.xpReward ?? g.xpreward ?? 50
-          }));
-          setCustomGames(clean);
-          localStorage.setItem('ss_custom_games', JSON.stringify(clean));
+        const saved = localStorage.getItem('ss_custom_games');
+        if (saved) {
+          const parsed = JSON.parse(saved).filter(g => g.title !== 'Phishy Email Alert');
+          setCustomGames(parsed);
+          localStorage.setItem('ss_custom_games', JSON.stringify(parsed));
         }
       } catch (e) {}
     };

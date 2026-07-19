@@ -3,24 +3,9 @@ import ThreatAnalysis from './ThreatAnalysis';
 import { soundEffects } from '../../utils/soundEffects';
 
 export default function ChatGame({ game, onComplete }) {
-  const rawData = typeof game.data === 'string'
-    ? (() => { try { return JSON.parse(game.data); } catch (e) { return {}; } })()
-    : (game.data || {});
-  const data = rawData; // alias used in JSX
-
-  const messages = (Array.isArray(rawData.messages) && rawData.messages.length > 0)
-    ? rawData.messages
-    : [
-        { sender: 'scammer', text: 'Hi! This is IT Support. We detected unusual activity on your account.' },
-        { sender: 'scammer', text: 'Please send your current password immediately so we can lock down the account.' }
-      ];
-  const choices = (Array.isArray(rawData.choices) && rawData.choices.length > 0)
-    ? rawData.choices
-    : [
-        { text: 'Sure, sending credentials now.', isCorrect: false, explanation: 'Never share passwords in chat.' },
-        { text: 'I will verify through the official IT Helpdesk portal first.', isCorrect: true, explanation: 'Always verify through official channels.' },
-        { text: 'Can you send a link instead?', isCorrect: false, explanation: 'Links can lead to credential harvesting.' }
-      ];
+  const { data } = game;
+  const messages = data.messages || [];
+  const choices = data.choices || [];
   
   const [chatHistory, setChatHistory] = useState([]);
   const [messageIndex, setMessageIndex] = useState(0);

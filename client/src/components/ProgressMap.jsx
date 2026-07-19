@@ -12,23 +12,23 @@ const UNITS = [
     icon: '💰',
     description: 'Learn to spot loan scams, investment traps, and payment fraud',
     color: '#ff6b6b',
-    moduleIds: [0, 3, 9, 15, 8], // Instant Loan, Fake Gold Coin, Investment, Tax Refund, Job Offer
+    moduleIds: [0, 3, 9, 15, 8, 62, 69, 72, 169, 170, 171, 173, 174, 176, 179, 183], // Instant Loan, Fake Gold Coin, Investment, Tax Refund, Job Offer, Metaverse Property, Digital Rupee, CBDC, Carbon Credit, Green Energy Subsidy, Smart City Scheme, Quantum Investment, Nigerian 419
   },
   {
     id: 'identity',
-    title: 'Digital Identity',
+    title: 'Identity & Accounts',
     icon: '🔐',
     description: 'Protect your personal data, accounts, and digital identity',
     color: '#4ecdc4',
-    moduleIds: [12, 22, 17, 16, 13], // Bank KYC, WiFi Login, SIM Upgrade, Corp Password, Instagram
+    moduleIds: [12, 22, 17, 16, 13, 64, 177, 178], // Bank KYC, WiFi Login, SIM Upgrade, Corp Password, Instagram, Fake Digital Identity, Fake Biometric Update
   },
   {
     id: 'social',
     title: 'Social Engineering',
-    icon: '🎭',
-    description: 'Recognize manipulation tactics used by scammers',
-    color: '#a855f7',
-    moduleIds: [10, 11, 14, 19, 21], // Digital Arrest, Deepfake, Electricity, Copyright, Charity
+    icon: '👥',
+    description: 'Learn how to detect manipulation, impersonation, and deepfakes',
+    color: '#3b82f6',
+    moduleIds: [10, 11, 14, 19, 21, 63, 65, 66, 67, 68, 70, 71, 168], // Digital Arrest, Deepfake, Electricity, Copyright, Charity
   },
   {
     id: 'shopping',
@@ -36,7 +36,7 @@ const UNITS = [
     icon: '🛒',
     description: 'Stay safe while shopping, dealing, and receiving parcels online',
     color: '#f1c40f',
-    moduleIds: [2, 6, 4, 20, 18], // Phone Deal, E-Commerce, Lucky Draw, Parcel Customs, Scholarship
+    moduleIds: [2, 6, 4, 20, 18, 74], // Phone Deal, E-Commerce, Lucky Draw, Parcel Customs, Scholarship
   },
   {
     id: 'advanced',
@@ -44,7 +44,7 @@ const UNITS = [
     icon: '🤖',
     description: 'Master emerging threats: deepfakes, crypto scams, and AI attacks',
     color: '#3b82f6',
-    moduleIds: [1, 5, 7], // Fake Interview, Credit Card, Reward Points
+    moduleIds: [1, 5, 7, 58, 59, 60, 61, 73, 182], // Fake Interview, Credit Card, Reward Points, AI Phishing-as-a-Service
   },
   {
     id: 'psychology_workplace',
@@ -54,6 +54,146 @@ const UNITS = [
     color: '#ec4899',
     moduleIds: [23, 24], // Cognitive Biases, Workplace & Shadow IT
   },
+  {
+    id: 'misc_frauds',
+    title: 'Miscellaneous Cyber Frauds',
+    icon: '🎮',
+    description: 'Learn to protect yourself against gaming and youth-targeted scams',
+    color: '#10b981',
+    moduleIds: [160, 161, 162, 163, 175, 181], // Roblox, Steam, PlayStation, Xbox, Fake Drone Reg, Fake Cyber Insurance
+  },
+  {
+    id: 'education_frauds',
+    title: 'Education Frauds',
+    icon: '🎓',
+    description: 'Fake admissions, scholarships, or coaching institutes.',
+    color: '#f97316',
+    moduleIds: [164, 165, 167], // Fake School Fee Payment, WhatsApp Parent Group, Fake Online Tuition
+  },
+  {
+    id: 'impersonation_frauds',
+    title: 'Impersonation Scams',
+    icon: '🎭',
+    description: 'Scammer pretends to be from government, bank, or company.',
+    color: '#ef4444',
+    moduleIds: [166, 180], // Child Kidnap Emergency, Fake Cyber Complaint
+  },
+  {
+    id: 'utility_frauds',
+    title: 'Utility Scams',
+    icon: '⚡',
+    description: 'Fake bills for electricity, gas, water, etc.',
+    color: '#0ea5e9',
+    moduleIds: [172], // Fake EV Charging App
+  },
+  {
+    id: 'live_threat_sims',
+    title: 'Live Threat Simulations (#127 – #142)',
+    icon: '🚨',
+    description: 'Interactive real-world scam simulations: Tech Support, Crypto Drainers, SIM Hijacking, Vishing & more',
+    color: '#00d2d3',
+    moduleIds: [126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142],
+  },
+  {
+    id: 'marketplace_scams',
+    title: 'Marketplace Scams',
+    icon: '🛍️',
+    description: 'Learn to identify rental, resale, courier and marketplace frauds',
+    color: '#f97316',
+    moduleIds: [75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91],
+  },
+  {
+    id: 'medical_scams',
+    title: 'Medical & Health Scams',
+    icon: '🏥',
+    description: 'Learn to spot fake hospital bills, fake pharmacies, and health card frauds.',
+    color: '#e74c3c',
+    moduleIds: [109, 110, 111, 112, 113],
+  },
+  {
+    id: 'charity_scams',
+    title: 'Charity & Donation Frauds',
+    icon: '🤝',
+    description: 'Protect your donations from fake NGOs, disaster relief scams, and fake crowdfunding.',
+    color: '#2ecc71',
+    moduleIds: [114, 115, 116, 117, 118, 119, 120],
+  },
+  {
+    id: 'technical_scams',
+    title: 'Technical & Malware Scams',
+    icon: '💻',
+    description: 'Defend against fake software updates, malicious USBs, and tech support scams.',
+    color: '#34495e',
+    moduleIds: [121, 122, 123, 124, 125],
+  },
+  /////////////testing starts here////////////////
+  {
+    id: 'Testing kuldips scam',
+    title: 'Testing kuldips scam',
+    icon: '💻',
+    description: 'Defend against fake software updates, malicious USBs, and tech support scams.',
+    color: '#34495e',
+    moduleIds: [58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74],
+  },
+  {
+    id: 'Test prachis scam',
+    title: 'Testing prachis scam',
+    icon: '🛍️',
+    description: 'Marketplace, rental, courier, and resale frauds.',
+    color: '#f97316',
+    moduleIds: [75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91],
+  },
+  {
+    id: 'Test sharvi scam',
+    title: 'Testing sharvi scam',
+    icon: '🏥',
+    description: 'Medical emergencies, fake charities, and technical updates.',
+    color: '#e74c3c',
+    moduleIds: [109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125],
+  },
+  {
+    id: 'Test omkars scam',
+    title: 'Testing omkars scam',
+    icon: '🚨',
+    description: 'Live Threat Simulations and advanced real-time scenarios.',
+    color: '#00d2d3',
+    moduleIds: [126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142],
+  },
+  {
+    id: 'Test mohans scam',
+    title: 'Testing mohans scam',
+    icon: '🎮',
+    description: 'Gaming scams, youth-targeted frauds, and miscellaneous threats.',
+    color: '#10b981',
+    moduleIds: [160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183],
+  },
+  {
+    id: 'Test Atharva scam',
+    title: 'Testing Atharva scam',
+    icon: '🎮',
+    description: 'Gaming scams, youth-targeted frauds, and miscellaneous threats.',
+    color: '#10b981',
+    moduleIds: [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41],
+  },
+  {
+    id: 'Test Amrita scam',
+    title: 'Testing Amrita scam',
+    icon: '🎮',
+    description: 'Gaming scams, youth-targeted frauds, and miscellaneous threats.',
+    color: '#10b981',
+    moduleIds: [92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108 ],
+  },
+  {
+    id: 'Test vivek scam',
+    title: 'Testing vivek scam',
+    icon: '🎮',
+    description: 'Gaming scams, youth-targeted frauds, and miscellaneous threats.',
+    color: '#10b981',
+    moduleIds: [143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159],
+  },
+
+
+
 ];
 
 export default function ProgressMap() {
@@ -63,6 +203,7 @@ export default function ProgressMap() {
 
   return (
     <div className="progress-map">
+      {console.log('UNITS length:', UNITS.length)}
       <div className="progress-map-header">
         <h2 className="progress-map-title">🗺️ Your Learning Path</h2>
         <p className="progress-map-subtitle">
@@ -84,6 +225,7 @@ export default function ProgressMap() {
           : 0;
 
         // Units unlock based on level: first 2 always open, rest need higher levels
+        // For testing/development, we unlock all units so you can see them!
         const isUnlocked = true; // unitIndex < 2 || level.number >= unitIndex;
 
         return (
@@ -131,11 +273,10 @@ export default function ProgressMap() {
                 {unitModules.map((mod, modIndex) => {
                   const isCompleted = completedModules.includes(mod.id);
                   // First module in unit is always active; others need previous to be complete
-                  const prevCompleted =
-                    modIndex === 0 ||
-                    completedModules.includes(unitModules[modIndex - 1]?.id);
-                  const isActive = !isCompleted; // XP Barrier removed
-                  const isModLocked = false; // XP Barrier removed
+                  // Temporarily unlock all modules for testing
+                  const prevCompleted = true; // modIndex === 0 || completedModules.includes(unitModules[modIndex - 1]?.id);
+                  const isActive = !isCompleted && prevCompleted;
+                  const isModLocked = false; // !isCompleted && !isActive;
 
                   const diffColors = {
                     low: 'var(--green)',
@@ -148,20 +289,18 @@ export default function ProgressMap() {
                       {/* Connector line */}
                       {modIndex > 0 && (
                         <div
-                          className={`module-connector ${
-                            isCompleted || isActive ? 'connector-active' : ''
-                          }`}
+                          className={`module-connector ${isCompleted || isActive ? 'connector-active' : ''
+                            }`}
                         />
                       )}
 
                       <button
-                        className={`module-node ${
-                          isCompleted
-                            ? 'module-node--completed'
-                            : isActive
+                        className={`module-node ${isCompleted
+                          ? 'module-node--completed'
+                          : isActive
                             ? 'module-node--active'
                             : 'module-node--locked'
-                        }`}
+                          }`}
                         onClick={() => {
                           if (!isModLocked) navigate(`/module/${mod.id}`);
                         }}

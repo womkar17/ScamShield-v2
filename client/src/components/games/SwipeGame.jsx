@@ -12,15 +12,8 @@ const SwipeGame = ({ game, onComplete }) => {
   const [dragX, setDragX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
 
-  const rawData = typeof game.data === 'string'
-    ? (() => { try { return JSON.parse(game.data); } catch (e) { return {}; } })()
-    : (game.data || {});
-
-  const items = Array.isArray(rawData) ? rawData : (Array.isArray(rawData.items) && rawData.items.length > 0 ? rawData.items : [
-    { content: 'sender@example.com - Subject: URGENT Account Lockout Verify Immediately', isScam: true, explanation: 'Domain lookalike and artificial urgency.' },
-    { content: 'Official notification from your verified banking app inside official portal', isScam: false, explanation: 'Official internal portal notifications are safe.' },
-    { content: 'SMS: You won $10,000 lottery! Click bit.ly/claim-prize now', isScam: true, explanation: 'Unsolicited prize links are phishing attempts.' }
-  ]);
+  // Fallback in case game.data is an array (old data) or object with items
+  const items = Array.isArray(game.data) ? game.data : (game.data?.items || []);
   const currentItem = items[currentIndex];
 
   const handleChoice = (isScamChoice) => {

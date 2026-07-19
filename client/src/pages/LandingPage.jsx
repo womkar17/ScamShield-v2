@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-
+import { MODULES } from '../data/modules';
 export default function LandingPage() {
   const navigate = useNavigate();
   const { isLoggedIn } = useContext(AuthContext);
@@ -56,7 +56,7 @@ export default function LandingPage() {
           </div>
           <div style={styles.heroStats}>
             <div style={styles.stat}>
-              <span style={styles.statNumber}>23+</span>
+              <span style={styles.statNumber}>{MODULES.length}+</span>
               <span style={styles.statLabel}>Training Modules</span>
             </div>
             <div style={styles.statDivider}></div>
@@ -132,7 +132,7 @@ export default function LandingPage() {
               <div style={styles.featureNumber}>01</div>
               <h3 style={styles.featureTitle}>Learn</h3>
               <p style={styles.cardText}>
-                Complete 23+ educational modules covering every type of modern scam — from phishing 
+                Complete {MODULES.length}+ educational modules covering every type of modern scam — from phishing 
                 emails to cryptocurrency fraud. Each module includes real examples and case studies.
               </p>
             </div>

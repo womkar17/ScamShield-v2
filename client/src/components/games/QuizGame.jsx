@@ -8,23 +8,9 @@ const QuizGame = ({ game, onComplete }) => {
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [isCorrectScore, setIsCorrectScore] = useState(0);
 
-  const rawData = typeof game.data === 'string'
-    ? (() => { try { return JSON.parse(game.data); } catch (e) { return {}; } })()
-    : (game.data || {});
-
-  const question = rawData.question || game.question || 'Which of the following is a key red flag of a social engineering attack?';
-  const options = (Array.isArray(rawData.options) && rawData.options.length > 0)
-    ? rawData.options
-    : [
-        { text: 'An urgent request to bypass normal security procedures', isCorrect: true, explanation: 'Scammers create artificial urgency to force hasty decisions.' },
-        { text: 'An email from a known colleague signed with their standard signature', isCorrect: false, explanation: 'Standard internal communication is normally safe.' },
-        { text: 'A scheduled security update notification from IT', isCorrect: false, explanation: 'Scheduled IT updates are routine.' }
-      ];
-  const threatAnalysis = rawData.threatAnalysis || game.threatAnalysis || {};
-
   const handleSelect = (idx) => {
     setSelectedIdx(idx);
-    const isCorrect = options[idx]?.isCorrect;
+    const isCorrect = game.data.options[idx].isCorrect;
     if (isCorrect) {
       soundEffects.play('success');
     } else {
@@ -40,14 +26,14 @@ const QuizGame = ({ game, onComplete }) => {
   };
 
   if (showAnalysis) {
-    return <ThreatAnalysis analysis={threatAnalysis} onContinue={() => onComplete(isCorrectScore, 1)} />;
+    return <ThreatAnalysis analysis={game.data.threatAnalysis} onContinue={() => onComplete(isCorrectScore, 1)} />;
   }
 
   return (
     <div style={{ padding: '20px', color: 'white', fontFamily: 'sans-serif' }}>
-      <h2 style={{ marginBottom: '20px', fontSize: '1.5rem', color: '#ffeb3b' }}>{question}</h2>
+      <h2 style={{ marginBottom: '20px', fontSize: '1.5rem', color: '#ffeb3b' }}>{game.data.question}</h2>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-        {options.map((opt, idx) => {
+        {game.data.options.map((opt, idx) => {
           let bg = '#2a2a2a';
           if (selectedIdx === idx) {
             bg = opt.isCorrect ? '#4CAF50' : '#f44336';

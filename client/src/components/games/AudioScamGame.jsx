@@ -3,19 +3,8 @@ import ThreatAnalysis from './ThreatAnalysis';
 import { soundEffects } from '../../utils/soundEffects';
 
 export default function AudioScamGame({ game, onComplete }) {
-  const rawData = typeof game.data === 'string'
-    ? (() => { try { return JSON.parse(game.data); } catch (e) { return {}; } })()
-    : (game.data || {});
-  const data = rawData; // alias used in JSX
-
-  const script = (Array.isArray(rawData.script) && rawData.script.length > 0)
-    ? rawData.script
-    : [
-        { text: 'Hello, this is the bank security department calling regarding your account.', isRedFlag: false },
-        { text: 'We detected an unauthorized transaction attempt.', isRedFlag: false },
-        { text: 'Please read out the 6-digit OTP code sent to your phone right now to block it.', isRedFlag: true },
-        { text: 'If you hang up, your bank account will be permanently frozen.', isRedFlag: true }
-      ]; 
+  const { data } = game;
+  const script = data.script || []; 
   
   const [isPlaying, setIsPlaying] = useState(false);
   const [callDuration, setCallDuration] = useState(0);

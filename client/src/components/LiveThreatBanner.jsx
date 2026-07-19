@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getApiUrl } from '../lib/api';
 
 export default function LiveThreatBanner() {
   const navigate = useNavigate();
@@ -11,7 +10,7 @@ export default function LiveThreatBanner() {
     try {
       // 1. Check global server backend first so all users see broadcasts
       try {
-        const apiUrl = getApiUrl();
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
         const res = await fetch(`${apiUrl}/api/broadcast`);
         if (res.ok) {
           const data = await res.json();

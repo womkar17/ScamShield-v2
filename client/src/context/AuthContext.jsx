@@ -5,11 +5,13 @@ import { getApiUrl } from '../lib/api';
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [userProfile, setUserProfile] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+  const [currentUser, setCurrentUser] = useState(isDev ? { id: 'test-user', email: 'test@example.com' } : null);
+  const [userProfile, setUserProfile] = useState(isDev ? { username: 'TestUser', level: 10 } : null);
+  const [isLoggedIn, setIsLoggedIn] = useState(isDev);
+  const [isAdmin, setIsAdmin] = useState(isDev);
+  const [loading, setLoading] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const API_BASE = `${getApiUrl()}/api/auth`;
@@ -173,10 +175,19 @@ export function AuthProvider({ children }) {
     setUserProfile(prev => ({ ...prev, ...updates }));
   };
 
+  const devBypassLogin = useCallback(() => {
+    setCurrentUser({ id: 'dev-user', email: 'dev@localhost' });
+    setUserProfile({ username: 'LocalDev', level: 10 });
+    setIsLoggedIn(true);
+    setIsAdmin(true);
+    setLoading(false);
+    setShowLoginModal(false);
+  }, []);
+
   return (
     <AuthContext.Provider value={{
-      currentUser, userProfile, isLoggedIn, isAdmin, loading,
-      showLoginModal, openLogin, closeLogin,
+      currentUser, userProfile, isLoggedIn, isAdmin, loading, isDev,
+      showLoginModal, openLogin, closeLogin, devBypassLogin,
       loginWithGoogle, sendOtp, verifyOtp, logout, updateProfileLocal,
     }}>
       {children}
