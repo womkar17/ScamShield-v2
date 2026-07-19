@@ -156,7 +156,8 @@ const UNITS = [
     icon: '🔥',
     description: '48 newly generated developer, technical, and DevOps scam simulations kept separately for local inspection.',
     color: '#ff9f43',
-    moduleIds: Array.from({ length: 48 },
+    moduleIds: Array.from({ length: 48 }, (_, i) => 230 + i),
+  },
   {
     id: 'pending_review_prachi',
     title: '👩‍💻 Prachi\'s Complete Simulations (IDs 325-369)',
@@ -164,7 +165,6 @@ const UNITS = [
     description: '45 completed and verified interactive scam simulations developed by Prachi.',
     color: '#10b981',
     moduleIds: Array.from({ length: 45 }, (_, i) => 325 + i),
-  }, (_, i) => 230 + i),
   }
 ];
 
