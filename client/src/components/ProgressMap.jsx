@@ -12,7 +12,7 @@ const UNITS = [
     icon: '💰',
     description: 'Learn to spot loan scams, investment traps, and payment fraud',
     color: '#ff6b6b',
-    moduleIds: [0, 3, 9, 15, 8, 62, 69, 72, 169, 170, 171, 173, 174, 176, 179, 183],
+    moduleIds: [0, 3, 9, 15, 8, 62, 69, 72, 169, 170, 171, 173, 174, 176, 179, 183, 184, 186, 193, 194, 199, 203, 204, 206, 209, 210],
   },
   {
     id: 'identity',
@@ -20,7 +20,7 @@ const UNITS = [
     icon: '🔐',
     description: 'Protect your personal data, accounts, and digital identity',
     color: '#4ecdc4',
-    moduleIds: [12, 22, 17, 16, 13, 64, 177, 178],
+    moduleIds: [12, 22, 17, 16, 13, 64, 177, 178, 187, 189, 195, 220],
   },
   {
     id: 'social',
@@ -28,7 +28,7 @@ const UNITS = [
     icon: '👥',
     description: 'Learn how to detect manipulation, impersonation, and deepfakes',
     color: '#3b82f6',
-    moduleIds: [10, 11, 14, 19, 21, 63, 65, 66, 67, 68, 70, 71, 168],
+    moduleIds: [10, 11, 14, 19, 21, 63, 65, 66, 67, 68, 70, 71, 168, 185, 188, 192, 197, 198, 201, 212, 213],
   },
   {
     id: 'shopping',
@@ -36,7 +36,7 @@ const UNITS = [
     icon: '🛒',
     description: 'Stay safe while shopping, dealing, and receiving parcels online',
     color: '#f1c40f',
-    moduleIds: [2, 6, 4, 20, 18, 74],
+    moduleIds: [2, 6, 4, 20, 18, 74, 190, 200, 214, 219, 224, 225, 229],
   },
   {
     id: 'advanced',
@@ -44,7 +44,7 @@ const UNITS = [
     icon: '🤖',
     description: 'Master emerging threats: deepfakes, crypto scams, and AI attacks',
     color: '#3b82f6',
-    moduleIds: [1, 5, 7, 58, 59, 60, 61, 73, 182],
+    moduleIds: [1, 5, 7, 58, 59, 60, 61, 73, 182, 191, 196, 202, 205, 208, 211, 215, 216, 217, 218, 221, 222, 223, 226, 227, 228],
   },
   {
     id: 'psychology_workplace',
@@ -52,7 +52,7 @@ const UNITS = [
     icon: '🧠',
     description: 'Master cognitive bias defense, shadow IT risks, and enterprise security',
     color: '#ec4899',
-    moduleIds: [23, 24],
+    moduleIds: [23, 24, 207],
   },
   {
     id: 'banking_upi_atm',

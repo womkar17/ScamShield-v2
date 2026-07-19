@@ -363,9 +363,16 @@ const SIM_MAP = {
   181: FakeCyberInsuranceSim,
   182: AIPhishingServiceSim,
   183: Nigerian419Sim,
-
-  
-
+  ...Array.from({ length: 46 }, (_, i) => 184 + i).reduce((acc, id) => {
+    const oldId = id - 1;
+    let template;
+    if ([210, 211, 212].includes(oldId)) template = VideoCallSim;
+    else if ([184, 187, 194, 196, 197, 200, 201, 206, 207, 214, 218, 222, 224, 228].includes(oldId)) template = SocialMediaSim;
+    else if ([191, 192, 195, 199, 202, 203, 208, 209, 213, 227].includes(oldId)) template = ChatAppSim;
+    else template = CorporateWebSim;
+    
+    return { ...acc, [id]: template };
+  }, {})
 };
 
 export default function ScamSimulatorEngine({ moduleId, moduleData, formData, handleInputChange, handleSimulationSubmit }) {
