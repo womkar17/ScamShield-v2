@@ -1,5 +1,15 @@
 {
   "installCommand": "npm install",
-  "buildCommand": "cd client && npm install && npm run build",
-  "outputDirectory": "client/dist"
+  "buildCommand": "cd client && npm install && npm run build && cp -r dist ../public",
+  "outputDirectory": "public",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }
