@@ -149,6 +149,14 @@ const UNITS = [
     description: 'Fake bills for electricity, gas, water, or EV charging stations.',
     color: '#0ea5e9',
     moduleIds: [172],
+  },
+  {
+    id: 'pending_review_48',
+    title: '🧪 Pending Review: Developer & Technical Scams (IDs 230-277)',
+    icon: '🔥',
+    description: '48 newly generated developer, technical, and DevOps scam simulations kept separately for local inspection.',
+    color: '#ff9f43',
+    moduleIds: Array.from({ length: 48 }, (_, i) => 230 + i),
   }
 ];
 

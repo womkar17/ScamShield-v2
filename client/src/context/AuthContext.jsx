@@ -5,12 +5,12 @@ import { getApiUrl } from '../lib/api';
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const isDev = false;
 
-  const [currentUser, setCurrentUser] = useState(isDev ? { id: 'test-user', email: 'test@example.com' } : null);
-  const [userProfile, setUserProfile] = useState(isDev ? { username: 'TestUser', level: 10 } : null);
-  const [isLoggedIn, setIsLoggedIn] = useState(isDev);
-  const [isAdmin, setIsAdmin] = useState(isDev);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
 

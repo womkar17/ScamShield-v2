@@ -175,7 +175,12 @@ import FakeCyberInsuranceSim from './FakeCyberInsuranceSim';
 import AIPhishingServiceSim from './AIPhishingServiceSim';
 import Nigerian419Sim from './Nigerian419Sim';
 
-
+// Custom Tailored Simulators for IDs 230-277
+import { BumpversionSim, ChiRouterSim, ChiselSim, CirrusCISim, CleanArchitectureSim, CometMLSim, CommandoVMSim, CommitizenSim, CommitlintSim, CrunchSim, CscopeSim, CuckooSandboxSim, CurlSim, CzConventionalChangelogSim, DbtSim, DieterSim } from './DeveloperScamSims';
+import { BurpSuiteSim, CallCentreSim, ChromeRemoteDesktopSim, CitrixXenAppSim, CrystalReportsSim, DialUpInternetSim } from './TechnicalAndSecurityScamSims';
+import { BusinessTodaySim, CarInsuranceSim, CATCoachingSim, ChaiPointSim, ChequeTransferSim, CIBILScoreSim, CNCMachiningSim, CodingBootcampSim, ConstructionPermitSim, CopperFuturesSim, DallasTaxSim, DaveverwerSim, DebtConsolidationSim } from './FinancialAndBusinessScamSims';
+import { CardanoSim, CardingForumSim, CryptoExchangeSim, DarkbloodSim, DashCoinSim, DecentralizedExchangeSim } from './CryptoAndWeb3ScamSims';
+import { CandySim, CompTIASim, ContentSamuraiSim, CountryBeanSim, COVIDTestSim, DemographicsProSim, DesignWizardSim } from './ConsumerServiceScamSims';
 
 const SIM_MAP = {
   //team
@@ -372,7 +377,56 @@ const SIM_MAP = {
     else template = CorporateWebSim;
     
     return { ...acc, [id]: template };
-  }, {})
+  }, {}),
+  // Custom Interactive Simulators for IDs 230-277
+  230: BumpversionSim,
+  231: BurpSuiteSim,
+  232: BusinessTodaySim,
+  233: CallCentreSim,
+  234: CandySim,
+  235: CarInsuranceSim,
+  236: CardanoSim,
+  237: CardingForumSim,
+  238: CATCoachingSim,
+  239: ChaiPointSim,
+  240: ChequeTransferSim,
+  241: ChiRouterSim,
+  242: ChiselSim,
+  243: ChromeRemoteDesktopSim,
+  244: CIBILScoreSim,
+  245: CirrusCISim,
+  246: CitrixXenAppSim,
+  247: CleanArchitectureSim,
+  248: CNCMachiningSim,
+  249: CodingBootcampSim,
+  250: CometMLSim,
+  251: CommandoVMSim,
+  252: CommitizenSim,
+  253: CommitlintSim,
+  254: CompTIASim,
+  255: ConstructionPermitSim,
+  256: ContentSamuraiSim,
+  257: CopperFuturesSim,
+  258: CountryBeanSim,
+  259: COVIDTestSim,
+  260: CrunchSim,
+  261: CryptoExchangeSim,
+  262: CrystalReportsSim,
+  263: CscopeSim,
+  264: CuckooSandboxSim,
+  265: CurlSim,
+  266: CzConventionalChangelogSim,
+  267: DallasTaxSim,
+  268: DarkbloodSim,
+  269: DashCoinSim,
+  270: DaveverwerSim,
+  271: DbtSim,
+  272: DebtConsolidationSim,
+  273: DecentralizedExchangeSim,
+  274: DemographicsProSim,
+  275: DesignWizardSim,
+  276: DialUpInternetSim,
+  277: DieterSim
 };
 
 export default function ScamSimulatorEngine({ moduleId, moduleData, formData, handleInputChange, handleSimulationSubmit }) {
