@@ -1417,7 +1417,7 @@ export const MODULES = [
   //sharvi
   {
     id: 109,
-    icon: "hospital",
+    icon: "🏥",
     title: "Fake Hospital Admission",
     desc: "Learn how scammers exploit family medical emergencies to steal funds.",
     diff: "high",
@@ -1456,7 +1456,7 @@ export const MODULES = [
   },
   {
     id: 110,
-    icon: "truck-medical",
+    icon: "🚑",
     title: "Fake Ambulance Booking",
     desc: "Understand how fraudsters manipulate search engine ads for fake emergency services.",
     diff: "med",
@@ -1495,7 +1495,7 @@ export const MODULES = [
   },
   {
     id: 111,
-    icon: "pills",
+    icon: "💊",
     title: "Fake Medicine Delivery",
     desc: "Identify fraudulent online pharmacies offering unrealistic discounts on prescription drugs.",
     diff: "low",
@@ -1534,7 +1534,7 @@ export const MODULES = [
   },
   {
     id: 112,
-    icon: "stethoscope",
+    icon: "🩺",
     title: "Fake Telemedicine App",
     desc: "See how scammers set up fake online doctor consultations to steal fees and medical data.",
     diff: "med",
@@ -1573,7 +1573,7 @@ export const MODULES = [
   },
   {
     id: 113,
-    icon: "id-card",
+    icon: "🪪",
     title: "Fake Health Card",
     desc: "Learn how fraudsters use fake government health schemes to steal identity details.",
     diff: "high",
@@ -1612,7 +1612,7 @@ export const MODULES = [
   },
   {
     id: 114,
-    icon: "droplet",
+    icon: "🩸",
     title: "Fake Blood Donation Request",
     desc: "Understand how scammers exploit your empathy during fake medical emergencies.",
     diff: "low",
@@ -1651,7 +1651,7 @@ export const MODULES = [
   },
   {
     id: 115,
-    icon: "om",
+    icon: "🛕",
     title: "Temple Donation Scam",
     desc: "Discover how fraudsters create fake religious trusts to steal devotion-driven donations.",
     diff: "med",
@@ -1690,7 +1690,7 @@ export const MODULES = [
   },
   {
     id: 116,
-    icon: "hand-holding-heart",
+    icon: "🤝",
     title: "Fake NGO Donation Scam",
     desc: "Learn how fake NGOs steal funds and PAN card details under the guise of tax exemptions.",
     diff: "high",
@@ -1729,7 +1729,7 @@ export const MODULES = [
   },
   {
     id: 117,
-    icon: "house-flood-water",
+    icon: "🌊",
     title: "Fake Disaster Relief Scam",
     desc: "See how scammers mimic government emergency funds during natural disasters.",
     diff: "med",
@@ -1768,7 +1768,7 @@ export const MODULES = [
   },
   {
     id: 118,
-    icon: "users",
+    icon: "📢",
     title: "Fake Crowdfunding Scam",
     desc: "Discover how scammers steal emotional stories and photos to run fake crowdfunding campaigns.",
     diff: "med",
@@ -1807,7 +1807,7 @@ export const MODULES = [
   },
   {
     id: 119,
-    icon: "baby",
+    icon: "👶",
     title: "Fake Child Medical Emergency",
     desc: "Learn how highly urgent medical appeals for children are fabricated to steal funds.",
     diff: "high",
@@ -1846,7 +1846,7 @@ export const MODULES = [
   },
   {
     id: 120,
-    icon: "shield",
+    icon: "🛡️",
     title: "Fake Army Welfare Donation",
     desc: "Understand how patriotism is exploited by fake national defense and martyr welfare funds.",
     diff: "high",
@@ -1885,7 +1885,7 @@ export const MODULES = [
   },
   {
     id: 121,
-    icon: "puzzle-piece",
+    icon: "🧩",
     title: "Fake Browser Extension Scam",
     desc: "See how malicious browser extensions steal your data under the guise of free tools.",
     diff: "med",
@@ -1924,7 +1924,7 @@ export const MODULES = [
   },
   {
     id: 122,
-    icon: "desktop",
+    icon: "🖥️",
     title: "Fake Software Update",
     desc: "Learn how fake antivirus popups scare you into paying for useless license renewals.",
     diff: "med",
@@ -1963,7 +1963,7 @@ export const MODULES = [
   },
   {
     id: 123,
-    icon: "globe",
+    icon: "🌐",
     title: "Fake Chrome Update",
     desc: "Understand how scammers spoof browser update warnings to steal Google credentials.",
     diff: "high",
@@ -2002,7 +2002,7 @@ export const MODULES = [
   },
   {
     id: 124,
-    icon: "windows",
+    icon: "🪟",
     title: "Fake Windows Update",
     desc: "Experience how the fake 'Blue Screen of Death' is used to run tech support scams.",
     diff: "high",
@@ -2041,7 +2041,7 @@ export const MODULES = [
   },
   {
     id: 125,
-    icon: "usb",
+    icon: "🔌",
     title: "USB Malware Scam",
     desc: "Discover the dangers of 'Baiting' and how unknown USB drives can deploy ransomware.",
     diff: "high",

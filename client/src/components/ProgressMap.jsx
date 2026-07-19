@@ -12,7 +12,7 @@ const UNITS = [
     icon: '💰',
     description: 'Learn to spot loan scams, investment traps, and payment fraud',
     color: '#ff6b6b',
-    moduleIds: [0, 3, 9, 15, 8, 62, 69, 72, 169, 170, 171, 173, 174, 176, 179, 183], // Instant Loan, Fake Gold Coin, Investment, Tax Refund, Job Offer, Metaverse Property, Digital Rupee, CBDC, Carbon Credit, Green Energy Subsidy, Smart City Scheme, Quantum Investment, Nigerian 419
+    moduleIds: [0, 3, 9, 15, 8, 62, 69, 72, 169, 170, 171, 173, 174, 176, 179, 183],
   },
   {
     id: 'identity',
@@ -20,7 +20,7 @@ const UNITS = [
     icon: '🔐',
     description: 'Protect your personal data, accounts, and digital identity',
     color: '#4ecdc4',
-    moduleIds: [12, 22, 17, 16, 13, 64, 177, 178], // Bank KYC, WiFi Login, SIM Upgrade, Corp Password, Instagram, Fake Digital Identity, Fake Biometric Update
+    moduleIds: [12, 22, 17, 16, 13, 64, 177, 178],
   },
   {
     id: 'social',
@@ -28,7 +28,7 @@ const UNITS = [
     icon: '👥',
     description: 'Learn how to detect manipulation, impersonation, and deepfakes',
     color: '#3b82f6',
-    moduleIds: [10, 11, 14, 19, 21, 63, 65, 66, 67, 68, 70, 71, 168], // Digital Arrest, Deepfake, Electricity, Copyright, Charity
+    moduleIds: [10, 11, 14, 19, 21, 63, 65, 66, 67, 68, 70, 71, 168],
   },
   {
     id: 'shopping',
@@ -36,7 +36,7 @@ const UNITS = [
     icon: '🛒',
     description: 'Stay safe while shopping, dealing, and receiving parcels online',
     color: '#f1c40f',
-    moduleIds: [2, 6, 4, 20, 18, 74], // Phone Deal, E-Commerce, Lucky Draw, Parcel Customs, Scholarship
+    moduleIds: [2, 6, 4, 20, 18, 74],
   },
   {
     id: 'advanced',
@@ -44,7 +44,7 @@ const UNITS = [
     icon: '🤖',
     description: 'Master emerging threats: deepfakes, crypto scams, and AI attacks',
     color: '#3b82f6',
-    moduleIds: [1, 5, 7, 58, 59, 60, 61, 73, 182], // Fake Interview, Credit Card, Reward Points, AI Phishing-as-a-Service
+    moduleIds: [1, 5, 7, 58, 59, 60, 61, 73, 182],
   },
   {
     id: 'psychology_workplace',
@@ -52,47 +52,15 @@ const UNITS = [
     icon: '🧠',
     description: 'Master cognitive bias defense, shadow IT risks, and enterprise security',
     color: '#ec4899',
-    moduleIds: [23, 24], // Cognitive Biases, Workplace & Shadow IT
+    moduleIds: [23, 24],
   },
   {
-    id: 'misc_frauds',
-    title: 'Miscellaneous Cyber Frauds',
-    icon: '🎮',
-    description: 'Learn to protect yourself against gaming and youth-targeted scams',
-    color: '#10b981',
-    moduleIds: [160, 161, 162, 163, 175, 181], // Roblox, Steam, PlayStation, Xbox, Fake Drone Reg, Fake Cyber Insurance
-  },
-  {
-    id: 'education_frauds',
-    title: 'Education Frauds',
-    icon: '🎓',
-    description: 'Fake admissions, scholarships, or coaching institutes.',
-    color: '#f97316',
-    moduleIds: [164, 165, 167], // Fake School Fee Payment, WhatsApp Parent Group, Fake Online Tuition
-  },
-  {
-    id: 'impersonation_frauds',
-    title: 'Impersonation Scams',
-    icon: '🎭',
-    description: 'Scammer pretends to be from government, bank, or company.',
-    color: '#ef4444',
-    moduleIds: [166, 180], // Child Kidnap Emergency, Fake Cyber Complaint
-  },
-  {
-    id: 'utility_frauds',
-    title: 'Utility Scams',
-    icon: '⚡',
-    description: 'Fake bills for electricity, gas, water, etc.',
-    color: '#0ea5e9',
-    moduleIds: [172], // Fake EV Charging App
-  },
-  {
-    id: 'live_threat_sims',
-    title: 'Live Threat Simulations (#127 – #142)',
-    icon: '🚨',
-    description: 'Interactive real-world scam simulations: Tech Support, Crypto Drainers, SIM Hijacking, Vishing & more',
-    color: '#00d2d3',
-    moduleIds: [126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142],
+    id: 'banking_upi_atm',
+    title: 'Banking, UPI & ATM Security',
+    icon: '💳',
+    description: 'Defend against QR code traps, UPI payment frauds, ATM card trapping, and banking Trojans.',
+    color: '#8b5cf6',
+    moduleIds: [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41],
   },
   {
     id: 'marketplace_scams',
@@ -101,6 +69,14 @@ const UNITS = [
     description: 'Learn to identify rental, resale, courier and marketplace frauds',
     color: '#f97316',
     moduleIds: [75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91],
+  },
+  {
+    id: 'job_visa_education',
+    title: 'Career, Visa & Higher Education Frauds',
+    icon: '💼',
+    description: 'Avoid fake HR interviews, recruitment portals, visa consultancies, and admission guarantees.',
+    color: '#ec4899',
+    moduleIds: [92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108],
   },
   {
     id: 'medical_scams',
@@ -126,74 +102,54 @@ const UNITS = [
     color: '#34495e',
     moduleIds: [121, 122, 123, 124, 125],
   },
-  /////////////testing starts here////////////////
   {
-    id: 'Testing kuldips scam',
-    title: 'Testing kuldips scam',
-    icon: '💻',
-    description: 'Defend against fake software updates, malicious USBs, and tech support scams.',
-    color: '#34495e',
-    moduleIds: [58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74],
-  },
-  {
-    id: 'Test prachis scam',
-    title: 'Testing prachis scam',
-    icon: '🛍️',
-    description: 'Marketplace, rental, courier, and resale frauds.',
-    color: '#f97316',
-    moduleIds: [75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91],
-  },
-  {
-    id: 'Test sharvi scam',
-    title: 'Testing sharvi scam',
-    icon: '🏥',
-    description: 'Medical emergencies, fake charities, and technical updates.',
-    color: '#e74c3c',
-    moduleIds: [109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125],
-  },
-  {
-    id: 'Test omkars scam',
-    title: 'Testing omkars scam',
+    id: 'live_threat_sims',
+    title: 'Live Threat Simulations (#127 – #142)',
     icon: '🚨',
-    description: 'Live Threat Simulations and advanced real-time scenarios.',
+    description: 'Interactive real-world scam simulations: Tech Support, Crypto Drainers, SIM Hijacking, Vishing & more',
     color: '#00d2d3',
     moduleIds: [126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142],
   },
   {
-    id: 'Test mohans scam',
-    title: 'Testing mohans scam',
-    icon: '🎮',
-    description: 'Gaming scams, youth-targeted frauds, and miscellaneous threats.',
-    color: '#10b981',
-    moduleIds: [160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183],
-  },
-  {
-    id: 'Test Atharva scam',
-    title: 'Testing Atharva scam',
-    icon: '🎮',
-    description: 'Gaming scams, youth-targeted frauds, and miscellaneous threats.',
-    color: '#10b981',
-    moduleIds: [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41],
-  },
-  {
-    id: 'Test Amrita scam',
-    title: 'Testing Amrita scam',
-    icon: '🎮',
-    description: 'Gaming scams, youth-targeted frauds, and miscellaneous threats.',
-    color: '#10b981',
-    moduleIds: [92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108 ],
-  },
-  {
-    id: 'Test vivek scam',
-    title: 'Testing vivek scam',
-    icon: '🎮',
-    description: 'Gaming scams, youth-targeted frauds, and miscellaneous threats.',
-    color: '#10b981',
+    id: 'travel_parcel_utility',
+    title: 'Travel, Parcel Delivery & Utility Frauds',
+    icon: '✈️',
+    description: 'Spot fake pilgrimage packages, courier re-delivery fees, customs holds, and utility disconnections.',
+    color: '#14b8a6',
     moduleIds: [143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159],
   },
-
-
-
+  {
+    id: 'misc_frauds',
+    title: 'Miscellaneous Cyber Frauds',
+    icon: '🎮',
+    description: 'Learn to protect yourself against gaming and youth-targeted scams',
+    color: '#10b981',
+    moduleIds: [160, 161, 162, 163, 175, 181],
+  },
+  {
+    id: 'education_frauds',
+    title: 'Education & Tuition Frauds',
+    icon: '🎓',
+    description: 'Fake admissions, scholarships, WhatsApp parent groups, or coaching institutes.',
+    color: '#f97316',
+    moduleIds: [164, 165, 167],
+  },
+  {
+    id: 'impersonation_frauds',
+    title: 'Impersonation Scams',
+    icon: '🎭',
+    description: 'Scammer pretends to be from government, bank, or company.',
+    color: '#ef4444',
+    moduleIds: [166, 180],
+  },
+  {
+    id: 'utility_frauds',
+    title: 'Utility & EV Charging Scams',
+    icon: '⚡',
+    description: 'Fake bills for electricity, gas, water, or EV charging stations.',
+    color: '#0ea5e9',
+    moduleIds: [172],
+  }
 ];
 
 export default function ProgressMap() {
