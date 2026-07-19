@@ -1,10 +1,9 @@
 {
-  "buildCommand": "cd client && npm install && npm run build",
   "outputDirectory": "client/dist",
   "functions": {
     "api/index.js": {
-      "memory": 256,
-      "maxDuration": 30
+      "runtime": "@vercel/node@3.0.0",
+      "includeFiles": "api/**"
     }
   },
   "rewrites": [
