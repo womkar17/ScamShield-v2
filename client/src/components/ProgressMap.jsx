@@ -104,7 +104,7 @@ const UNITS = [
   },
   {
     id: 'live_threat_sims',
-    title: 'Live Threat Simulations (#127 – #142)',
+    title: 'Live Threat Simulations',
     icon: '🚨',
     description: 'Interactive real-world scam simulations: Tech Support, Crypto Drainers, SIM Hijacking, Vishing & more',
     color: '#00d2d3',
