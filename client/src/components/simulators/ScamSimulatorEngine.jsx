@@ -131,7 +131,7 @@ import FakeAirportAssistanceSimulator from './FakeAirportRefundAssistance';
 import ElectricityBillScam from './ElectricityBillScam';
 
 // Parcel Scam Simulator Imports
-import FakeFedExDeliverySimulator from './FakeFedExDelivery';
+import FakeFedExDeliverySimulator from './FakeFedEXDelivery';
 import FakeDHLDeliverySimulator from './FakeDHLDelivery';
 import FakeBlueDartTrackingSimulator from './FakeBlueDartTracking';
 import FakeIndiaPostTrackingSimulator from './FakeIndiaPostTracking';
@@ -147,7 +147,7 @@ import LPGBookingSim from './LPGBookingScam';
 import FASTagKYCSim from './FASTagKYCScam';
 import TollPaymentSim from './TollPaymentScam';
 import FreeFireDiamondSim from './FreeFireDiamondScam';
-import PUBGUCScamSim from './PUBGUCScam';
+import PUBGUCScamSim from './PubgUcScam';
 
 //mohan
 import RobloxRobuxSim from './RobloxRobuxSim';
