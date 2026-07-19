@@ -151,6 +151,10 @@ export default function ModulePage() {
     }
   }, [moduleData, navigate]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [phase, moduleId]);
+
   if (!moduleData) return null;
 
   const handleInputChange = (fieldName, value) => {
@@ -165,13 +169,17 @@ export default function ModulePage() {
     if (Array.isArray(exposedDataOrEvent)) {
       items = exposedDataOrEvent;
       setExposedItems(exposedDataOrEvent);
+    } else if (typeof exposedDataOrEvent === 'string' && (exposedDataOrEvent === 'safe' || exposedDataOrEvent === 'scam')) {
+      outcome = exposedDataOrEvent;
+      items = outcome === 'safe' ? ['Threat Successfully Avoided & Blocked!'] : (moduleData.exposed || []);
+      setExposedItems(items);
     } else {
       if (exposedDataOrEvent && exposedDataOrEvent.preventDefault) exposedDataOrEvent.preventDefault();
       items = moduleData.exposed || [];
       setExposedItems(items);
     }
 
-    const isSafe = outcome === 'safe' || (Array.isArray(items) && items.some(item => 
+    const isSafe = outcome === 'safe' || (typeof exposedDataOrEvent === 'boolean' && exposedDataOrEvent === true) || (Array.isArray(items) && items.some(item => 
       typeof item === 'string' && (
         item.toLowerCase().includes('successfully') ||
         item.toLowerCase().includes('identified') ||
@@ -183,7 +191,8 @@ export default function ModulePage() {
         item.toLowerCase().includes('detected') ||
         item.toLowerCase().includes('recognized') ||
         item.toLowerCase().includes('ignored') ||
-        item.toLowerCase().includes('blocked')
+        item.toLowerCase().includes('blocked') ||
+        item.toLowerCase().includes('safe')
       )
     ));
 
@@ -273,45 +282,111 @@ export default function ModulePage() {
 
               <div style={{ padding: '2rem 2.5rem' }}>
                 {/* The Scenario */}
-                <div style={{ marginBottom: '1.5rem' }}>
-                  <h3 style={{ color: 'var(--blue)', fontSize: '1.1rem', marginBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <div style={{ marginBottom: '1.8rem' }}>
+                  <h3 style={{ color: 'var(--blue)', fontSize: '1.15rem', marginBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     📖 The Situation
                   </h3>
-                  <p style={{ color: 'var(--text)', lineHeight: '1.7', fontSize: '1.05rem', margin: 0 }}>
+                  <p style={{ color: 'var(--text)', lineHeight: '1.8', fontSize: '1.08rem', margin: 0 }}>
                     {briefing ? briefing.scenario : moduleData.desc}
                   </p>
                 </div>
 
-                {/* Your Challenge */}
+                {/* Threat Profile & Psychology Grid */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.8rem' }}>
+                  <div style={{
+                    background: 'var(--bg2)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '10px',
+                    padding: '1.2rem'
+                  }}>
+                    <div style={{ fontSize: '0.85rem', color: 'var(--text2)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.4rem' }}>
+                      👤 Target Profile
+                    </div>
+                    <div style={{ color: 'var(--text)', fontWeight: '600', fontSize: '0.98rem' }}>
+                      {moduleData.tag.toLowerCase().includes('dev') || moduleData.tag.toLowerCase().includes('terminal') || moduleData.tag.toLowerCase().includes('package') || moduleData.title.toLowerCase().includes('fake') && (moduleData.title.toLowerCase().includes('bump') || moduleData.title.toLowerCase().includes('burp') || moduleData.title.toLowerCase().includes('ci') || moduleData.title.toLowerCase().includes('code'))
+                        ? 'Developers, DevOps & Security Engineers'
+                        : moduleData.tag.toLowerCase().includes('crypto') || moduleData.tag.toLowerCase().includes('finance') || moduleData.tag.toLowerCase().includes('loan') || moduleData.tag.toLowerCase().includes('bank')
+                        ? 'Crypto Traders, Investors & Account Holders'
+                        : moduleData.tag.toLowerCase().includes('corp') || moduleData.tag.toLowerCase().includes('work') || moduleData.tag.toLowerCase().includes('enterprise')
+                        ? 'Corporate Employees & Remote Workers'
+                        : 'Everyday Consumers, Smartphone & Web Users'}
+                    </div>
+                  </div>
+
+                  <div style={{
+                    background: 'var(--bg2)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '10px',
+                    padding: '1.2rem'
+                  }}>
+                    <div style={{ fontSize: '0.85rem', color: 'var(--text2)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.4rem' }}>
+                      🧠 Exploited Psychology
+                    </div>
+                    <div style={{ color: 'var(--text)', fontWeight: '600', fontSize: '0.98rem' }}>
+                      {moduleData.diff === 'hard' 
+                        ? 'Trust in Open-Source/Official Tools & Technical Obfuscation'
+                        : moduleData.diff === 'medium'
+                        ? 'Urgency, Fear of Loss & Authority Impersonation'
+                        : 'Greed, Fear of Disconnection & Blind Urgency'}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Exposed Assets at Risk */}
+                <div style={{ marginBottom: '1.8rem' }}>
+                  <h4 style={{ color: 'var(--accent)', fontSize: '0.95rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    💀 Assets & Data At Risk If Compromised:
+                  </h4>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem' }}>
+                    {(moduleData.exposed || ['Sensitive Personal Information', 'Account Credentials', 'Financial Access & Balances']).map((item, i) => (
+                      <span key={i} style={{
+                        background: 'rgba(255,107,107,0.12)',
+                        color: 'var(--accent)',
+                        padding: '0.4rem 0.9rem',
+                        borderRadius: '16px',
+                        fontSize: '0.88rem',
+                        fontWeight: '600',
+                        border: '1px solid rgba(255,107,107,0.3)'
+                      }}>
+                        🚨 {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Real World Context / Safety Fact */}
                 <div style={{
-                  background: 'rgba(78,205,196,0.1)',
-                  border: '1px solid rgba(78,205,196,0.3)',
+                  background: 'rgba(255,107,107,0.08)',
+                  border: '1px solid rgba(255,107,107,0.25)',
                   borderRadius: '10px',
                   padding: '1.2rem 1.5rem',
-                  marginBottom: '1.5rem'
+                  marginBottom: '1.8rem'
                 }}>
-                  <h3 style={{ color: 'var(--blue)', fontSize: '1rem', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    🎯 Your Challenge
-                  </h3>
-                  <p style={{ color: 'var(--text)', lineHeight: '1.6', margin: 0 }}>
-                    {briefing ? briefing.challenge : "Interact with the simulation below. Try to identify the red flags before it's too late."}
+                  <p style={{ color: 'var(--text2)', lineHeight: '1.7', margin: 0, fontSize: '0.96rem' }}>
+                    <strong style={{ color: 'var(--accent)' }}>⚠️ Real-World Threat Intelligence:</strong> {briefing && briefing.realWorldNote ? briefing.realWorldNote : moduleData.safetyTip || 'In real-world cyberattacks, scammers clone official user interfaces and use social engineering tactics to extract sensitive data or install malware without triggering traditional security alerts.'}
                   </p>
                 </div>
 
-                {/* Real World Context */}
-                {briefing && briefing.realWorldNote && (
-                  <div style={{
-                    background: 'rgba(255,107,107,0.08)',
-                    border: '1px solid rgba(255,107,107,0.25)',
-                    borderRadius: '10px',
-                    padding: '1rem 1.5rem',
-                    marginBottom: '2rem'
-                  }}>
-                    <p style={{ color: 'var(--text2)', lineHeight: '1.6', margin: 0, fontSize: '0.95rem' }}>
-                      <strong style={{ color: 'var(--accent)' }}>⚠️ Real-world fact:</strong> {briefing.realWorldNote}
-                    </p>
-                  </div>
-                )}
+                {/* Your Challenge & Mission Checklist */}
+                <div style={{
+                  background: 'rgba(78,205,196,0.1)',
+                  border: '1px solid rgba(78,205,196,0.3)',
+                  borderRadius: '12px',
+                  padding: '1.5rem',
+                  marginBottom: '2.2rem'
+                }}>
+                  <h3 style={{ color: 'var(--blue)', fontSize: '1.1rem', margin: '0 0 0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    🎯 Your Defensive Mission & Rules of Engagement
+                  </h3>
+                  <p style={{ color: 'var(--text)', lineHeight: '1.6', margin: '0 0 0.8rem', fontSize: '0.98rem' }}>
+                    {briefing && briefing.challenge ? briefing.challenge : "You are about to enter an interactive simulation modeled after real-world cyber threats. Approach the interface with caution."}
+                  </p>
+                  <ul style={{ color: 'var(--text)', margin: 0, paddingLeft: '1.4rem', lineHeight: '1.8', fontSize: '0.95rem' }}>
+                    <li>Carefully inspect all interactive UI elements, URLs, domains, certificates, or command payloads.</li>
+                    <li>Evaluate whether requests for permissions, OTPs, financial fees, or credentials are legitimate or deceptive.</li>
+                    <li>Make your decision using the simulation action buttons to test your defensive reflexes without pre-spoiled hints.</li>
+                  </ul>
+                </div>
 
                 <button
                   className="btn btn-primary"
@@ -328,7 +403,7 @@ export default function ModulePage() {
                     boxShadow: '0 4px 20px rgba(255,107,107,0.3)'
                   }}
                 >
-                  Enter the Simulation →
+                  Enter the Live Simulation →
                 </button>
               </div>
             </div>

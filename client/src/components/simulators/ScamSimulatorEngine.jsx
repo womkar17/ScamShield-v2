@@ -39,6 +39,168 @@ import FakeFlightTicketSim from './FakeFlightTicketSim';
 import FakeHotelBookingSim from './FakeHotelBookingSim';
 import FakeVisaApprovalSim from './FakeVisaApprovalSim';
 import FakeTravelPackageSim from './FakeTravelPackageSim';
+import FakeBumpversionSim from './FakeBumpversionSim';
+import FakeBurpSuiteSim from './FakeBurpSuiteSim';
+import FakeBusinessTodaySim from './FakeBusinessTodaySim';
+import FakeCallCentreSim from './FakeCallCentreSim';
+import FakeCandySim from './FakeCandySim';
+import FakeCarInsuranceSim from './FakeCarInsuranceSim';
+import FakeCardanoSim from './FakeCardanoSim';
+import FakeCardingForumSim from './FakeCardingForumSim';
+import FakeCATCoachingSim from './FakeCATCoachingSim';
+import FakeChaiPointSim from './FakeChaiPointSim';
+import FakeChequeFundTransferSim from './FakeChequeFundTransferSim';
+import FakeChiRouterSim from './FakeChiRouterSim';
+import FakeChiselSim from './FakeChiselSim';
+import FakeChromeRemoteDesktopSim from './FakeChromeRemoteDesktopSim';
+import FakeCIBILScoreSim from './FakeCIBILScoreSim';
+import FakeCirrusCISim from './FakeCirrusCISim';
+import FakeCitrixXenAppSim from './FakeCitrixXenAppSim';
+import FakeCleanArchitectureSim from './FakeCleanArchitectureSim';
+import FakeCNCMachiningSim from './FakeCNCMachiningSim';
+import FakeCodingBootcampSim from './FakeCodingBootcampSim';
+import FakeCometMLSim from './FakeCometMLSim';
+import FakeCommandoVMSim from './FakeCommandoVMSim';
+import FakeCommitizenSim from './FakeCommitizenSim';
+import FakeCommitlintSim from './FakeCommitlintSim';
+import FakeCompTIAExamSim from './FakeCompTIAExamSim';
+import FakeConstructionPermitSim from './FakeConstructionPermitSim';
+import FakeContentSamuraiSim from './FakeContentSamuraiSim';
+import FakeCopperFuturesSim from './FakeCopperFuturesSim';
+import FakeCountryBeanSim from './FakeCountryBeanSim';
+import FakeCOVIDTestLabSim from './FakeCOVIDTestLabSim';
+import FakeCrunchSim from './FakeCrunchSim';
+import FakeCryptoExchangeSim from './FakeCryptoExchangeSim';
+import FakeCrystalReportsSim from './FakeCrystalReportsSim';
+import FakeCscopeSim from './FakeCscopeSim';
+import FakeCuckooSandboxSim from './FakeCuckooSandboxSim';
+import FakeCurlSim from './FakeCurlSim';
+import FakeCzChangelogSim from './FakeCzChangelogSim';
+import FakeDallasSim from './FakeDallasSim';
+import FakeDarkbloodSim from './FakeDarkbloodSim';
+import FakeDashCoinSim from './FakeDashCoinSim';
+import FakeDaveverwerSim from './FakeDaveverwerSim';
+import FakeDbtSim from './FakeDbtSim';
+import FakeDebtConsolidationSim from './FakeDebtConsolidationSim';
+import FakeDExSim from './FakeDExSim';
+import FakeDemographicsProSim from './FakeDemographicsProSim';
+import FakeDesignWizardSim from './FakeDesignWizardSim';
+import FakeDialUpInternetSim from './FakeDialUpInternetSim';
+import FakeDieterSim from './FakeDieterSim';
+import FakeDigiLockerSim from './FakeDigiLockerSim';
+import PMKisanSim from './PMKisanSim';
+import HealthIDSim from './HealthIDSim';
+import AITradingBotSim from './AITradingBotSim';
+import EVSubsidySim from './EVSubsidySim';
+import CourierFeeSim from './CourierFeeSim';
+import QRPaymentSim from './QRPaymentSim';
+import UPIRefundSim from './UPIRefundSim';
+import UPIAutoPaySim from './UPIAutoPaySim';
+import QRStickerSim from './QRStickerSim';
+import CardTrappingSim from './CardTrappingSim';
+import NFCPaymentSim from './NFCPaymentSim';
+import ContactlessCardSim from './ContactlessCardSim';
+import BankKYCUpdateSim from './BankKYCUpdateSim';
+import FakeBankingAppSim from './FakeBankingAppSim';
+import BankingTrojanSim from './BankingTrojanSim';
+import ATMCashOutSim from './ATMCashOutSim';
+import CDMScamSim from './CDMScamSim';
+import VideoCallSim from './VideoCallSim';
+import SocialMediaSim from './SocialMediaSim';
+import ChatAppSim from './ChatAppSim';
+import CorporateWebSim from './CorporateWebSim';
+import FakeeBayListingScamSim from './FakeeBayListingScamSim';
+import FlipkartSellerSim from './FlipkartSellerSim';
+import MeeshoScamSim from './MeeshoScamSim';
+import OLXCourierScamSim from './OLXCourierScamSim';
+import BikeSaleScamSim from './BikeSaleScamSim';
+import PropertyRentalScamSim from './PropertyRentalScamSim';
+import UsedCarScamSim from './UsedCarScamSim';
+import FakeAirbnbScamSim from './FakeAirbnbScamSim';
+import StockTipWhatsAppGroupScamSim from './StockTipWhatsAppScamSim';
+import IPOAllotmentSim from './IPOAllotmentSim';
+import ForexTradingSim from './ForexTradingSim';
+import BinaryOptionsScamSim from './BinaryOptionsScamSim';
+import PonziInvestmentSchemeSim from './PonziInvestmentSchemeSim';
+import MLMInvestmentScamSim from './MLMInvestmentScamSim';
+import FakeMutualFundScamSim from './FakeMutualFundScamSim';
+import FakeGoldInvestmentScamSim from './FakeGoldInvestmentScamSim';
+import FakeRealEstateInvestmentSim from './FakeRealEstateInvestmentSim';
+import CloudMiningScamSim from './CloudMiningScamSim';
+import NFTWhitelistMintScamSim from './NFTWhitelistMintScamSim';
+import AITradingBotScamSim from './AITradingBotScamSim';
+import FakeInternshipOfferSim from './FakeInternshipOfferSim';
+import WorkFromHomeTaskScamSim from './WorkFromHomeTaskScamSim';
+import ResumeHarvestPortalSim from './ResumeHarvestPortalSim';
+import FakeHRInterviewChatSim from './FakeHRInterviewChatSim';
+import FakeSarkariJobPortalSim from './FakeSarkariJobPortalSim';
+import FakeVisaConsultancyFeeSim from './FakeVisaConsultancyFeeSim';
+import FakeImmigrationLiaisonSim from './FakeImmigrationLiaisonSim';
+import FakeScholarshipAlertSim from './FakeScholarshipAlertSim';
+import FakeStudentLoanAppSim from './FakeStudentLoanAppSim';
+import GuaranteedAdmissionScamSim from './GuaranteedAdmissionScamSim';
+import RankGuaranteeCoachingScamSim from './RankGuaranteeCoachingScamSim';
+import FakeSkillMissionScamSim from './FakeSkillMissionScamSim';
+import FakeHealthInsuranceScamSim from './FakeHealthInsuranceScamSim';
+import FakeOrganDonationRegistryScamSim from './FakeOrganDonationRegistryScamSim';
+import FakeHospitalAdmissionSim from './FakeHospitalAdmissionSim';
+import FakeAmbulanceBookingSim from './FakeAmbulanceBookingSim';
+import FakeMedicineDeliverySim from './FakeMedicineDeliverySim';
+import FakeTelemedicineAppSim from './FakeTelemedicineAppSim';
+import FakeHealthCardSim from './FakeHealthCardSim';
+import FakeBloodDonationSim from './FakeBloodDonationSim';
+import FakeTempleDonationSim from './FakeTempleDonationSim';
+import FakeNGODonationSim from './FakeNGODonationSim';
+import FakeDisasterReliefSim from './FakeDisasterReliefSim';
+import FakeCrowdfundingSim from './FakeCrowdfundingSim';
+import FakeChildMedicalEmergencySim from './FakeChildMedicalEmergencySim';
+import FakeArmyWelfareSim from './FakeArmyWelfareSim';
+import FakeBrowserExtensionSim from './FakeBrowserExtensionSim';
+import FakeSoftwareUpdateSim from './FakeSoftwareUpdateSim';
+import FakeChromeUpdateSim from './FakeChromeUpdateSim';
+import FakeWindowsUpdateSim from './FakeWindowsUpdateSim';
+import FakeUSBMalwareSim from './FakeUSBMalwareSim';
+import FakePilgrimagePackageSimulator from './FakePilgrimageScamSimulator';
+import FakeRailwayRefundSimulator from './FakeRailwayRefund';
+import FakeAirportAssistanceSimulator from './FakeAirportRefundAssistance';
+import ElectricityBillScam from './ElectricityBillScam';
+import FakeFedExDeliverySimulator from './FakeFedExDelivery';
+import FakeDHLDeliverySimulator from './FakeDHLDelivery';
+import FakeBlueDartTrackingSimulator from './FakeBlueDartTracking';
+import FakeIndiaPostTrackingSimulator from './FakeIndiaPostTracking';
+import CourierRedeliveryFeeSim from './CourierRedeliveryFeeScam';
+import CustomsClearanceSim from './CustomsClearanceScam';
+import WaterBillSim from './WaterBillScam';
+import GasConnectionSim from './GasConnectionScam';
+import LPGBookingSim from './LPGBookingScam';
+import FASTagKYCSim from './FASTagKYCScam';
+import TollPaymentSim from './TollPaymentScam';
+import FreeFireDiamondSim from './FreeFireDiamondScam';
+import PUBGUCScamSim from './PUBGUCScam';
+import RobloxRobuxSim from './RobloxRobuxSim';
+import SteamWalletSim from './SteamWalletSim';
+import PlayStationSim from './PlayStationSim';
+import XboxSim from './XboxSim';
+import SchoolFeeSim from './SchoolFeeSim';
+import WhatsAppParentSim from './WhatsAppParentSim';
+import ChildKidnapSim from './ChildKidnapSim';
+import OnlineTuitionSim from './OnlineTuitionSim';
+import AIAvatarSim from './AIAvatarSim';
+import MetaversePropertySim from './MetaversePropertySim';
+import DigitalRupeeSim from './DigitalRupeeSim';
+import CBDCWalletSim from './CBDCWalletSim';
+import FakeEVChargingSim from './FakeEVChargingSim';
+import CarbonCreditSim from './CarbonCreditSim';
+import GreenEnergySubsidySim from './GreenEnergySubsidySim';
+import FakeDroneRegistrationSim from './FakeDroneRegistrationSim';
+import SmartCitySchemeSim from './SmartCitySchemeSim';
+import FakeDigitalIdentitySim from './FakeDigitalIdentitySim';
+import FakeBiometricUpdateSim from './FakeBiometricUpdateSim';
+import QuantumInvestmentSim from './QuantumInvestmentSim';
+import FakeCyberComplaintSim from './FakeCyberComplaintSim';
+import FakeCyberInsuranceSim from './FakeCyberInsuranceSim';
+import AIPhishingServiceSim from './AIPhishingServiceSim';
+import Nigerian419Sim from './Nigerian419Sim';
 
 const SIM_MAP = {
   0: InstantLoanSim,
@@ -64,6 +226,91 @@ const SIM_MAP = {
   20: ParcelSim,
   21: CharityScamSim,
   22: WiFiSim,
+  25: PMKisanSim,
+  26: HealthIDSim,
+  27: AITradingBotSim,
+  28: EVSubsidySim,
+  29: CourierFeeSim,
+  30: QRPaymentSim,
+  31: UPIRefundSim,
+  32: UPIAutoPaySim,
+  33: QRStickerSim,
+  34: CardTrappingSim,
+  35: NFCPaymentSim,
+  36: ContactlessCardSim,
+  37: BankKYCUpdateSim,
+  38: FakeBankingAppSim,
+  39: BankingTrojanSim,
+  40: ATMCashOutSim,
+  41: CDMScamSim,
+  58: VideoCallSim,
+  59: VideoCallSim,
+  60: VideoCallSim,
+  61: VideoCallSim,
+  62: CorporateWebSim,
+  63: ChatAppSim,
+  64: VideoCallSim,
+  65: SocialMediaSim,
+  66: SocialMediaSim,
+  67: SocialMediaSim,
+  68: SocialMediaSim,
+  69: ChatAppSim,
+  70: SocialMediaSim,
+  71: ChatAppSim,
+  72: CorporateWebSim,
+  73: CorporateWebSim,
+  74: CorporateWebSim,
+  75: FlipkartSellerSim,
+  76: MeeshoScamSim,
+  77: FakeeBayListingScamSim,
+  78: OLXCourierScamSim,
+  79: BikeSaleScamSim,
+  80: UsedCarScamSim,
+  81: PropertyRentalScamSim,
+  82: FakeAirbnbScamSim,
+  83: StockTipWhatsAppGroupScamSim,
+  84: IPOAllotmentSim,
+  85: ForexTradingSim,
+  86: BinaryOptionsScamSim,
+  87: PonziInvestmentSchemeSim,
+  88: MLMInvestmentScamSim,
+  89: FakeMutualFundScamSim,
+  90: FakeGoldInvestmentScamSim,
+  91: FakeRealEstateInvestmentSim,
+  92: CloudMiningScamSim,
+  93: NFTWhitelistMintScamSim,
+  94: AITradingBotScamSim,
+  95: FakeInternshipOfferSim,
+  96: WorkFromHomeTaskScamSim,
+  97: ResumeHarvestPortalSim,
+  98: FakeHRInterviewChatSim,
+  99: FakeSarkariJobPortalSim,
+  100: FakeVisaConsultancyFeeSim,
+  101: FakeImmigrationLiaisonSim,
+  102: FakeScholarshipAlertSim,
+  103: FakeStudentLoanAppSim,
+  104: GuaranteedAdmissionScamSim,
+  105: RankGuaranteeCoachingScamSim,
+  106: FakeSkillMissionScamSim,
+  107: FakeHealthInsuranceScamSim,
+  108: FakeOrganDonationRegistryScamSim,
+  109: FakeHospitalAdmissionSim,
+  110: FakeAmbulanceBookingSim,
+  111: FakeMedicineDeliverySim,
+  112: FakeTelemedicineAppSim,
+  113: FakeHealthCardSim,
+  114: FakeBloodDonationSim,
+  115: FakeTempleDonationSim,
+  116: FakeNGODonationSim,
+  117: FakeDisasterReliefSim,
+  118: FakeCrowdfundingSim,
+  119: FakeChildMedicalEmergencySim,
+  120: FakeArmyWelfareSim,
+  121: FakeBrowserExtensionSim,
+  122: FakeSoftwareUpdateSim,
+  123: FakeChromeUpdateSim,
+  124: FakeWindowsUpdateSim,
+  125: FakeUSBMalwareSim,
   126: TechSupportSim,
   127: BrowserNotificationSim,
   128: ClipboardHijackSim,
@@ -81,6 +328,96 @@ const SIM_MAP = {
   140: FakeHotelBookingSim,
   141: FakeVisaApprovalSim,
   142: FakeTravelPackageSim,
+  143: FakePilgrimagePackageSimulator,
+  144: FakeRailwayRefundSimulator,
+  145: FakeAirportAssistanceSimulator,
+  146: ElectricityBillScam,
+  147: FakeFedExDeliverySimulator,
+  148: FakeDHLDeliverySimulator,
+  149: FakeBlueDartTrackingSimulator,
+  150: FakeIndiaPostTrackingSimulator,
+  151: CourierRedeliveryFeeSim,
+  152: CustomsClearanceSim,
+  153: WaterBillSim,
+  154: GasConnectionSim,
+  155: LPGBookingSim,
+  156: FASTagKYCSim,
+  157: TollPaymentSim,
+  158: FreeFireDiamondSim,
+  159: PUBGUCScamSim,
+  160: RobloxRobuxSim,
+  161: SteamWalletSim,
+  162: PlayStationSim,
+  163: XboxSim,
+  164: SchoolFeeSim,
+  165: WhatsAppParentSim,
+  166: ChildKidnapSim,
+  167: OnlineTuitionSim,
+  168: AIAvatarSim,
+  169: MetaversePropertySim,
+  170: DigitalRupeeSim,
+  171: CBDCWalletSim,
+  172: FakeEVChargingSim,
+  173: CarbonCreditSim,
+  174: GreenEnergySubsidySim,
+  175: FakeDroneRegistrationSim,
+  176: SmartCitySchemeSim,
+  177: FakeDigitalIdentitySim,
+  178: FakeBiometricUpdateSim,
+  179: QuantumInvestmentSim,
+  180: FakeCyberComplaintSim,
+  181: FakeCyberInsuranceSim,
+  182: AIPhishingServiceSim,
+  183: Nigerian419Sim,
+  229: FakeBumpversionSim,
+  230: FakeBurpSuiteSim,
+  231: FakeBusinessTodaySim,
+  232: FakeCallCentreSim,
+  233: FakeCandySim,
+  234: FakeCarInsuranceSim,
+  235: FakeCardanoSim,
+  236: FakeCardingForumSim,
+  237: FakeCATCoachingSim,
+  238: FakeChaiPointSim,
+  239: FakeChequeFundTransferSim,
+  240: FakeChiRouterSim,
+  241: FakeChiselSim,
+  242: FakeChromeRemoteDesktopSim,
+  243: FakeCIBILScoreSim,
+  244: FakeCirrusCISim,
+  245: FakeCitrixXenAppSim,
+  246: FakeCleanArchitectureSim,
+  247: FakeCNCMachiningSim,
+  248: FakeCodingBootcampSim,
+  249: FakeCometMLSim,
+  250: FakeCommandoVMSim,
+  251: FakeCommitizenSim,
+  252: FakeCommitlintSim,
+  253: FakeCompTIAExamSim,
+  254: FakeConstructionPermitSim,
+  255: FakeContentSamuraiSim,
+  256: FakeCopperFuturesSim,
+  257: FakeCountryBeanSim,
+  258: FakeCOVIDTestLabSim,
+  259: FakeCrunchSim,
+  260: FakeCryptoExchangeSim,
+  261: FakeCrystalReportsSim,
+  262: FakeCscopeSim,
+  263: FakeCuckooSandboxSim,
+  264: FakeCurlSim,
+  265: FakeCzChangelogSim,
+  266: FakeDallasSim,
+  267: FakeDarkbloodSim,
+  268: FakeDashCoinSim,
+  269: FakeDaveverwerSim,
+  270: FakeDbtSim,
+  271: FakeDebtConsolidationSim,
+  272: FakeDExSim,
+  273: FakeDemographicsProSim,
+  274: FakeDesignWizardSim,
+  275: FakeDialUpInternetSim,
+  276: FakeDieterSim,
+  277: FakeDigiLockerSim,
 };
 
 export default function ScamSimulatorEngine({ moduleId, moduleData, formData, handleInputChange, handleSimulationSubmit }) {

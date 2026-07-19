@@ -1,430 +1,170 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 export default function FakeInterviewSim({ onComplete }) {
-  const [stage, setStage] = useState('listing'); // listing | apply | payment
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [cardNumber, setCardNumber] = useState('');
-  const [expiry, setExpiry] = useState('');
-  const [cvv, setCvv] = useState('');
-  const [cardholderName, setCardholderName] = useState('');
-  const [error, setError] = useState('');
+  const [formData, setFormData] = useState({});
+  const [errorMsg, setErrorMsg] = useState('');
+  const [submitted, setSubmitted] = useState(false);
 
-  const styles = {
-    container: {
-      maxWidth: 520,
-      margin: '0 auto',
-      fontFamily: "'Segoe UI', Roboto, Arial, sans-serif",
-      background: '#f5f6fa',
-      minHeight: '100%',
-      borderRadius: 12,
-      overflow: 'hidden',
-      boxShadow: '0 2px 16px rgba(0,0,0,0.10)',
-    },
-    header: {
-      background: '#1a73e8',
-      color: '#fff',
-      padding: '14px 20px',
-      display: 'flex',
-      alignItems: 'center',
-      gap: 10,
-    },
-    logo: {
-      width: 36,
-      height: 36,
-      borderRadius: 8,
-      background: '#fff',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontWeight: 800,
-      fontSize: 16,
-      color: '#1a73e8',
-      flexShrink: 0,
-    },
-    headerText: {
-      fontSize: 17,
-      fontWeight: 700,
-      letterSpacing: 0.2,
-    },
-    headerSub: {
-      fontSize: 11,
-      opacity: 0.85,
-      marginTop: 1,
-    },
-    body: {
-      padding: '18px 20px 24px',
-    },
-    jobCard: {
-      background: '#fff',
-      borderRadius: 10,
-      padding: '18px 18px 14px',
-      marginBottom: 14,
-      border: '1px solid #e0e4ea',
-    },
-    jobTitle: {
-      fontSize: 17,
-      fontWeight: 700,
-      color: '#1a237e',
-      marginBottom: 2,
-    },
-    company: {
-      fontSize: 14,
-      color: '#333',
-      fontWeight: 600,
-      marginBottom: 6,
-    },
-    tag: {
-      display: 'inline-block',
-      background: '#e8f5e9',
-      color: '#2e7d32',
-      fontSize: 11,
-      fontWeight: 700,
-      padding: '3px 10px',
-      borderRadius: 12,
-      marginRight: 6,
-      marginBottom: 4,
-    },
-    tagBlue: {
-      display: 'inline-block',
-      background: '#e3f2fd',
-      color: '#1565c0',
-      fontSize: 11,
-      fontWeight: 700,
-      padding: '3px 10px',
-      borderRadius: 12,
-      marginRight: 6,
-      marginBottom: 4,
-    },
-    meta: {
-      fontSize: 13,
-      color: '#555',
-      marginTop: 8,
-      lineHeight: 1.7,
-    },
-    hr: {
-      border: 'none',
-      borderTop: '1px solid #ececec',
-      margin: '12px 0',
-    },
-    btn: {
-      width: '100%',
-      padding: '13px 0',
-      background: '#1a73e8',
-      color: '#fff',
-      border: 'none',
-      borderRadius: 8,
-      fontWeight: 700,
-      fontSize: 15,
-      cursor: 'pointer',
-      marginTop: 8,
-      letterSpacing: 0.3,
-    },
-    label: {
-      display: 'block',
-      fontSize: 13,
-      fontWeight: 600,
-      color: '#333',
-      marginBottom: 5,
-      marginTop: 12,
-    },
-    input: {
-      width: '100%',
-      padding: '10px 12px',
-      fontSize: 14,
-      border: '1px solid #ccd1d9',
-      borderRadius: 7,
-      outline: 'none',
-      boxSizing: 'border-box',
-      color: '#222',
-      background: '#fafbfc',
-    },
-    successBox: {
-      background: '#e8f5e9',
-      border: '1px solid #a5d6a7',
-      borderRadius: 10,
-      padding: '18px 16px',
-      textAlign: 'center',
-      marginBottom: 16,
-    },
-    successIcon: {
-      fontSize: 38,
-      marginBottom: 6,
-    },
-    successTitle: {
-      fontSize: 17,
-      fontWeight: 800,
-      color: '#2e7d32',
-      marginBottom: 4,
-    },
-    successText: {
-      fontSize: 13,
-      color: '#333',
-      lineHeight: 1.6,
-    },
-    feeBox: {
-      background: '#fff8e1',
-      border: '1px solid #ffe082',
-      borderRadius: 8,
-      padding: '12px 14px',
-      marginBottom: 14,
-    },
-    feeLabel: {
-      fontSize: 13,
-      color: '#6d4c00',
-      fontWeight: 600,
-    },
-    feeAmount: {
-      fontSize: 22,
-      fontWeight: 800,
-      color: '#e65100',
-    },
-    starRow: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: 3,
-      marginTop: 6,
-    },
-    star: {
-      color: '#fbc02d',
-      fontSize: 14,
-    },
-    ratingText: {
-      fontSize: 12,
-      color: '#777',
-      marginLeft: 4,
-    },
-    row: {
-      display: 'flex',
-      gap: 10,
-    },
-    half: {
-      flex: 1,
-    },
+  const fields = [];
+
+  const handleInputChange = (name, value, maxLen, type) => {
+    setErrorMsg('');
+    let val = value;
+    if (type === 'tel' || name.toLowerCase().includes('phone') || name.toLowerCase().includes('mobile') || name.toLowerCase().includes('otp') || name.toLowerCase().includes('pin')) {
+      val = val.replace(/\D/g, '');
+    }
+    if (maxLen && val.length > maxLen) {
+      val = val.slice(0, maxLen);
+    }
+    setFormData(prev => ({ ...prev, [name]: val }));
   };
 
-  if (stage === 'listing') {
-    return (
-      <div style={styles.container}>
-        <div style={styles.header}>
-          <div style={styles.logo}>JB</div>
+  const handleAction = (isSafeAction) => {
+    if (!isSafeAction && fields.length > 0) {
+      for (const f of fields) {
+        const val = formData[f.n] || '';
+        if (!val.trim()) {
+          setErrorMsg(`Please enter valid data for ${f.p} before submitting.`);
+          return;
+        }
+        if ((f.t === 'tel' || f.n.includes('phone') || f.n.includes('mobile')) && val.length < 10) {
+          setErrorMsg('Mobile number must strictly contain exactly 10 numeric digits.');
+          return;
+        }
+      }
+    }
+    setSubmitted(true);
+    if (onComplete) {
+      const data = isSafeAction ? ['Threat Successfully Avoided & Blocked!'] : (fields && fields.length > 0 ? Object.keys(formData).map(k => `${k}: ${formData[k]}`) : ['Credentials & Device Data Exposed to Attacker']);
+      onComplete(data, isSafeAction ? 'safe' : 'scam');
+    }
+  };
+
+  return (
+    
+    <div style={{ background: '#1e293b', border: '2px solid #334155', borderRadius: '16px', overflow: 'hidden', fontFamily: 'var(--font-sans, sans-serif)', color: '#f8fafc', boxShadow: '0 16px 40px rgba(0,0,0,0.6)' }}>
+      {/* System Installer Alert Header */}
+      <div style={{ background: 'linear-gradient(135deg, #334155, #1e293b)', padding: '1.2rem 1.8rem', borderBottom: '1px solid #475569', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+          <span style={{ fontSize: '1.6rem' }}>⚠️</span>
           <div>
-            <div style={styles.headerText}>JobBoard Pro</div>
-            <div style={styles.headerSub}>Find your dream job today</div>
+            <h3 style={{ margin: 0, color: '#f8fafc', fontSize: '1.15rem', fontWeight: 'bold' }}>{"💼 Global Tech Careers — Secure Interview Portal Setup"}</h3>
+            <span style={{ fontSize: '0.82rem', color: '#94a3b8' }}>System Protection & Execution Wizard</span>
           </div>
         </div>
-        <div style={styles.body}>
-          <div style={{ fontSize: 12, color: '#888', marginBottom: 10 }}>
-            🔍 Showing results for "Software Engineer" — 1,247 jobs found
-          </div>
-          <div style={styles.jobCard}>
-            <div style={styles.jobTitle}>Senior Software Engineer</div>
-            <div style={styles.company}>
-              <span style={{ color: '#4285f4', fontWeight: 700 }}>G</span>
-              <span style={{ color: '#ea4335', fontWeight: 700 }}>o</span>
-              <span style={{ color: '#fbbc05', fontWeight: 700 }}>o</span>
-              <span style={{ color: '#4285f4', fontWeight: 700 }}>g</span>
-              <span style={{ color: '#34a853', fontWeight: 700 }}>l</span>
-              <span style={{ color: '#ea4335', fontWeight: 700 }}>e</span>
-              {' '}<span style={{ color: '#555', fontWeight: 400 }}>• Bengaluru, India</span>
-            </div>
-            <div style={styles.starRow}>
-              {[1,2,3,4,5].map(i => <span key={i} style={styles.star}>★</span>)}
-              <span style={styles.ratingText}>4.5 (12,847 reviews)</span>
-            </div>
-            <div style={{ marginTop: 8 }}>
-              <span style={styles.tag}>₹25 LPA</span>
-              <span style={styles.tagBlue}>Full-time</span>
-              <span style={styles.tagBlue}>Remote</span>
-              <span style={styles.tag}>Urgent Hiring</span>
-            </div>
-            <hr style={styles.hr} />
-            <div style={styles.meta}>
-              <div><strong>Experience:</strong> 3-7 years</div>
-              <div><strong>Skills:</strong> React, Node.js, Python, System Design</div>
-              <div><strong>Perks:</strong> Free meals, Gym, RSU, Relocation bonus</div>
-              <div style={{ marginTop: 6, color: '#999', fontSize: 12 }}>
-                Posted 2 hours ago • 342 applicants
+        <span style={{ background: '#ef4444', color: '#fff', padding: '0.3rem 0.8rem', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 'bold' }}>HIGH RISK ALERT</span>
+      </div>
+      <div style={{ padding: '2rem' }}>
+        <div style={{ background: 'rgba(239, 68, 68, 0.1)', borderLeft: '4px solid #ef4444', padding: '1.2rem', borderRadius: '8px', marginBottom: '1.6rem' }}>
+          <p style={{ margin: 0, color: '#fca5a5', fontSize: '0.96rem', lineHeight: '1.6' }}>
+            {"Congratulations! You are shortlisted for the final technical interview round with our Engineering Director. Our company uses a proprietary encrypted video client to prevent cheating during coding assessments."}
+          </p>
+        </div>
+        <div style={{ background: '#0f172a', border: '1px solid #334155', padding: '1.2rem', borderRadius: '10px', fontFamily: 'monospace', color: '#38bdf8', fontSize: '0.9rem', marginBottom: '1.8rem', whiteSpace: 'pre-wrap' }}>
+          {"Mandatory Action: Download and execute \"Secure_Interview_Client_v3.2.exe\" on your Windows PC 30 minutes before the call."}
+        </div>
+  
+        {/* Form Fields if required by simulation */}
+        {fields && fields.length > 0 && (
+          <div style={{ background: 'rgba(15, 23, 42, 0.8)', padding: '1.6rem', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.1)', marginBottom: '2.2rem' }}>
+            <h4 style={{ margin: '0 0 1.2rem', color: '#fff', fontSize: '1.05rem', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+              <span>📝</span> Required Information / Verification Form
+            </h4>
+            {errorMsg && (
+              <div style={{ background: 'rgba(239, 68, 68, 0.18)', border: '1px solid #ef4444', color: '#fca5a5', padding: '0.8rem 1.2rem', borderRadius: '10px', marginBottom: '1.2rem', fontSize: '0.92rem', fontWeight: '500' }}>
+                ⚠️ {errorMsg}
               </div>
+            )}
+            <div style={{ display: 'grid', gridTemplateColumns: fields.length > 1 ? '1fr 1fr' : '1fr', gap: '1.2rem' }}>
+              {fields.map((f, idx) => (
+                <div key={idx}>
+                  <label style={{ display: 'block', marginBottom: '0.5rem', color: '#cbd5e1', fontSize: '0.9rem', fontWeight: '600' }}>
+                    {f.p} <span style={{ color: '#ef4444' }}>*</span>
+                  </label>
+                  <input
+                    type={f.t === 'tel' ? 'text' : f.t}
+                    placeholder={"Enter " + f.p + "..."}
+                    value={formData[f.n] || ''}
+                    onChange={(e) => handleInputChange(f.n, e.target.value, f.max || (f.t === 'tel' || f.n.includes('phone') ? 10 : 50), f.t)}
+                    style={{
+                      width: '100%',
+                      padding: '0.85rem 1.1rem',
+                      borderRadius: '10px',
+                      border: '1px solid rgba(255,255,255,0.15)',
+                      background: 'rgba(0,0,0,0.4)',
+                      color: '#fff',
+                      fontSize: '0.96rem',
+                      outline: 'none',
+                      transition: 'all 0.2s'
+                    }}
+                  />
+                  {(f.t === 'tel' || f.n.includes('phone') || f.n.includes('mobile')) && (
+                    <div style={{ fontSize: '0.78rem', color: '#94a3b8', marginTop: '0.35rem' }}>
+                      Strictly numbers only (max 10 digits).
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
-            <button style={styles.btn} onClick={() => setStage('apply')}>
-              Apply Now →
+          </div>
+        )}
+
+        {/* Custom Tailored Action Choices */}
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1.8rem' }}>
+          <div style={{ fontSize: '0.95rem', color: '#cbd5e1', marginBottom: '1.2rem', textAlign: 'center', fontWeight: '700', letterSpacing: '0.3px' }}>
+            ⚡ Select your technical response protocol:
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.4rem' }}>
+            <button
+              onClick={() => handleAction(true)}
+              disabled={submitted}
+              style={{
+                padding: '1.2rem',
+                borderRadius: '14px',
+                background: 'linear-gradient(135deg, #10b981, #059669)',
+                color: '#fff',
+                border: 'none',
+                fontWeight: 'bold',
+                fontSize: '0.98rem',
+                cursor: submitted ? 'not-allowed' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.7rem',
+                boxShadow: '0 6px 20px rgba(16, 185, 129, 0.35)',
+                transition: 'all 0.2s ease',
+                opacity: submitted ? 0.6 : 1
+              }}
+            >
+              <span style={{ fontSize: '1.2rem' }}>🛡️</span>
+              <span>{"Refuse Custom Executables & Request Zoom / Google Meet"}</span>
+            </button>
+
+            <button
+              onClick={() => handleAction(false)}
+              disabled={submitted}
+              style={{
+                padding: '1.2rem',
+                borderRadius: '14px',
+                background: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                color: '#fff',
+                border: 'none',
+                fontWeight: 'bold',
+                fontSize: '0.98rem',
+                cursor: submitted ? 'not-allowed' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.7rem',
+                boxShadow: '0 6px 20px rgba(239, 68, 68, 0.35)',
+                transition: 'all 0.2s ease',
+                opacity: submitted ? 0.6 : 1
+              }}
+            >
+              <span style={{ fontSize: '1.2rem' }}>⚠️</span>
+              <span>{"Download & Execute Secure Interview Client .exe"}</span>
             </button>
           </div>
-
-          <div style={{ ...styles.jobCard, opacity: 0.6 }}>
-            <div style={{ ...styles.jobTitle, fontSize: 15 }}>Backend Developer</div>
-            <div style={{ fontSize: 13, color: '#555' }}>Microsoft • Hyderabad</div>
-            <div style={{ marginTop: 6 }}>
-              <span style={styles.tag}>₹18 LPA</span>
-              <span style={styles.tagBlue}>Full-time</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (stage === 'apply') {
-    return (
-      <div style={styles.container}>
-        <div style={styles.header}>
-          <div style={styles.logo}>JB</div>
-          <div>
-            <div style={styles.headerText}>Apply — Senior SWE at Google</div>
-            <div style={styles.headerSub}>Step 1 of 2: Your Details</div>
-          </div>
-        </div>
-        <div style={styles.body}>
-          <label style={styles.label}>Full Name *</label>
-          <input
-            style={styles.input}
-            placeholder="Enter your full name"
-            value={name}
-            onChange={e => { setName(e.target.value); if (error) setError(''); }}
-          />
-          <label style={styles.label}>Email Address *</label>
-          <input
-            style={styles.input}
-            type="email"
-            placeholder="you@email.com"
-            value={email}
-            onChange={e => { setEmail(e.target.value); if (error) setError(''); }}
-          />
-          <label style={styles.label}>Phone Number *</label>
-          <input
-            style={styles.input}
-            placeholder="+91 98765 43210"
-            value={phone}
-            onChange={e => { setPhone(e.target.value); if (error) setError(''); }}
-          />
-          <label style={styles.label}>Upload Resume *</label>
-          <div style={{
-            border: '2px dashed #b0bec5',
-            borderRadius: 8,
-            padding: '18px 0',
-            textAlign: 'center',
-            color: '#888',
-            fontSize: 13,
-            background: '#fafbfc',
-            cursor: 'pointer',
-          }}>
-            📄 Click to upload PDF / DOCX (max 5MB)
-          </div>
-          <label style={styles.label}>Years of Experience *</label>
-          <select style={{ ...styles.input, appearance: 'auto' }}>
-            <option>Select</option>
-            <option>1-3 years</option>
-            <option>3-5 years</option>
-            <option>5-7 years</option>
-            <option>7+ years</option>
-          </select>
-          {error && <p style={{ color: '#e53935', fontSize: 13, margin: '14px 0 0', fontWeight: 600 }}>{error}</p>}
-          <button
-            style={{ ...styles.btn, marginTop: 18 }}
-            onClick={() => {
-              if (name.length < 2) { setError('Please enter your full name'); return; }
-              if (email.length < 2 || !email.includes('@')) { setError('Please enter a valid email address'); return; }
-              if (phone.length < 2) { setError('Please enter your phone number'); return; }
-              setError('');
-              setStage('payment');
-            }}
-          >
-            Submit Application →
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // payment stage
-  return (
-    <div style={styles.container}>
-      <div style={styles.header}>
-        <div style={styles.logo}>JB</div>
-        <div>
-          <div style={styles.headerText}>Application Status</div>
-          <div style={styles.headerSub}>Step 2 of 2: Confirm Interview Slot</div>
-        </div>
-      </div>
-      <div style={styles.body}>
-        <div style={styles.successBox}>
-          <div style={styles.successIcon}>🎉</div>
-          <div style={styles.successTitle}>Congratulations!</div>
-          <div style={styles.successText}>
-            You have been <strong>shortlisted</strong> for the Senior Software Engineer
-            role at <strong>Google, Bengaluru</strong>.<br />
-            Interview Date: <strong>July 8, 2026 — 11:00 AM IST</strong>
-          </div>
-        </div>
-        <div style={styles.feeBox}>
-          <div style={styles.feeLabel}>
-            ⚠️ To confirm your interview slot, a one-time non-refundable booking fee is required:
-          </div>
-          <div style={styles.feeAmount}>₹4,999</div>
-          <div style={{ fontSize: 11, color: '#8d6e00', marginTop: 2 }}>
-            This fee covers background verification, ID badge, and meeting room booking.
-            100% refundable after interview completion.
-          </div>
-        </div>
-        <label style={styles.label}>Cardholder Name</label>
-        <input style={styles.input} placeholder="Name on card" value={cardholderName} onChange={e => { setCardholderName(e.target.value); if (error) setError(''); }} />
-        <label style={styles.label}>Card Number *</label>
-        <input
-          style={styles.input}
-          placeholder="1234 5678 9012 3456"
-          value={cardNumber}
-          onChange={e => { setCardNumber(e.target.value); if (error) setError(''); }}
-          maxLength={19}
-        />
-        <div style={styles.row}>
-          <div style={styles.half}>
-            <label style={styles.label}>Expiry</label>
-            <input
-              style={styles.input}
-              placeholder="MM/YY"
-              value={expiry}
-              onChange={e => { setExpiry(e.target.value); if (error) setError(''); }}
-              maxLength={5}
-            />
-          </div>
-          <div style={styles.half}>
-            <label style={styles.label}>CVV</label>
-            <input
-              style={styles.input}
-              placeholder="•••"
-              type="password"
-              value={cvv}
-              onChange={e => { setCvv(e.target.value); if (error) setError(''); }}
-              maxLength={4}
-            />
-          </div>
-        </div>
-        {error && <p style={{ color: '#e53935', fontSize: 13, margin: '14px 0 0', fontWeight: 600 }}>{error}</p>}
-        <button
-          style={{ ...styles.btn, background: '#e65100', marginTop: 18 }}
-          onClick={() => {
-            if (cardNumber.replace(/\s/g, '').length < 4) { setError('Please enter a valid card number'); return; }
-            if (expiry.length < 4) { setError('Please enter card expiry date'); return; }
-            if (cvv.length < 3) { setError('Please enter CVV'); return; }
-            setError('');
-            const exposed = [];
-            if (name) exposed.push('Full Name');
-            if (email) exposed.push('Email Address');
-            if (phone) exposed.push('Phone Number');
-            exposed.push('Resume (uploaded)');
-            if (cardholderName) exposed.push('Cardholder Name');
-            if (cardNumber) exposed.push('Debit/Credit Card Number');
-            if (expiry) exposed.push('Card Expiry Date');
-            if (cvv) exposed.push('CVV Security Code');
-            onComplete(exposed);
-          }}
-        >
-          🔒 Pay ₹4,999 & Confirm Slot
-        </button>
-        <div style={{ textAlign: 'center', fontSize: 11, color: '#aaa', marginTop: 8 }}>
-          🔒 Secured by 256-bit SSL Encryption • PCI-DSS Compliant
         </div>
       </div>
     </div>

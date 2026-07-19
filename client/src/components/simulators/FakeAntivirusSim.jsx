@@ -1,183 +1,171 @@
 import React, { useState } from 'react';
 
 export default function FakeAntivirusSim({ onComplete }) {
-  const [step, setStep] = useState('scan'); // scan | pay | safe
-  const [cardNumber, setCardNumber] = useState('');
+  const [formData, setFormData] = useState({});
+  const [errorMsg, setErrorMsg] = useState('');
+  const [submitted, setSubmitted] = useState(false);
 
-  const handlePay = (e) => {
-    e.preventDefault();
-    setStep('scammed');
+  const fields = [{"n":"card_number","p":"Credit/Debit Card Number (for instant renewal)","t":"text","max":19},{"n":"expiry_cvv","p":"Expiry (MM/YY) & CVV Code","t":"password","max":10}];
+
+  const handleInputChange = (name, value, maxLen, type) => {
+    setErrorMsg('');
+    let val = value;
+    if (type === 'tel' || name.toLowerCase().includes('phone') || name.toLowerCase().includes('mobile') || name.toLowerCase().includes('otp') || name.toLowerCase().includes('pin')) {
+      val = val.replace(/\D/g, '');
+    }
+    if (maxLen && val.length > maxLen) {
+      val = val.slice(0, maxLen);
+    }
+    setFormData(prev => ({ ...prev, [name]: val }));
   };
 
-  const handleClose = () => {
-    setStep('safe');
-    setTimeout(() => {
-      onComplete(['Identified fake antivirus extortion popup']);
-    }, 1800);
+  const handleAction = (isSafeAction) => {
+    if (!isSafeAction && fields.length > 0) {
+      for (const f of fields) {
+        const val = formData[f.n] || '';
+        if (!val.trim()) {
+          setErrorMsg(`Please enter valid data for ${f.p} before submitting.`);
+          return;
+        }
+        if ((f.t === 'tel' || f.n.includes('phone') || f.n.includes('mobile')) && val.length < 10) {
+          setErrorMsg('Mobile number must strictly contain exactly 10 numeric digits.');
+          return;
+        }
+      }
+    }
+    setSubmitted(true);
+    if (onComplete) {
+      const data = isSafeAction ? ['Threat Successfully Avoided & Blocked!'] : (fields && fields.length > 0 ? Object.keys(formData).map(k => `${k}: ${formData[k]}`) : ['Credentials & Device Data Exposed to Attacker']);
+      onComplete(data, isSafeAction ? 'safe' : 'scam');
+    }
   };
 
   return (
-    <div style={{
-      maxWidth: '600px',
-      margin: '0 auto',
-      background: '#111827',
-      border: '2px solid #ef4444',
-      borderRadius: '12px',
-      overflow: 'hidden',
-      color: '#fff',
-      fontFamily: 'Segoe UI, sans-serif'
-    }}>
-      {/* Fake Header */}
-      <div style={{
-        background: '#991b1b',
-        padding: '12px 18px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-      }}>
-        <span style={{ fontWeight: 'bold' }}>🛡️ Norton LifeLock Shield - Emergency Scan</span>
-        <span
-          onClick={handleClose}
-          style={{ cursor: 'pointer', background: '#7f1d1d', padding: '2px 8px', borderRadius: '4px', fontSize: '0.85rem' }}
-        >
-          Close (X)
-        </span>
+    
+    <div style={{ background: '#1e293b', border: '2px solid #334155', borderRadius: '16px', overflow: 'hidden', fontFamily: 'var(--font-sans, sans-serif)', color: '#f8fafc', boxShadow: '0 16px 40px rgba(0,0,0,0.6)' }}>
+      {/* System Installer Alert Header */}
+      <div style={{ background: 'linear-gradient(135deg, #334155, #1e293b)', padding: '1.2rem 1.8rem', borderBottom: '1px solid #475569', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+          <span style={{ fontSize: '1.6rem' }}>⚠️</span>
+          <div>
+            <h3 style={{ margin: 0, color: '#f8fafc', fontSize: '1.15rem', fontWeight: 'bold' }}>{"🛡️ System Security Center — Alert #SEC-99182"}</h3>
+            <span style={{ fontSize: '0.82rem', color: '#94a3b8' }}>System Protection & Execution Wizard</span>
+          </div>
+        </div>
+        <span style={{ background: '#ef4444', color: '#fff', padding: '0.3rem 0.8rem', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 'bold' }}>HIGH RISK ALERT</span>
       </div>
-
-      <div style={{ padding: '24px' }}>
-        {step === 'scan' && (
-          <div>
-            <div style={{
-              background: 'rgba(239, 68, 68, 0.2)',
-              border: '1px solid #ef4444',
-              borderRadius: '8px',
-              padding: '16px',
-              marginBottom: '20px',
-              textAlign: 'center'
-            }}>
-              <h3 style={{ color: '#ef4444', margin: '0 0 8px 0' }}>⚠️ 394 Viruses & Spyware Found!</h3>
-              <p style={{ margin: 0, fontSize: '0.92rem', color: '#fca5a5' }}>
-                Your Real-Time Protection expired 4 days ago. Banking passwords and webcam are currently exposed to cyber criminals.
-              </p>
-            </div>
-
-            <div style={{ background: '#1f2937', padding: '16px', borderRadius: '8px', marginBottom: '20px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '0.9rem' }}>
-                <span>Trojan.Win32.Banker.gen</span>
-                <span style={{ color: '#ef4444' }}>Critical Risk</span>
+      <div style={{ padding: '2rem' }}>
+        <div style={{ background: 'rgba(239, 68, 68, 0.1)', borderLeft: '4px solid #ef4444', padding: '1.2rem', borderRadius: '8px', marginBottom: '1.6rem' }}>
+          <p style={{ margin: 0, color: '#fca5a5', fontSize: '0.96rem', lineHeight: '1.6' }}>
+            {"CRITICAL WARNING: 5 Trojan Spyware infections detected on volume C:\\! Your TotalSecurity license expired 48 hours ago. System firewall is currently disabled, exposing personal banking records."}
+          </p>
+        </div>
+        <div style={{ background: '#0f172a', border: '1px solid #334155', padding: '1.2rem', borderRadius: '10px', fontFamily: 'monospace', color: '#38bdf8', fontSize: '0.9rem', marginBottom: '1.8rem', whiteSpace: 'pre-wrap' }}>
+          {"Infected File: C:\\Windows\\System32\\drivers\\net_hook.sys (Threat Level: HIGH)"}
+        </div>
+  
+        {/* Form Fields if required by simulation */}
+        {fields && fields.length > 0 && (
+          <div style={{ background: 'rgba(15, 23, 42, 0.8)', padding: '1.6rem', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.1)', marginBottom: '2.2rem' }}>
+            <h4 style={{ margin: '0 0 1.2rem', color: '#fff', fontSize: '1.05rem', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+              <span>📝</span> Required Information / Verification Form
+            </h4>
+            {errorMsg && (
+              <div style={{ background: 'rgba(239, 68, 68, 0.18)', border: '1px solid #ef4444', color: '#fca5a5', padding: '0.8rem 1.2rem', borderRadius: '10px', marginBottom: '1.2rem', fontSize: '0.92rem', fontWeight: '500' }}>
+                ⚠️ {errorMsg}
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '0.9rem' }}>
-                <span>Spyware.Keylogger.Active</span>
-                <span style={{ color: '#ef4444' }}>Active Now</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem' }}>
-                <span>Ransomware.Cryptor.Dropper</span>
-                <span style={{ color: '#ef4444' }}>Pending Encrypt</span>
-              </div>
-            </div>
-
-            <p style={{ fontSize: '0.9rem', color: '#cbd5e1', marginBottom: '16px' }}>
-              What would you like to do to resolve this alert?
-            </p>
-
-            <div style={{ display: 'flex', gap: '12px' }}>
-              <button
-                onClick={() => setStep('pay')}
-                style={{
-                  flex: 1,
-                  background: '#ef4444',
-                  color: '#fff',
-                  border: 'none',
-                  padding: '12px',
-                  borderRadius: '6px',
-                  fontWeight: 'bold',
-                  cursor: 'pointer'
-                }}
-              >
-                Renew Norton Shield Now ($89.99)
-              </button>
-              <button
-                onClick={handleClose}
-                style={{
-                  flex: 1,
-                  background: '#10b981',
-                  color: '#fff',
-                  border: 'none',
-                  padding: '12px',
-                  borderRadius: '6px',
-                  fontWeight: 'bold',
-                  cursor: 'pointer'
-                }}
-              >
-                Recognize Fake Web Ad & Close
-              </button>
+            )}
+            <div style={{ display: 'grid', gridTemplateColumns: fields.length > 1 ? '1fr 1fr' : '1fr', gap: '1.2rem' }}>
+              {fields.map((f, idx) => (
+                <div key={idx}>
+                  <label style={{ display: 'block', marginBottom: '0.5rem', color: '#cbd5e1', fontSize: '0.9rem', fontWeight: '600' }}>
+                    {f.p} <span style={{ color: '#ef4444' }}>*</span>
+                  </label>
+                  <input
+                    type={f.t === 'tel' ? 'text' : f.t}
+                    placeholder={"Enter " + f.p + "..."}
+                    value={formData[f.n] || ''}
+                    onChange={(e) => handleInputChange(f.n, e.target.value, f.max || (f.t === 'tel' || f.n.includes('phone') ? 10 : 50), f.t)}
+                    style={{
+                      width: '100%',
+                      padding: '0.85rem 1.1rem',
+                      borderRadius: '10px',
+                      border: '1px solid rgba(255,255,255,0.15)',
+                      background: 'rgba(0,0,0,0.4)',
+                      color: '#fff',
+                      fontSize: '0.96rem',
+                      outline: 'none',
+                      transition: 'all 0.2s'
+                    }}
+                  />
+                  {(f.t === 'tel' || f.n.includes('phone') || f.n.includes('mobile')) && (
+                    <div style={{ fontSize: '0.78rem', color: '#94a3b8', marginTop: '0.35rem' }}>
+                      Strictly numbers only (max 10 digits).
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         )}
 
-        {step === 'pay' && (
-          <form onSubmit={handlePay}>
-            <h4 style={{ margin: '0 0 12px 0', color: '#38bdf8' }}>Instant Protection Checkout ($89.99)</h4>
-            <div style={{ marginBottom: '14px' }}>
-              <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '4px' }}>Credit/Debit Card Number:</label>
-              <input
-                type="text"
-                required
-                placeholder="4532 •••• •••• ••••"
-                value={cardNumber}
-                onChange={(e) => setCardNumber(e.target.value)}
-                style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #475569', background: '#1e293b', color: '#fff' }}
-              />
-            </div>
+        {/* Custom Tailored Action Choices */}
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1.8rem' }}>
+          <div style={{ fontSize: '0.95rem', color: '#cbd5e1', marginBottom: '1.2rem', textAlign: 'center', fontWeight: '700', letterSpacing: '0.3px' }}>
+            ⚡ Select your technical response protocol:
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.4rem' }}>
             <button
-              type="submit"
+              onClick={() => handleAction(true)}
+              disabled={submitted}
               style={{
-                width: '100%',
-                background: '#ef4444',
+                padding: '1.2rem',
+                borderRadius: '14px',
+                background: 'linear-gradient(135deg, #10b981, #059669)',
                 color: '#fff',
                 border: 'none',
-                padding: '12px',
-                borderRadius: '6px',
                 fontWeight: 'bold',
-                cursor: 'pointer'
+                fontSize: '0.98rem',
+                cursor: submitted ? 'not-allowed' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.7rem',
+                boxShadow: '0 6px 20px rgba(16, 185, 129, 0.35)',
+                transition: 'all 0.2s ease',
+                opacity: submitted ? 0.6 : 1
               }}
             >
-              Submit Payment & Clean PC
+              <span style={{ fontSize: '1.2rem' }}>🛡️</span>
+              <span>{"Close Popup & Run Official System Defender Scan"}</span>
             </button>
-          </form>
-        )}
 
-        {step === 'scammed' && (
-          <div>
-            <div style={{ background: '#7f1d1d', padding: '14px', borderRadius: '8px', marginBottom: '16px' }}>
-              🚨 <strong>CARD COMPROMISED!</strong> Legitimate antivirus software does not run inside browser ad frames or demand immediate credit card renewal over scary popups.
-            </div>
             <button
-              onClick={() => onComplete(['Entered card details on fake antivirus popup'])}
+              onClick={() => handleAction(false)}
+              disabled={submitted}
               style={{
-                width: '100%',
-                background: '#3b82f6',
+                padding: '1.2rem',
+                borderRadius: '14px',
+                background: 'linear-gradient(135deg, #ef4444, #dc2626)',
                 color: '#fff',
                 border: 'none',
-                padding: '12px',
-                borderRadius: '6px',
                 fontWeight: 'bold',
-                cursor: 'pointer'
+                fontSize: '0.98rem',
+                cursor: submitted ? 'not-allowed' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.7rem',
+                boxShadow: '0 6px 20px rgba(239, 68, 68, 0.35)',
+                transition: 'all 0.2s ease',
+                opacity: submitted ? 0.6 : 1
               }}
             >
-              Review Antivirus Scam Tactics
+              <span style={{ fontSize: '1.2rem' }}>⚠️</span>
+              <span>{"Pay ₹2,999 Renewal Fee & Grant Remote Access"}</span>
             </button>
           </div>
-        )}
-
-        {step === 'safe' && (
-          <div style={{ textAlign: 'center', padding: '20px' }}>
-            <h3 style={{ color: '#10b981', margin: '0 0 8px 0' }}>Excellent Spotting!</h3>
-            <p style={{ color: '#cbd5e1' }}>
-              You identified that web browsers cannot scan your hard drive. Scammers buy malicious ad banners to mimic antivirus alerts.
-            </p>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );

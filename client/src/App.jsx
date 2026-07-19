@@ -1,5 +1,5 @@
-import { useEffect, useContext } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect, useContext, useState } from 'react';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
@@ -15,7 +15,14 @@ import { AuthContext } from './context/AuthContext';
 import Sidebar from './components/Sidebar';
 import AICopilot from './components/AICopilot';
 import LiveThreatBanner from './components/LiveThreatBanner';
-import { useState } from 'react';
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [pathname]);
+  return null;
+}
 
 function ProtectedRoute({ children, isSidebarOpen, setIsSidebarOpen }) {
   const { isLoggedIn, loading } = useContext(AuthContext);
@@ -56,6 +63,7 @@ export default function App() {
 
   return (
     <>
+      <ScrollToTop />
       <LiveThreatBanner />
       <Routes>
         {/* Public Routes */}

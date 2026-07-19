@@ -62,6 +62,14 @@ const UNITS = [
     color: '#00d2d3',
     moduleIds: [126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142],
   },
+  {
+    id: 'unit_sims_pack_3',
+    title: 'Emerging Threat Simulations Pack 3 (#229 – #277)',
+    icon: '🛡️',
+    description: '49 interactive real-world simulations: Developer & Supply Chain Attacks, Corporate Phishing, Crypto, IoT, and Mobile Scams',
+    color: '#ff9f43',
+    moduleIds: [229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277],
+  },
 ];
 
 export default function ProgressMap() {
