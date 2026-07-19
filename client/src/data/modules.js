@@ -4129,4 +4129,4157 @@ export const MODULES = [
       { q: "What operating system isolation practice prevents compromised npm packages from accessing your personal `~/.aws/credentials` folder?", opts: ["Setting your computer's desktop wallpaper to a dark blue color scheme","Running Node.js development and API servers inside isolated containers (`e.g., Docker`) or dedicated unprivileged user accounts lacking read access to your personal home directory","Renaming your `~/.aws/credentials` folder to `~/.aws/secret_keys` every Monday morning","Only executing `npm install` while your computer is plugged into an uninterruptible power supply (`UPS`)"], ans: 1, exp: "Containerization and strict user privilege separation ensure that even if an info-stealing package runs inside your project, it cannot escape to access your host user's private cloud keys." }
     ]
   }
+,
+  {
+      "id": 325,
+      "icon": "🛍️",
+      "title": "Fake Funky Shopping Scam",
+      "desc": "Fake shopping & lifestyle website scam.",
+      "diff": "med",
+      "tag": "Shopping",
+      "url": "funky-fashion-sale.com",
+      "badge": "80% OFF Mega Sale",
+      "amount": "₹499",
+      "amountLabel": "Buy Now",
+      "fee": "Pay Securely",
+      "feeNote": "Limited Time Offer",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "address",
+              "p": "Delivery Address",
+              "t": "text"
+          },
+          {
+              "n": "upi",
+              "p": "UPI ID (example@okaxis)",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Email Address",
+          "Delivery Address",
+          "UPI ID"
+      ],
+      "reveal": "You entered your personal information on a fake shopping website. Scammers use fake sale websites to steal personal details and collect payments without delivering any products.",
+      "flags": [
+          "Huge discounts on every product",
+          "Recently created website",
+          "Only advance payment accepted",
+          "No genuine customer support",
+          "No verified business information"
+      ],
+      "tips": [
+          "Shop only from trusted websites.",
+          "Verify the website URL before making payment.",
+          "Avoid unrealistic discounts.",
+          "Use secure payment methods.",
+          "Report suspicious websites to the Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "Huge discounts on every product",
+                  "Product images",
+                  "Shopping cart",
+                  "Search bar"
+              ],
+              "ans": 0,
+              "exp": "Unrealistic discounts are commonly used by fake shopping websites to attract victims."
+          },
+          {
+              "q": "What should you check before paying?",
+              "opts": [
+                  "Website URL and business authenticity",
+                  "Product color",
+                  "Banner image",
+                  "Background music"
+              ],
+              "ans": 0,
+              "exp": "Always verify that the website is genuine before entering payment information."
+          },
+          {
+              "q": "What should you do if a website looks suspicious?",
+              "opts": [
+                  "Leave the website and verify through official sources",
+                  "Pay immediately",
+                  "Share your UPI PIN",
+                  "Ignore browser warnings"
+              ],
+              "ans": 0,
+              "exp": "If you notice suspicious signs, stop the transaction and verify the seller through trusted channels."
+          }
+      ]
+  },
+  {
+      "id": 326,
+      "icon": "🎬",
+      "title": "Fake Fwalch Scam",
+      "desc": "Fake streaming subscription website scam.",
+      "diff": "med",
+      "tag": "Entertainment",
+      "url": "fwalch-premium.com",
+      "badge": "Premium Subscription ₹99",
+      "amount": "₹99",
+      "amountLabel": "Activate Premium",
+      "fee": "Pay Now",
+      "feeNote": "Offer Ends Today",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "password",
+              "p": "Create Password",
+              "t": "password"
+          },
+          {
+              "n": "upi",
+              "p": "UPI ID (example@okaxis)",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Email Address",
+          "Password",
+          "UPI ID"
+      ],
+      "reveal": "You entered your personal details on a fake streaming platform. Fraudsters collect login credentials and payment information while pretending to activate a premium subscription.",
+      "flags": [
+          "Premium subscription at an unrealistically low price",
+          "Limited-time offer creating urgency",
+          "No verified company information",
+          "Requested unnecessary personal details",
+          "Asked for payment before account verification"
+      ],
+      "tips": [
+          "Subscribe only through official websites or apps.",
+          "Verify the website URL before making payment.",
+          "Never reuse passwords across websites.",
+          "Avoid offers that seem too good to be true.",
+          "Report suspicious websites to the Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "Premium subscription offered at an unrealistically low price",
+                  "Movie categories",
+                  "Search option",
+                  "Dark theme"
+              ],
+              "ans": 0,
+              "exp": "Scammers often use extremely cheap subscription offers to attract victims."
+          },
+          {
+              "q": "What should you verify before purchasing a subscription?",
+              "opts": [
+                  "Official website and company authenticity",
+                  "Screen brightness",
+                  "Video quality",
+                  "Wallpaper"
+              ],
+              "ans": 0,
+              "exp": "Always verify that the streaming platform is official before making any payment."
+          },
+          {
+              "q": "Which information should never be reused on suspicious websites?",
+              "opts": [
+                  "Your account password",
+                  "Nickname",
+                  "Favorite movie",
+                  "Language preference"
+              ],
+              "ans": 0,
+              "exp": "Using your real password on fake websites can compromise your other online accounts."
+          },
+          {
+              "q": "Why do scammers create fake subscription websites?",
+              "opts": [
+                  "To steal personal and payment information",
+                  "To improve internet speed",
+                  "To provide free movies",
+                  "To update your phone"
+              ],
+              "ans": 0,
+              "exp": "Fake subscription websites are designed to collect sensitive information and money."
+          },
+          {
+              "q": "What should you do if you entered your details on a fake website?",
+              "opts": [
+                  "Change your password immediately and report the fraud",
+                  "Wait for activation",
+                  "Share the website with friends",
+                  "Ignore the incident"
+              ],
+              "ans": 0,
+              "exp": "Changing passwords and reporting the incident quickly helps reduce the risk of misuse."
+          }
+      ]
+  },
+  {
+      "id": 327,
+      "icon": "🎵",
+      "title": "Fake Gaana Plus",
+      "desc": "Fake music streaming subscription scam.",
+      "diff": "easy",
+      "tag": "Entertainment",
+      "url": "gaana-plus-premium.in",
+      "badge": "Gaana Plus ₹49 Offer",
+      "amount": "₹49",
+      "amountLabel": "Upgrade Now",
+      "fee": "Pay Securely",
+      "feeNote": "Limited Time Offer",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "password",
+              "p": "Gaana Password",
+              "t": "password"
+          },
+          {
+              "n": "upi",
+              "p": "UPI ID (example@okaxis)",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Email Address",
+          "Gaana Password",
+          "UPI ID"
+      ],
+      "reveal": "You entered your details on a fake Gaana Plus subscription website. Scammers create look-alike music streaming pages to steal login credentials, personal information, and payment details.",
+      "flags": [
+          "Premium subscription at an unrealistically low price",
+          "Fake Gaana look-alike website",
+          "Requested account password",
+          "Asked for payment before verification",
+          "No official company information"
+      ],
+      "tips": [
+          "Subscribe only through the official Gaana app or website.",
+          "Never enter your account password on unknown websites.",
+          "Verify the website URL carefully.",
+          "Avoid clicking subscription links from SMS or social media.",
+          "Report suspicious websites to the Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "Premium subscription offered for an unrealistically low price",
+                  "Music playlist",
+                  "Dark mode interface",
+                  "Song search feature"
+              ],
+              "ans": 0,
+              "exp": "Scammers use extremely cheap subscription offers to attract victims."
+          },
+          {
+              "q": "Which website should you use to purchase Gaana Plus?",
+              "opts": [
+                  "The official Gaana website or app",
+                  "Any website offering discounts",
+                  "A link received on WhatsApp",
+                  "A random advertisement"
+              ],
+              "ans": 0,
+              "exp": "Always use the official app or website for subscriptions."
+          },
+          {
+              "q": "Which information should never be entered on an untrusted website?",
+              "opts": [
+                  "Your account password",
+                  "Favorite singer",
+                  "Preferred language",
+                  "Music genre"
+              ],
+              "ans": 0,
+              "exp": "Passwords can be stolen and used to access your accounts."
+          }
+      ]
+  },
+  {
+      "id": 328,
+      "icon": "📱",
+      "title": "Fake Gadgets 360 Scam",
+      "desc": "Fake electronics shopping website scam.",
+      "diff": "med",
+      "tag": "Shopping",
+      "url": "gadgets360-deals.in",
+      "badge": "Electronics Mega Sale",
+      "amount": "₹999",
+      "amountLabel": "Buy Now",
+      "fee": "Secure Payment",
+      "feeNote": "Flash Sale Ends Soon",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "address",
+              "p": "Delivery Address",
+              "t": "text"
+          },
+          {
+              "n": "upi",
+              "p": "UPI ID (example@okaxis)",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Email Address",
+          "Delivery Address",
+          "UPI ID"
+      ],
+      "reveal": "You entered your details on a fake Gadgets 360 shopping website. Fraudsters create look-alike electronics stores with fake discounts to steal personal information and collect payments without delivering any products.",
+      "flags": [
+          "Expensive gadgets sold at unrealistic prices",
+          "Flash sale countdown timer",
+          "Advance payment only",
+          "No verified seller information",
+          "Recently created website"
+      ],
+      "tips": [
+          "Buy electronics only from trusted websites.",
+          "Verify the website URL before making payments.",
+          "Avoid deals that seem too good to be true.",
+          "Check customer reviews and seller details.",
+          "Report fake shopping websites to Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "Unrealistically cheap electronic gadgets",
+                  "Product images",
+                  "Shopping cart",
+                  "Search bar"
+              ],
+              "ans": 0,
+              "exp": "Huge discounts on premium electronics are commonly used to attract victims."
+          },
+          {
+              "q": "What should you verify before paying?",
+              "opts": [
+                  "Website authenticity and seller details",
+                  "Wallpaper color",
+                  "Product image size",
+                  "Font style"
+              ],
+              "ans": 0,
+              "exp": "Always verify the seller and website before making any payment."
+          },
+          {
+              "q": "Why do scammers create fake electronics websites?",
+              "opts": [
+                  "To steal money and personal information",
+                  "To improve internet speed",
+                  "To provide genuine discounts",
+                  "To update your device"
+              ],
+              "ans": 0,
+              "exp": "Fake shopping sites are designed to collect payments and sensitive information."
+          }
+      ]
+  },
+  {
+      "id": 329,
+      "icon": "💼",
+      "title": "Fake Garrett Scam",
+      "desc": "Fake job recruitment and registration scam.",
+      "diff": "med",
+      "tag": "Job",
+      "url": "careers-garrett.in",
+      "badge": "Hiring Freshers",
+      "amount": "₹0",
+      "amountLabel": "Apply Now",
+      "fee": "Registration",
+      "feeNote": "Limited Vacancies",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "qualification",
+              "p": "Highest Qualification",
+              "t": "text"
+          },
+          {
+              "n": "resume",
+              "p": "Resume Link (Optional)",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Email Address",
+          "Qualification",
+          "Resume Link"
+      ],
+      "reveal": "You submitted your details on a fake Garrett recruitment website. Fraudsters often impersonate well-known companies to collect personal information or charge fake registration fees.",
+      "flags": [
+          "Guaranteed job without interview",
+          "Unverified recruitment website",
+          "Urgent application deadline",
+          "Requested unnecessary personal details",
+          "No official company contact information"
+      ],
+      "tips": [
+          "Apply only through official company career portals.",
+          "Verify recruiter email addresses and website URLs.",
+          "Never pay registration or processing fees for a job.",
+          "Research the company before submitting information.",
+          "Report fake recruitment scams to Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "Guaranteed job without an interview",
+                  "Company logo",
+                  "Career page design",
+                  "Job title"
+              ],
+              "ans": 0,
+              "exp": "Legitimate employers typically have a proper hiring process and do not guarantee jobs instantly."
+          },
+          {
+              "q": "Where should you apply for a job?",
+              "opts": [
+                  "Official company career website",
+                  "Any link shared on social media",
+                  "Unknown websites",
+                  "Random advertisements"
+              ],
+              "ans": 0,
+              "exp": "Always apply through the official company website or trusted job portals."
+          },
+          {
+              "q": "What should you do if a recruiter asks for a registration fee?",
+              "opts": [
+                  "Treat it as a warning sign and verify the employer",
+                  "Pay immediately",
+                  "Borrow money to pay",
+                  "Ignore all other warning signs"
+              ],
+              "ans": 0,
+              "exp": "Legitimate employers generally do not charge candidates to apply for jobs."
+          }
+      ]
+  },
+  {
+      "id": 330,
+      "icon": "🛡️",
+      "title": "Fake GeoffGarside Scam",
+      "desc": "Fake cybersecurity resource download scam.",
+      "diff": "hard",
+      "tag": "Cyber",
+      "url": "geoffgarside-security.com",
+      "badge": "Free Security Toolkit",
+      "amount": "FREE",
+      "amountLabel": "Download Now",
+      "fee": "Instant Download",
+      "feeNote": "Today's Security Pack",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "company",
+              "p": "Company Name",
+              "t": "text"
+          },
+          {
+              "n": "username",
+              "p": "GitHub Username",
+              "t": "text"
+          },
+          {
+              "n": "password",
+              "p": "Account Password",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Email Address",
+          "Company Name",
+          "GitHub Username",
+          "Password"
+      ],
+      "reveal": "You entered your details on a fake cybersecurity website offering free security tools. The attackers collected your credentials and personal information.",
+      "flags": [
+          "Free premium security toolkit",
+          "Login required before download",
+          "Requested account password",
+          "Unverified website",
+          "No official contact information"
+      ],
+      "tips": [
+          "Download security tools only from official websites.",
+          "Never enter your password on unknown websites.",
+          "Verify the website URL carefully.",
+          "Enable Multi-Factor Authentication (MFA).",
+          "Report suspicious websites to Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "Website asked for your password to download a file",
+                  "Website used blue colors",
+                  "Website had a logo",
+                  "Website had articles"
+              ],
+              "ans": 0,
+              "exp": "Legitimate download websites never ask for your account password just to download files."
+          },
+          {
+              "q": "Where should security tools be downloaded from?",
+              "opts": [
+                  "Official developer websites",
+                  "Random blog links",
+                  "Unknown advertisements",
+                  "Unverified forums"
+              ],
+              "ans": 0,
+              "exp": "Always download software from trusted official sources."
+          },
+          {
+              "q": "What should you never share on unknown websites?",
+              "opts": [
+                  "Your account password",
+                  "Browser type",
+                  "Screen size",
+                  "Language preference"
+              ],
+              "ans": 0,
+              "exp": "Passwords should never be entered on untrusted websites."
+          }
+      ]
+  },
+  {
+      "id": 331,
+      "icon": "📐",
+      "title": "Fake Geometry Scam",
+      "desc": "Fake online geometry learning portal scam.",
+      "diff": "easy",
+      "tag": "Education",
+      "url": "geometry-masterclass.com",
+      "badge": "Premium Geometry Course",
+      "amount": "FREE",
+      "amountLabel": "Unlock Course",
+      "fee": "Free Access",
+      "feeNote": "Today's Student Offer",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "college",
+              "p": "College Name",
+              "t": "text"
+          },
+          {
+              "n": "password",
+              "p": "Account Password",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Email Address",
+          "College Name",
+          "Password"
+      ],
+      "reveal": "You entered your information on a fake Geometry learning website. Attackers collected your personal details and login credentials.",
+      "flags": [
+          "Premium course completely free",
+          "Asked for account password",
+          "No official educational institution",
+          "Fake student testimonials",
+          "Urgent limited-time offer"
+      ],
+      "tips": [
+          "Use trusted educational platforms.",
+          "Never share your password on unknown websites.",
+          "Verify the website URL.",
+          "Check reviews before registering.",
+          "Report suspicious websites to Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "Website asked for your password",
+                  "Math diagrams",
+                  "Course syllabus",
+                  "Teacher profile"
+              ],
+              "ans": 0,
+              "exp": "Educational websites should never ask for your existing account password."
+          },
+          {
+              "q": "Where should online courses be purchased?",
+              "opts": [
+                  "Trusted educational platforms",
+                  "Unknown links",
+                  "Random advertisements",
+                  "Social media comments"
+              ],
+              "ans": 0,
+              "exp": "Always use trusted and verified learning platforms."
+          },
+          {
+              "q": "What should you never share on an unknown website?",
+              "opts": [
+                  "Your password",
+                  "Your favorite subject",
+                  "Study time",
+                  "Language preference"
+              ],
+              "ans": 0,
+              "exp": "Passwords should never be shared with untrusted websites."
+          }
+      ]
+  },
+  {
+      "id": 332,
+      "icon": "🍸",
+      "title": "Fake Gin Gonic Scam",
+      "desc": "Fake premium liquor giveaway and delivery scam.",
+      "diff": "med",
+      "tag": "Shopping",
+      "url": "gingonic-premium.com",
+      "badge": "Premium Gin Giveaway",
+      "amount": "₹99",
+      "amountLabel": "Claim Bottle",
+      "fee": "Delivery Charge",
+      "feeNote": "Today's Special Offer",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "address",
+              "p": "Delivery Address",
+              "t": "text"
+          },
+          {
+              "n": "upi",
+              "p": "UPI ID",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Email Address",
+          "Delivery Address",
+          "UPI ID"
+      ],
+      "reveal": "You entered your personal details on a fake Gin Gonic promotional website. Fraudsters used a fake giveaway to collect your information and payment details without delivering any product.",
+      "flags": [
+          "Premium liquor offered almost free",
+          "Only delivery charge required",
+          "Advance payment mandatory",
+          "No verified business information",
+          "Fake customer reviews"
+      ],
+      "tips": [
+          "Buy products only from trusted retailers.",
+          "Avoid unbelievable giveaway offers.",
+          "Verify the website before making payments.",
+          "Never share sensitive payment information on suspicious websites.",
+          "Report fake shopping websites to Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "Premium liquor for only a small delivery fee",
+                  "Bottle image",
+                  "Website logo",
+                  "Navigation menu"
+              ],
+              "ans": 0,
+              "exp": "Scammers often lure victims with expensive products offered at unrealistic prices."
+          },
+          {
+              "q": "Why did the scammers ask for payment?",
+              "opts": [
+                  "To steal money and personal information",
+                  "To verify your identity",
+                  "To improve delivery speed",
+                  "To activate membership"
+              ],
+              "ans": 0,
+              "exp": "Fraudsters collect payments without delivering the promised product."
+          },
+          {
+              "q": "What should you check before ordering online?",
+              "opts": [
+                  "Website authenticity and seller reputation",
+                  "Background color",
+                  "Logo size",
+                  "Page font"
+              ],
+              "ans": 0,
+              "exp": "Always verify that the seller and website are legitimate."
+          }
+      ]
+  },
+  {
+      "id": 333,
+      "icon": "👗",
+      "title": "Fake Global Desi Scam",
+      "desc": "Fake fashion shopping website offering huge discounts.",
+      "diff": "med",
+      "tag": "Shopping",
+      "url": "globaldesi-fashion-sale.com",
+      "badge": "Flat 85% OFF",
+      "amount": "₹1,299",
+      "amountLabel": "Buy Now",
+      "fee": "Secure Checkout",
+      "feeNote": "Today's Fashion Deal",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "address",
+              "p": "Delivery Address",
+              "t": "text"
+          },
+          {
+              "n": "upi",
+              "p": "UPI ID",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Email Address",
+          "Delivery Address",
+          "UPI ID"
+      ],
+      "reveal": "You entered your information on a fake Global Desi shopping website. Fraudsters created a fake fashion sale portal to steal your personal information and collect advance payments without delivering products.",
+      "flags": [
+          "Luxury fashion at 85% discount",
+          "Advance payment required",
+          "Recently created website",
+          "Fake customer reviews",
+          "No verified business details"
+      ],
+      "tips": [
+          "Shop only on official brand websites.",
+          "Verify the website URL carefully.",
+          "Avoid unbelievable discounts.",
+          "Use trusted payment gateways.",
+          "Report fake shopping websites to Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "Huge discounts on every product",
+                  "Product images",
+                  "Shopping cart",
+                  "Website logo"
+              ],
+              "ans": 0,
+              "exp": "Unrealistic discounts are commonly used by fake shopping websites."
+          },
+          {
+              "q": "What should you verify before paying?",
+              "opts": [
+                  "Website authenticity",
+                  "Font style",
+                  "Product color",
+                  "Banner image"
+              ],
+              "ans": 0,
+              "exp": "Always verify that you are shopping on the official website."
+          },
+          {
+              "q": "Why do scammers create fake fashion websites?",
+              "opts": [
+                  "To steal money and personal information",
+                  "To advertise clothing",
+                  "To collect fashion feedback",
+                  "To improve brand popularity"
+              ],
+              "ans": 0,
+              "exp": "Fake shopping websites are designed to collect payments and sensitive information."
+          }
+      ]
+  },
+  {
+      "id": 334,
+      "icon": "💰",
+      "title": "Fake Google AdSense Cheque Scam",
+      "desc": "Fake Google AdSense payment cheque claim scam.",
+      "diff": "hard",
+      "tag": "Finance",
+      "url": "google-adsense-cheque.net",
+      "badge": "Payment Released",
+      "amount": "₹2,48,750",
+      "amountLabel": "Claim Cheque",
+      "fee": "Verification Fee",
+      "feeNote": "Pay ₹199 to Release Payment",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Google Email Address",
+              "t": "email"
+          },
+          {
+              "n": "publisher",
+              "p": "AdSense Publisher ID",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "upi",
+              "p": "UPI ID",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Google Email Address",
+          "AdSense Publisher ID",
+          "Mobile Number",
+          "UPI ID"
+      ],
+      "reveal": "You entered your information on a fake Google AdSense cheque claim website. Fraudsters used a fake payment notification to collect your personal details and trick you into paying a fake verification fee.",
+      "flags": [
+          "Unexpected AdSense payment notification",
+          "Asked for a verification fee before releasing payment",
+          "Unofficial website URL",
+          "Urgent payment deadline",
+          "No official Google verification"
+      ],
+      "tips": [
+          "Check AdSense payments only from your official AdSense account.",
+          "Google never asks for a fee to release AdSense payments.",
+          "Verify website URLs carefully.",
+          "Do not trust unexpected payment notifications.",
+          "Report suspicious websites to the Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "A fee was required to release the cheque",
+                  "The payment amount was displayed",
+                  "The website had a Google logo",
+                  "The page showed a cheque image"
+              ],
+              "ans": 0,
+              "exp": "Legitimate AdSense payments never require a verification fee."
+          },
+          {
+              "q": "Where should you verify AdSense payments?",
+              "opts": [
+                  "Official Google AdSense dashboard",
+                  "Random websites",
+                  "Social media posts",
+                  "Unknown email links"
+              ],
+              "ans": 0,
+              "exp": "Always verify payment information through your official AdSense account."
+          },
+          {
+              "q": "What information did scammers try to collect?",
+              "opts": [
+                  "Personal details and AdSense account information",
+                  "Favorite website",
+                  "Browser language",
+                  "Screen resolution"
+              ],
+              "ans": 0,
+              "exp": "The fake website collected personal information and AdSense-related details."
+          }
+      ]
+  },
+  {
+      "id": 335,
+      "icon": "📞",
+      "title": "Fake Google Pay Customer Care Scam",
+      "desc": "Fake Google Pay customer support scam.",
+      "diff": "hard",
+      "tag": "Banking",
+      "url": "gpay-support-help.com",
+      "badge": "24×7 Customer Support",
+      "amount": "Refund ₹5,000",
+      "amountLabel": "Talk to Executive",
+      "fee": "Instant Support",
+      "feeNote": "Refund Available Today",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "upi",
+              "p": "Google Pay UPI ID",
+              "t": "text"
+          },
+          {
+              "n": "bank",
+              "p": "Bank Name",
+              "t": "text"
+          },
+          {
+              "n": "otp",
+              "p": "OTP Received",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Google Pay UPI ID",
+          "Bank Name",
+          "OTP"
+      ],
+      "reveal": "You contacted a fake Google Pay customer care website. The scammers collected your banking information and OTP, which could be used to perform unauthorized transactions.",
+      "flags": [
+          "Customer care number found through an unofficial website",
+          "Asked for OTP to process refund",
+          "Requested bank account details",
+          "Promised instant refund",
+          "No official Google Pay support domain"
+      ],
+      "tips": [
+          "Contact Google Pay support only through the official app.",
+          "Never share your OTP with anyone.",
+          "Customer support never asks for your UPI PIN or OTP.",
+          "Verify customer care numbers before calling.",
+          "Report fake support scams to Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The executive asked for your OTP",
+                  "The website had a phone number",
+                  "The website used Google colors",
+                  "The refund amount was displayed"
+              ],
+              "ans": 0,
+              "exp": "Legitimate customer support will never ask for your OTP."
+          },
+          {
+              "q": "Where should you contact Google Pay support?",
+              "opts": [
+                  "Through the official Google Pay app",
+                  "Random websites",
+                  "Social media comments",
+                  "Unknown WhatsApp numbers"
+              ],
+              "ans": 0,
+              "exp": "Always use the official Google Pay app for customer support."
+          },
+          {
+              "q": "What should you never share?",
+              "opts": [
+                  "OTP",
+                  "Your name",
+                  "Your city",
+                  "Preferred language"
+              ],
+              "ans": 0,
+              "exp": "An OTP authorizes transactions and should never be shared."
+          }
+      ]
+  },
+  {
+      "id": 336,
+      "icon": "🦍",
+      "title": "Fake Gorilla/Mux Scam",
+      "desc": "Fake video streaming API developer portal scam.",
+      "diff": "hard",
+      "tag": "Developer",
+      "url": "gorillamux-api.com",
+      "badge": "Free Premium API Access",
+      "amount": "FREE",
+      "amountLabel": "Get API Key",
+      "fee": "Developer Access",
+      "feeNote": "Limited-Time Beta Program",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Developer Email",
+              "t": "email"
+          },
+          {
+              "n": "company",
+              "p": "Company Name",
+              "t": "text"
+          },
+          {
+              "n": "github",
+              "p": "GitHub Username",
+              "t": "text"
+          },
+          {
+              "n": "apikey",
+              "p": "Existing API Key",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Developer Email",
+          "Company Name",
+          "GitHub Username",
+          "Existing API Key"
+      ],
+      "reveal": "You entered your information on a fake Gorilla/Mux developer portal. The attackers collected your developer credentials and API key, which could be used to access your projects or cloud resources.",
+      "flags": [
+          "Free lifetime premium API access",
+          "Requested your existing API key",
+          "Unofficial developer portal",
+          "No verified company information",
+          "Fake beta program invitation"
+      ],
+      "tips": [
+          "Access developer services only through official websites.",
+          "Never share API keys with unknown websites.",
+          "Regenerate exposed API keys immediately.",
+          "Enable Multi-Factor Authentication (MFA).",
+          "Report suspicious developer websites to Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The website asked for your existing API key",
+                  "It had a dark theme",
+                  "It showed API documentation",
+                  "It displayed code examples"
+              ],
+              "ans": 0,
+              "exp": "Legitimate services never ask you to enter your existing secret API keys."
+          },
+          {
+              "q": "Where should developer accounts be accessed?",
+              "opts": [
+                  "Official developer websites",
+                  "Random blogs",
+                  "Social media links",
+                  "Unknown forums"
+              ],
+              "ans": 0,
+              "exp": "Always use the official developer portal."
+          },
+          {
+              "q": "What should you do if your API key is exposed?",
+              "opts": [
+                  "Revoke and regenerate the API key immediately",
+                  "Share it with teammates",
+                  "Ignore it",
+                  "Save it in a text file"
+              ],
+              "ans": 0,
+              "exp": "Exposed API keys should be revoked immediately to prevent unauthorized access."
+          }
+      ]
+  },
+  {
+      "id": 337,
+      "icon": "🏛️",
+      "title": "Fake Government Grant Notification",
+      "desc": "Fake government grant and financial assistance scam.",
+      "diff": "hard",
+      "tag": "Government",
+      "url": "gov-grant-notification.in",
+      "badge": "Grant Approved",
+      "amount": "₹2,50,000",
+      "amountLabel": "Claim Grant",
+      "fee": "Processing Fee",
+      "feeNote": "Pay ₹299 to Release Grant",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "aadhaar",
+              "p": "Aadhaar Number",
+              "t": "text"
+          },
+          {
+              "n": "bank",
+              "p": "Bank Account Number",
+              "t": "text"
+          },
+          {
+              "n": "upi",
+              "p": "UPI ID",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Aadhaar Number",
+          "Bank Account Number",
+          "UPI ID"
+      ],
+      "reveal": "You entered your personal and banking information on a fake Government Grant website. Fraudsters created a fake grant notification to steal your identity, banking details, and collect a fake processing fee.",
+      "flags": [
+          "Unexpected government grant notification",
+          "Processing fee required before receiving the grant",
+          "Unofficial government website",
+          "Urgent deadline to claim the money",
+          "Asked for Aadhaar and bank account details"
+      ],
+      "tips": [
+          "Verify grants only through official government portals.",
+          "Government agencies do not ask for processing fees to release grants.",
+          "Never share Aadhaar or bank details on suspicious websites.",
+          "Verify website URLs ending with official government domains.",
+          "Report fake government schemes to the Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The website asked for a processing fee",
+                  "The website displayed the national emblem",
+                  "The page had a government logo",
+                  "The page contained application forms"
+              ],
+              "ans": 0,
+              "exp": "Legitimate government grants generally do not require advance processing fees."
+          },
+          {
+              "q": "Where should you verify government schemes?",
+              "opts": [
+                  "Official government websites",
+                  "Random social media posts",
+                  "Unknown WhatsApp messages",
+                  "Unverified blogs"
+              ],
+              "ans": 0,
+              "exp": "Always verify schemes through official government portals."
+          },
+          {
+              "q": "Which information should you avoid sharing on suspicious websites?",
+              "opts": [
+                  "Aadhaar number and bank details",
+                  "Your city",
+                  "Your language",
+                  "Your occupation"
+              ],
+              "ans": 0,
+              "exp": "Identity and banking information should never be shared with untrusted websites."
+          }
+      ]
+  },
+  {
+      "id": 338,
+      "icon": "🦖",
+      "title": "Fake Gozilla Scam",
+      "desc": "Fake gaming rewards and premium membership scam.",
+      "diff": "med",
+      "tag": "Gaming",
+      "url": "gozilla-rewards.com",
+      "badge": "Free Premium Rewards",
+      "amount": "₹5,000",
+      "amountLabel": "Claim Rewards",
+      "fee": "Verification Fee",
+      "feeNote": "Limited-Time Gamer Offer",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "gameid",
+              "p": "Gaming ID",
+              "t": "text"
+          },
+          {
+              "n": "upi",
+              "p": "UPI ID",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Email Address",
+          "Gaming ID",
+          "UPI ID"
+      ],
+      "reveal": "You entered your information on a fake Gozilla gaming rewards website. Scammers used a fake premium rewards campaign to collect your personal information and trick you into paying a fake verification fee.",
+      "flags": [
+          "Free premium gaming rewards",
+          "Verification fee required before claiming rewards",
+          "Unofficial gaming website",
+          "Limited-time reward countdown",
+          "No verified company information"
+      ],
+      "tips": [
+          "Claim rewards only through official game websites or apps.",
+          "Never pay a fee to receive free rewards.",
+          "Verify the website URL before entering your details.",
+          "Do not trust unrealistic reward offers.",
+          "Report suspicious gaming scams to Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "A verification fee was required to claim free rewards",
+                  "The website had gaming images",
+                  "The page displayed rewards",
+                  "The site had colorful graphics"
+              ],
+              "ans": 0,
+              "exp": "Legitimate reward programs do not require payment before you receive free rewards."
+          },
+          {
+              "q": "Where should you claim gaming rewards?",
+              "opts": [
+                  "Official game websites or apps",
+                  "Random websites",
+                  "Unknown social media pages",
+                  "Unverified blogs"
+              ],
+              "ans": 0,
+              "exp": "Always claim rewards through official game platforms."
+          },
+          {
+              "q": "Why do scammers create fake reward websites?",
+              "opts": [
+                  "To steal money and personal information",
+                  "To improve game performance",
+                  "To provide game updates",
+                  "To increase player rankings"
+              ],
+              "ans": 0,
+              "exp": "Their goal is to collect your personal data and fraudulent payments."
+          }
+      ]
+  },
+  {
+      "id": 339,
+      "icon": "🏷️",
+      "title": "Fake gTags Scam",
+      "desc": "Fake online tag manager and analytics verification scam.",
+      "diff": "med",
+      "tag": "Technology",
+      "url": "gtags-analytics.com",
+      "badge": "Analytics Verification",
+      "amount": "FREE",
+      "amountLabel": "Verify Account",
+      "fee": "Instant Verification",
+      "feeNote": "Limited-Time Access",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Google Email Address",
+              "t": "email"
+          },
+          {
+              "n": "website",
+              "p": "Website URL",
+              "t": "text"
+          },
+          {
+              "n": "gtag",
+              "p": "Google Tag ID",
+              "t": "text"
+          },
+          {
+              "n": "password",
+              "p": "Google Account Password",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Google Email Address",
+          "Website URL",
+          "Google Tag ID",
+          "Google Account Password"
+      ],
+      "reveal": "You entered your information on a fake Google Tag verification website. Attackers collected your Google account credentials and analytics information, which could be used to gain unauthorized access to your services.",
+      "flags": [
+          "Unofficial Google verification website",
+          "Asked for your Google account password",
+          "Promised instant analytics verification",
+          "Requested Google Tag ID unnecessarily",
+          "No official Google domain"
+      ],
+      "tips": [
+          "Access Google services only through official Google websites.",
+          "Never enter your Google password on third-party websites.",
+          "Verify the website URL before logging in.",
+          "Enable Multi-Factor Authentication (MFA).",
+          "Report suspicious websites to the Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The website asked for your Google account password",
+                  "It displayed analytics charts",
+                  "It had a Google-style logo",
+                  "It showed a verification message"
+              ],
+              "ans": 0,
+              "exp": "Official Google services never ask you to enter your password on unofficial websites."
+          },
+          {
+              "q": "Where should you manage Google Tags?",
+              "opts": [
+                  "Official Google Tag Manager website",
+                  "Random blogs",
+                  "Unknown advertisements",
+                  "Social media links"
+              ],
+              "ans": 0,
+              "exp": "Always access Google Tag Manager through the official Google website."
+          },
+          {
+              "q": "What should you never share with an unofficial website?",
+              "opts": [
+                  "Google account password",
+                  "Website name",
+                  "Browser type",
+                  "Screen resolution"
+              ],
+              "ans": 0,
+              "exp": "Your Google account password should only be entered on official Google login pages."
+          }
+      ]
+  },
+  {
+      "id": 340,
+      "icon": "💻",
+      "title": "Fake HP-UX Scam",
+      "desc": "Fake HP-UX software download and enterprise support scam.",
+      "diff": "hard",
+      "tag": "Technology",
+      "url": "hpux-enterprise-support.com",
+      "badge": "Official HP-UX Update",
+      "amount": "FREE",
+      "amountLabel": "Download Update",
+      "fee": "Enterprise Verification",
+      "feeNote": "Critical Security Patch",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Work Email Address",
+              "t": "email"
+          },
+          {
+              "n": "company",
+              "p": "Company Name",
+              "t": "text"
+          },
+          {
+              "n": "server",
+              "p": "HP-UX Server Name",
+              "t": "text"
+          },
+          {
+              "n": "admin",
+              "p": "Administrator Password",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Work Email Address",
+          "Company Name",
+          "HP-UX Server Name",
+          "Administrator Password"
+      ],
+      "reveal": "You entered your administrator credentials on a fake HP-UX support website. Attackers can use the stolen information to gain unauthorized access to enterprise servers and compromise sensitive organizational data.",
+      "flags": [
+          "Unofficial HP-UX support portal",
+          "Requested administrator password",
+          "Claimed urgent security update",
+          "Promised free enterprise support",
+          "No verified Hewlett Packard Enterprise information"
+      ],
+      "tips": [
+          "Download HP-UX updates only from official HPE portals.",
+          "Never enter administrator passwords on unknown websites.",
+          "Verify support website URLs carefully.",
+          "Enable Multi-Factor Authentication (MFA) wherever available.",
+          "Report suspicious enterprise support websites to the Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The website asked for the administrator password",
+                  "It displayed HP-UX documentation",
+                  "It showed update information",
+                  "It used enterprise branding"
+              ],
+              "ans": 0,
+              "exp": "Legitimate support portals never ask for your administrator password."
+          },
+          {
+              "q": "Where should HP-UX updates be downloaded from?",
+              "opts": [
+                  "Official Hewlett Packard Enterprise (HPE) website",
+                  "Unknown blogs",
+                  "Random file-sharing websites",
+                  "Social media posts"
+              ],
+              "ans": 0,
+              "exp": "Always download enterprise software updates from official vendor websites."
+          },
+          {
+              "q": "What should you never enter on an unknown support website?",
+              "opts": [
+                  "Administrator password",
+                  "Company name",
+                  "Server model",
+                  "Email address"
+              ],
+              "ans": 0,
+              "exp": "Administrator credentials should never be shared with untrusted websites."
+          }
+      ]
+  },
+  {
+      "id": 341,
+      "icon": "🐳",
+      "title": "Fake Hadolint Scam",
+      "desc": "Fake Docker linter download and developer verification scam.",
+      "diff": "hard",
+      "tag": "Developer",
+      "url": "hadolint-security.dev",
+      "badge": "Hadolint Pro Edition",
+      "amount": "FREE",
+      "amountLabel": "Download Now",
+      "fee": "Developer Verification",
+      "feeNote": "Limited-Time Pro Access",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Developer Email",
+              "t": "email"
+          },
+          {
+              "n": "github",
+              "p": "GitHub Username",
+              "t": "text"
+          },
+          {
+              "n": "docker",
+              "p": "Docker Hub Username",
+              "t": "text"
+          },
+          {
+              "n": "token",
+              "p": "GitHub Personal Access Token",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Developer Email",
+          "GitHub Username",
+          "Docker Hub Username",
+          "GitHub Personal Access Token"
+      ],
+      "reveal": "You entered your information on a fake Hadolint download portal. The attackers collected your developer credentials and GitHub Personal Access Token, which could allow unauthorized access to your repositories and development environment.",
+      "flags": [
+          "Fake Hadolint Pro download website",
+          "Requested GitHub Personal Access Token",
+          "Free lifetime Pro version",
+          "Unofficial developer portal",
+          "No verified project or maintainer information"
+      ],
+      "tips": [
+          "Download developer tools only from official project websites.",
+          "Never share GitHub Personal Access Tokens.",
+          "Use official GitHub repositories for open-source software.",
+          "Revoke exposed access tokens immediately.",
+          "Enable Multi-Factor Authentication (MFA) on developer accounts."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The website requested your GitHub Personal Access Token",
+                  "It displayed Docker images",
+                  "It had documentation",
+                  "It showed installation steps"
+              ],
+              "ans": 0,
+              "exp": "Legitimate software websites never ask for your GitHub Personal Access Token."
+          },
+          {
+              "q": "Where should Hadolint be downloaded from?",
+              "opts": [
+                  "Official GitHub repository",
+                  "Random blogs",
+                  "Unknown forums",
+                  "Social media links"
+              ],
+              "ans": 0,
+              "exp": "Always download open-source developer tools from their official repositories."
+          },
+          {
+              "q": "What should you never share with unknown websites?",
+              "opts": [
+                  "GitHub Personal Access Token",
+                  "GitHub username",
+                  "Operating system",
+                  "Programming language"
+              ],
+              "ans": 0,
+              "exp": "Personal Access Tokens provide account access and must always remain secret."
+          }
+      ]
+  },
+  {
+      "id": 342,
+      "icon": "🤘",
+      "title": "Fake Headbanger Merch Scam",
+      "desc": "Fake heavy metal band merchandise shopping scam.",
+      "diff": "easy",
+      "tag": "Shopping",
+      "url": "headbanger-merch-store.com",
+      "badge": "Official Band Merchandise",
+      "amount": "₹799",
+      "amountLabel": "Buy Now",
+      "fee": "Secure Checkout",
+      "feeNote": "Limited-Time Fan Discount",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "address",
+              "p": "Delivery Address",
+              "t": "text"
+          },
+          {
+              "n": "upi",
+              "p": "UPI ID",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Email Address",
+          "Delivery Address",
+          "UPI ID"
+      ],
+      "reveal": "You entered your personal information on a fake Headbanger Merch website. Fraudsters created a fake merchandise store offering exclusive band products to steal your information and collect advance payments without shipping any items.",
+      "flags": [
+          "Huge discounts on official merchandise",
+          "Advance payment required",
+          "Fake customer reviews",
+          "No official band affiliation",
+          "Recently created shopping website"
+      ],
+      "tips": [
+          "Buy merchandise only from official band stores.",
+          "Verify the website URL before making payments.",
+          "Avoid unrealistic discounts on limited-edition products.",
+          "Use trusted payment gateways.",
+          "Report fake shopping websites to Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "Huge discount on official merchandise",
+                  "Band logo",
+                  "Product images",
+                  "Shopping cart"
+              ],
+              "ans": 0,
+              "exp": "Scammers often use unrealistic discounts to attract fans."
+          },
+          {
+              "q": "Where should you buy official band merchandise?",
+              "opts": [
+                  "Official band website or verified store",
+                  "Unknown websites",
+                  "Random advertisements",
+                  "Unverified social media pages"
+              ],
+              "ans": 0,
+              "exp": "Always purchase merchandise from official or authorized sellers."
+          },
+          {
+              "q": "What should you verify before paying?",
+              "opts": [
+                  "Website authenticity",
+                  "Background color",
+                  "Product size",
+                  "Page layout"
+              ],
+              "ans": 0,
+              "exp": "Verify that the website is legitimate before entering payment details."
+          }
+      ]
+  },
+  {
+      "id": 343,
+      "icon": "🩺",
+      "title": "Fake Full Body Checkup Package",
+      "desc": "Healthcare & medical scam.",
+      "diff": "med",
+      "tag": "Healthcare",
+      "url": "healthcheckup-offers.in",
+      "badge": "90% OFF Health Package",
+      "amount": "₹299",
+      "amountLabel": "Book Health Checkup",
+      "fee": "Pay ₹299",
+      "feeNote": "Advance booking required",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "age",
+              "p": "Age",
+              "t": "number"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "address",
+              "p": "Home Address",
+              "t": "text"
+          },
+          {
+              "n": "card",
+              "p": "Card Number",
+              "t": "text"
+          },
+          {
+              "n": "otp",
+              "p": "OTP",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Age",
+          "Mobile Number",
+          "Email Address",
+          "Home Address",
+          "Card Details",
+          "OTP"
+      ],
+      "reveal": "You submitted your personal and banking information to a fake health checkup website. Cybercriminals create fake diagnostic offers with huge discounts to steal personal information, card details, and OTPs, leading to financial fraud and identity theft.",
+      "flags": [
+          "Unrealistic discount (₹4,999 package for ₹299)",
+          "Advance payment required before confirmation",
+          "No verified hospital or diagnostic center information",
+          "Pressure to book immediately",
+          "Requested card details and OTP"
+      ],
+      "tips": [
+          "Book health checkups only through official hospital or diagnostic center websites.",
+          "Verify the healthcare provider before making any payment.",
+          "Never share your card details or OTP on unknown websites.",
+          "Be cautious of unrealistic medical discounts.",
+          "Report suspicious healthcare scams to the Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign in this offer?",
+              "opts": [
+                  "Huge discount with urgent payment request",
+                  "Hospital address displayed",
+                  "Online appointment booking",
+                  "Health package details"
+              ],
+              "ans": 0,
+              "exp": "Scammers often use unrealistic discounts and urgency to pressure victims into making quick payments."
+          },
+          {
+              "q": "Which information should never be entered on an unverified website?",
+              "opts": [
+                  "OTP",
+                  "Card Details",
+                  "CVV",
+                  "All of the above"
+              ],
+              "ans": 3,
+              "exp": "Never provide banking credentials or OTPs on websites that you cannot verify as legitimate."
+          },
+          {
+              "q": "Where should you book a health checkup?",
+              "opts": [
+                  "Official hospital or diagnostic center website",
+                  "Random WhatsApp link",
+                  "Unknown Facebook advertisement",
+                  "SMS promotion"
+              ],
+              "ans": 0,
+              "exp": "Always use official healthcare providers to book appointments and make payments."
+          }
+      ]
+  },
+  {
+      "id": 344,
+      "icon": "🏋️",
+      "title": "Fake Heftig Scam",
+      "desc": "Fake fitness supplements and gym equipment shopping scam.",
+      "diff": "med",
+      "tag": "Health",
+      "url": "heftig-fitness.com",
+      "badge": "80% OFF Fitness Sale",
+      "amount": "₹999",
+      "amountLabel": "Order Now",
+      "fee": "Secure Checkout",
+      "feeNote": "Today's Fitness Deal",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "address",
+              "p": "Delivery Address",
+              "t": "text"
+          },
+          {
+              "n": "upi",
+              "p": "UPI ID",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Email Address",
+          "Delivery Address",
+          "UPI ID"
+      ],
+      "reveal": "You entered your personal information on a fake Heftig Fitness website. Scammers used fake discounts on fitness products to collect your personal details and advance payments without delivering any products.",
+      "flags": [
+          "Massive discounts on all fitness products",
+          "Advance payment required",
+          "Fake customer testimonials",
+          "No verified business information",
+          "Recently created shopping website"
+      ],
+      "tips": [
+          "Buy fitness products only from trusted websites.",
+          "Verify the website URL before making payment.",
+          "Avoid unrealistic discounts.",
+          "Use secure payment gateways.",
+          "Report fake shopping websites to the Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "Huge discounts on every fitness product",
+                  "Product images",
+                  "Shopping cart",
+                  "Website logo"
+              ],
+              "ans": 0,
+              "exp": "Scammers often use unrealistic discounts to attract buyers."
+          },
+          {
+              "q": "What should you verify before ordering?",
+              "opts": [
+                  "Website authenticity",
+                  "Product color",
+                  "Banner design",
+                  "Font style"
+              ],
+              "ans": 0,
+              "exp": "Always verify the website before entering payment information."
+          },
+          {
+              "q": "Why do scammers create fake shopping websites?",
+              "opts": [
+                  "To steal money and personal information",
+                  "To advertise fitness products",
+                  "To collect reviews",
+                  "To increase website traffic"
+              ],
+              "ans": 0,
+              "exp": "Their goal is to collect payments and steal personal information."
+          }
+      ]
+  },
+  {
+      "id": 345,
+      "icon": "🏝️",
+      "title": "Fake Honukai Scam",
+      "desc": "Fake travel resort booking and vacation package scam.",
+      "diff": "med",
+      "tag": "Travel",
+      "url": "honukai-resorts.com",
+      "badge": "Luxury Vacation Deal",
+      "amount": "₹4,999",
+      "amountLabel": "Book Now",
+      "fee": "Advance Booking",
+      "feeNote": "Limited-Time Holiday Offer",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "guests",
+              "p": "Number of Guests",
+              "t": "number"
+          },
+          {
+              "n": "upi",
+              "p": "UPI ID",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Email Address",
+          "Number of Guests",
+          "UPI ID"
+      ],
+      "reveal": "You entered your personal information on a fake Honukai resort booking website. Fraudsters advertised luxury holiday packages at extremely low prices to steal your information and collect advance booking payments.",
+      "flags": [
+          "Luxury resort package at an unrealistically low price",
+          "100% advance payment required",
+          "Fake customer reviews",
+          "No verified hotel or resort information",
+          "Pressure to book immediately"
+      ],
+      "tips": [
+          "Book hotels only through official or trusted travel websites.",
+          "Verify the hotel and website before making payments.",
+          "Avoid offers that seem too good to be true.",
+          "Use secure payment methods.",
+          "Report fake travel websites to the Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "Luxury vacation offered at an unrealistically low price",
+                  "Beautiful resort photos",
+                  "Travel itinerary",
+                  "Weather information"
+              ],
+              "ans": 0,
+              "exp": "Scammers often use extremely cheap vacation packages to attract victims."
+          },
+          {
+              "q": "Where should you book vacations?",
+              "opts": [
+                  "Official hotel or trusted travel websites",
+                  "Unknown websites",
+                  "Random advertisements",
+                  "Unverified social media pages"
+              ],
+              "ans": 0,
+              "exp": "Always book through trusted travel platforms or the official hotel website."
+          },
+          {
+              "q": "What should you verify before paying?",
+              "opts": [
+                  "Website authenticity and hotel details",
+                  "Background color",
+                  "Page font",
+                  "Banner design"
+              ],
+              "ans": 0,
+              "exp": "Verify both the website and the accommodation before making any payment."
+          }
+      ]
+  },
+  {
+      "id": 346,
+      "icon": "🌐",
+      "title": "Fake HTMLHint Scam",
+      "desc": "Fake HTMLHint code validator download and developer account scam.",
+      "diff": "hard",
+      "tag": "Developer",
+      "url": "htmlhint-pro.dev",
+      "badge": "HTMLHint Pro Edition",
+      "amount": "FREE",
+      "amountLabel": "Download Pro",
+      "fee": "Developer Verification",
+      "feeNote": "Limited-Time Premium Access",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Developer Email",
+              "t": "email"
+          },
+          {
+              "n": "github",
+              "p": "GitHub Username",
+              "t": "text"
+          },
+          {
+              "n": "project",
+              "p": "Project Repository",
+              "t": "text"
+          },
+          {
+              "n": "token",
+              "p": "GitHub Personal Access Token",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Developer Email",
+          "GitHub Username",
+          "Project Repository",
+          "GitHub Personal Access Token"
+      ],
+      "reveal": "You entered your information on a fake HTMLHint download website. The attackers collected your developer credentials and GitHub Personal Access Token, allowing them to potentially access your repositories and source code.",
+      "flags": [
+          "Fake HTMLHint Pro download portal",
+          "Requested GitHub Personal Access Token",
+          "Free premium version offered",
+          "Unofficial developer website",
+          "No verified project maintainer information"
+      ],
+      "tips": [
+          "Download HTMLHint only from its official GitHub repository.",
+          "Never share GitHub Personal Access Tokens.",
+          "Verify developer website URLs carefully.",
+          "Revoke exposed access tokens immediately.",
+          "Enable Multi-Factor Authentication (MFA) on GitHub."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The website requested your GitHub Personal Access Token",
+                  "It displayed HTML examples",
+                  "It had installation instructions",
+                  "It showed code snippets"
+              ],
+              "ans": 0,
+              "exp": "Legitimate developer tools never ask for your GitHub Personal Access Token."
+          },
+          {
+              "q": "Where should HTMLHint be downloaded from?",
+              "opts": [
+                  "Official GitHub repository",
+                  "Random blogs",
+                  "Unknown download websites",
+                  "Social media posts"
+              ],
+              "ans": 0,
+              "exp": "Always download developer tools from official repositories."
+          },
+          {
+              "q": "What should you never share?",
+              "opts": [
+                  "GitHub Personal Access Token",
+                  "GitHub username",
+                  "Repository name",
+                  "Programming language"
+              ],
+              "ans": 0,
+              "exp": "A Personal Access Token provides account access and must remain secret."
+          }
+      ]
+  },
+  {
+      "id": 347,
+      "icon": "🌍",
+      "title": "Fake HttpRouter Scam",
+      "desc": "Fake HttpRouter framework download and developer credential scam.",
+      "diff": "hard",
+      "tag": "Developer",
+      "url": "httprouter-framework.dev",
+      "badge": "HttpRouter Pro Edition",
+      "amount": "FREE",
+      "amountLabel": "Download Now",
+      "fee": "Developer Verification",
+      "feeNote": "Limited-Time Pro Access",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Developer Email",
+              "t": "email"
+          },
+          {
+              "n": "github",
+              "p": "GitHub Username",
+              "t": "text"
+          },
+          {
+              "n": "project",
+              "p": "Project Name",
+              "t": "text"
+          },
+          {
+              "n": "token",
+              "p": "GitHub Personal Access Token",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Developer Email",
+          "GitHub Username",
+          "Project Name",
+          "GitHub Personal Access Token"
+      ],
+      "reveal": "You entered your information on a fake HttpRouter developer website. Cybercriminals collected your developer credentials and GitHub Personal Access Token, which could allow them to access your repositories, CI/CD pipelines, and source code.",
+      "flags": [
+          "Fake HttpRouter Pro download portal",
+          "Requested GitHub Personal Access Token",
+          "Promised lifetime premium features for free",
+          "Unofficial developer website",
+          "No verified project maintainer information"
+      ],
+      "tips": [
+          "Download developer frameworks only from official GitHub repositories.",
+          "Never share GitHub Personal Access Tokens.",
+          "Verify repository owners before downloading software.",
+          "Revoke exposed access tokens immediately.",
+          "Enable Multi-Factor Authentication (MFA) on GitHub."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The website requested your GitHub Personal Access Token",
+                  "It displayed framework documentation",
+                  "It had code examples",
+                  "It used a dark theme"
+              ],
+              "ans": 0,
+              "exp": "Legitimate framework websites never ask for your GitHub Personal Access Token."
+          },
+          {
+              "q": "Where should HttpRouter be downloaded from?",
+              "opts": [
+                  "Official GitHub repository",
+                  "Random blogs",
+                  "Unknown download sites",
+                  "Social media links"
+              ],
+              "ans": 0,
+              "exp": "Always download open-source frameworks from their official repositories."
+          },
+          {
+              "q": "Why do attackers steal GitHub Personal Access Tokens?",
+              "opts": [
+                  "To access repositories and developer accounts",
+                  "To improve coding performance",
+                  "To compile projects faster",
+                  "To install dependencies"
+              ],
+              "ans": 0,
+              "exp": "A stolen token can provide unauthorized access to repositories, workflows, and source code."
+          }
+      ]
+  },
+  {
+      "id": 348,
+      "icon": "⚡",
+      "title": "Fake HTTPX Scam",
+      "desc": "Fake HTTPX developer tool download and credential theft scam.",
+      "diff": "hard",
+      "tag": "Developer",
+      "url": "httpx-pro.dev",
+      "badge": "HTTPX Pro Toolkit",
+      "amount": "FREE",
+      "amountLabel": "Download Pro",
+      "fee": "Developer Verification",
+      "feeNote": "Limited-Time Premium Access",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Developer Email",
+              "t": "email"
+          },
+          {
+              "n": "github",
+              "p": "GitHub Username",
+              "t": "text"
+          },
+          {
+              "n": "apikey",
+              "p": "GitHub Personal Access Token",
+              "t": "password"
+          },
+          {
+              "n": "project",
+              "p": "Project Repository",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Developer Email",
+          "GitHub Username",
+          "GitHub Personal Access Token",
+          "Project Repository"
+      ],
+      "reveal": "You downloaded HTTPX from a fake developer portal and entered your GitHub credentials. Attackers can now use your Personal Access Token to access repositories, modify source code, steal secrets, or compromise your development environment.",
+      "flags": [
+          "Unofficial HTTPX download website",
+          "Requested GitHub Personal Access Token",
+          "Claimed to offer premium features for free",
+          "No verified project maintainer information",
+          "Developer account verification required before download"
+      ],
+      "tips": [
+          "Download HTTPX only from its official GitHub repository.",
+          "Never share GitHub Personal Access Tokens.",
+          "Verify repository owners before downloading developer tools.",
+          "Immediately revoke exposed GitHub tokens.",
+          "Enable Multi-Factor Authentication (MFA) on your GitHub account."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The website requested your GitHub Personal Access Token",
+                  "It displayed Python code",
+                  "It had installation instructions",
+                  "It used a dark theme"
+              ],
+              "ans": 0,
+              "exp": "Legitimate developer tools never ask for your GitHub Personal Access Token."
+          },
+          {
+              "q": "Where should HTTPX be downloaded from?",
+              "opts": [
+                  "Official GitHub repository",
+                  "Random download websites",
+                  "Unknown blogs",
+                  "Social media advertisements"
+              ],
+              "ans": 0,
+              "exp": "Always download developer tools from their official GitHub repository."
+          },
+          {
+              "q": "Why do attackers steal GitHub Personal Access Tokens?",
+              "opts": [
+                  "To access repositories and source code",
+                  "To speed up development",
+                  "To improve website performance",
+                  "To install Python packages"
+              ],
+              "ans": 0,
+              "exp": "A stolen token can provide unauthorized access to repositories, secrets, and CI/CD pipelines."
+          }
+      ]
+  },
+  {
+      "id": 349,
+      "icon": "🟢",
+      "title": "Fake Hulk Scam",
+      "desc": "Fake Marvel Hulk merchandise and giveaway scam.",
+      "diff": "easy",
+      "tag": "Entertainment",
+      "url": "hulk-superstore.com",
+      "badge": "Official Hulk Giveaway",
+      "amount": "FREE",
+      "amountLabel": "Claim Now",
+      "fee": "Shipping Fee",
+      "feeNote": "Only ₹99 Today",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "address",
+              "p": "Delivery Address",
+              "t": "text"
+          },
+          {
+              "n": "upi",
+              "p": "UPI ID",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Email Address",
+          "Delivery Address",
+          "UPI ID"
+      ],
+      "reveal": "You entered your information on a fake Hulk giveaway website. Scammers used a fake Marvel merchandise campaign to steal your personal details and collect a fake shipping fee without sending any product.",
+      "flags": [
+          "Free limited-edition Hulk merchandise",
+          "Asked for a shipping fee",
+          "Unofficial Marvel website",
+          "Fake customer testimonials",
+          "Limited-time countdown to create urgency"
+      ],
+      "tips": [
+          "Claim giveaways only from official Marvel or authorized websites.",
+          "Never pay shipping fees for suspicious \"free\" gifts.",
+          "Verify the website URL before entering personal details.",
+          "Be cautious of offers that seem too good to be true.",
+          "Report suspicious giveaway websites to the Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "A shipping fee was required for a free giveaway",
+                  "The website used Hulk images",
+                  "The page had a green theme",
+                  "The website displayed product photos"
+              ],
+              "ans": 0,
+              "exp": "Scammers often ask for a small shipping fee to steal money from victims."
+          },
+          {
+              "q": "Where should you claim official giveaways?",
+              "opts": [
+                  "Official Marvel or authorized websites",
+                  "Random social media links",
+                  "Unknown blogs",
+                  "Unverified shopping websites"
+              ],
+              "ans": 0,
+              "exp": "Always verify that giveaways are hosted by official or trusted sources."
+          },
+          {
+              "q": "Why do scammers ask for a shipping fee?",
+              "opts": [
+                  "To steal money from victims",
+                  "To speed up delivery",
+                  "To verify your address",
+                  "To activate the giveaway"
+              ],
+              "ans": 0,
+              "exp": "The shipping fee is a common trick used to collect money fraudulently."
+          }
+      ]
+  },
+  {
+      "id": 350,
+      "icon": "🎁",
+      "title": "Fake Humbabba Scam",
+      "desc": "Fake online gift store and surprise rewards scam.",
+      "diff": "easy",
+      "tag": "Shopping",
+      "url": "humbabba-gifts.com",
+      "badge": "Congratulations! You Won",
+      "amount": "₹7,999",
+      "amountLabel": "Claim Gift",
+      "fee": "Delivery Charge",
+      "feeNote": "Pay ₹149 to Receive Your Prize",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "address",
+              "p": "Delivery Address",
+              "t": "text"
+          },
+          {
+              "n": "upi",
+              "p": "UPI ID",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Email Address",
+          "Delivery Address",
+          "UPI ID"
+      ],
+      "reveal": "You entered your information on a fake Humbabba gift website. Scammers used a fake lucky draw and prize campaign to collect your personal information and trick you into paying a fake delivery charge.",
+      "flags": [
+          "Unexpected prize notification",
+          "Delivery fee required to claim a free gift",
+          "Fake countdown timer",
+          "No verified company information",
+          "Unrealistic reward offer"
+      ],
+      "tips": [
+          "Claim prizes only from official company websites.",
+          "Never pay to receive a free gift.",
+          "Verify website URLs before entering personal details.",
+          "Be cautious of unexpected prize notifications.",
+          "Report suspicious prize scams to the Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "A delivery fee was required to claim a free prize",
+                  "The website displayed gift images",
+                  "The page had colorful banners",
+                  "The website asked for your address"
+              ],
+              "ans": 0,
+              "exp": "Legitimate prize giveaways do not ask winners to pay delivery or processing fees."
+          },
+          {
+              "q": "What should you do after receiving an unexpected prize message?",
+              "opts": [
+                  "Verify it through the official company website",
+                  "Pay immediately",
+                  "Share it with friends",
+                  "Forward it to everyone"
+              ],
+              "ans": 0,
+              "exp": "Always verify prize claims using official company channels."
+          },
+          {
+              "q": "Why do scammers ask for delivery charges?",
+              "opts": [
+                  "To steal money from victims",
+                  "To speed up delivery",
+                  "To verify identity",
+                  "To activate the reward"
+              ],
+              "ans": 0,
+              "exp": "The delivery charge is simply a trick to steal money."
+          }
+      ]
+  },
+  {
+      "id": 351,
+      "icon": "🐶",
+      "title": "Fake Husky Scam",
+      "desc": "Fake Husky puppy adoption and pet sale scam.",
+      "diff": "med",
+      "tag": "Pets",
+      "url": "husky-puppies-home.com",
+      "badge": "Purebred Husky Puppies",
+      "amount": "₹6,999",
+      "amountLabel": "Reserve Puppy",
+      "fee": "Booking Amount",
+      "feeNote": "Limited Puppies Available",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "address",
+              "p": "Home Address",
+              "t": "text"
+          },
+          {
+              "n": "upi",
+              "p": "UPI ID",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Email Address",
+          "Home Address",
+          "UPI ID"
+      ],
+      "reveal": "You entered your personal information on a fake Husky puppy adoption website. Fraudsters advertised purebred Husky puppies at very low prices to collect booking payments and steal your personal information without delivering any pet.",
+      "flags": [
+          "Purebred Husky available at an unrealistically low price",
+          "Advance booking payment required",
+          "No physical pet store or breeder information",
+          "Fake customer reviews and puppy photos",
+          "Pressure to book immediately due to limited stock"
+      ],
+      "tips": [
+          "Buy or adopt pets only from verified breeders or shelters.",
+          "Never pay an advance without verifying the seller.",
+          "Visit the pet in person whenever possible.",
+          "Verify the website and contact details.",
+          "Report fake pet-selling websites to the Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "Very cheap purebred Husky puppies",
+                  "Cute puppy photos",
+                  "The website logo",
+                  "Customer reviews"
+              ],
+              "ans": 0,
+              "exp": "Scammers often advertise expensive breeds at unrealistically low prices."
+          },
+          {
+              "q": "What should you do before paying for a pet online?",
+              "opts": [
+                  "Verify the breeder or visit in person",
+                  "Pay immediately",
+                  "Trust online reviews only",
+                  "Share your payment details"
+              ],
+              "ans": 0,
+              "exp": "Always verify the breeder and, if possible, see the pet before making payment."
+          },
+          {
+              "q": "Why do scammers ask for advance booking fees?",
+              "opts": [
+                  "To steal money without delivering the pet",
+                  "To reserve transportation",
+                  "To vaccinate the puppy",
+                  "To register ownership"
+              ],
+              "ans": 0,
+              "exp": "The advance payment is usually the scammer's main objective."
+          }
+      ]
+  },
+  {
+      "id": 352,
+      "icon": "🧪",
+      "title": "Fake Hybrid Analysis Scam",
+      "desc": "Fake malware analysis platform login and file submission scam.",
+      "diff": "hard",
+      "tag": "Cyber Security",
+      "url": "hybrid-analysis-security.com",
+      "badge": "Free Premium Malware Scan",
+      "amount": "FREE",
+      "amountLabel": "Analyze File",
+      "fee": "Threat Analysis",
+      "feeNote": "Enterprise Access Enabled",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Work Email Address",
+              "t": "email"
+          },
+          {
+              "n": "company",
+              "p": "Organization Name",
+              "t": "text"
+          },
+          {
+              "n": "apikey",
+              "p": "API Key",
+              "t": "password"
+          },
+          {
+              "n": "password",
+              "p": "Account Password",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Work Email Address",
+          "Organization Name",
+          "API Key",
+          "Account Password"
+      ],
+      "reveal": "You logged into a fake Hybrid Analysis website and entered your credentials. The attackers captured your account password and API key, allowing them to potentially access your malware analysis account, submitted samples, and sensitive security data.",
+      "flags": [
+          "Unofficial Hybrid Analysis website",
+          "Requested API key during login",
+          "Claimed free enterprise malware analysis",
+          "No verified company information",
+          "Asked for sensitive credentials before scanning files"
+      ],
+      "tips": [
+          "Access Hybrid Analysis only through its official website.",
+          "Never share API keys on unknown websites.",
+          "Verify the website URL before logging in.",
+          "Enable Multi-Factor Authentication (MFA).",
+          "Immediately revoke exposed API keys and change your password."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The website requested your API key",
+                  "It offered malware scanning",
+                  "It displayed security reports",
+                  "It had a dark theme"
+              ],
+              "ans": 0,
+              "exp": "Legitimate platforms do not ask you to enter API keys on suspicious login pages."
+          },
+          {
+              "q": "Where should you access Hybrid Analysis?",
+              "opts": [
+                  "Official Hybrid Analysis website",
+                  "Random blogs",
+                  "Unknown download sites",
+                  "Social media advertisements"
+              ],
+              "ans": 0,
+              "exp": "Always use the official website to access cybersecurity platforms."
+          },
+          {
+              "q": "What should you never share with unknown websites?",
+              "opts": [
+                  "API keys and account passwords",
+                  "Company name",
+                  "Job title",
+                  "Browser version"
+              ],
+              "ans": 0,
+              "exp": "API keys and passwords can provide attackers with unauthorized access."
+          }
+      ]
+  },
+  {
+      "id": 353,
+      "icon": "📊",
+      "title": "Fake IG Audit Scam",
+      "desc": "Fake Instagram account audit and follower analysis scam.",
+      "diff": "med",
+      "tag": "Social Media",
+      "url": "instagram-audit-check.com",
+      "badge": "Free Instagram Audit",
+      "amount": "FREE",
+      "amountLabel": "Analyze Account",
+      "fee": "Premium Report",
+      "feeNote": "Instant Results",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "username",
+              "p": "Instagram Username",
+              "t": "text"
+          },
+          {
+              "n": "password",
+              "p": "Instagram Password",
+              "t": "password"
+          },
+          {
+              "n": "otp",
+              "p": "Instagram OTP",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Email Address",
+          "Instagram Username",
+          "Instagram Password",
+          "Instagram OTP"
+      ],
+      "reveal": "You entered your Instagram credentials on a fake IG Audit website. Scammers can now access your Instagram account, steal personal messages, impersonate you, and lock you out of your account.",
+      "flags": [
+          "Requested Instagram password",
+          "Asked for OTP verification",
+          "Claimed free follower audit",
+          "Unofficial Instagram service",
+          "Promised instant account growth insights"
+      ],
+      "tips": [
+          "Use only Instagram's official app and website.",
+          "Never enter your Instagram password on third-party websites.",
+          "Never share OTPs with anyone.",
+          "Enable Two-Factor Authentication (2FA).",
+          "Report fake social media websites to Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The website asked for your Instagram password and OTP",
+                  "It showed follower statistics",
+                  "It had charts",
+                  "It used Instagram colors"
+              ],
+              "ans": 0,
+              "exp": "Legitimate audit tools never ask for your Instagram password or OTP."
+          }
+      ]
+  },
+  {
+      "id": 354,
+      "icon": "📰",
+      "title": "Fake iGyaan Scam",
+      "desc": "Fake technology news website phishing scam.",
+      "diff": "easy",
+      "tag": "News",
+      "url": "igyaan-news.in",
+      "badge": "Exclusive Tech Giveaway",
+      "amount": "FREE",
+      "amountLabel": "Claim Now",
+      "fee": "Verification",
+      "feeNote": "Limited-Time Offer",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "username",
+              "p": "Google Username",
+              "t": "text"
+          },
+          {
+              "n": "password",
+              "p": "Google Password",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Email Address",
+          "Mobile Number",
+          "Google Username",
+          "Google Password"
+      ],
+      "reveal": "You entered your details on a fake iGyaan website offering a tech giveaway. The scammers collected your Google account credentials, which could be used to access your email, cloud storage, and other linked services.",
+      "flags": [
+          "Promised a free tech giveaway",
+          "Requested Google account password",
+          "Unofficial iGyaan website",
+          "Created urgency with limited-time offer",
+          "Asked for unnecessary personal information"
+      ],
+      "tips": [
+          "Visit technology news websites only through their official domains.",
+          "Never enter your Google password on third-party websites.",
+          "Verify giveaway offers before participating.",
+          "Enable Two-Factor Authentication (2FA).",
+          "Report phishing websites to the Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The website asked for your Google password",
+                  "It showed tech news",
+                  "It displayed product images",
+                  "It had a search bar"
+              ],
+              "ans": 0,
+              "exp": "News websites never require your Google password."
+          }
+      ]
+  },
+  {
+      "id": 355,
+      "icon": "🧠",
+      "title": "Fake iMindMap Scam",
+      "desc": "Fake iMindMap premium software download scam.",
+      "diff": "med",
+      "tag": "Software",
+      "url": "imindmap-premium.com",
+      "badge": "Free Lifetime Premium",
+      "amount": "FREE",
+      "amountLabel": "Download Premium",
+      "fee": "Account Verification",
+      "feeNote": "Limited-Time Access",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "username",
+              "p": "Account Username",
+              "t": "text"
+          },
+          {
+              "n": "license",
+              "p": "License Key",
+              "t": "text"
+          },
+          {
+              "n": "password",
+              "p": "Account Password",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Email Address",
+          "Account Username",
+          "License Key",
+          "Account Password"
+      ],
+      "reveal": "You entered your information on a fake iMindMap Premium website. Attackers collected your account credentials and license information, which can be used to steal your account or distribute malware through fake software downloads.",
+      "flags": [
+          "Free lifetime premium offer",
+          "Requested account password",
+          "Unofficial software website",
+          "Asked for license key",
+          "No verified software publisher"
+      ],
+      "tips": [
+          "Download software only from the official website.",
+          "Never share your software account password.",
+          "Beware of \"free lifetime premium\" offers.",
+          "Verify the website URL before downloading.",
+          "Scan downloaded files with antivirus software."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The website asked for your account password",
+                  "It showed software screenshots",
+                  "It displayed tutorials",
+                  "It had a download button"
+              ],
+              "ans": 0,
+              "exp": "Legitimate software download pages never require your account password for a download."
+          }
+      ]
+  },
+  {
+      "id": 356,
+      "icon": "🚆",
+      "title": "Fake IRCTC Ticket Booking Site",
+      "desc": "Fake railway ticket booking website scam.",
+      "diff": "med",
+      "tag": "Travel",
+      "url": "irctc-ticket-booking.co.in",
+      "badge": "Instant Tatkal Booking",
+      "amount": "₹1,250",
+      "amountLabel": "Book Ticket",
+      "fee": "Booking Fee",
+      "feeNote": "Guaranteed Confirm Ticket",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Passenger Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "aadhaar",
+              "p": "Aadhaar Number",
+              "t": "text"
+          },
+          {
+              "n": "upi",
+              "p": "UPI ID",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Passenger Name",
+          "Mobile Number",
+          "Email Address",
+          "Aadhaar Number",
+          "UPI ID"
+      ],
+      "reveal": "You entered your details on a fake IRCTC ticket booking website. The scammers collected your personal information and payment details while pretending to offer guaranteed railway ticket bookings.",
+      "flags": [
+          "Unofficial IRCTC website",
+          "Guaranteed Tatkal confirmation",
+          "Requested advance payment",
+          "Fake booking countdown",
+          "No official IRCTC verification"
+      ],
+      "tips": [
+          "Book train tickets only through the official IRCTC website or app.",
+          "Always verify the website URL before making payment.",
+          "Never trust websites promising guaranteed Tatkal tickets.",
+          "Avoid making payments on unknown booking portals.",
+          "Report fake booking websites to the Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The website guaranteed Tatkal ticket confirmation",
+                  "It showed train schedules",
+                  "It displayed seat availability",
+                  "It had a search box"
+              ],
+              "ans": 0,
+              "exp": "No website can guarantee Tatkal ticket confirmation."
+          }
+      ]
+  },
+  {
+      "id": 357,
+      "icon": "🚀",
+      "title": "Fake IDO Launchpad",
+      "desc": "Fake cryptocurrency IDO investment platform scam.",
+      "diff": "hard",
+      "tag": "Crypto",
+      "url": "ido-launchpad-invest.com",
+      "badge": "Next 100x Token Launch",
+      "amount": "₹10,000",
+      "amountLabel": "Invest Now",
+      "fee": "Minimum Investment",
+      "feeNote": "Limited Presale Allocation",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "wallet",
+              "p": "Crypto Wallet Address",
+              "t": "text"
+          },
+          {
+              "n": "telegram",
+              "p": "Telegram Username",
+              "t": "text"
+          },
+          {
+              "n": "seed",
+              "p": "Wallet Recovery Phrase",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Email Address",
+          "Crypto Wallet Address",
+          "Telegram Username",
+          "Wallet Recovery Phrase"
+      ],
+      "reveal": "You entered your details on a fake IDO Launchpad website. Scammers collected your wallet recovery phrase and cryptocurrency wallet information, allowing them to steal your crypto assets.",
+      "flags": [
+          "Guaranteed 100x investment returns",
+          "Requested wallet recovery phrase",
+          "Fake token presale countdown",
+          "Pressure to invest immediately",
+          "Unverified crypto project"
+      ],
+      "tips": [
+          "Invest only through verified crypto launchpads.",
+          "Never share your wallet recovery phrase.",
+          "Research every crypto project before investing.",
+          "Beware of guaranteed profit claims.",
+          "Report crypto investment scams to Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The website asked for your wallet recovery phrase",
+                  "It showed token details",
+                  "It displayed a roadmap",
+                  "It had a countdown timer"
+              ],
+              "ans": 0,
+              "exp": "Your wallet recovery phrase should never be shared with anyone."
+          }
+      ]
+  },
+  {
+      "id": 358,
+      "icon": "🎁",
+      "title": "Fake iggy Scam",
+      "desc": "Fake giveaway and rewards website scam.",
+      "diff": "easy",
+      "tag": "Giveaway",
+      "url": "iggy-rewards.com",
+      "badge": "Congratulations! You Won",
+      "amount": "₹25,000",
+      "amountLabel": "Claim Reward",
+      "fee": "Processing Fee",
+      "feeNote": "Offer Expires Today",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "address",
+              "p": "Home Address",
+              "t": "text"
+          },
+          {
+              "n": "upi",
+              "p": "UPI ID",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Email Address",
+          "Home Address",
+          "UPI ID"
+      ],
+      "reveal": "You entered your information on a fake iggy rewards website. Scammers used a fake prize campaign to collect your personal information and trick you into paying a fake processing fee.",
+      "flags": [
+          "Unexpected prize notification",
+          "Processing fee required",
+          "Created urgency with countdown",
+          "Unverified website",
+          "No official company information"
+      ],
+      "tips": [
+          "Verify prize notifications through official websites.",
+          "Never pay processing fees to claim rewards.",
+          "Always verify the website URL.",
+          "Avoid sharing personal information on unknown websites.",
+          "Report giveaway scams to Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The website asked for a processing fee",
+                  "It displayed gift images",
+                  "It had colorful banners",
+                  "It showed a prize amount"
+              ],
+              "ans": 0,
+              "exp": "Legitimate prize winners are not asked to pay processing fees."
+          }
+      ]
+  },
+  {
+      "id": 359,
+      "icon": "💻",
+      "title": "Fake illumos Scam",
+      "desc": "Fake illumos operating system download and developer credential scam.",
+      "diff": "hard",
+      "tag": "Developer",
+      "url": "illumos-community.org",
+      "badge": "Official illumos Build",
+      "amount": "FREE",
+      "amountLabel": "Download Now",
+      "fee": "Developer Verification",
+      "feeNote": "Latest Stable Release",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Developer Email",
+              "t": "email"
+          },
+          {
+              "n": "github",
+              "p": "GitHub Username",
+              "t": "text"
+          },
+          {
+              "n": "apikey",
+              "p": "GitHub Personal Access Token",
+              "t": "password"
+          },
+          {
+              "n": "company",
+              "p": "Organization Name",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Developer Email",
+          "GitHub Username",
+          "GitHub Personal Access Token",
+          "Organization Name"
+      ],
+      "reveal": "You downloaded illumos from a fake developer portal. The scammers captured your GitHub Personal Access Token and developer information, which could allow unauthorized access to your repositories and development projects.",
+      "flags": [
+          "Unofficial illumos download website",
+          "Requested GitHub Personal Access Token",
+          "Claimed exclusive developer build",
+          "No verified project maintainers",
+          "Asked for unnecessary developer credentials"
+      ],
+      "tips": [
+          "Download illumos only from its official repository.",
+          "Never share GitHub Personal Access Tokens.",
+          "Verify developer websites before downloading software.",
+          "Enable Multi-Factor Authentication (MFA).",
+          "Revoke exposed tokens immediately."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The website requested your GitHub Personal Access Token",
+                  "It showed documentation",
+                  "It had installation steps",
+                  "It displayed screenshots"
+              ],
+              "ans": 0,
+              "exp": "Official software websites never ask for your GitHub Personal Access Token."
+          }
+      ]
+  },
+  {
+      "id": 360,
+      "icon": "🖨️",
+      "title": "Fake InkMonk Scam",
+      "desc": "Fake custom printing and merchandise shopping scam.",
+      "diff": "easy",
+      "tag": "Shopping",
+      "url": "inkmonk-customprints.com",
+      "badge": "70% OFF Custom T-Shirts",
+      "amount": "₹499",
+      "amountLabel": "Order Now",
+      "fee": "Secure Checkout",
+      "feeNote": "Today's Exclusive Offer",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "address",
+              "p": "Delivery Address",
+              "t": "text"
+          },
+          {
+              "n": "upi",
+              "p": "UPI ID",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Email Address",
+          "Delivery Address",
+          "UPI ID"
+      ],
+      "reveal": "You entered your personal information on a fake InkMonk website. Fraudsters created a fake custom printing store offering huge discounts to steal your personal details and collect advance payments without delivering any products.",
+      "flags": [
+          "Huge discounts on custom merchandise",
+          "Advance payment required",
+          "Fake customer reviews",
+          "No verified business information",
+          "Recently created shopping website"
+      ],
+      "tips": [
+          "Order only from trusted custom printing websites.",
+          "Verify the website URL before making payment.",
+          "Avoid unrealistic discounts.",
+          "Use secure payment methods.",
+          "Report fake shopping websites to the Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "Huge discounts on every product",
+                  "Product images",
+                  "Shopping cart",
+                  "Website logo"
+              ],
+              "ans": 0,
+              "exp": "Unrealistic discounts are commonly used by fake shopping websites."
+          }
+      ]
+  },
+  {
+      "id": 361,
+      "icon": "🛡️",
+      "title": "Fake InsightVM Scam",
+      "desc": "Fake InsightVM vulnerability scanner login and enterprise credential theft scam.",
+      "diff": "hard",
+      "tag": "Cyber Security",
+      "url": "insightvm-security.com",
+      "badge": "Enterprise Vulnerability Scan",
+      "amount": "FREE",
+      "amountLabel": "Start Scan",
+      "fee": "Enterprise Verification",
+      "feeNote": "Critical Security Update",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Work Email Address",
+              "t": "email"
+          },
+          {
+              "n": "company",
+              "p": "Organization Name",
+              "t": "text"
+          },
+          {
+              "n": "apikey",
+              "p": "InsightVM API Key",
+              "t": "password"
+          },
+          {
+              "n": "password",
+              "p": "Administrator Password",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Work Email Address",
+          "Organization Name",
+          "InsightVM API Key",
+          "Administrator Password"
+      ],
+      "reveal": "You entered your credentials on a fake InsightVM website. Attackers captured your administrator password and API key, allowing them to potentially access vulnerability reports, enterprise assets, and sensitive security information.",
+      "flags": [
+          "Unofficial InsightVM portal",
+          "Requested API key during login",
+          "Asked for administrator password",
+          "Claimed urgent security scan",
+          "No verified Rapid7 information"
+      ],
+      "tips": [
+          "Access InsightVM only through the official Rapid7 website.",
+          "Never share administrator passwords or API keys.",
+          "Verify website URLs before logging in.",
+          "Enable Multi-Factor Authentication (MFA).",
+          "Immediately revoke exposed API keys and change passwords."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The website requested your API key and administrator password",
+                  "It showed vulnerability reports",
+                  "It displayed dashboards",
+                  "It had security charts"
+              ],
+              "ans": 0,
+              "exp": "Legitimate security platforms never ask you to enter API keys on suspicious websites."
+          }
+      ]
+  },
+  {
+      "id": 362,
+      "icon": "💾",
+      "title": "Fake Installer Scam",
+      "desc": "Fake software installer malware distribution scam.",
+      "diff": "med",
+      "tag": "Software",
+      "url": "fast-software-installer.com",
+      "badge": "Latest Premium Installer",
+      "amount": "FREE",
+      "amountLabel": "Download Now",
+      "fee": "Quick Installation",
+      "feeNote": "Verified Setup File",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "device",
+              "p": "Device Name",
+              "t": "text"
+          },
+          {
+              "n": "license",
+              "p": "License Key (Optional)",
+              "t": "text"
+          },
+          {
+              "n": "password",
+              "p": "Administrator Password",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Email Address",
+          "Device Name",
+          "License Key",
+          "Administrator Password"
+      ],
+      "reveal": "You downloaded software from a fake installer website. The installer requested your administrator password and device details, allowing attackers to install malware, steal sensitive information, or gain unauthorized access to your system.",
+      "flags": [
+          "Downloaded from an unofficial website",
+          "Requested administrator password",
+          "Claimed premium software for free",
+          "No verified software publisher",
+          "Installer requested unnecessary permissions"
+      ],
+      "tips": [
+          "Download software only from official websites.",
+          "Never enter administrator passwords into unknown installers.",
+          "Verify the publisher before installing software.",
+          "Keep antivirus software enabled and updated.",
+          "Report malicious software websites to the Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The installer requested your administrator password",
+                  "It showed installation progress",
+                  "It displayed a logo",
+                  "It had a setup wizard"
+              ],
+              "ans": 0,
+              "exp": "Suspicious installers often request administrator credentials to gain full system access."
+          }
+      ]
+  },
+  {
+      "id": 363,
+      "icon": "🕵️",
+      "title": "Fake Intel 471 Scam",
+      "desc": "Fake threat intelligence portal credential theft scam.",
+      "diff": "hard",
+      "tag": "Cyber Security",
+      "url": "intel471-security.com",
+      "badge": "Premium Threat Intelligence",
+      "amount": "FREE",
+      "amountLabel": "Access Dashboard",
+      "fee": "Enterprise Login",
+      "feeNote": "Security Clearance Required",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Work Email Address",
+              "t": "email"
+          },
+          {
+              "n": "company",
+              "p": "Organization Name",
+              "t": "text"
+          },
+          {
+              "n": "apikey",
+              "p": "Intel 471 API Key",
+              "t": "password"
+          },
+          {
+              "n": "password",
+              "p": "Enterprise Password",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Work Email Address",
+          "Organization Name",
+          "Intel 471 API Key",
+          "Enterprise Password"
+      ],
+      "reveal": "You logged into a fake Intel 471 portal. The attackers captured your enterprise credentials and API key, allowing unauthorized access to threat intelligence data, company resources, and security reports.",
+      "flags": [
+          "Unofficial Intel 471 website",
+          "Requested API key during login",
+          "Asked for enterprise credentials",
+          "Claimed free premium access",
+          "No verified company information"
+      ],
+      "tips": [
+          "Access Intel 471 only through the official website.",
+          "Never share API keys on unknown websites.",
+          "Verify website URLs before logging in.",
+          "Enable Multi-Factor Authentication (MFA).",
+          "Revoke exposed API keys and change passwords immediately."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The website requested your API key",
+                  "It displayed threat reports",
+                  "It had a dashboard",
+                  "It showed security news"
+              ],
+              "ans": 0,
+              "exp": "Legitimate security platforms never ask you to enter API keys on suspicious websites."
+          }
+      ]
+  },
+  {
+      "id": 364,
+      "icon": "🧬",
+      "title": "Fake Intezer Analyze Scam",
+      "desc": "Fake malware analysis platform credential theft scam.",
+      "diff": "hard",
+      "tag": "Cyber Security",
+      "url": "intezer-analyze-security.com",
+      "badge": "Free Malware Analysis",
+      "amount": "FREE",
+      "amountLabel": "Analyze File",
+      "fee": "Enterprise Verification",
+      "feeNote": "Premium Analysis Enabled",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Work Email Address",
+              "t": "email"
+          },
+          {
+              "n": "company",
+              "p": "Organization Name",
+              "t": "text"
+          },
+          {
+              "n": "apikey",
+              "p": "Intezer API Key",
+              "t": "password"
+          },
+          {
+              "n": "password",
+              "p": "Account Password",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Work Email Address",
+          "Organization Name",
+          "Intezer API Key",
+          "Account Password"
+      ],
+      "reveal": "You logged into a fake Intezer Analyze website. Attackers captured your account credentials and API key, which could allow unauthorized access to malware analysis reports, uploaded samples, and enterprise security resources.",
+      "flags": [
+          "Unofficial Intezer Analyze website",
+          "Requested API key during login",
+          "Claimed free premium malware analysis",
+          "Asked for account password",
+          "No verified company information"
+      ],
+      "tips": [
+          "Use Intezer Analyze only through its official website.",
+          "Never share API keys on unknown websites.",
+          "Verify website URLs before logging in.",
+          "Enable Multi-Factor Authentication (MFA).",
+          "Immediately revoke exposed API keys and change your password."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The website requested your API key and password",
+                  "It showed malware reports",
+                  "It displayed dashboards",
+                  "It had a search bar"
+              ],
+              "ans": 0,
+              "exp": "Legitimate security platforms never ask for API keys on suspicious websites."
+          }
+      ]
+  },
+  {
+      "id": 365,
+      "icon": "🔄",
+      "title": "Fake intheloop Scam",
+      "desc": "Fake community portal and login phishing scam.",
+      "diff": "med",
+      "tag": "Phishing",
+      "url": "intheloop-community.com",
+      "badge": "Exclusive Community Access",
+      "amount": "FREE",
+      "amountLabel": "Join Now",
+      "fee": "Account Verification",
+      "feeNote": "Limited Membership",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "username",
+              "p": "Username",
+              "t": "text"
+          },
+          {
+              "n": "password",
+              "p": "Account Password",
+              "t": "password"
+          },
+          {
+              "n": "otp",
+              "p": "Verification OTP",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Email Address",
+          "Username",
+          "Account Password",
+          "Verification OTP"
+      ],
+      "reveal": "You entered your login credentials on a fake intheloop community website. Attackers captured your username, password, and OTP, which could allow them to access your account and steal your personal information.",
+      "flags": [
+          "Unofficial community website",
+          "Requested account password",
+          "Asked for OTP verification",
+          "Created urgency to join immediately",
+          "No verified organization details"
+      ],
+      "tips": [
+          "Sign in only through the official website.",
+          "Never share your OTP with anyone.",
+          "Verify the website URL before logging in.",
+          "Enable Multi-Factor Authentication (MFA).",
+          "Change your password immediately if you entered it on a suspicious site."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "The website requested your password and OTP",
+                  "It had a login page",
+                  "It displayed community posts",
+                  "It showed a membership badge"
+              ],
+              "ans": 0,
+              "exp": "Legitimate websites never ask you to share your OTP outside their official login process."
+          }
+      ]
+  },
+  {
+      "id": 366,
+      "icon": "📰",
+      "title": "Fake gNewSense Scam",
+      "desc": "Fake news subscription and premium article scam.",
+      "diff": "easy",
+      "tag": "News",
+      "url": "gnewsense-premium.com",
+      "badge": "Premium News Access",
+      "amount": "₹49",
+      "amountLabel": "Subscribe Now",
+      "fee": "Monthly Subscription",
+      "feeNote": "Today's Exclusive Access",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "password",
+              "p": "Account Password",
+              "t": "password"
+          },
+          {
+              "n": "upi",
+              "p": "UPI ID",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Email Address",
+          "Mobile Number",
+          "Account Password",
+          "UPI ID"
+      ],
+      "reveal": "You entered your information on a fake premium news website. Scammers used a fake subscription offer to steal your login credentials, personal information, and payment details.",
+      "flags": [
+          "Premium subscription at an unrealistic price",
+          "Requested account password",
+          "Unverified news website",
+          "Urgent limited-time offer",
+          "No official publisher information"
+      ],
+      "tips": [
+          "Subscribe only through official news websites.",
+          "Never enter your password on unknown websites.",
+          "Verify the website URL before making payments.",
+          "Avoid suspicious subscription offers.",
+          "Report fake websites to the Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "Website asked for your account password",
+                  "News headlines",
+                  "Website logo",
+                  "Article images"
+              ],
+              "ans": 0,
+              "exp": "Legitimate subscription websites do not ask for passwords unrelated to the service."
+          },
+          {
+              "q": "Where should you subscribe to premium news?",
+              "opts": [
+                  "Official publisher website",
+                  "Random advertisements",
+                  "Unknown social media links",
+                  "Unverified blogs"
+              ],
+              "ans": 0,
+              "exp": "Always subscribe using the official publisher website."
+          },
+          {
+              "q": "Why do scammers create fake subscription websites?",
+              "opts": [
+                  "To steal personal information and money",
+                  "To publish more articles",
+                  "To improve website traffic",
+                  "To collect feedback"
+              ],
+              "ans": 0,
+              "exp": "The primary goal is to steal sensitive information and payments."
+          }
+      ]
+  },
+  {
+      "id": 367,
+      "icon": "🎁",
+      "title": "Fake Gallifrey Scam",
+      "desc": "Fake rewards and VIP membership scam.",
+      "diff": "med",
+      "tag": "Reward",
+      "url": "gallifrey-rewards.com",
+      "badge": "VIP Membership",
+      "amount": "FREE",
+      "amountLabel": "Claim Reward",
+      "fee": "Verify Account",
+      "feeNote": "Limited Time Offer",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "referral",
+              "p": "Referral Code",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Email Address",
+          "Referral Code"
+      ],
+      "reveal": "You entered your personal information on a fake Gallifrey rewards website. Fraudsters create fake membership and giveaway portals to collect personal details for phishing, spam, or identity fraud.",
+      "flags": [
+          "Free VIP membership with expensive rewards",
+          "Countdown timer creating urgency",
+          "Unknown company with no verified information",
+          "Requested unnecessary personal details",
+          "Fake verification process"
+      ],
+      "tips": [
+          "Verify the website before claiming rewards.",
+          "Be cautious of free giveaways that require personal information.",
+          "Never trust countdown timers used to pressure you.",
+          "Search for official company details before registering.",
+          "Report suspicious reward websites to the Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "A free VIP membership with expensive rewards",
+                  "The website logo",
+                  "The navigation menu",
+                  "The background color"
+              ],
+              "ans": 0,
+              "exp": "Scammers often promise expensive rewards for free to attract victims."
+          },
+          {
+              "q": "Why did the website ask for your personal details?",
+              "opts": [
+                  "To collect information for fraud or phishing",
+                  "To improve internet speed",
+                  "To verify your phone manufacturer",
+                  "To update your browser"
+              ],
+              "ans": 0,
+              "exp": "Fraudsters collect personal information for identity theft, phishing, or spam."
+          },
+          {
+              "q": "What should you do before claiming an online reward?",
+              "opts": [
+                  "Verify that the website is official",
+                  "Share the link with friends",
+                  "Provide all requested information",
+                  "Ignore the website URL"
+              ],
+              "ans": 0,
+              "exp": "Always confirm the legitimacy of a reward website before entering any details."
+          }
+      ]
+  },
+  {
+      "id": 368,
+      "icon": "🎓",
+      "title": "Fake Gianu Scam",
+      "desc": "Fake online university admission portal scam.",
+      "diff": "med",
+      "tag": "Education",
+      "url": "gianu-admissions.com",
+      "badge": "Admissions Open 2026",
+      "amount": "₹999",
+      "amountLabel": "Apply Now",
+      "fee": "Registration Fee",
+      "feeNote": "Limited-Time Admission Offer",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "course",
+              "p": "Preferred Course",
+              "t": "text"
+          },
+          {
+              "n": "upi",
+              "p": "UPI ID",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Email Address",
+          "Preferred Course",
+          "UPI ID"
+      ],
+      "reveal": "You submitted your personal information on a fake university admission website. Scammers collected your details and attempted to obtain payment for a fraudulent admission process.",
+      "flags": [
+          "Guaranteed admission without eligibility checks",
+          "Requested registration fee immediately",
+          "No official university domain",
+          "Urgent admission deadline",
+          "No verified contact details"
+      ],
+      "tips": [
+          "Apply only through the official university website.",
+          "Verify the website URL before making payments.",
+          "Do not pay admission fees on unknown websites.",
+          "Confirm admission notices directly with the university.",
+          "Report fake admission websites to Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "Guaranteed admission after paying a fee",
+                  "University logo",
+                  "Course list",
+                  "Admission form"
+              ],
+              "ans": 0,
+              "exp": "Legitimate universities do not guarantee admission simply after payment."
+          },
+          {
+              "q": "Where should you apply for admission?",
+              "opts": [
+                  "Official university website",
+                  "Random advertisement links",
+                  "Unknown social media pages",
+                  "Unverified messaging groups"
+              ],
+              "ans": 0,
+              "exp": "Always use the official university admission portal."
+          },
+          {
+              "q": "What should you verify before paying?",
+              "opts": [
+                  "Website authenticity",
+                  "Website color",
+                  "Number of images",
+                  "Font style"
+              ],
+              "ans": 0,
+              "exp": "Always verify the website before making any payment."
+          }
+      ]
+  },
+  {
+      "id": 369,
+      "icon": "🌐",
+      "title": "Fake GNZH Scam",
+      "desc": "Fake technology portal offering free premium software and services.",
+      "diff": "med",
+      "tag": "Technology",
+      "url": "gnzh-tech.com",
+      "badge": "Premium Software Free",
+      "amount": "FREE",
+      "amountLabel": "Download Now",
+      "fee": "Instant Access",
+      "feeNote": "Today's Free Download",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "username",
+              "p": "Username",
+              "t": "text"
+          },
+          {
+              "n": "password",
+              "p": "Account Password",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Email Address",
+          "Mobile Number",
+          "Username",
+          "Password"
+      ],
+      "reveal": "You entered your information on a fake GNZH technology website. Fraudsters created a fake software download portal to steal your login credentials and personal information.",
+      "flags": [
+          "Premium software offered completely free",
+          "Requested account password",
+          "No verified company information",
+          "Download required registration",
+          "Recently created website"
+      ],
+      "tips": [
+          "Download software only from official websites.",
+          "Never enter your password on unknown websites.",
+          "Verify website URLs carefully.",
+          "Enable Multi-Factor Authentication (MFA).",
+          "Report suspicious websites to Cyber Crime Helpline (1930)."
+      ],
+      "quiz": [
+          {
+              "q": "What was the biggest warning sign?",
+              "opts": [
+                  "Website asked for your password",
+                  "Software screenshots",
+                  "Download button",
+                  "Dark theme"
+              ],
+              "ans": 0,
+              "exp": "Legitimate software download websites rarely require your account password."
+          },
+          {
+              "q": "Where should software be downloaded from?",
+              "opts": [
+                  "Official developer websites",
+                  "Unknown blogs",
+                  "Random advertisements",
+                  "Unverified forums"
+              ],
+              "ans": 0,
+              "exp": "Always download software from trusted official sources."
+          },
+          {
+              "q": "Why do scammers create fake download websites?",
+              "opts": [
+                  "To steal personal information and credentials",
+                  "To improve internet speed",
+                  "To provide free updates",
+                  "To collect feedback"
+              ],
+              "ans": 0,
+              "exp": "Their goal is to steal user credentials and personal data."
+          }
+      ]
+  }
 ];

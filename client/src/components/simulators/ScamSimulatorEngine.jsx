@@ -182,6 +182,53 @@ import { BusinessTodaySim, CarInsuranceSim, CATCoachingSim, ChaiPointSim, Cheque
 import { CardanoSim, CardingForumSim, CryptoExchangeSim, DarkbloodSim, DashCoinSim, DecentralizedExchangeSim } from './CryptoAndWeb3ScamSims';
 import { CandySim, CompTIASim, ContentSamuraiSim, CountryBeanSim, COVIDTestSim, DemographicsProSim, DesignWizardSim } from './ConsumerServiceScamSims';
 
+// Prachi's Complete Interactive Simulators
+import FakeFunkyShoppingScamSim from './FakeFunkyShoppingScamSim';
+import FakeFwalchScam from './FakeFwalchScam';
+import FakeGaanaPlus from './FakeGaanaPlus';
+import FakeGadgets360 from './FakeGadgets360';
+import FakeGarrettScam from './FakeGarrettScam';
+import FakeGeoffGarsideScam from './FakeGeoffGarsideScam';
+import FakeGeometryScam from './FakeGeometryScam';
+import FakeGinGonicScam from './FakeGinGonicScam';
+import FakeGlobalDesiScam from './FakeGlobalDesiScam';
+import FakeGoogleAdSenseChequeScam from './FakeGoogleAdSenseChequeScam';
+import FakeGooglePayCustomerCareScam from './FakeGooglePayCustomerCareScam';
+import FakeGorillaMuxScam from './FakeGorillaMuxScam';
+import FakeGovernmentGrantScam from './FakeGovernmentGrantScam';
+import FakeGozillaScam from './FakeGozillaScam';
+import FakeGtagsScam from './FakeGtagsScam';
+import FakeHPUXScam from './FakeHPUXScam';
+import FakeHadolintScam from './FakeHadolintScam';
+import FakeHeadbangerMerchScam from './FakeHeadbangerMerchScam';
+import FakeHealthCheckupSim from './FakeHealthCheckupSim';
+import FakeHeftigScam from './FakeHeftigScam';
+import FakeHonukaiScam from './FakeHonukaiScam';
+import FakeHtmlhintScam from './FakeHtmlhintScam';
+import FakeHttprouterScam from './FakeHttprouterScam';
+import FakeHttpxScam from './FakeHttpxScam';
+import FakeHulkScam from './FakeHulkScam';
+import FakeHumbabbaScam from './FakeHumbabbaScam';
+import FakeHuskyScam from './FakeHuskyScam';
+import FakeHybridAnalysisScam from './FakeHybridAnalysisScam';
+import FakeIGAuditScam from './FakeIGAuditScam';
+import FakeIGyaanScam from './FakeIGyaanScam';
+import FakeIMindMapScam from './FakeIMindMapScam';
+import FakeIRCTCTicketBookingSite from './FakeIRCTCTicketBookingSite';
+import FakeIdoLaunchpadScam from './FakeIdoLaunchpadScam';
+import FakeIggyScam from './FakeIggyScam';
+import FakeIllumosScam from './FakeIllumosScam';
+import FakeInkMonkScam from './FakeInkMonkScam';
+import FakeInsightVMScam from './FakeInsightVMScam';
+import FakeInstallerScam from './FakeInstallerScam';
+import FakeIntel471Scam from './FakeIntel471Scam';
+import FakeIntezerAnalyzeScam from './FakeIntezerAnalyzeScam';
+import FakeIntheloopScam from './FakeIntheloopScam';
+import FakegNewSenseScam from './FakegNewSenseScam';
+import FakegallifreyScam from './FakegallifreyScam';
+import FakegianuScam from './FakegianuScam';
+import FakegnzhScam from './FakegnzhScam';
+
 const SIM_MAP = {
   //team
   0: InstantLoanSim,
@@ -426,7 +473,53 @@ const SIM_MAP = {
   274: DemographicsProSim,
   275: DesignWizardSim,
   276: DialUpInternetSim,
-  277: DieterSim
+  277: DieterSim,
+  // Prachi's Complete Interactive Simulators (IDs 325-369)
+  325: FakeFunkyShoppingScamSim,
+  326: FakeFwalchScam,
+  327: FakeGaanaPlus,
+  328: FakeGadgets360,
+  329: FakeGarrettScam,
+  330: FakeGeoffGarsideScam,
+  331: FakeGeometryScam,
+  332: FakeGinGonicScam,
+  333: FakeGlobalDesiScam,
+  334: FakeGoogleAdSenseChequeScam,
+  335: FakeGooglePayCustomerCareScam,
+  336: FakeGorillaMuxScam,
+  337: FakeGovernmentGrantScam,
+  338: FakeGozillaScam,
+  339: FakeGtagsScam,
+  340: FakeHPUXScam,
+  341: FakeHadolintScam,
+  342: FakeHeadbangerMerchScam,
+  343: FakeHealthCheckupSim,
+  344: FakeHeftigScam,
+  345: FakeHonukaiScam,
+  346: FakeHtmlhintScam,
+  347: FakeHttprouterScam,
+  348: FakeHttpxScam,
+  349: FakeHulkScam,
+  350: FakeHumbabbaScam,
+  351: FakeHuskyScam,
+  352: FakeHybridAnalysisScam,
+  353: FakeIGAuditScam,
+  354: FakeIGyaanScam,
+  355: FakeIMindMapScam,
+  356: FakeIRCTCTicketBookingSite,
+  357: FakeIdoLaunchpadScam,
+  358: FakeIggyScam,
+  359: FakeIllumosScam,
+  360: FakeInkMonkScam,
+  361: FakeInsightVMScam,
+  362: FakeInstallerScam,
+  363: FakeIntel471Scam,
+  364: FakeIntezerAnalyzeScam,
+  365: FakeIntheloopScam,
+  366: FakegNewSenseScam,
+  367: FakegallifreyScam,
+  368: FakegianuScam,
+  369: FakegnzhScam,
 };
 
 export default function ScamSimulatorEngine({ moduleId, moduleData, formData, handleInputChange, handleSimulationSubmit }) {
