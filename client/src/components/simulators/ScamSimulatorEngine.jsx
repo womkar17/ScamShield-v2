@@ -229,6 +229,56 @@ import FakegallifreyScam from './FakegallifreyScam';
 import FakegianuScam from './FakegianuScam';
 import FakegnzhScam from './FakegnzhScam';
 
+// Atharva's Complete Self-Contained Simulators (IDs 421-468)
+import KissmetricsSim from './KissmetricsSim';
+import KiTTYSim from './KiTTYSim';
+import KloeriSim from './KloeriSim';
+import KnowageSim from './KnowageSim';
+import KodiAddonSim from './KodiAddonSim';
+import KolibriOSSim from './KolibriOSSim';
+import KoloSim from './KoloSim';
+import KonsoleSim from './KonsoleSim';
+import KoovsSim from './KoovsSim';
+import KphoenSim from './KphoenSim';
+import KRDCSim from './KRDCSim';
+import KrispyKremeSim from './KrispyKremeSim';
+import KshSim from './KshSim';
+import KubeflowSim from './KubeflowSim';
+import KuduSim from './KuduSim';
+import KunalRawalSim from './KunalRawalSim';
+import KwortSim from './KwortSim';
+import KySim from './KySim';
+import KysoSim from './KysoSim';
+import LakeFSSim from './LakeFSSim';
+import LaravelEloquentSim from './LaravelEloquentSim';
+import LaterSim from './LaterSim';
+import LavazzaSim from './LavazzaSim';
+import LEANManufacturingGrantSim from './LEANManufacturingGrantSim';
+import LibasSim from './LibasSim';
+import LiciousSim from './LiciousSim';
+import LimeroadSim from './LimeroadSim';
+import LineageOSSim from './LineageOSSim';
+import LintStagedSim from './LintStagedSim';
+import LinuxonlySim from './LinuxonlySim';
+import LitecoinSim from './LitecoinSim';
+import LoanHarassmentSim from './LoanHarassmentSim';
+import LogMeInSim from './LogMeInSim';
+import LookinSim from './LookinSim';
+import LPGCylinderBookingSiteSim from './LPGCylinderBookingSiteSim';
+import LucidchartSim from './LucidchartSim';
+import LuigiSim from './LuigiSim';
+import LukerandallSim from './LukerandallSim';
+import Lumen5Sim from './Lumen5Sim';
+import LXCSim from './LXCSim';
+import LXDSim from './LXDSim';
+import LXLESim from './LXLESim';
+import LXRSim from './LXRSim';
+import MacPortsSim from './MacPortsSim';
+import MageiaSim from './MageiaSim';
+import MagistoSim from './MagistoSim';
+import MaglevSim from './MaglevSim';
+import MailchimpSim from './MailchimpSim';
+
 const SIM_MAP = {
   //team
   0: InstantLoanSim,
@@ -520,6 +570,55 @@ const SIM_MAP = {
   367: FakegallifreyScam,
   368: FakegianuScam,
   369: FakegnzhScam,
+  // Atharva's Complete Self-Contained Simulators (IDs 421-468)
+  421: KissmetricsSim,
+  422: KiTTYSim,
+  423: KloeriSim,
+  424: KnowageSim,
+  425: KodiAddonSim,
+  426: KolibriOSSim,
+  427: KoloSim,
+  428: KonsoleSim,
+  429: KoovsSim,
+  430: KphoenSim,
+  431: KRDCSim,
+  432: KrispyKremeSim,
+  433: KshSim,
+  434: KubeflowSim,
+  435: KuduSim,
+  436: KunalRawalSim,
+  437: KwortSim,
+  438: KySim,
+  439: KysoSim,
+  440: LakeFSSim,
+  441: LaravelEloquentSim,
+  442: LaterSim,
+  443: LavazzaSim,
+  444: LEANManufacturingGrantSim,
+  445: LibasSim,
+  446: LiciousSim,
+  447: LimeroadSim,
+  448: LineageOSSim,
+  449: LintStagedSim,
+  450: LinuxonlySim,
+  451: LitecoinSim,
+  452: LoanHarassmentSim,
+  453: LogMeInSim,
+  454: LookinSim,
+  455: LPGCylinderBookingSiteSim,
+  456: LucidchartSim,
+  457: LuigiSim,
+  458: LukerandallSim,
+  459: Lumen5Sim,
+  460: LXCSim,
+  461: LXDSim,
+  462: LXLESim,
+  463: LXRSim,
+  464: MacPortsSim,
+  465: MageiaSim,
+  466: MagistoSim,
+  467: MaglevSim,
+  468: MailchimpSim,
 };
 
 export default function ScamSimulatorEngine({ moduleId, moduleData, formData, handleInputChange, handleSimulationSubmit }) {

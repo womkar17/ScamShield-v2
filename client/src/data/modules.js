@@ -8282,4 +8282,3880 @@ export const MODULES = [
           }
       ]
   }
+,
+  {
+      "id": 421,
+      "icon": "📈",
+      "title": "Fake Kissmetrics Account Suspension Scam",
+      "desc": "An urgent email claims your Kissmetrics account will be suspended unless you \"verify\" your login and billing details.",
+      "diff": "med",
+      "tag": "Account Phishing",
+      "url": "kissmetrics-accounts.com",
+      "badge": "Action Required",
+      "amount": "Account at Risk",
+      "amountLabel": "Kissmetrics — Verify to Avoid Suspension",
+      "fee": "Verify Now",
+      "feeNote": "Confirm your details within 24 hours",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email",
+              "t": "email"
+          },
+          {
+              "n": "password",
+              "p": "Password",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Account Password",
+          "Card Number",
+          "CVV"
+      ],
+      "reveal": "The email did not come from Kissmetrics — the domain was a lookalike. By logging in and entering your card details, you handed the attacker your account password (likely reused elsewhere) and your card for fraudulent billing.",
+      "flags": [
+          "The sender's domain resembles but does not match Kissmetrics's real domain.",
+          "The email creates urgency with a 24-hour suspension threat.",
+          "The login page asks you to also enter full card details right after signing in.",
+          "There is no personalised account information — just a generic \"unusual activity\" warning."
+      ],
+      "tips": [
+          "Always access Kissmetrics by typing its official URL directly instead of clicking email links.",
+          "Enable two-factor authentication so a leaked password alone can't compromise your account.",
+          "Legitimate services rarely ask you to re-enter full card details through an email link.",
+          "Use a password manager so you never reuse the same password across multiple services."
+      ],
+      "quiz": [
+          {
+              "q": "What should you do when you get an urgent \"Kissmetrics account suspended\" email?",
+              "opts": [
+                  "Click the link immediately and log in",
+                  "Type the official website URL directly in your browser to check your account",
+                  "Reply with your password to confirm",
+                  "Forward it to friends"
+              ],
+              "ans": 1,
+              "exp": "Navigating directly to the official site avoids phishing links entirely."
+          },
+          {
+              "q": "Why is being asked for card details right after login suspicious?",
+              "opts": [
+                  "It's normal for all logins",
+                  "Legitimate re-verification rarely needs a full card number and CVV together",
+                  "Card details are needed to prove identity",
+                  "It's a standard security check"
+              ],
+              "ans": 1,
+              "exp": "Full card number + CVV entry is rarely required for account verification and is a common phishing tactic."
+          },
+          {
+              "q": "What is the best protection if your password is ever phished?",
+              "opts": [
+                  "Using the same password everywhere so it's easy to remember",
+                  "Two-factor authentication (2FA)",
+                  "A longer email subject line",
+                  "Ignoring the account afterward"
+              ],
+              "ans": 1,
+              "exp": "2FA means a stolen password alone isn't enough for an attacker to access your account."
+          }
+      ]
+  },
+  {
+      "id": 422,
+      "icon": "🐈",
+      "title": "Fake KiTTY Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" KiTTY download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "kitty-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "KiTTY — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not KiTTY at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official KiTTY project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download KiTTY from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the KiTTY download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 423,
+      "icon": "🧩",
+      "title": "Fake kloeri Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" kloeri download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "kloeri-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "kloeri — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not kloeri at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official kloeri project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download kloeri from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the kloeri download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 424,
+      "icon": "📊",
+      "title": "Fake Knowage Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" Knowage download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "knowage-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "Knowage — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not Knowage at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official Knowage project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download Knowage from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the Knowage download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 425,
+      "icon": "🎬",
+      "title": "Fake Kodi Addon Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" Kodi Addon download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "kodi-addon-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "Kodi Addon — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not Kodi Addon at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official Kodi Addon project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download Kodi Addon from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the Kodi Addon download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 426,
+      "icon": "💽",
+      "title": "Fake KolibriOS Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" KolibriOS download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "kolibrios-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "KolibriOS — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not KolibriOS at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official KolibriOS project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download KolibriOS from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the KolibriOS download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 427,
+      "icon": "🧩",
+      "title": "Fake kolo Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" kolo download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "kolo-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "kolo — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not kolo at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official kolo project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download kolo from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the kolo download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 428,
+      "icon": "⌨️",
+      "title": "Fake Konsole Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" Konsole download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "konsole-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "Konsole — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not Konsole at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official Konsole project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download Konsole from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the Konsole download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 429,
+      "icon": "👗",
+      "title": "Fake Koovs Giveaway Scam",
+      "desc": "A forwarded message claims Koovs is giving away free prizes — just pay a small fee to claim yours.",
+      "diff": "low",
+      "tag": "Brand Impersonation Fraud",
+      "url": "koovs-offers.in",
+      "badge": "You've Been Selected!",
+      "amount": "Free Prize",
+      "amountLabel": "Koovs Giveaway",
+      "fee": "Delivery / Verification Fee: ₹49",
+      "feeNote": "Pay to confirm your prize",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "card",
+              "p": "Card Number for Fee",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Home Address",
+          "Card Details"
+      ],
+      "reveal": "Koovs never ran this giveaway — the message was forwarded from an unrelated scam account. There is no prize; the \"delivery fee\" was just a way to capture your card details for further fraudulent charges.",
+      "flags": [
+          "You never entered any contest, yet you've supposedly \"won\" a Koovs prize.",
+          "The message is a mass-forwarded WhatsApp chain, not an official brand channel.",
+          "A genuine free prize should never require you to pay a fee to receive it.",
+          "There is a false deadline (\"valid for the next 2 hours\") to rush your decision."
+      ],
+      "tips": [
+          "Check Koovs's official verified social media or website before believing any \"giveaway\".",
+          "Real brands never ask winners to pay a fee — shipping and taxes are covered by the company.",
+          "Be suspicious of any prize claim that arrives as a forwarded WhatsApp or SMS message.",
+          "Never enter your full card details on a page you reached through a forwarded chat link."
+      ],
+      "quiz": [
+          {
+              "q": "How can you verify if a Koovs giveaway is real?",
+              "opts": [
+                  "If many people forwarded the message",
+                  "Check the brand's official verified website or social media",
+                  "If the message uses the brand's logo",
+                  "If it promises a big prize"
+              ],
+              "ans": 1,
+              "exp": "Only the brand's own verified channels can confirm a real promotion."
+          },
+          {
+              "q": "Do legitimate prize giveaways ever charge a \"delivery fee\" to the winner?",
+              "opts": [
+                  "Yes, always",
+                  "No — legitimate prizes don't require winners to pay to receive them",
+                  "Only for expensive prizes",
+                  "Only if you ask for express delivery"
+              ],
+              "ans": 1,
+              "exp": "Real brands absorb shipping costs; asking winners to pay is a classic scam pattern."
+          },
+          {
+              "q": "What is the danger of entering card details to \"claim\" a small fee?",
+              "opts": [
+                  "There is no danger",
+                  "Your card details can then be used for larger unauthorized charges",
+                  "It only charges the exact fee shown, nothing more",
+                  "It's just for record-keeping"
+              ],
+              "ans": 1,
+              "exp": "Once your card is captured, scammers can attempt further unauthorized transactions."
+          }
+      ]
+  },
+  {
+      "id": 430,
+      "icon": "🧩",
+      "title": "Fake kphoen Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" kphoen download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "kphoen-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "kphoen — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not kphoen at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official kphoen project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download kphoen from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the kphoen download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 431,
+      "icon": "🖥️",
+      "title": "Fake KRDC Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" KRDC download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "krdc-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "KRDC — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not KRDC at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official KRDC project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download KRDC from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the KRDC download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 432,
+      "icon": "🍩",
+      "title": "Fake Krispy Kreme Giveaway Scam",
+      "desc": "A forwarded message claims Krispy Kreme is giving away free prizes — just pay a small fee to claim yours.",
+      "diff": "low",
+      "tag": "Brand Impersonation Fraud",
+      "url": "krispykreme-offers.in",
+      "badge": "You've Been Selected!",
+      "amount": "Free Prize",
+      "amountLabel": "Krispy Kreme Giveaway",
+      "fee": "Delivery / Verification Fee: ₹49",
+      "feeNote": "Pay to confirm your prize",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "card",
+              "p": "Card Number for Fee",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Home Address",
+          "Card Details"
+      ],
+      "reveal": "Krispy Kreme never ran this giveaway — the message was forwarded from an unrelated scam account. There is no prize; the \"delivery fee\" was just a way to capture your card details for further fraudulent charges.",
+      "flags": [
+          "You never entered any contest, yet you've supposedly \"won\" a Krispy Kreme prize.",
+          "The message is a mass-forwarded WhatsApp chain, not an official brand channel.",
+          "A genuine free prize should never require you to pay a fee to receive it.",
+          "There is a false deadline (\"valid for the next 2 hours\") to rush your decision."
+      ],
+      "tips": [
+          "Check Krispy Kreme's official verified social media or website before believing any \"giveaway\".",
+          "Real brands never ask winners to pay a fee — shipping and taxes are covered by the company.",
+          "Be suspicious of any prize claim that arrives as a forwarded WhatsApp or SMS message.",
+          "Never enter your full card details on a page you reached through a forwarded chat link."
+      ],
+      "quiz": [
+          {
+              "q": "How can you verify if a Krispy Kreme giveaway is real?",
+              "opts": [
+                  "If many people forwarded the message",
+                  "Check the brand's official verified website or social media",
+                  "If the message uses the brand's logo",
+                  "If it promises a big prize"
+              ],
+              "ans": 1,
+              "exp": "Only the brand's own verified channels can confirm a real promotion."
+          },
+          {
+              "q": "Do legitimate prize giveaways ever charge a \"delivery fee\" to the winner?",
+              "opts": [
+                  "Yes, always",
+                  "No — legitimate prizes don't require winners to pay to receive them",
+                  "Only for expensive prizes",
+                  "Only if you ask for express delivery"
+              ],
+              "ans": 1,
+              "exp": "Real brands absorb shipping costs; asking winners to pay is a classic scam pattern."
+          },
+          {
+              "q": "What is the danger of entering card details to \"claim\" a small fee?",
+              "opts": [
+                  "There is no danger",
+                  "Your card details can then be used for larger unauthorized charges",
+                  "It only charges the exact fee shown, nothing more",
+                  "It's just for record-keeping"
+              ],
+              "ans": 1,
+              "exp": "Once your card is captured, scammers can attempt further unauthorized transactions."
+          }
+      ]
+  },
+  {
+      "id": 433,
+      "icon": "⌨️",
+      "title": "Fake ksh Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" ksh download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "ksh-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "ksh — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not ksh at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official ksh project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download ksh from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the ksh download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 434,
+      "icon": "🤖",
+      "title": "Fake Kubeflow Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" Kubeflow download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "kubeflow-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "Kubeflow — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not Kubeflow at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official Kubeflow project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download Kubeflow from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the Kubeflow download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 435,
+      "icon": "☁️",
+      "title": "Fake Kudu Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" Kudu download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "kudu-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "Kudu — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not Kudu at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official Kudu project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download Kudu from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the Kudu download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 436,
+      "icon": "👔",
+      "title": "Fake Kunal Rawal Giveaway Scam",
+      "desc": "A forwarded message claims Kunal Rawal is giving away free prizes — just pay a small fee to claim yours.",
+      "diff": "low",
+      "tag": "Brand Impersonation Fraud",
+      "url": "kunalrawal-offers.in",
+      "badge": "You've Been Selected!",
+      "amount": "Free Prize",
+      "amountLabel": "Kunal Rawal Giveaway",
+      "fee": "Delivery / Verification Fee: ₹49",
+      "feeNote": "Pay to confirm your prize",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "card",
+              "p": "Card Number for Fee",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Home Address",
+          "Card Details"
+      ],
+      "reveal": "Kunal Rawal never ran this giveaway — the message was forwarded from an unrelated scam account. There is no prize; the \"delivery fee\" was just a way to capture your card details for further fraudulent charges.",
+      "flags": [
+          "You never entered any contest, yet you've supposedly \"won\" a Kunal Rawal prize.",
+          "The message is a mass-forwarded WhatsApp chain, not an official brand channel.",
+          "A genuine free prize should never require you to pay a fee to receive it.",
+          "There is a false deadline (\"valid for the next 2 hours\") to rush your decision."
+      ],
+      "tips": [
+          "Check Kunal Rawal's official verified social media or website before believing any \"giveaway\".",
+          "Real brands never ask winners to pay a fee — shipping and taxes are covered by the company.",
+          "Be suspicious of any prize claim that arrives as a forwarded WhatsApp or SMS message.",
+          "Never enter your full card details on a page you reached through a forwarded chat link."
+      ],
+      "quiz": [
+          {
+              "q": "How can you verify if a Kunal Rawal giveaway is real?",
+              "opts": [
+                  "If many people forwarded the message",
+                  "Check the brand's official verified website or social media",
+                  "If the message uses the brand's logo",
+                  "If it promises a big prize"
+              ],
+              "ans": 1,
+              "exp": "Only the brand's own verified channels can confirm a real promotion."
+          },
+          {
+              "q": "Do legitimate prize giveaways ever charge a \"delivery fee\" to the winner?",
+              "opts": [
+                  "Yes, always",
+                  "No — legitimate prizes don't require winners to pay to receive them",
+                  "Only for expensive prizes",
+                  "Only if you ask for express delivery"
+              ],
+              "ans": 1,
+              "exp": "Real brands absorb shipping costs; asking winners to pay is a classic scam pattern."
+          },
+          {
+              "q": "What is the danger of entering card details to \"claim\" a small fee?",
+              "opts": [
+                  "There is no danger",
+                  "Your card details can then be used for larger unauthorized charges",
+                  "It only charges the exact fee shown, nothing more",
+                  "It's just for record-keeping"
+              ],
+              "ans": 1,
+              "exp": "Once your card is captured, scammers can attempt further unauthorized transactions."
+          }
+      ]
+  },
+  {
+      "id": 437,
+      "icon": "💽",
+      "title": "Fake Kwort Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" Kwort download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "kwort-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "Kwort — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not Kwort at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official Kwort project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download Kwort from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the Kwort download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 438,
+      "icon": "🧩",
+      "title": "Fake Ky Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" Ky download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "ky-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "Ky — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not Ky at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official Ky project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download Ky from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the Ky download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 439,
+      "icon": "🔬",
+      "title": "Fake Kyso Account Suspension Scam",
+      "desc": "An urgent email claims your Kyso account will be suspended unless you \"verify\" your login and billing details.",
+      "diff": "med",
+      "tag": "Account Phishing",
+      "url": "kyso-accounts.com",
+      "badge": "Action Required",
+      "amount": "Account at Risk",
+      "amountLabel": "Kyso — Verify to Avoid Suspension",
+      "fee": "Verify Now",
+      "feeNote": "Confirm your details within 24 hours",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email",
+              "t": "email"
+          },
+          {
+              "n": "password",
+              "p": "Password",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Account Password",
+          "Card Number",
+          "CVV"
+      ],
+      "reveal": "The email did not come from Kyso — the domain was a lookalike. By logging in and entering your card details, you handed the attacker your account password (likely reused elsewhere) and your card for fraudulent billing.",
+      "flags": [
+          "The sender's domain resembles but does not match Kyso's real domain.",
+          "The email creates urgency with a 24-hour suspension threat.",
+          "The login page asks you to also enter full card details right after signing in.",
+          "There is no personalised account information — just a generic \"unusual activity\" warning."
+      ],
+      "tips": [
+          "Always access Kyso by typing its official URL directly instead of clicking email links.",
+          "Enable two-factor authentication so a leaked password alone can't compromise your account.",
+          "Legitimate services rarely ask you to re-enter full card details through an email link.",
+          "Use a password manager so you never reuse the same password across multiple services."
+      ],
+      "quiz": [
+          {
+              "q": "What should you do when you get an urgent \"Kyso account suspended\" email?",
+              "opts": [
+                  "Click the link immediately and log in",
+                  "Type the official website URL directly in your browser to check your account",
+                  "Reply with your password to confirm",
+                  "Forward it to friends"
+              ],
+              "ans": 1,
+              "exp": "Navigating directly to the official site avoids phishing links entirely."
+          },
+          {
+              "q": "Why is being asked for card details right after login suspicious?",
+              "opts": [
+                  "It's normal for all logins",
+                  "Legitimate re-verification rarely needs a full card number and CVV together",
+                  "Card details are needed to prove identity",
+                  "It's a standard security check"
+              ],
+              "ans": 1,
+              "exp": "Full card number + CVV entry is rarely required for account verification and is a common phishing tactic."
+          },
+          {
+              "q": "What is the best protection if your password is ever phished?",
+              "opts": [
+                  "Using the same password everywhere so it's easy to remember",
+                  "Two-factor authentication (2FA)",
+                  "A longer email subject line",
+                  "Ignoring the account afterward"
+              ],
+              "ans": 1,
+              "exp": "2FA means a stolen password alone isn't enough for an attacker to access your account."
+          }
+      ]
+  },
+  {
+      "id": 440,
+      "icon": "🗄️",
+      "title": "Fake lakeFS Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" lakeFS download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "lakefs-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "lakeFS — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not lakeFS at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official lakeFS project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download lakeFS from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the lakeFS download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 441,
+      "icon": "🧩",
+      "title": "Fake Laravel Eloquent Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" Laravel Eloquent download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "laravel-eloquent-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "Laravel Eloquent — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not Laravel Eloquent at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official Laravel Eloquent project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download Laravel Eloquent from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the Laravel Eloquent download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 442,
+      "icon": "📅",
+      "title": "Fake Later Account Suspension Scam",
+      "desc": "An urgent email claims your Later account will be suspended unless you \"verify\" your login and billing details.",
+      "diff": "med",
+      "tag": "Account Phishing",
+      "url": "later-accounts.com",
+      "badge": "Action Required",
+      "amount": "Account at Risk",
+      "amountLabel": "Later — Verify to Avoid Suspension",
+      "fee": "Verify Now",
+      "feeNote": "Confirm your details within 24 hours",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email",
+              "t": "email"
+          },
+          {
+              "n": "password",
+              "p": "Password",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Account Password",
+          "Card Number",
+          "CVV"
+      ],
+      "reveal": "The email did not come from Later — the domain was a lookalike. By logging in and entering your card details, you handed the attacker your account password (likely reused elsewhere) and your card for fraudulent billing.",
+      "flags": [
+          "The sender's domain resembles but does not match Later's real domain.",
+          "The email creates urgency with a 24-hour suspension threat.",
+          "The login page asks you to also enter full card details right after signing in.",
+          "There is no personalised account information — just a generic \"unusual activity\" warning."
+      ],
+      "tips": [
+          "Always access Later by typing its official URL directly instead of clicking email links.",
+          "Enable two-factor authentication so a leaked password alone can't compromise your account.",
+          "Legitimate services rarely ask you to re-enter full card details through an email link.",
+          "Use a password manager so you never reuse the same password across multiple services."
+      ],
+      "quiz": [
+          {
+              "q": "What should you do when you get an urgent \"Later account suspended\" email?",
+              "opts": [
+                  "Click the link immediately and log in",
+                  "Type the official website URL directly in your browser to check your account",
+                  "Reply with your password to confirm",
+                  "Forward it to friends"
+              ],
+              "ans": 1,
+              "exp": "Navigating directly to the official site avoids phishing links entirely."
+          },
+          {
+              "q": "Why is being asked for card details right after login suspicious?",
+              "opts": [
+                  "It's normal for all logins",
+                  "Legitimate re-verification rarely needs a full card number and CVV together",
+                  "Card details are needed to prove identity",
+                  "It's a standard security check"
+              ],
+              "ans": 1,
+              "exp": "Full card number + CVV entry is rarely required for account verification and is a common phishing tactic."
+          },
+          {
+              "q": "What is the best protection if your password is ever phished?",
+              "opts": [
+                  "Using the same password everywhere so it's easy to remember",
+                  "Two-factor authentication (2FA)",
+                  "A longer email subject line",
+                  "Ignoring the account afterward"
+              ],
+              "ans": 1,
+              "exp": "2FA means a stolen password alone isn't enough for an attacker to access your account."
+          }
+      ]
+  },
+  {
+      "id": 443,
+      "icon": "☕",
+      "title": "Fake Lavazza Giveaway Scam",
+      "desc": "A forwarded message claims Lavazza is giving away free prizes — just pay a small fee to claim yours.",
+      "diff": "low",
+      "tag": "Brand Impersonation Fraud",
+      "url": "lavazza-offers.in",
+      "badge": "You've Been Selected!",
+      "amount": "Free Prize",
+      "amountLabel": "Lavazza Giveaway",
+      "fee": "Delivery / Verification Fee: ₹49",
+      "feeNote": "Pay to confirm your prize",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "card",
+              "p": "Card Number for Fee",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Home Address",
+          "Card Details"
+      ],
+      "reveal": "Lavazza never ran this giveaway — the message was forwarded from an unrelated scam account. There is no prize; the \"delivery fee\" was just a way to capture your card details for further fraudulent charges.",
+      "flags": [
+          "You never entered any contest, yet you've supposedly \"won\" a Lavazza prize.",
+          "The message is a mass-forwarded WhatsApp chain, not an official brand channel.",
+          "A genuine free prize should never require you to pay a fee to receive it.",
+          "There is a false deadline (\"valid for the next 2 hours\") to rush your decision."
+      ],
+      "tips": [
+          "Check Lavazza's official verified social media or website before believing any \"giveaway\".",
+          "Real brands never ask winners to pay a fee — shipping and taxes are covered by the company.",
+          "Be suspicious of any prize claim that arrives as a forwarded WhatsApp or SMS message.",
+          "Never enter your full card details on a page you reached through a forwarded chat link."
+      ],
+      "quiz": [
+          {
+              "q": "How can you verify if a Lavazza giveaway is real?",
+              "opts": [
+                  "If many people forwarded the message",
+                  "Check the brand's official verified website or social media",
+                  "If the message uses the brand's logo",
+                  "If it promises a big prize"
+              ],
+              "ans": 1,
+              "exp": "Only the brand's own verified channels can confirm a real promotion."
+          },
+          {
+              "q": "Do legitimate prize giveaways ever charge a \"delivery fee\" to the winner?",
+              "opts": [
+                  "Yes, always",
+                  "No — legitimate prizes don't require winners to pay to receive them",
+                  "Only for expensive prizes",
+                  "Only if you ask for express delivery"
+              ],
+              "ans": 1,
+              "exp": "Real brands absorb shipping costs; asking winners to pay is a classic scam pattern."
+          },
+          {
+              "q": "What is the danger of entering card details to \"claim\" a small fee?",
+              "opts": [
+                  "There is no danger",
+                  "Your card details can then be used for larger unauthorized charges",
+                  "It only charges the exact fee shown, nothing more",
+                  "It's just for record-keeping"
+              ],
+              "ans": 1,
+              "exp": "Once your card is captured, scammers can attempt further unauthorized transactions."
+          }
+      ]
+  },
+  {
+      "id": 444,
+      "icon": "🏭",
+      "title": "Fake LEAN Manufacturing Grant Scam",
+      "desc": "An SMS claims your LEAN Manufacturing Grant application is pending and asks you to verify Aadhaar and bank details to complete it.",
+      "diff": "med",
+      "tag": "Government Scheme Fraud",
+      "url": "lean-manufacturing-grant.in",
+      "badge": "Application Pending",
+      "amount": "Verification Required",
+      "amountLabel": "LEAN Manufacturing Grant",
+      "fee": "Verify to Continue",
+      "feeNote": "Complete now to avoid cancellation",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "aadhaar",
+              "p": "Aadhaar Number",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Aadhaar Number",
+          "Bank Account / UPI ID",
+          "OTP"
+      ],
+      "reveal": "This portal is not run by any government department. By entering your Aadhaar number, bank account, and OTP, you gave scammers everything they need to access your account or commit identity fraud.",
+      "flags": [
+          "Government schemes are never processed through links sent via unsolicited SMS.",
+          "The site domain does not end in the official .gov.in or nic.in domains.",
+          "You are asked to share an OTP, which no legitimate government portal ever requires by phone or SMS link.",
+          "A false deadline threatens cancellation to force a hasty decision."
+      ],
+      "tips": [
+          "Always apply for or check government scheme status only through official .gov.in / nic.in websites or apps.",
+          "Never share an OTP with anyone or enter it on a site reached via an SMS link.",
+          "Government departments do not ask for Aadhaar and bank verification through random SMS links.",
+          "If in doubt, visit your nearest government service centre (CSC) or call the official helpline to confirm."
+      ],
+      "quiz": [
+          {
+              "q": "How can you verify if a government scheme SMS is genuine?",
+              "opts": [
+                  "If it mentions a scheme name you've heard of",
+                  "Check only official .gov.in / nic.in websites or visit a government service centre",
+                  "If it has a deadline",
+                  "If it asks for Aadhaar"
+              ],
+              "ans": 1,
+              "exp": "Only official government domains and offices can confirm scheme status."
+          },
+          {
+              "q": "Should you ever share an OTP to \"verify\" a government scheme online?",
+              "opts": [
+                  "Yes, if the site looks official",
+                  "No — OTPs should never be shared with anyone or entered via unsolicited links",
+                  "Only if it's urgent",
+                  "Only for small amounts"
+              ],
+              "ans": 1,
+              "exp": "OTPs are meant to be secret and are never legitimately required through SMS links."
+          },
+          {
+              "q": "What should you do if you receive an SMS with a scheme link and a deadline?",
+              "opts": [
+                  "Click it immediately to avoid missing out",
+                  "Verify independently through the official government website or helpline first",
+                  "Forward it to family",
+                  "Reply with your Aadhaar number"
+              ],
+              "ans": 1,
+              "exp": "Independent verification prevents falling for urgency-based phishing."
+          }
+      ]
+  },
+  {
+      "id": 445,
+      "icon": "👗",
+      "title": "Fake Libas Giveaway Scam",
+      "desc": "A forwarded message claims Libas is giving away free prizes — just pay a small fee to claim yours.",
+      "diff": "low",
+      "tag": "Brand Impersonation Fraud",
+      "url": "libas-offers.in",
+      "badge": "You've Been Selected!",
+      "amount": "Free Prize",
+      "amountLabel": "Libas Giveaway",
+      "fee": "Delivery / Verification Fee: ₹49",
+      "feeNote": "Pay to confirm your prize",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "card",
+              "p": "Card Number for Fee",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Home Address",
+          "Card Details"
+      ],
+      "reveal": "Libas never ran this giveaway — the message was forwarded from an unrelated scam account. There is no prize; the \"delivery fee\" was just a way to capture your card details for further fraudulent charges.",
+      "flags": [
+          "You never entered any contest, yet you've supposedly \"won\" a Libas prize.",
+          "The message is a mass-forwarded WhatsApp chain, not an official brand channel.",
+          "A genuine free prize should never require you to pay a fee to receive it.",
+          "There is a false deadline (\"valid for the next 2 hours\") to rush your decision."
+      ],
+      "tips": [
+          "Check Libas's official verified social media or website before believing any \"giveaway\".",
+          "Real brands never ask winners to pay a fee — shipping and taxes are covered by the company.",
+          "Be suspicious of any prize claim that arrives as a forwarded WhatsApp or SMS message.",
+          "Never enter your full card details on a page you reached through a forwarded chat link."
+      ],
+      "quiz": [
+          {
+              "q": "How can you verify if a Libas giveaway is real?",
+              "opts": [
+                  "If many people forwarded the message",
+                  "Check the brand's official verified website or social media",
+                  "If the message uses the brand's logo",
+                  "If it promises a big prize"
+              ],
+              "ans": 1,
+              "exp": "Only the brand's own verified channels can confirm a real promotion."
+          },
+          {
+              "q": "Do legitimate prize giveaways ever charge a \"delivery fee\" to the winner?",
+              "opts": [
+                  "Yes, always",
+                  "No — legitimate prizes don't require winners to pay to receive them",
+                  "Only for expensive prizes",
+                  "Only if you ask for express delivery"
+              ],
+              "ans": 1,
+              "exp": "Real brands absorb shipping costs; asking winners to pay is a classic scam pattern."
+          },
+          {
+              "q": "What is the danger of entering card details to \"claim\" a small fee?",
+              "opts": [
+                  "There is no danger",
+                  "Your card details can then be used for larger unauthorized charges",
+                  "It only charges the exact fee shown, nothing more",
+                  "It's just for record-keeping"
+              ],
+              "ans": 1,
+              "exp": "Once your card is captured, scammers can attempt further unauthorized transactions."
+          }
+      ]
+  },
+  {
+      "id": 446,
+      "icon": "🍗",
+      "title": "Fake Licious Giveaway Scam",
+      "desc": "A forwarded message claims Licious is giving away free prizes — just pay a small fee to claim yours.",
+      "diff": "low",
+      "tag": "Brand Impersonation Fraud",
+      "url": "licious-offers.in",
+      "badge": "You've Been Selected!",
+      "amount": "Free Prize",
+      "amountLabel": "Licious Giveaway",
+      "fee": "Delivery / Verification Fee: ₹49",
+      "feeNote": "Pay to confirm your prize",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "card",
+              "p": "Card Number for Fee",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Home Address",
+          "Card Details"
+      ],
+      "reveal": "Licious never ran this giveaway — the message was forwarded from an unrelated scam account. There is no prize; the \"delivery fee\" was just a way to capture your card details for further fraudulent charges.",
+      "flags": [
+          "You never entered any contest, yet you've supposedly \"won\" a Licious prize.",
+          "The message is a mass-forwarded WhatsApp chain, not an official brand channel.",
+          "A genuine free prize should never require you to pay a fee to receive it.",
+          "There is a false deadline (\"valid for the next 2 hours\") to rush your decision."
+      ],
+      "tips": [
+          "Check Licious's official verified social media or website before believing any \"giveaway\".",
+          "Real brands never ask winners to pay a fee — shipping and taxes are covered by the company.",
+          "Be suspicious of any prize claim that arrives as a forwarded WhatsApp or SMS message.",
+          "Never enter your full card details on a page you reached through a forwarded chat link."
+      ],
+      "quiz": [
+          {
+              "q": "How can you verify if a Licious giveaway is real?",
+              "opts": [
+                  "If many people forwarded the message",
+                  "Check the brand's official verified website or social media",
+                  "If the message uses the brand's logo",
+                  "If it promises a big prize"
+              ],
+              "ans": 1,
+              "exp": "Only the brand's own verified channels can confirm a real promotion."
+          },
+          {
+              "q": "Do legitimate prize giveaways ever charge a \"delivery fee\" to the winner?",
+              "opts": [
+                  "Yes, always",
+                  "No — legitimate prizes don't require winners to pay to receive them",
+                  "Only for expensive prizes",
+                  "Only if you ask for express delivery"
+              ],
+              "ans": 1,
+              "exp": "Real brands absorb shipping costs; asking winners to pay is a classic scam pattern."
+          },
+          {
+              "q": "What is the danger of entering card details to \"claim\" a small fee?",
+              "opts": [
+                  "There is no danger",
+                  "Your card details can then be used for larger unauthorized charges",
+                  "It only charges the exact fee shown, nothing more",
+                  "It's just for record-keeping"
+              ],
+              "ans": 1,
+              "exp": "Once your card is captured, scammers can attempt further unauthorized transactions."
+          }
+      ]
+  },
+  {
+      "id": 447,
+      "icon": "🛍️",
+      "title": "Fake Limeroad Giveaway Scam",
+      "desc": "A forwarded message claims Limeroad is giving away free prizes — just pay a small fee to claim yours.",
+      "diff": "low",
+      "tag": "Brand Impersonation Fraud",
+      "url": "limeroad-offers.in",
+      "badge": "You've Been Selected!",
+      "amount": "Free Prize",
+      "amountLabel": "Limeroad Giveaway",
+      "fee": "Delivery / Verification Fee: ₹49",
+      "feeNote": "Pay to confirm your prize",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          },
+          {
+              "n": "card",
+              "p": "Card Number for Fee",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Home Address",
+          "Card Details"
+      ],
+      "reveal": "Limeroad never ran this giveaway — the message was forwarded from an unrelated scam account. There is no prize; the \"delivery fee\" was just a way to capture your card details for further fraudulent charges.",
+      "flags": [
+          "You never entered any contest, yet you've supposedly \"won\" a Limeroad prize.",
+          "The message is a mass-forwarded WhatsApp chain, not an official brand channel.",
+          "A genuine free prize should never require you to pay a fee to receive it.",
+          "There is a false deadline (\"valid for the next 2 hours\") to rush your decision."
+      ],
+      "tips": [
+          "Check Limeroad's official verified social media or website before believing any \"giveaway\".",
+          "Real brands never ask winners to pay a fee — shipping and taxes are covered by the company.",
+          "Be suspicious of any prize claim that arrives as a forwarded WhatsApp or SMS message.",
+          "Never enter your full card details on a page you reached through a forwarded chat link."
+      ],
+      "quiz": [
+          {
+              "q": "How can you verify if a Limeroad giveaway is real?",
+              "opts": [
+                  "If many people forwarded the message",
+                  "Check the brand's official verified website or social media",
+                  "If the message uses the brand's logo",
+                  "If it promises a big prize"
+              ],
+              "ans": 1,
+              "exp": "Only the brand's own verified channels can confirm a real promotion."
+          },
+          {
+              "q": "Do legitimate prize giveaways ever charge a \"delivery fee\" to the winner?",
+              "opts": [
+                  "Yes, always",
+                  "No — legitimate prizes don't require winners to pay to receive them",
+                  "Only for expensive prizes",
+                  "Only if you ask for express delivery"
+              ],
+              "ans": 1,
+              "exp": "Real brands absorb shipping costs; asking winners to pay is a classic scam pattern."
+          },
+          {
+              "q": "What is the danger of entering card details to \"claim\" a small fee?",
+              "opts": [
+                  "There is no danger",
+                  "Your card details can then be used for larger unauthorized charges",
+                  "It only charges the exact fee shown, nothing more",
+                  "It's just for record-keeping"
+              ],
+              "ans": 1,
+              "exp": "Once your card is captured, scammers can attempt further unauthorized transactions."
+          }
+      ]
+  },
+  {
+      "id": 448,
+      "icon": "🤖",
+      "title": "Fake LineageOS Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" LineageOS download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "lineageos-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "LineageOS — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not LineageOS at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official LineageOS project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download LineageOS from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the LineageOS download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 449,
+      "icon": "🧩",
+      "title": "Fake lint-staged Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" lint-staged download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "lint-staged-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "lint-staged — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not lint-staged at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official lint-staged project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download lint-staged from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the lint-staged download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 450,
+      "icon": "💽",
+      "title": "Fake linuxonly Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" linuxonly download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "linuxonly-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "linuxonly — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not linuxonly at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official linuxonly project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download linuxonly from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the linuxonly download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 451,
+      "icon": "🧩",
+      "title": "Fake Litecoin Trading Bot Scam",
+      "desc": "A WhatsApp contact claims a Litecoin trading bot guarantees 3x returns in 10 days — just deposit and share your wallet.",
+      "diff": "high",
+      "tag": "Investment Fraud",
+      "url": "litegrow-invest.com",
+      "badge": "Guaranteed 3x Returns",
+      "amount": "3x in 10 Days",
+      "amountLabel": "LiteGrow Litecoin Bot",
+      "fee": "Minimum Investment",
+      "feeNote": "Slots close tonight",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "amount",
+              "p": "Investment Amount",
+              "t": "number"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Mobile Number",
+          "Investment Amount",
+          "Crypto Wallet Seed Phrase / Private Key"
+      ],
+      "reveal": "There is no trading bot. Once you share your wallet's seed phrase, scammers can drain every asset in that wallet instantly — this is irreversible, unlike a bank fraud dispute.",
+      "flags": [
+          "Guaranteed returns of 3x in 10 days are mathematically impossible for any legitimate investment.",
+          "You are asked for your wallet's seed phrase / private key, which no legitimate platform ever needs.",
+          "The pitch arrives via an unsolicited WhatsApp message, not a regulated exchange.",
+          "Urgency (\"slots close tonight\") is used to prevent you from researching the platform."
+      ],
+      "tips": [
+          "Never share your crypto wallet's seed phrase or private key with anyone, for any reason.",
+          "No legitimate investment can guarantee fixed high returns — treat any such promise as fraud.",
+          "Only invest through exchanges registered and regulated in your jurisdiction.",
+          "Research independently — a real trading platform doesn't need your seed phrase to \"invest for you\"."
+      ],
+      "quiz": [
+          {
+              "q": "What can happen if you share your crypto wallet's seed phrase?",
+              "opts": [
+                  "Nothing, it's just a password",
+                  "Anyone with it can instantly drain your wallet, irreversibly",
+                  "It only allows viewing your balance",
+                  "It's needed for all deposits"
+              ],
+              "ans": 1,
+              "exp": "A seed phrase gives full, irreversible control of a wallet's funds."
+          },
+          {
+              "q": "A \"guaranteed 3x return in 10 days\" investment is:",
+              "opts": [
+                  "A great opportunity",
+                  "Mathematically impossible and a certain scam",
+                  "Normal for crypto",
+                  "Only risky, not fraudulent"
+              ],
+              "ans": 1,
+              "exp": "No legitimate investment can guarantee such extreme fixed returns."
+          },
+          {
+              "q": "Where should you invest in cryptocurrency?",
+              "opts": [
+                  "Through WhatsApp contacts offering bots",
+                  "Only through regulated, well-known exchanges",
+                  "Any platform with a nice dashboard",
+                  "Wherever a friend suggests"
+              ],
+              "ans": 1,
+              "exp": "Regulated exchanges provide accountability and security that random bots do not."
+          }
+      ]
+  },
+  {
+      "id": 452,
+      "icon": "🧩",
+      "title": "Fake Loan App Harassment / Recovery Scam",
+      "desc": "After taking a small instant loan, a \"recovery agent\" threatens to message all your contacts unless you pay an inflated settlement immediately.",
+      "diff": "high",
+      "tag": "Loan Harassment Fraud",
+      "url": "quickcash-recovery.in",
+      "badge": "Immediate Settlement Required",
+      "amount": "Settlement Demand",
+      "amountLabel": "QuickCash Loan Recovery",
+      "fee": "Pay Now to Stop Calls",
+      "feeNote": "Contacts will be messaged within the hour",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "amount",
+              "p": "Settlement Amount",
+              "t": "number"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Settlement Payment",
+          "UPI ID",
+          "Phone Contact List Access"
+      ],
+      "reveal": "Paying does not stop the harassment — it confirms you'll pay under pressure, so demands escalate. The original app already harvested your contact list when installed; the threats are meant to shame you into repeated payments.",
+      "flags": [
+          "The 'recovery agent' threatens to contact your personal phone contacts, which is illegal harassment, not a legitimate collection practice.",
+          "The settlement amount is wildly inflated compared to the original loan.",
+          "You are pressured to pay within minutes, with no formal notice or documentation.",
+          "The app previously requested contact list access, which legitimate lenders never need."
+      ],
+      "tips": [
+          "Legitimate lenders must follow RBI's fair recovery practices — they cannot threaten or contact your personal contacts.",
+          "Never grant a loan app access to your contacts, gallery, or SMS.",
+          "Report harassment immediately to the National Cyber Crime helpline (1930) and your local police.",
+          "Do not keep paying escalating 'settlement' demands — this encourages further extortion."
+      ],
+      "quiz": [
+          {
+              "q": "Is it legal for a loan recovery agent to message your personal contacts?",
+              "opts": [
+                  "Yes, always",
+                  "No — this violates RBI's fair practice guidelines and can be reported",
+                  "Only for large loans",
+                  "Only if you agreed to it in fine print"
+              ],
+              "ans": 1,
+              "exp": "RBI guidelines prohibit harassment and third-party contact in loan recovery."
+          },
+          {
+              "q": "What should you do if a loan app threatens to contact your family?",
+              "opts": [
+                  "Pay immediately to stop it",
+                  "Report it to the Cyber Crime helpline (1930) and stop further payments",
+                  "Ignore your phone entirely",
+                  "Delete the app and hope it goes away"
+              ],
+              "ans": 1,
+              "exp": "Reporting creates an official record and can stop the harassment through legal channels."
+          },
+          {
+              "q": "Why do these apps ask for contact list access when you first install them?",
+              "opts": [
+                  "To send you offers",
+                  "To harvest contacts they can later threaten to message for blackmail",
+                  "It's required for loan approval",
+                  "To verify your identity"
+              ],
+              "ans": 1,
+              "exp": "Contact access is harvested specifically to enable harassment-based collection later."
+          }
+      ]
+  },
+  {
+      "id": 453,
+      "icon": "🖥️",
+      "title": "Fake LogMeIn Account Suspension Scam",
+      "desc": "An urgent email claims your LogMeIn account will be suspended unless you \"verify\" your login and billing details.",
+      "diff": "med",
+      "tag": "Account Phishing",
+      "url": "logmein-accounts.com",
+      "badge": "Action Required",
+      "amount": "Account at Risk",
+      "amountLabel": "LogMeIn — Verify to Avoid Suspension",
+      "fee": "Verify Now",
+      "feeNote": "Confirm your details within 24 hours",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email",
+              "t": "email"
+          },
+          {
+              "n": "password",
+              "p": "Password",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Account Password",
+          "Card Number",
+          "CVV"
+      ],
+      "reveal": "The email did not come from LogMeIn — the domain was a lookalike. By logging in and entering your card details, you handed the attacker your account password (likely reused elsewhere) and your card for fraudulent billing.",
+      "flags": [
+          "The sender's domain resembles but does not match LogMeIn's real domain.",
+          "The email creates urgency with a 24-hour suspension threat.",
+          "The login page asks you to also enter full card details right after signing in.",
+          "There is no personalised account information — just a generic \"unusual activity\" warning."
+      ],
+      "tips": [
+          "Always access LogMeIn by typing its official URL directly instead of clicking email links.",
+          "Enable two-factor authentication so a leaked password alone can't compromise your account.",
+          "Legitimate services rarely ask you to re-enter full card details through an email link.",
+          "Use a password manager so you never reuse the same password across multiple services."
+      ],
+      "quiz": [
+          {
+              "q": "What should you do when you get an urgent \"LogMeIn account suspended\" email?",
+              "opts": [
+                  "Click the link immediately and log in",
+                  "Type the official website URL directly in your browser to check your account",
+                  "Reply with your password to confirm",
+                  "Forward it to friends"
+              ],
+              "ans": 1,
+              "exp": "Navigating directly to the official site avoids phishing links entirely."
+          },
+          {
+              "q": "Why is being asked for card details right after login suspicious?",
+              "opts": [
+                  "It's normal for all logins",
+                  "Legitimate re-verification rarely needs a full card number and CVV together",
+                  "Card details are needed to prove identity",
+                  "It's a standard security check"
+              ],
+              "ans": 1,
+              "exp": "Full card number + CVV entry is rarely required for account verification and is a common phishing tactic."
+          },
+          {
+              "q": "What is the best protection if your password is ever phished?",
+              "opts": [
+                  "Using the same password everywhere so it's easy to remember",
+                  "Two-factor authentication (2FA)",
+                  "A longer email subject line",
+                  "Ignoring the account afterward"
+              ],
+              "ans": 1,
+              "exp": "2FA means a stolen password alone isn't enough for an attacker to access your account."
+          }
+      ]
+  },
+  {
+      "id": 454,
+      "icon": "🧩",
+      "title": "Fake Lookin Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" Lookin download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "lookin-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "Lookin — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not Lookin at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official Lookin project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download Lookin from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the Lookin download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 455,
+      "icon": "🔥",
+      "title": "Fake LPG Cylinder Booking Site Scam",
+      "desc": "An SMS claims your LPG Cylinder Booking Site application is pending and asks you to verify Aadhaar and bank details to complete it.",
+      "diff": "med",
+      "tag": "Government Scheme Fraud",
+      "url": "lpg-cylinder-booking-site.in",
+      "badge": "Application Pending",
+      "amount": "Verification Required",
+      "amountLabel": "LPG Cylinder Booking Site",
+      "fee": "Verify to Continue",
+      "feeNote": "Complete now to avoid cancellation",
+      "fields": [
+          {
+              "n": "name",
+              "p": "Full Name",
+              "t": "text"
+          },
+          {
+              "n": "aadhaar",
+              "p": "Aadhaar Number",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Aadhaar Number",
+          "Bank Account / UPI ID",
+          "OTP"
+      ],
+      "reveal": "This portal is not run by any government department. By entering your Aadhaar number, bank account, and OTP, you gave scammers everything they need to access your account or commit identity fraud.",
+      "flags": [
+          "Government schemes are never processed through links sent via unsolicited SMS.",
+          "The site domain does not end in the official .gov.in or nic.in domains.",
+          "You are asked to share an OTP, which no legitimate government portal ever requires by phone or SMS link.",
+          "A false deadline threatens cancellation to force a hasty decision."
+      ],
+      "tips": [
+          "Always apply for or check government scheme status only through official .gov.in / nic.in websites or apps.",
+          "Never share an OTP with anyone or enter it on a site reached via an SMS link.",
+          "Government departments do not ask for Aadhaar and bank verification through random SMS links.",
+          "If in doubt, visit your nearest government service centre (CSC) or call the official helpline to confirm."
+      ],
+      "quiz": [
+          {
+              "q": "How can you verify if a government scheme SMS is genuine?",
+              "opts": [
+                  "If it mentions a scheme name you've heard of",
+                  "Check only official .gov.in / nic.in websites or visit a government service centre",
+                  "If it has a deadline",
+                  "If it asks for Aadhaar"
+              ],
+              "ans": 1,
+              "exp": "Only official government domains and offices can confirm scheme status."
+          },
+          {
+              "q": "Should you ever share an OTP to \"verify\" a government scheme online?",
+              "opts": [
+                  "Yes, if the site looks official",
+                  "No — OTPs should never be shared with anyone or entered via unsolicited links",
+                  "Only if it's urgent",
+                  "Only for small amounts"
+              ],
+              "ans": 1,
+              "exp": "OTPs are meant to be secret and are never legitimately required through SMS links."
+          },
+          {
+              "q": "What should you do if you receive an SMS with a scheme link and a deadline?",
+              "opts": [
+                  "Click it immediately to avoid missing out",
+                  "Verify independently through the official government website or helpline first",
+                  "Forward it to family",
+                  "Reply with your Aadhaar number"
+              ],
+              "ans": 1,
+              "exp": "Independent verification prevents falling for urgency-based phishing."
+          }
+      ]
+  },
+  {
+      "id": 456,
+      "icon": "📊",
+      "title": "Fake Lucidchart Account Suspension Scam",
+      "desc": "An urgent email claims your Lucidchart account will be suspended unless you \"verify\" your login and billing details.",
+      "diff": "med",
+      "tag": "Account Phishing",
+      "url": "lucidchart-accounts.com",
+      "badge": "Action Required",
+      "amount": "Account at Risk",
+      "amountLabel": "Lucidchart — Verify to Avoid Suspension",
+      "fee": "Verify Now",
+      "feeNote": "Confirm your details within 24 hours",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email",
+              "t": "email"
+          },
+          {
+              "n": "password",
+              "p": "Password",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Account Password",
+          "Card Number",
+          "CVV"
+      ],
+      "reveal": "The email did not come from Lucidchart — the domain was a lookalike. By logging in and entering your card details, you handed the attacker your account password (likely reused elsewhere) and your card for fraudulent billing.",
+      "flags": [
+          "The sender's domain resembles but does not match Lucidchart's real domain.",
+          "The email creates urgency with a 24-hour suspension threat.",
+          "The login page asks you to also enter full card details right after signing in.",
+          "There is no personalised account information — just a generic \"unusual activity\" warning."
+      ],
+      "tips": [
+          "Always access Lucidchart by typing its official URL directly instead of clicking email links.",
+          "Enable two-factor authentication so a leaked password alone can't compromise your account.",
+          "Legitimate services rarely ask you to re-enter full card details through an email link.",
+          "Use a password manager so you never reuse the same password across multiple services."
+      ],
+      "quiz": [
+          {
+              "q": "What should you do when you get an urgent \"Lucidchart account suspended\" email?",
+              "opts": [
+                  "Click the link immediately and log in",
+                  "Type the official website URL directly in your browser to check your account",
+                  "Reply with your password to confirm",
+                  "Forward it to friends"
+              ],
+              "ans": 1,
+              "exp": "Navigating directly to the official site avoids phishing links entirely."
+          },
+          {
+              "q": "Why is being asked for card details right after login suspicious?",
+              "opts": [
+                  "It's normal for all logins",
+                  "Legitimate re-verification rarely needs a full card number and CVV together",
+                  "Card details are needed to prove identity",
+                  "It's a standard security check"
+              ],
+              "ans": 1,
+              "exp": "Full card number + CVV entry is rarely required for account verification and is a common phishing tactic."
+          },
+          {
+              "q": "What is the best protection if your password is ever phished?",
+              "opts": [
+                  "Using the same password everywhere so it's easy to remember",
+                  "Two-factor authentication (2FA)",
+                  "A longer email subject line",
+                  "Ignoring the account afterward"
+              ],
+              "ans": 1,
+              "exp": "2FA means a stolen password alone isn't enough for an attacker to access your account."
+          }
+      ]
+  },
+  {
+      "id": 457,
+      "icon": "🧩",
+      "title": "Fake Luigi Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" Luigi download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "luigi-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "Luigi — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not Luigi at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official Luigi project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download Luigi from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the Luigi download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 458,
+      "icon": "🧩",
+      "title": "Fake lukerandall Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" lukerandall download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "lukerandall-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "lukerandall — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not lukerandall at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official lukerandall project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download lukerandall from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the lukerandall download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 459,
+      "icon": "🎬",
+      "title": "Fake Lumen5 Account Suspension Scam",
+      "desc": "An urgent email claims your Lumen5 account will be suspended unless you \"verify\" your login and billing details.",
+      "diff": "med",
+      "tag": "Account Phishing",
+      "url": "lumen5-accounts.com",
+      "badge": "Action Required",
+      "amount": "Account at Risk",
+      "amountLabel": "Lumen5 — Verify to Avoid Suspension",
+      "fee": "Verify Now",
+      "feeNote": "Confirm your details within 24 hours",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email",
+              "t": "email"
+          },
+          {
+              "n": "password",
+              "p": "Password",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Account Password",
+          "Card Number",
+          "CVV"
+      ],
+      "reveal": "The email did not come from Lumen5 — the domain was a lookalike. By logging in and entering your card details, you handed the attacker your account password (likely reused elsewhere) and your card for fraudulent billing.",
+      "flags": [
+          "The sender's domain resembles but does not match Lumen5's real domain.",
+          "The email creates urgency with a 24-hour suspension threat.",
+          "The login page asks you to also enter full card details right after signing in.",
+          "There is no personalised account information — just a generic \"unusual activity\" warning."
+      ],
+      "tips": [
+          "Always access Lumen5 by typing its official URL directly instead of clicking email links.",
+          "Enable two-factor authentication so a leaked password alone can't compromise your account.",
+          "Legitimate services rarely ask you to re-enter full card details through an email link.",
+          "Use a password manager so you never reuse the same password across multiple services."
+      ],
+      "quiz": [
+          {
+              "q": "What should you do when you get an urgent \"Lumen5 account suspended\" email?",
+              "opts": [
+                  "Click the link immediately and log in",
+                  "Type the official website URL directly in your browser to check your account",
+                  "Reply with your password to confirm",
+                  "Forward it to friends"
+              ],
+              "ans": 1,
+              "exp": "Navigating directly to the official site avoids phishing links entirely."
+          },
+          {
+              "q": "Why is being asked for card details right after login suspicious?",
+              "opts": [
+                  "It's normal for all logins",
+                  "Legitimate re-verification rarely needs a full card number and CVV together",
+                  "Card details are needed to prove identity",
+                  "It's a standard security check"
+              ],
+              "ans": 1,
+              "exp": "Full card number + CVV entry is rarely required for account verification and is a common phishing tactic."
+          },
+          {
+              "q": "What is the best protection if your password is ever phished?",
+              "opts": [
+                  "Using the same password everywhere so it's easy to remember",
+                  "Two-factor authentication (2FA)",
+                  "A longer email subject line",
+                  "Ignoring the account afterward"
+              ],
+              "ans": 1,
+              "exp": "2FA means a stolen password alone isn't enough for an attacker to access your account."
+          }
+      ]
+  },
+  {
+      "id": 460,
+      "icon": "📦",
+      "title": "Fake LXC Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" LXC download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "lxc-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "LXC — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not LXC at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official LXC project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download LXC from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the LXC download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 461,
+      "icon": "📦",
+      "title": "Fake LXD Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" LXD download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "lxd-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "LXD — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not LXD at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official LXD project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download LXD from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the LXD download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 462,
+      "icon": "💽",
+      "title": "Fake LXLE Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" LXLE download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "lxle-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "LXLE — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not LXLE at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official LXLE project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download LXLE from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the LXLE download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 463,
+      "icon": "🧩",
+      "title": "Fake LXR Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" LXR download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "lxr-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "LXR — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not LXR at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official LXR project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download LXR from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the LXR download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 464,
+      "icon": "🍎",
+      "title": "Fake MacPorts Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" MacPorts download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "macports-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "MacPorts — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not MacPorts at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official MacPorts project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download MacPorts from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the MacPorts download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 465,
+      "icon": "💽",
+      "title": "Fake Mageia Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" Mageia download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "mageia-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "Mageia — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not Mageia at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official Mageia project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download Mageia from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the Mageia download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 466,
+      "icon": "🎞️",
+      "title": "Fake Magisto Account Suspension Scam",
+      "desc": "An urgent email claims your Magisto account will be suspended unless you \"verify\" your login and billing details.",
+      "diff": "med",
+      "tag": "Account Phishing",
+      "url": "magisto-accounts.com",
+      "badge": "Action Required",
+      "amount": "Account at Risk",
+      "amountLabel": "Magisto — Verify to Avoid Suspension",
+      "fee": "Verify Now",
+      "feeNote": "Confirm your details within 24 hours",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email",
+              "t": "email"
+          },
+          {
+              "n": "password",
+              "p": "Password",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Account Password",
+          "Card Number",
+          "CVV"
+      ],
+      "reveal": "The email did not come from Magisto — the domain was a lookalike. By logging in and entering your card details, you handed the attacker your account password (likely reused elsewhere) and your card for fraudulent billing.",
+      "flags": [
+          "The sender's domain resembles but does not match Magisto's real domain.",
+          "The email creates urgency with a 24-hour suspension threat.",
+          "The login page asks you to also enter full card details right after signing in.",
+          "There is no personalised account information — just a generic \"unusual activity\" warning."
+      ],
+      "tips": [
+          "Always access Magisto by typing its official URL directly instead of clicking email links.",
+          "Enable two-factor authentication so a leaked password alone can't compromise your account.",
+          "Legitimate services rarely ask you to re-enter full card details through an email link.",
+          "Use a password manager so you never reuse the same password across multiple services."
+      ],
+      "quiz": [
+          {
+              "q": "What should you do when you get an urgent \"Magisto account suspended\" email?",
+              "opts": [
+                  "Click the link immediately and log in",
+                  "Type the official website URL directly in your browser to check your account",
+                  "Reply with your password to confirm",
+                  "Forward it to friends"
+              ],
+              "ans": 1,
+              "exp": "Navigating directly to the official site avoids phishing links entirely."
+          },
+          {
+              "q": "Why is being asked for card details right after login suspicious?",
+              "opts": [
+                  "It's normal for all logins",
+                  "Legitimate re-verification rarely needs a full card number and CVV together",
+                  "Card details are needed to prove identity",
+                  "It's a standard security check"
+              ],
+              "ans": 1,
+              "exp": "Full card number + CVV entry is rarely required for account verification and is a common phishing tactic."
+          },
+          {
+              "q": "What is the best protection if your password is ever phished?",
+              "opts": [
+                  "Using the same password everywhere so it's easy to remember",
+                  "Two-factor authentication (2FA)",
+                  "A longer email subject line",
+                  "Ignoring the account afterward"
+              ],
+              "ans": 1,
+              "exp": "2FA means a stolen password alone isn't enough for an attacker to access your account."
+          }
+      ]
+  },
+  {
+      "id": 467,
+      "icon": "🧩",
+      "title": "Fake maglev Download Scam",
+      "desc": "A lookalike site offers a \"free verified\" maglev download that installs malware on your device.",
+      "diff": "high",
+      "tag": "Malware & Software Fraud",
+      "url": "maglev-download.com",
+      "badge": "Verified Download — 100% Safe",
+      "amount": "Free Download",
+      "amountLabel": "maglev — Official Mirror",
+      "fee": "Unlock Download",
+      "feeNote": "Verify you're human to continue",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email Address",
+              "t": "email"
+          },
+          {
+              "n": "mobile",
+              "p": "Mobile Number",
+              "t": "tel"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Phone Number",
+          "Antivirus Protection Disabled",
+          "Malware Installed on Device"
+      ],
+      "reveal": "The \"installer\" you ran was not maglev at all — it was malware bundled to look like it. By disabling your antivirus and entering your details on an unofficial mirror, you gave attackers a foothold on your device and your contact information for further scams.",
+      "flags": [
+          "The download page is not on the official maglev project domain or a recognised app store/package repository.",
+          "You are asked to disable antivirus or security warnings before the file will install.",
+          "The site demands your email and phone number just to \"unlock\" a free, open download.",
+          "Urgency language like \"fastest mirror\" or \"verified today\" is used to rush your decision."
+      ],
+      "tips": [
+          "Only download maglev from its official website, GitHub releases page, or a trusted app store/package manager.",
+          "Never disable your antivirus or OS security prompts to install software — that is always a red flag.",
+          "Check the file's official checksum/signature before running any installer from a new source.",
+          "If a \"free download\" site asks for personal details first, close it — legitimate open-source and vendor downloads never require this."
+      ],
+      "quiz": [
+          {
+              "q": "What is the biggest warning sign on the maglev download page?",
+              "opts": [
+                  "The page has a logo",
+                  "It asks you to disable antivirus protection to install",
+                  "It mentions the tool's version number",
+                  "It has a download button"
+              ],
+              "ans": 1,
+              "exp": "Legitimate installers never require you to disable your antivirus or security warnings."
+          },
+          {
+              "q": "Where should you download developer tools and software from?",
+              "opts": [
+                  "Any site that ranks high in search results",
+                  "The official project site, GitHub releases, or a trusted package manager",
+                  "A forum post recommending a \"fast mirror\"",
+                  "A site that asks for your phone number first"
+              ],
+              "ans": 1,
+              "exp": "Official sources sign and verify their releases; third-party mirrors often bundle malware."
+          },
+          {
+              "q": "Why do fake download sites ask for your email and phone number first?",
+              "opts": [
+                  "To email you the receipt",
+                  "To harvest contact details for scams and spam before infecting your device",
+                  "It's required by law",
+                  "To create a support ticket"
+              ],
+              "ans": 1,
+              "exp": "Collecting contact details is a secondary payoff for scammers even before the malware runs."
+          }
+      ]
+  },
+  {
+      "id": 468,
+      "icon": "🐵",
+      "title": "Fake Mailchimp Account Suspension Scam",
+      "desc": "An urgent email claims your Mailchimp account will be suspended unless you \"verify\" your login and billing details.",
+      "diff": "med",
+      "tag": "Account Phishing",
+      "url": "mailchimp-accounts.com",
+      "badge": "Action Required",
+      "amount": "Account at Risk",
+      "amountLabel": "Mailchimp — Verify to Avoid Suspension",
+      "fee": "Verify Now",
+      "feeNote": "Confirm your details within 24 hours",
+      "fields": [
+          {
+              "n": "email",
+              "p": "Email",
+              "t": "email"
+          },
+          {
+              "n": "password",
+              "p": "Password",
+              "t": "password"
+          }
+      ],
+      "exposed": [
+          "Email Address",
+          "Account Password",
+          "Card Number",
+          "CVV"
+      ],
+      "reveal": "The email did not come from Mailchimp — the domain was a lookalike. By logging in and entering your card details, you handed the attacker your account password (likely reused elsewhere) and your card for fraudulent billing.",
+      "flags": [
+          "The sender's domain resembles but does not match Mailchimp's real domain.",
+          "The email creates urgency with a 24-hour suspension threat.",
+          "The login page asks you to also enter full card details right after signing in.",
+          "There is no personalised account information — just a generic \"unusual activity\" warning."
+      ],
+      "tips": [
+          "Always access Mailchimp by typing its official URL directly instead of clicking email links.",
+          "Enable two-factor authentication so a leaked password alone can't compromise your account.",
+          "Legitimate services rarely ask you to re-enter full card details through an email link.",
+          "Use a password manager so you never reuse the same password across multiple services."
+      ],
+      "quiz": [
+          {
+              "q": "What should you do when you get an urgent \"Mailchimp account suspended\" email?",
+              "opts": [
+                  "Click the link immediately and log in",
+                  "Type the official website URL directly in your browser to check your account",
+                  "Reply with your password to confirm",
+                  "Forward it to friends"
+              ],
+              "ans": 1,
+              "exp": "Navigating directly to the official site avoids phishing links entirely."
+          },
+          {
+              "q": "Why is being asked for card details right after login suspicious?",
+              "opts": [
+                  "It's normal for all logins",
+                  "Legitimate re-verification rarely needs a full card number and CVV together",
+                  "Card details are needed to prove identity",
+                  "It's a standard security check"
+              ],
+              "ans": 1,
+              "exp": "Full card number + CVV entry is rarely required for account verification and is a common phishing tactic."
+          },
+          {
+              "q": "What is the best protection if your password is ever phished?",
+              "opts": [
+                  "Using the same password everywhere so it's easy to remember",
+                  "Two-factor authentication (2FA)",
+                  "A longer email subject line",
+                  "Ignoring the account afterward"
+              ],
+              "ans": 1,
+              "exp": "2FA means a stolen password alone isn't enough for an attacker to access your account."
+          }
+      ]
+  }
 ];

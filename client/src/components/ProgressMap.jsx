@@ -165,6 +165,14 @@ const UNITS = [
     description: '45 completed and verified interactive scam simulations developed by Prachi.',
     color: '#10b981',
     moduleIds: Array.from({ length: 45 }, (_, i) => 325 + i),
+  },
+  {
+    id: 'pending_review_atharva',
+    title: '👨‍💻 Atharva\'s Simulations (IDs 421-468)',
+    icon: '⚡',
+    description: '48 interactive scam simulations developed by Atharva.',
+    color: '#8b5cf6',
+    moduleIds: Array.from({ length: 48 }, (_, i) => 421 + i),
   }
 ];
 
