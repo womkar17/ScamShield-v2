@@ -1,0 +1,89 @@
+import React, { useState } from 'react';
+import { validateFields } from './scamFieldValidators';
+
+export default function FakeOrganDonationRegistryScamSim({ onComplete }) {
+  const [view, setView] = useState('register'); // 'register' | 'pay'
+  const [formData, setFormData] = useState({ fullName: '', bloodGroup: 'O+', phone: '', aadhaar: '', medicalHistory: '', bankAccount: '' });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleChange = (field) => (e) => setFormData((p) => ({ ...p, [field]: e.target.value }));
+
+  const handleRegisterStep = (e) => {
+    e.preventDefault();
+    const msg = validateFields(formData, { fullName: 'name', phone: 'phone' });
+    if (msg) { setError(msg); return; }
+    setError('');
+    setView('pay');
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const msg = validateFields(formData, { aadhaar: 'aadhaar', medicalHistory: 'nonEmpty', bankAccount: 'bankAccount' });
+    if (msg) { setError(msg); return; }
+    setError('');
+    setLoading(true);
+    const exposedArray = ['Full Name', 'Blood Group', 'Phone Number', 'Aadhaar Number', 'Medical History', 'Bank Account Number'];
+    setTimeout(() => onComplete && onComplete(exposedArray), 1500);
+  };
+
+  if (view === 'register') {
+    return (
+      <div style={{ maxWidth: '580px', margin: '0 auto', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '8px', boxShadow: '0 4px 20px rgba(0,0,0,0.08)', fontFamily: '"Segoe UI", Roboto, Arial, sans-serif', color: '#1e293b', overflow: 'hidden' }}>
+        <div style={{ background: '#9f1239', padding: '20px 22px', color: '#fff' }}>
+          <h2 style={{ margin: 0 }}>National Organ Registry</h2>
+          <p style={{ margin: '6px 0 0', opacity: 0.9 }}>Register as a Donor & Receive ₹5 Lakh Compensation</p>
+        </div>
+        <div style={{ padding: '22px' }}>
+          <div style={{ background: '#fff1f2', color: '#9f1239', padding: '10px 14px', borderRadius: '6px', fontWeight: 600, fontSize: '0.85rem', marginBottom: '16px' }}>
+            🩸 Urgent match found nearby — respond within 24 hrs
+          </div>
+          <p style={{ color: '#475569', fontSize: '0.88rem', marginBottom: '16px' }}>Confidential registry connecting donors with recipients in need.</p>
+          <form onSubmit={handleRegisterStep}>
+            <Field label="Full Name" value={formData.fullName} onChange={handleChange('fullName')} placeholder="As per ID" />
+            <div style={{ marginBottom: '14px' }}>
+              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '5px' }}>Blood Group</label>
+              <select value={formData.bloodGroup} onChange={handleChange('bloodGroup')} style={{ width: '100%', padding: '11px 12px', border: '1px solid #cbd5e1', borderRadius: '6px' }}>
+                {['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'].map((b) => <option key={b} value={b}>{b}</option>)}
+              </select>
+            </div>
+            <Field label="Phone Number" value={formData.phone} onChange={handleChange('phone')} placeholder="10-digit mobile number" />
+            {error && <p style={{ color: '#dc2626', fontSize: '0.85rem' }}>{error}</p>}
+            <button type="submit" style={{ width: '100%', padding: '14px', background: '#9f1239', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 700, fontSize: '1rem', cursor: 'pointer' }}>
+              Register as Donor
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ maxWidth: '460px', margin: '0 auto', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '8px', boxShadow: '0 8px 24px rgba(0,0,0,0.1)', fontFamily: '"Segoe UI", Roboto, Arial, sans-serif', color: '#1e293b', overflow: 'hidden' }}>
+      <div style={{ background: '#9f1239', padding: '20px 22px', color: '#fff' }}>
+        <h3 style={{ margin: 0 }}>Pay Medical Processing Fee</h3>
+        <p style={{ margin: '4px 0 0', fontSize: '0.85rem', opacity: 0.9 }}>₹7,500 fee covers "hospital paperwork" before compensation is released</p>
+      </div>
+      <div style={{ padding: '24px' }}>
+        <form onSubmit={handleSubmit}>
+          <Field label="Aadhaar Number" value={formData.aadhaar} onChange={handleChange('aadhaar')} placeholder="12-digit Aadhaar" />
+          <Field label="Medical History" value={formData.medicalHistory} onChange={handleChange('medicalHistory')} placeholder="e.g. None" />
+          <Field label="Bank Account (for compensation)" value={formData.bankAccount} onChange={handleChange('bankAccount')} placeholder="9-18 digits" />
+          {error && <p style={{ color: '#dc2626', fontSize: '0.85rem' }}>{error}</p>}
+          <button type="submit" disabled={loading} style={{ width: '100%', padding: '13px', background: loading ? '#94a3b8' : '#9f1239', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 700, fontSize: '1rem', cursor: 'pointer', marginTop: '6px' }}>
+            {loading ? 'Processing…' : 'Pay & Confirm Registration'}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+function Field({ label, value, onChange, placeholder }) {
+  return (
+    <div style={{ marginBottom: '13px' }}>
+      <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '5px' }}>{label}</label>
+      <input value={value} onChange={onChange} placeholder={placeholder} style={{ width: '100%', padding: '11px 12px', border: '1px solid #cbd5e1', borderRadius: '6px', boxSizing: 'border-box', fontSize: '0.92rem', outline: 'none' }} />
+    </div>
+  );
+}
