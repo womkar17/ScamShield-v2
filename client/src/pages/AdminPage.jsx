@@ -4,32 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { getApiUrl } from '../lib/api';
 
-const INITIAL_PHISHING_CAMPAIGNS = [
-  {
-    id: 1,
-    name: "Q3 Urgent HR Policy & Salary Adjustments",
-    template: "HR Salary Phish",
-    targetEmail: "alex.m@company.com",
-    sent: 1,
-    opened: 1,
-    clicked: 1,
-    reported: 0,
-    status: "Failed Drill (Clicked Link)",
-    date: "2026-06-25"
-  },
-  {
-    id: 2,
-    name: "AWS Root Key Verification Notice",
-    template: "IT Shadow API Phish",
-    targetEmail: "dev-team@company.com",
-    sent: 12,
-    opened: 11,
-    clicked: 1,
-    reported: 10,
-    status: "Completed (83% Reported)",
-    date: "2026-06-28"
-  }
-];
+const INITIAL_PHISHING_CAMPAIGNS = [];
 
 const EMAIL_TEMPLATES = {
   "Password Reset Urgency": {
@@ -193,8 +168,43 @@ export default function AdminPage() {
     if (isAdmin) {
       loadData();
       loadCustomGames();
+      loadPhishingDrills();
     }
   }, [isAdmin]);
+
+  const loadPhishingDrills = async () => {
+    // 1. Check local storage first for immediate display
+    try {
+      const saved = localStorage.getItem('ss_phishing_campaigns');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setCampaigns(parsed);
+        }
+      }
+    } catch (e) {}
+
+    // 2. Fetch from unified server API / database
+    try {
+      const apiUrl = getApiUrl();
+      const res = await fetch(`${apiUrl}/api/admin/phishing/drills`);
+      const data = await res.json();
+      if (data.ok && Array.isArray(data.drills)) {
+        setCampaigns(data.drills);
+        localStorage.setItem('ss_phishing_campaigns', JSON.stringify(data.drills));
+        return;
+      }
+    } catch (e) {}
+
+    // 3. Direct Supabase fallback if backend not reached
+    try {
+      const { data, error } = await supabase.from('phishing_drills').select('*').order('created_at', { ascending: false });
+      if (!error && Array.isArray(data) && data.length > 0) {
+        setCampaigns(data);
+        localStorage.setItem('ss_phishing_campaigns', JSON.stringify(data));
+      }
+    } catch (e) {}
+  };
 
   const loadData = async () => {
     setDataLoading(true);
@@ -540,30 +550,15 @@ Return ONLY a valid JSON object with exactly two keys:
 
     const target = newCampaign.targetEmail.trim();
     let sentCount = 1;
-    let openedCount = 1;
+    let openedCount = 0;
     let clickedCount = 0;
-    let reportedCount = 1;
-    let statusText = "Passed Drill (Reported)";
+    let reportedCount = 0;
+    let statusText = "Dispatched (Awaiting Action)";
 
-    // If targeting an individual vs multiple
+    // If targeting multiple / all
     if (target.includes(',') || target.toLowerCase().includes('all')) {
-      sentCount = Math.floor(Math.random() * 60) + 20;
-      openedCount = Math.floor(sentCount * 0.9);
-      clickedCount = Math.floor(openedCount * 0.2);
-      reportedCount = openedCount - clickedCount;
-      statusText = `Completed (${Math.round((reportedCount/sentCount)*100)}% Reported)`;
-    } else {
-      // Single individual drill outcome simulation
-      const outcome = Math.random() > 0.35 ? 'reported' : 'clicked';
-      if (outcome === 'clicked') {
-        clickedCount = 1;
-        reportedCount = 0;
-        statusText = "Failed Drill (Clicked Link)";
-      } else {
-        clickedCount = 0;
-        reportedCount = 1;
-        statusText = "Passed Drill (Reported to IT)";
-      }
+      sentCount = 50;
+      statusText = "Broadcast Dispatched across all users";
     }
 
     const created = {
@@ -583,7 +578,7 @@ Return ONLY a valid JSON object with exactly two keys:
     setCampaigns(updated);
     localStorage.setItem('ss_phishing_campaigns', JSON.stringify(updated));
 
-    // Send real email via backend Brevo SMTP API
+    // Send real email via backend Google SMTP API
     try {
       const apiUrl = getApiUrl();
       const res = await fetch(`${apiUrl}/api/admin/phishing/send`, {
@@ -595,19 +590,22 @@ Return ONLY a valid JSON object with exactly two keys:
           template: newCampaign.template,
           customSubject: newCampaign.customSubject,
           customMessage: newCampaign.customMessage,
-          senderName: EMAIL_TEMPLATES[newCampaign.template]?.from
+          senderName: EMAIL_TEMPLATES[newCampaign.template]?.from,
+          drillId: created.id
         })
       });
       const data = await res.json();
       if (data.ok && data.sent) {
         alert(`🚀 Phishing Drill "${created.name}" dispatched to ${target} via Google SMTP server! Check your inbox!`);
       } else if (data.ok && data.simulated) {
-        alert(`🚀 Broadcast Drill "${created.name}" simulated across 100% of user database!`);
+        alert(`🚀 Broadcast Drill "${created.name}" simulated across user database!`);
       } else {
-        alert(`⚠️ Email Delivery Failed!\n\nReason from Server: ${data.err || 'Unknown SMTP Error'}\n\nPlease check your Vercel Environment Variables: make sure SMTP_USER (your gmail) and SMTP_PASS (your 16-character Google App Password without spaces) are set correctly! The drill was recorded in the table below.`);
+        alert(`⚠️ Email Delivery Note: ${data.err || 'Simulated local delivery without real SMTP credentials.'}`);
       }
+      loadPhishingDrills();
     } catch (e) {
       alert(`🚀 Phishing Drill "${created.name}" dispatched! Check metrics table below.`);
+      loadPhishingDrills();
     }
 
     setNewCampaign({ name: '', targetEmail: '', template: 'Password Reset Urgency', customSubject: '', customMessage: '' });

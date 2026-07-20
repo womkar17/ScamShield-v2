@@ -8,6 +8,7 @@ import GamesPage from './pages/GamesPage';
 import CaseStudiesPage from './pages/CaseStudiesPage';
 import AdminPage from './pages/AdminPage';
 import SettingsPage from './pages/SettingsPage';
+import PhishingAlertPage from './pages/PhishingAlertPage';
 import LevelUpModal from './components/LevelUpModal';
 import { GamificationContext } from './context/GamificationContext';
 import { AppContext } from './context/AppContext';
@@ -61,6 +62,7 @@ export default function App() {
         {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/phishing-warning" element={<PhishingAlertPage />} />
 
         {/* Protected Routes */}
         <Route path="/dashboard" element={

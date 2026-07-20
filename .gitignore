@@ -29,3 +29,4 @@ dist-ssr
 
 # Vercel build output
 public/
+.vercel/

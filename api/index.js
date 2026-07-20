@@ -151,6 +151,7 @@ app.post('/api/admin/broadcast', (req, res) => {
 });
 
 let activeCustomGames = [];
+let activePhishingDrills = [];
 
 // Global Custom Games Sync Endpoints (Syncs across all users & screens)
 app.get('/api/games/custom', async (req, res) => {
@@ -242,20 +243,87 @@ app.delete('/api/admin/games/custom/:id', async (req, res) => {
   res.json({ ok: true, games: activeCustomGames });
 });
 
+// Global Phishing Drills Sync Endpoint
+app.get('/api/admin/phishing/drills', async (req, res) => {
+  let combined = [...activePhishingDrills];
+
+  try {
+    const { data, error } = await supabase.from('phishing_drills').select('*').order('created_at', { ascending: false });
+    if (!error && Array.isArray(data)) {
+      data.forEach(d => {
+        if (!combined.some(existing => String(existing.id) === String(d.id))) {
+          combined.push(d);
+        }
+      });
+    }
+  } catch (e) {}
+
+  try {
+    const { data: sysRow } = await supabase.from('profiles').select('username').eq('email', 'system_phishing_drills@scamshield.internal').maybeSingle();
+    if (sysRow && sysRow.username) {
+      const parsed = JSON.parse(sysRow.username);
+      if (Array.isArray(parsed)) {
+        parsed.forEach(d => {
+          if (!combined.some(existing => String(existing.id) === String(d.id))) {
+            combined.push(d);
+          }
+        });
+      }
+    }
+  } catch (e) {}
+
+  activePhishingDrills = combined;
+  res.json({ ok: true, drills: activePhishingDrills });
+});
+
 // Send Phishing Drill Email via Google SMTP
 app.post('/api/admin/phishing/send', async (req, res) => {
   try {
-    const { targetEmail, campaignName, template, customSubject, customMessage, senderName } = req.body;
+    const { targetEmail, campaignName, template, customSubject, customMessage, senderName, drillId } = req.body;
     if (!targetEmail) return res.status(400).json({ ok: false, err: 'Missing targetEmail' });
+
+    const id = drillId || Date.now();
 
     // Don't attempt SMTP send for broadcast keywords, just simulate
     if (targetEmail.toLowerCase().includes('all@') || targetEmail.includes(',')) {
-      return res.json({ ok: true, simulated: true, message: 'Broadcast simulated across user database' });
+      const broadcastDrill = {
+        id,
+        name: campaignName || `Broadcast Drill (${template})`,
+        template: template || 'Corporate Security Alert',
+        targetEmail,
+        sent: 50,
+        opened: 0,
+        clicked: 0,
+        reported: 0,
+        status: "Broadcast Dispatched across all users",
+        date: new Date().toISOString().split('T')[0]
+      };
+      activePhishingDrills = [broadcastDrill, ...activePhishingDrills.filter(d => String(d.id) !== String(id))];
+      try {
+        await supabase.from('phishing_drills').upsert([broadcastDrill]);
+      } catch (e) {}
+      try {
+        const { data: existing } = await supabase.from('profiles').select('id').eq('email', 'system_phishing_drills@scamshield.internal').maybeSingle();
+        if (existing) {
+          await supabase.from('profiles').update({ username: JSON.stringify(activePhishingDrills) }).eq('id', existing.id);
+        } else {
+          await supabase.from('profiles').insert([{ id: '22222222-2222-2222-2222-222222222222', email: 'system_phishing_drills@scamshield.internal', username: JSON.stringify(activePhishingDrills), role: 'system_storage', xp: 0, level: 1 }]);
+        }
+      } catch (e) {}
+      return res.json({ ok: true, simulated: true, message: 'Broadcast simulated across user database', drill: broadcastDrill });
     }
 
     const subject = customSubject || `[URGENT] ${template || 'Security Alert'}: Action Required Immediately`;
     const messageBody = customMessage || `We have detected suspicious login activity or pending security requirements on your corporate account. Please review and verify your identity within 24 hours to prevent account lockout.`;
 
+    const host = req.headers.host && !req.headers.host.includes('localhost') ? req.headers.host : 'scam-shield-v2-ashen.vercel.app';
+    const proto = host.includes('localhost') ? 'http' : 'https';
+    const baseUrl = `${proto}://${host}`;
+
+    const clickUrl = `${baseUrl}/api/track/click?drillId=${id}&email=${encodeURIComponent(targetEmail)}&campaign=${encodeURIComponent(campaignName || template || 'Corporate Security Alert')}&template=${encodeURIComponent(template || 'Security Alert')}`;
+    const openUrl = `${baseUrl}/api/track/open?drillId=${id}&email=${encodeURIComponent(targetEmail)}`;
+
+    // Notice: The previous authorized drill warning footer has been completely removed so the simulation feels 100% authentic
     const htmlContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
         <div style="background: #0f172a; color: #ffffff; padding: 20px; text-align: center;">
@@ -265,30 +333,91 @@ app.post('/api/admin/phishing/send', async (req, res) => {
           <p>Hello,</p>
           <p style="font-size: 15px; color: #334155;">${messageBody.replace(/\n/g, '<br/>')}</p>
           <div style="margin: 30px 0; text-align: center;">
-            <a href="http://localhost:5173/simulations" style="background: #dc2626; color: #ffffff; padding: 12px 28px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+            <a href="${clickUrl}" style="background: #dc2626; color: #ffffff; padding: 12px 28px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
               Verify Account / Action Required →
             </a>
           </div>
           <p style="font-size: 13px; color: #64748b;">If you did not initiate this request, please contact IT Support immediately.</p>
         </div>
-        <div style="background: #e2e8f0; padding: 15px; text-align: center; font-size: 12px; color: #475569; border-top: 1px solid #cbd5e1;">
-          <strong>🛡️ ScamShield Security Awareness Drill Notice:</strong><br/>
-          This email was dispatched by your system administrator as an authorized phishing drill. If you recognized this as a simulated scam, do NOT click the link above—report it to IT to earn XP!
-        </div>
+        <img src="${openUrl}" width="1" height="1" style="display:none; opacity:0;" alt="" />
       </div>
     `;
+
+    const newDrill = {
+      id,
+      name: campaignName || `Phishing Drill (${template})`,
+      template: template || 'Corporate Security Alert',
+      targetEmail,
+      sent: 1,
+      opened: 0,
+      clicked: 0,
+      reported: 0,
+      status: "Dispatched (Awaiting Action)",
+      date: new Date().toISOString().split('T')[0]
+    };
+    activePhishingDrills = [newDrill, ...activePhishingDrills.filter(d => String(d.id) !== String(id))];
+    try {
+      await supabase.from('phishing_drills').upsert([newDrill]);
+    } catch (e) {}
+    try {
+      const { data: existing } = await supabase.from('profiles').select('id').eq('email', 'system_phishing_drills@scamshield.internal').maybeSingle();
+      if (existing) {
+        await supabase.from('profiles').update({ username: JSON.stringify(activePhishingDrills) }).eq('id', existing.id);
+      } else {
+        await supabase.from('profiles').insert([{ id: '22222222-2222-2222-2222-222222222222', email: 'system_phishing_drills@scamshield.internal', username: JSON.stringify(activePhishingDrills), role: 'system_storage', xp: 0, level: 1 }]);
+      }
+    } catch (e) {}
 
     // Try sending real email using Google SMTP
     try {
       await sendCloudEmail(targetEmail, subject, htmlContent);
-      return res.json({ ok: true, sent: true, recipient: targetEmail });
+      return res.json({ ok: true, sent: true, recipient: targetEmail, drill: newDrill });
     } catch (emailErr) {
       console.warn(`[phishing/send] SMTP fallback (simulated delivery):`, emailErr.message);
-      return res.json({ ok: true, sent: false, fallbackSimulated: true, err: emailErr.message });
+      return res.json({ ok: true, sent: false, fallbackSimulated: true, err: emailErr.message, drill: newDrill });
     }
   } catch (err) {
     res.status(500).json({ ok: false, err: err.message });
   }
+});
+
+app.get('/api/track/open', async (req, res) => {
+  const { drillId } = req.query;
+  if (drillId) {
+    const drill = activePhishingDrills.find(d => String(d.id) === String(drillId));
+    if (drill) {
+      drill.opened = (drill.opened || 0) + 1;
+      if (drill.status === "Dispatched (Awaiting Action)") {
+        drill.status = "Opened (Awaiting Action)";
+      }
+      try { await supabase.from('phishing_drills').update({ opened: drill.opened, status: drill.status }).eq('id', drillId); } catch (e) {}
+      try {
+        const { data: existing } = await supabase.from('profiles').select('id').eq('email', 'system_phishing_drills@scamshield.internal').maybeSingle();
+        if (existing) await supabase.from('profiles').update({ username: JSON.stringify(activePhishingDrills) }).eq('id', existing.id);
+      } catch (e) {}
+    }
+  }
+  res.writeHead(200, { 'Content-Type': 'image/gif', 'Cache-Control': 'no-cache' });
+  res.end(Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64'));
+});
+
+app.get('/api/track/click', async (req, res) => {
+  const { drillId, campaign, template } = req.query;
+  if (drillId) {
+    const drill = activePhishingDrills.find(d => String(d.id) === String(drillId));
+    if (drill) {
+      drill.opened = Math.max((drill.opened || 0), 1);
+      drill.clicked = (drill.clicked || 0) + 1;
+      drill.status = "Failed Drill (Clicked Link)";
+      try { await supabase.from('phishing_drills').update({ opened: drill.opened, clicked: drill.clicked, status: drill.status }).eq('id', drillId); } catch (e) {}
+      try {
+        const { data: existing } = await supabase.from('profiles').select('id').eq('email', 'system_phishing_drills@scamshield.internal').maybeSingle();
+        if (existing) await supabase.from('profiles').update({ username: JSON.stringify(activePhishingDrills) }).eq('id', existing.id);
+      } catch (e) {}
+    }
+  }
+  const redirectUrl = `/phishing-warning?campaign=${encodeURIComponent(campaign || '')}&template=${encodeURIComponent(template || '')}`;
+  res.redirect(redirectUrl);
 });
 
 app.post('/api/auth/sync', async (req, res) => {
