@@ -778,6 +778,34 @@
    MOBILE RESPONSIVE RULES FOR GAMIFICATION / PROGRESS MAP
    ========================================================= */
 @media screen and (max-width: 768px) {
+  /* Edge-to-Edge Progress Map & Unit Cards on Mobile (matching Badges Earned width) */
+  .home-columns {
+    padding: 0 !important;
+    gap: 1.5rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .home-col-main {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .progress-map {
+    padding: 0 !important;
+    gap: 2rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .unit-section {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
   /* Compact Unit Header Bar for Mobile (Single-line, crystal clear, spacious without overlapping) */
   .unit-header {
     display: flex !important;
