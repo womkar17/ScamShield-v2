@@ -13,36 +13,36 @@ export default function StatsBar() {
         className="stats-card level-card" 
         style={{ 
           '--stat-color': 'var(--gold)', 
-          flex: '2 1 320px', 
+          flex: '2 1 340px', 
           display: 'flex', 
           flexDirection: 'column', 
           alignItems: 'stretch', 
-          gap: '1rem',
+          gap: '1.2rem',
           background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(168, 85, 247, 0.08) 100%)',
           border: '1px solid rgba(245, 158, 11, 0.3)',
-          padding: '1.4rem',
+          padding: '1.5rem',
           boxSizing: 'border-box',
           overflow: 'hidden',
           minWidth: 0,
           width: '100%'
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', justifyContent: 'space-between', flexWrap: 'wrap', width: '100%', boxSizing: 'border-box' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', flex: '1 1 200px', minWidth: 0 }}>
-            <div className="stats-icon" style={{ fontSize: '2.2rem', flexShrink: 0, lineHeight: 1 }}>⭐</div>
-            <div style={{ minWidth: 0, flex: 1 }}>
-              <div className="stats-value" style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--gold)', wordBreak: 'break-word', lineHeight: 1.2 }}>
-                {xp.toLocaleString()} <span style={{ fontSize: '0.9rem', fontWeight: '600', color: '#cbd5e1' }}>Total XP</span>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', width: '100%', boxSizing: 'border-box' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: '1 1 auto', minWidth: '220px' }}>
+            <div className="stats-icon" style={{ fontSize: '2.5rem', flexShrink: 0, lineHeight: 1 }}>⭐</div>
+            <div>
+              <div className="stats-value" style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--gold)', whiteSpace: 'nowrap', wordBreak: 'normal', lineHeight: 1.2 }}>
+                {xp.toLocaleString()} <span style={{ fontSize: '0.95rem', fontWeight: '600', color: '#cbd5e1' }}>Total XP</span>
               </div>
-              <div className="stats-label" style={{ fontSize: '0.95rem', fontWeight: '700', color: '#e2e8f0', display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap', marginTop: '4px' }}>
-                <span style={{ background: 'linear-gradient(90deg, #a855f7, #6366f1)', padding: '0.2rem 0.6rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: '800', color: '#fff', whiteSpace: 'nowrap' }}>
+              <div className="stats-label" style={{ fontSize: '0.95rem', fontWeight: '700', color: '#e2e8f0', display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap', marginTop: '6px' }}>
+                <span style={{ background: 'linear-gradient(90deg, #a855f7, #6366f1)', padding: '0.2rem 0.65rem', borderRadius: '6px', fontSize: '0.78rem', fontWeight: '800', color: '#fff', whiteSpace: 'nowrap' }}>
                   LEVEL {level.number}
                 </span>
-                <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{level.name}</span>
+                <span style={{ fontWeight: '800', color: '#f8fafc', whiteSpace: 'normal', wordBreak: 'normal' }}>{level.name}</span>
               </div>
             </div>
           </div>
-          <div style={{ textAlign: 'right', fontSize: '0.85rem', color: '#94a3b8', fontWeight: '700', whiteSpace: 'nowrap', alignSelf: 'center', flexShrink: 0 }}>
+          <div style={{ textAlign: 'right', fontSize: '0.85rem', color: '#94a3b8', fontWeight: '700', whiteSpace: 'nowrap', background: 'rgba(255, 255, 255, 0.05)', padding: '0.4rem 0.8rem', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.1)', alignSelf: 'center' }}>
             Next: Level {level.number + 1}
           </div>
         </div>
