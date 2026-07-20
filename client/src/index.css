@@ -313,24 +313,62 @@ code {
   }
   .stats-dashboard {
     padding: 0 !important;
-    margin-bottom: 1.5rem !important;
-    gap: 12px !important;
+    margin-bottom: 1.25rem !important;
+    gap: 10px !important;
     width: 100% !important;
     box-sizing: border-box !important;
   }
+
+  /* Compact Level Card for Mobile (Eliminating excess height & blank padding) */
   .stats-card {
-    padding: 1.25rem 1rem !important;
-    gap: 0.8rem !important;
+    min-height: auto !important;
+    height: auto !important;
     width: 100% !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
     overflow: hidden !important;
+    border-radius: 12px !important;
   }
-  .stats-icon {
-    width: 48px !important;
-    height: 48px !important;
-    font-size: 1.8rem !important;
+
+  .stats-card.level-card {
+    padding: 0.85rem 1rem !important;
+    gap: 0.6rem !important;
+  }
+
+  .stats-card.level-card .stats-icon {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 1.5rem !important;
     flex-shrink: 0 !important;
+  }
+
+  .stats-card.level-card .stats-value {
+    font-size: 1.25rem !important;
+  }
+
+  /* Compact Streak and Badges Cards for Mobile (Short, sleek bars without bulky padding) */
+  .stats-card:not(.level-card) {
+    padding: 0.65rem 0.9rem !important;
+    gap: 0.7rem !important;
+    min-height: 54px !important;
+  }
+
+  .stats-card:not(.level-card) .stats-icon {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 1.35rem !important;
+    flex-shrink: 0 !important;
+  }
+
+  .stats-card:not(.level-card) .stats-value {
+    font-size: 1.08rem !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+  }
+
+  .stats-card:not(.level-card) .stats-label {
+    font-size: 0.78rem !important;
+    line-height: 1.2 !important;
   }
   .home-col-sidebar {
     display: none !important;
