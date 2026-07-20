@@ -147,8 +147,12 @@ export default function ModulePage() {
   useEffect(() => {
     if (!moduleData) {
       navigate('/dashboard');
+    } else {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
     }
-  }, [moduleData, navigate]);
+  }, [moduleData, navigate, moduleId, phase]);
 
   if (!moduleData) return null;
 

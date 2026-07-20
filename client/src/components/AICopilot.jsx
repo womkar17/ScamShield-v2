@@ -120,7 +120,7 @@ export default function AICopilot() {
   }
 
   return (
-    <div style={{ position: 'fixed', bottom: '24px', right: '24px', zIndex: 9999 }}>
+    <div className={`ai-copilot-container ${isOpen ? 'is-open' : ''}`} style={{ position: 'fixed', bottom: '24px', right: '24px', zIndex: 9999 }}>
       {/* Closed State: Floating Robot Button */}
       {!isOpen && (
         <button
@@ -149,6 +149,7 @@ export default function AICopilot() {
       {/* Open State: Chat Window */}
       {isOpen && (
         <div
+          className="ai-copilot-window"
           style={{
             width: '380px',
             height: '560px',
