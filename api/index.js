@@ -243,8 +243,8 @@ app.delete('/api/admin/games/custom/:id', async (req, res) => {
   res.json({ ok: true, games: activeCustomGames });
 });
 
-// Global Phishing Drills Sync Endpoint
-app.get('/api/admin/phishing/drills', async (req, res) => {
+// Global Phishing Drills Sync Helper
+async function syncAllDrills() {
   let combined = [...activePhishingDrills];
 
   try {
@@ -273,6 +273,12 @@ app.get('/api/admin/phishing/drills', async (req, res) => {
   } catch (e) {}
 
   activePhishingDrills = combined;
+  return activePhishingDrills;
+}
+
+// Global Phishing Drills Sync Endpoint
+app.get('/api/admin/phishing/drills', async (req, res) => {
+  await syncAllDrills();
   res.json({ ok: true, drills: activePhishingDrills });
 });
 
@@ -282,6 +288,7 @@ app.post('/api/admin/phishing/send', async (req, res) => {
     const { targetEmail, campaignName, template, customSubject, customMessage, senderName, drillId } = req.body;
     if (!targetEmail) return res.status(400).json({ ok: false, err: 'Missing targetEmail' });
 
+    await syncAllDrills();
     const id = drillId || Date.now();
 
     // Don't attempt SMTP send for broadcast keywords, just simulate
@@ -384,16 +391,36 @@ app.post('/api/admin/phishing/send', async (req, res) => {
 app.get('/api/track/open', async (req, res) => {
   const { drillId } = req.query;
   if (drillId) {
-    const drill = activePhishingDrills.find(d => String(d.id) === String(drillId));
+    await syncAllDrills();
+    let drill = activePhishingDrills.find(d => String(d.id) === String(drillId));
+    if (!drill) {
+      drill = {
+        id: drillId,
+        name: req.query.campaign || `Phishing Drill`,
+        template: req.query.template || 'Corporate Security Alert',
+        targetEmail: req.query.email || 'user@company.com',
+        sent: 1,
+        opened: 0,
+        clicked: 0,
+        reported: 0,
+        status: "Dispatched (Awaiting Action)",
+        date: new Date().toISOString().split('T')[0]
+      };
+      activePhishingDrills.unshift(drill);
+    }
     if (drill) {
       drill.opened = (drill.opened || 0) + 1;
       if (drill.status === "Dispatched (Awaiting Action)") {
         drill.status = "Opened (Awaiting Action)";
       }
-      try { await supabase.from('phishing_drills').update({ opened: drill.opened, status: drill.status }).eq('id', drillId); } catch (e) {}
+      try { await supabase.from('phishing_drills').upsert([drill]); } catch (e) {}
       try {
         const { data: existing } = await supabase.from('profiles').select('id').eq('email', 'system_phishing_drills@scamshield.internal').maybeSingle();
-        if (existing) await supabase.from('profiles').update({ username: JSON.stringify(activePhishingDrills) }).eq('id', existing.id);
+        if (existing) {
+          await supabase.from('profiles').update({ username: JSON.stringify(activePhishingDrills) }).eq('id', existing.id);
+        } else {
+          await supabase.from('profiles').insert([{ id: '22222222-2222-2222-2222-222222222222', email: 'system_phishing_drills@scamshield.internal', username: JSON.stringify(activePhishingDrills), role: 'system_storage', xp: 0, level: 1 }]);
+        }
       } catch (e) {}
     }
   }
@@ -404,15 +431,35 @@ app.get('/api/track/open', async (req, res) => {
 app.get('/api/track/click', async (req, res) => {
   const { drillId, campaign, template } = req.query;
   if (drillId) {
-    const drill = activePhishingDrills.find(d => String(d.id) === String(drillId));
+    await syncAllDrills();
+    let drill = activePhishingDrills.find(d => String(d.id) === String(drillId));
+    if (!drill) {
+      drill = {
+        id: drillId,
+        name: campaign || `Phishing Drill`,
+        template: template || 'Corporate Security Alert',
+        targetEmail: req.query.email || 'user@company.com',
+        sent: 1,
+        opened: 0,
+        clicked: 0,
+        reported: 0,
+        status: "Dispatched (Awaiting Action)",
+        date: new Date().toISOString().split('T')[0]
+      };
+      activePhishingDrills.unshift(drill);
+    }
     if (drill) {
       drill.opened = Math.max((drill.opened || 0), 1);
       drill.clicked = (drill.clicked || 0) + 1;
       drill.status = "Failed Drill (Clicked Link)";
-      try { await supabase.from('phishing_drills').update({ opened: drill.opened, clicked: drill.clicked, status: drill.status }).eq('id', drillId); } catch (e) {}
+      try { await supabase.from('phishing_drills').upsert([drill]); } catch (e) {}
       try {
         const { data: existing } = await supabase.from('profiles').select('id').eq('email', 'system_phishing_drills@scamshield.internal').maybeSingle();
-        if (existing) await supabase.from('profiles').update({ username: JSON.stringify(activePhishingDrills) }).eq('id', existing.id);
+        if (existing) {
+          await supabase.from('profiles').update({ username: JSON.stringify(activePhishingDrills) }).eq('id', existing.id);
+        } else {
+          await supabase.from('profiles').insert([{ id: '22222222-2222-2222-2222-222222222222', email: 'system_phishing_drills@scamshield.internal', username: JSON.stringify(activePhishingDrills), role: 'system_storage', xp: 0, level: 1 }]);
+        }
       } catch (e) {}
     }
   }
