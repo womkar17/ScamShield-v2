@@ -778,18 +778,19 @@
    MOBILE RESPONSIVE RULES FOR GAMIFICATION / PROGRESS MAP
    ========================================================= */
 @media screen and (max-width: 768px) {
-  /* Compact Unit Header Bar for Mobile (Image 3 fix) */
+  /* Compact Unit Header Bar for Mobile (Single-line, crystal clear, spacious without overlapping) */
   .unit-header {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
     justify-content: space-between !important;
-    padding: 0.8rem 1rem !important;
+    padding: 0.9rem 1.1rem !important;
     min-height: 64px !important;
-    gap: 0.75rem !important;
+    gap: 1rem !important;
     width: 100% !important;
     box-sizing: border-box !important;
     border-radius: 12px !important;
+    overflow: hidden !important;
   }
 
   .unit-header-left {
@@ -798,7 +799,15 @@
     align-items: center !important;
     gap: 0.75rem !important;
     min-width: 0 !important;
-    flex: 1 1 auto !important;
+    flex: 1 1 0% !important;
+    overflow: hidden !important;
+  }
+
+  /* Critical flex shrink for inner title div so title never collides with progress box */
+  .unit-header-left > div {
+    min-width: 0 !important;
+    flex: 1 1 0% !important;
+    overflow: hidden !important;
   }
 
   .unit-icon {
@@ -807,6 +816,9 @@
     font-size: 1.35rem !important;
     flex-shrink: 0 !important;
     margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   .unit-title {
@@ -817,6 +829,8 @@
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
+    display: block !important;
+    color: #ffffff !important;
   }
 
   /* Hide the lengthy description paragraphs on mobile so the block is small and concise */
@@ -826,7 +840,7 @@
 
   .unit-progress-wrap {
     width: auto !important;
-    min-width: 0 !important;
+    min-width: max-content !important;
     display: flex !important;
     justify-content: flex-end !important;
     align-items: center !important;
@@ -842,14 +856,15 @@
   }
 
   .unit-progress-text {
-    font-size: 0.78rem !important;
+    font-size: 0.82rem !important;
     font-weight: 800 !important;
-    background: rgba(255, 255, 255, 0.08) !important;
-    padding: 0.28rem 0.6rem !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    padding: 0.35rem 0.7rem !important;
     border-radius: 6px !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     margin: 0 !important;
     white-space: nowrap !important;
+    color: #ffffff !important;
   }
 
   .module-grid {
