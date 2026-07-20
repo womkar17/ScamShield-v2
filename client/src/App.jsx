@@ -19,7 +19,7 @@ import LiveThreatBanner from './components/LiveThreatBanner';
 import { useState } from 'react';
 
 function ProtectedRoute({ children, isSidebarOpen, setIsSidebarOpen }) {
-  const { isLoggedIn, loading } = useContext(AuthContext);
+  const { isLoggedIn, loading, userProfile, currentUser } = useContext(AuthContext);
 
   if (loading) {
     return (
@@ -38,8 +38,62 @@ function ProtectedRoute({ children, isSidebarOpen, setIsSidebarOpen }) {
 
   return (
     <div className="app-root-layout" style={{ display: 'flex' }}>
+      {isSidebarOpen && window.innerWidth <= 768 && (
+        <div
+          className="mobile-sidebar-overlay"
+          onClick={() => setIsSidebarOpen(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            background: 'rgba(0, 0, 0, 0.6)',
+            backdropFilter: 'blur(3px)',
+            zIndex: 1900
+          }}
+        />
+      )}
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
       <div className={`app-main-content ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`} style={{ flex: 1, transition: 'all 0.3s ease', display: 'flex', flexDirection: 'column' }}>
+        <header className="mobile-topheader" style={{
+          display: 'none',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '12px 16px',
+          background: '#0f172a',
+          borderBottom: '1px solid #1e293b',
+          position: 'sticky',
+          top: 0,
+          zIndex: 85,
+          width: '100%',
+          boxSizing: 'border-box'
+        }}>
+          <button
+            onClick={() => setIsSidebarOpen(true)}
+            style={{
+              background: 'rgba(255, 255, 255, 0.08)',
+              border: '1px solid #334155',
+              color: '#fff',
+              padding: '8px 12px',
+              borderRadius: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              fontSize: '0.95rem',
+              fontWeight: '700',
+              cursor: 'pointer'
+            }}
+          >
+            <span style={{ fontSize: '1.2rem', lineHeight: 1 }}>☰</span> Menu
+          </button>
+          <div style={{ fontSize: '1.2rem', fontWeight: '900', background: 'linear-gradient(90deg, #a855f7, #6366f1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            🛡️ ScamShield
+          </div>
+          <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'linear-gradient(135deg, #667eea, #764ba2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 'bold', fontSize: '1rem', boxShadow: '0 2px 8px rgba(102, 126, 234, 0.4)' }}>
+            {(userProfile?.username || userProfile?.email || currentUser?.email || 'U')[0]?.toUpperCase()}
+          </div>
+        </header>
         <LiveThreatBanner />
         {children}
       </div>

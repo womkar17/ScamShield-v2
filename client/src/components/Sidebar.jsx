@@ -24,12 +24,37 @@ export default function Sidebar({ isOpen, setIsOpen }) {
   return (
     <div className={`sidebar-nav ${isOpen ? 'sidebar-open' : 'sidebar-closed'}`} style={{...styles.sidebar, transition: 'all 0.3s ease'}}>
       <button 
+        className="sidebar-toggle-btn"
         onClick={() => setIsOpen(!isOpen)} 
         style={styles.toggleBtn}
         title={isOpen ? "Collapse Sidebar" : "Expand Sidebar"}
       >
         {isOpen ? '◀' : '▶'}
       </button>
+
+      {isOpen && (
+        <button
+          className="mobile-sidebar-close-btn"
+          onClick={() => setIsOpen(false)}
+          style={{
+            display: 'none', // Shown via CSS on mobile
+            position: 'absolute',
+            top: '14px',
+            right: '14px',
+            background: 'rgba(239, 68, 68, 0.15)',
+            color: '#ef4444',
+            border: '1px solid rgba(239, 68, 68, 0.3)',
+            padding: '6px 12px',
+            borderRadius: '6px',
+            fontSize: '0.85rem',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            zIndex: 105
+          }}
+        >
+          ✕ Close
+        </button>
+      )}
 
       <div style={styles.userSection}>
         <div style={{...styles.avatar, width: isOpen ? '60px' : '40px', height: isOpen ? '60px' : '40px', fontSize: isOpen ? '1.5rem' : '1.2rem', transition: 'all 0.3s ease'}}>
@@ -45,7 +70,10 @@ export default function Sidebar({ isOpen, setIsOpen }) {
             <button
               key={item.name}
               style={{ ...styles.menuBtn, ...(isActive ? styles.activeBtn : {}) }}
-              onClick={() => navigate(item.path)}
+              onClick={() => {
+                navigate(item.path);
+                if (window.innerWidth <= 768) setIsOpen(false);
+              }}
               onMouseEnter={(e) => {
                 if (!isActive) {
                   e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
@@ -70,6 +98,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
         <button 
           style={{ ...styles.menuBtn, ...styles.logoutBtn }} 
           onClick={() => {
+            if (window.innerWidth <= 768) setIsOpen(false);
             navigate('/');
             setTimeout(() => logout(), 50);
           }}
