@@ -456,7 +456,10 @@ CRITICAL REQUIREMENTS FOR spot-flag:
 2. You MUST include an array inside 'flags' with at least 3 flag objects.
 3. Every single 'text' value in 'flags' MUST be an EXACT, literal substring inside the 'content' HTML string so the player can click on it!`,
         visual: `Generate a visual deepfake / forgery detection game about "${title}" (${diff} difficulty). Create an HTML mockup. Return ONLY valid JSON:\n{"description":"Examine this suspicious video call or payment screenshot. Can you detect the forgery?","thumbnail":"🔍","data":{"content":"<div style='background:#1a1a2e;padding:30px;border-radius:12px;text-align:center;color:white;border:2px solid #e94560'><div style='background:#16213e;padding:20px;border-radius:8px;margin-bottom:15px'><h3 style='color:#e94560'>EMERGENCY VIDEO CONFERENCE</h3><div style='font-size:70px;margin:15px'>👤</div><p>Executive Officer</p><p style='font-size:12px;color:#888'>Connected server: meet-secure-external.io</p></div><p style='color:#e94560;font-size:14px'>Notice: Audio latency mismatch and unnatural blinking patterns</p></div>","flaws":["meet-secure-external.io — unverified external server","Unnatural lip-sync and audio latency mismatch","Urgent demand to wire funds during low-quality video call"],"isFake":true,"threatAnalysis":{"psychology":"Executive authority impersonation via deepfake","payload":"Unauthorized wire transfer","defense":"Verify executive financial requests via a secondary communication channel."}}}`,
-        password: `Generate a password security challenge about "${title}" (${diff} difficulty). Return ONLY valid JSON:\n{"description":"Test your password security against modern cracking tools.","thumbnail":"🔐","data":{"threatAnalysis":{"psychology":"Users choose convenience over security","payload":"Brute force dictionary attacks","defense":"Use 16+ character passphrases with mixed symbols and numbers."}}}`
+        password: `Generate a password security challenge about "${title}" (${diff} difficulty). Return ONLY valid JSON:\n{"description":"Test your password security against modern cracking tools.","thumbnail":"🔐","data":{"threatAnalysis":{"psychology":"Users choose convenience over security","payload":"Brute force dictionary attacks","defense":"Use 16+ character passphrases with mixed symbols and numbers."}}}`,
+        terminal: `Generate a cyber incident response terminal game about "${title}" (${diff} difficulty). Return ONLY valid JSON:\n{"description":"You are logged into a compromised server terminal. Select the correct mitigation command.","thumbnail":"⚡","data":{"scenario":"Suspicious cryptominer process and unauthorized SSH root login attempt detected.","commands":[{"cmd":"$ kill -9 4412 && ufw deny from 185.220.101.4","isCorrect":true,"output":"[SUCCESS] Malicious process isolated and IP blocked.","explanation":"Isolating the rogue process and firewall IP prevents lateral exfiltration."},{"cmd":"$ reboot --force","isCorrect":false,"output":"[FATAL] Reboot triggered boot-sector ransomware encryption!","explanation":"Rebooting during an active ransomware intrusion executes bootloader encryption."},{"cmd":"$ chmod -R 777 /var/www","isCorrect":false,"output":"[CRITICAL] World-writable permissions exposed!","explanation":"Never loosen system permissions during an attack."}],"threatAnalysis":{"psychology":"Panic and Time Pressure","payload":"Server compromise or cryptomining","defense":"Isolate network interfaces immediately before rebooting."}}}`,
+        forensics: `Generate an email header and DNS forensics lab game about "${title}" (${diff} difficulty). Return ONLY valid JSON:\n{"description":"Inspect raw email headers and SPF/DKIM verification results to spot anomalies.","thumbnail":"🔬","data":{"headers":[{"label":"Received (Origin)","value":"from mail-relay.proxy-scam.ru by mx.corporate.com","isSuspicious":true,"explanation":"Originates from an unauthorized residential proxy server."},{"label":"Authentication-Results","value":"spf=softfail; dkim=none","isSuspicious":true,"explanation":"SPF check failed and DKIM signature is missing."},{"label":"From","value":"\"IT Security\" <admin@g00gle-verify.net>","isSuspicious":true,"explanation":"Lookalike domain homoglyph."}],"threatAnalysis":{"psychology":"Brand Trust & Authority","payload":"Credential harvesting via reverse proxy","defense":"Check SPF/DKIM authentication and full raw header traces."}}}`,
+        'wire-audit': `Generate a corporate treasury BEC wire fraud audit game about "${title}" (${diff} difficulty). Return ONLY valid JSON:\n{"description":"Audit a high-value pending wire request against internal treasury security rules.","thumbnail":"🏦","data":{"invoice":{"vendor":"Global Supply Chain Partners","invoiceNo":"INV-2024-9912","amount":"$148,500.00","requestedBy":"CFO Executive Office (Urgent Email)","destinationBank":"Apex Offshore Holdings (Account #9941-002-88)","previousBank":"Standard Corporate Bank (Account #1104-882-10)","isFraud":true,"redFlagReason":"Sudden request to change wire destination to an unknown offshore bank via email without secondary voice verification."},"threatAnalysis":{"psychology":"Executive Urgency & Authority","payload":"Irrecoverable wire redirection","defense":"Always require out-of-band verbal confirmation for banking detail changes."}}}`
       };
       const prompt = prompts[t] || prompts.quiz;
       const res = await fetch(`${apiUrl}/api/ai/chat`, {
@@ -1086,7 +1089,7 @@ Return ONLY a valid JSON object with exactly two keys:
                       value={newGame.type}
                       onChange={e => setNewGame({ ...newGame, type: e.target.value })}
                     >
-                      {['quiz', 'swipe', 'chat', 'audio', 'visual', 'password', 'spot-flag'].map(t => (
+                      {['quiz', 'swipe', 'chat', 'audio', 'visual', 'password', 'spot-flag', 'terminal', 'forensics', 'wire-audit'].map(t => (
                         <option key={t} value={t}>{t}</option>
                       ))}
                     </select>
@@ -1138,6 +1141,9 @@ Return ONLY a valid JSON object with exactly two keys:
                         {newGame.type === 'spot-flag' && 'Design an HTML email mockup with hidden flags to click.'}
                         {newGame.type === 'visual' && 'Create an HTML visual with deepfake detection elements.'}
                         {newGame.type === 'password' && 'Password games are self-contained — no content needed! Just add a description.'}
+                        {newGame.type === 'terminal' && 'Incident response terminal commands and mitigation outcomes.'}
+                        {newGame.type === 'forensics' && 'Email header traces and DNS authentication inspection fields.'}
+                        {newGame.type === 'wire-audit' && 'Corporate treasury BEC invoice audit review items.'}
                       </p>
                     </div>
                     <button
@@ -1176,6 +1182,9 @@ Return ONLY a valid JSON object with exactly two keys:
                         {newGame.type === 'spot-flag' && `${(newGame.data.flags || []).length} flags to find`}
                         {newGame.type === 'visual' && `Deepfake: ${newGame.data.isFake ? 'Yes' : 'No'}`}
                         {newGame.type === 'password' && 'Self-contained engine'}
+                        {newGame.type === 'terminal' && `${(newGame.data.commands || []).length} mitigation commands`}
+                        {newGame.type === 'forensics' && `${(newGame.data.headers || []).length} inspected headers`}
+                        {newGame.type === 'wire-audit' && `Invoice: ${(newGame.data.invoice?.amount || '$148,500')}`}
                       </span>
                       <button
                         onClick={() => setNewGame(prev => ({ ...prev, data: null }))}
@@ -1230,7 +1239,7 @@ Return ONLY a valid JSON object with exactly two keys:
                   <span>How Custom Games Working & Layouts Function</span>
                 </h3>
                 <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '13.5px', lineHeight: '1.6', margin: '8px 0 12px 0' }}>
-                  When you create a custom game here, the system dynamically pairs your title, difficulty, and scenario description with one of <strong>7 interactive React Game Engines</strong> built into the Cyber Arcade (`/games`):
+                  When you create a custom game here, the system dynamically pairs your title, difficulty, and scenario description with one of <strong>10 interactive React Game Engines</strong> built into the Cyber Arcade (`/games`):
                 </p>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px', fontSize: '12.5px', color: 'rgba(255,255,255,0.7)' }}>
                   <div style={{ background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '8px', borderLeft: '3px solid #38bdf8' }}>
@@ -1242,12 +1251,24 @@ Return ONLY a valid JSON object with exactly two keys:
                     A Tinder-style card deck where users drag left/right to judge whether emails and domains are Safe or Scams.
                   </div>
                   <div style={{ background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '8px', borderLeft: '3px solid #4ade80' }}>
-                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>💻 Terminal Engine (`password`)</strong>
+                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>🔐 Password Engine (`password`)</strong>
                     A hacker console measuring real-time entropy and brute-force resistance as users type passwords.
                   </div>
                   <div style={{ background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '8px', borderLeft: '3px solid #facc15' }}>
                     <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>🚩 Visual Flag Engine (`spot-flag`)</strong>
                     A UI mock where users inspect corporate interfaces and click on hidden phishing indicators.
+                  </div>
+                  <div style={{ background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '8px', borderLeft: '3px solid #10b981' }}>
+                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>⚡ Incident Terminal (`terminal`)</strong>
+                    An interactive command-line console where incident responders execute countermeasures during live server attacks.
+                  </div>
+                  <div style={{ background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '8px', borderLeft: '3px solid #0ea5e9' }}>
+                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>🔬 Email Forensics (`forensics`)</strong>
+                    A digital lab workbench where users inspect raw email header traces, SPF/DKIM verification, and lookalike domains.
+                  </div>
+                  <div style={{ background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '8px', borderLeft: '3px solid #f59e0b' }}>
+                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>🏦 Wire &amp; BEC Audit (`wire-audit`)</strong>
+                    A treasury escrow portal where auditors review pending high-value corporate wire requests and freeze BEC fraud.
                   </div>
                 </div>
               </div>

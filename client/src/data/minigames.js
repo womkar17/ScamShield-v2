@@ -705,5 +705,97 @@ export const MINIGAMES = [
       ],
       threatAnalysis: { psychology: 'Curiosity, Convenience, and Workplace Complacency', payload: 'Corporate data exfiltration, ransomware infection, and API key theft', defense: 'Adhere strictly to approved software policies. Treat unsolicited USBs and chat executables as toxic.' }
     }
+  },
+
+  // ──────────── TERMINAL & INCIDENT RESPONSE GAMES (NEW TYPE 1) ────────────
+  {
+    id: 'terminal_1', title: 'Ransomware Outbreak: Server-04', description: 'You are logged into a compromised Linux server terminal. Isolate the rogue cryptominer before lateral encryption starts.',
+    type: 'terminal', difficulty: 'Hard', thumbnail: '⚡', xpReward: 80,
+    data: {
+      scenario: "Suspicious CPU spike (99.2%) and outbound SSH scanning detected on internal subnet 10.0.4.0/24.",
+      commands: [
+        { cmd: "$ kill -9 4412 && ufw deny from 185.220.101.4 && netstat -anp | grep ESTABLISHED", isCorrect: true, output: "[SUCCESS] Process 'xmrig.exe' (PID 4412) terminated. IP 185.220.101.4 blocked. Lateral sockets dropped.", explanation: "Immediately terminating the rogue process and adding a firewall block prevents lateral network exfiltration." },
+        { cmd: "$ reboot --force", isCorrect: false, output: "[FATAL BOOTLOADER ERROR] Reboot triggered ALPHV boot-sector encryption! All drives locked.", explanation: "Rebooting a server during an active ransomware intrusion executes boot-time encryption payloads." },
+        { cmd: "$ chmod -R 777 /var/www && rm -rf /var/log/*", isCorrect: false, output: "[CRITICAL BREACH] World-writable access granted and audit logs destroyed!", explanation: "Never loosen file permissions or wipe audit trails during an active security incident." }
+      ],
+      threatAnalysis: { psychology: 'Panic & Time Pressure', payload: 'Lateral ransomware spread across enterprise subnets', defense: 'Isolate compromised network interfaces immediately without rebooting.' }
+    }
+  },
+  {
+    id: 'terminal_2', title: 'Database SQL Injection Defense', description: 'An attacker is bombarding the customer authentication endpoint with SQLi payloads. Deploy the mitigation command.',
+    type: 'terminal', difficulty: 'Medium', thumbnail: '💻', xpReward: 65,
+    data: {
+      scenario: "WAF logs show: GET /login?user=admin' OR '1'='1' -- HTTP/1.1 from IP 45.133.1.22.",
+      commands: [
+        { cmd: "$ iptables -A INPUT -s 45.133.1.22 -j DROP && enable_waf_rule --sqli-strict", isCorrect: true, output: "[SUCCESS] Attacker IP dropped at kernel boundary. Strict parameterized SQL validation enforced.", explanation: "Dropping the hostile IP and enforcing strict WAF parameterized query validation stops SQL injection attempts immediately." },
+        { cmd: "$ service mysql stop --force", isCorrect: false, output: "[OUTAGE] Production database offline. 45,000 active customer sessions dropped.", explanation: "Shutting down production databases causes immediate self-inflicted Denial of Service (DoS)." },
+        { cmd: "$ echo 'admin' > /etc/shadow", isCorrect: false, output: "[FATAL ERROR] System password file corrupted! Root authentication lost.", explanation: "Never modify critical system files manually in response to a web application attack." }
+      ],
+      threatAnalysis: { psychology: 'Alarm & Urgency', payload: 'Unauthorized database dump and admin account takeover', defense: 'Use parameterized queries/prepared statements and block hostile IPs at the WAF level.' }
+    }
+  },
+
+  // ──────────── EMAIL FORENSICS & HEADER INSPECTION (NEW TYPE 2) ────────────
+  {
+    id: 'forensics_1', title: 'Email Header Autopsy: Lookalike Proxy', description: 'Inspect raw email headers, SPF/DKIM verification results, and origin IPs to uncover a reverse proxy phishing trap.',
+    type: 'forensics', difficulty: 'Hard', thumbnail: '🔬', xpReward: 75,
+    data: {
+      headers: [
+        { label: "Received (Origin Host)", value: "from mail-relay.phish-proxy.ru (185.220.101.5) by mx.enterprise-mail.com", isSuspicious: true, explanation: "Origin IP and hostname map to an unauthorized residential proxy server." },
+        { label: "Authentication-Results", value: "spf=softfail (domain of g00gle-security.net does not designate 185.220.101.5); dkim=none", isSuspicious: true, explanation: "SPF check failed and the DKIM digital signature is completely missing." },
+        { label: "From Header (Display)", value: "\"Google Cloud Support\" <admin-alert@g00gle-security.net>", isSuspicious: true, explanation: "Homoglyph attack: zero ('0') replacing letter 'o' in domain." },
+        { label: "Return-Path", value: "<bounce-handler-9941@russian-proxy-relay.org>", isSuspicious: true, explanation: "The Return-Path completely mismatches the display From header." }
+      ],
+      threatAnalysis: { psychology: 'Brand Trust & Visual Authority', payload: 'Session cookie theft via Adversary-in-the-Middle (AiTM) reverse proxy', defense: 'Always verify SPF/DKIM authentication and check raw Return-Path headers.' }
+    }
+  },
+  {
+    id: 'forensics_2', title: 'DKIM Signature Verification Lab', description: 'Examine this high-urgency HR benefit update email. Is the domain authentic or forged?',
+    type: 'forensics', difficulty: 'Medium', thumbnail: '🧬', xpReward: 60,
+    data: {
+      headers: [
+        { label: "Received (Origin Host)", value: "from smtp.mailgun.org (162.243.1.1) by mx.corporate.com", isSuspicious: false, explanation: "Originates from a legitimate email infrastructure provider." },
+        { label: "Authentication-Results", value: "spf=pass (smtp.mailgun.org); dkim=pass header.d=hr-benefits-portal.com", isSuspicious: true, explanation: "While SPF/DKIM pass technically, the domain 'hr-benefits-portal.com' is a newly registered lookalike domain not owned by your company!" },
+        { label: "From Header (Display)", value: "\"Corporate HR Department\" <benefits@hr-benefits-portal.com>", isSuspicious: true, explanation: "External lookalike domain masquerading as internal Human Resources." },
+        { label: "Subject", value: "[URGENT ACTION] Annual Health Enrollment Deadline Tonight", isSuspicious: true, explanation: "Artificial deadline designed to rush employees past domain verification." }
+      ],
+      threatAnalysis: { psychology: 'Fear of Missing Out & Authority Impersonation', payload: 'Employee SSO credential harvesting', defense: 'Remember that SPF/DKIM pass only verifies domain ownership, not that the domain belongs to your actual organization!' }
+    }
+  },
+
+  // ──────────── WIRE AUDIT & BEC TREASURY ESCROW (NEW TYPE 3) ────────────
+  {
+    id: 'wire_1', title: 'Treasury Audit: The $148,500 Offshore Wire', description: 'Review a pending high-value corporate invoice request. Verify vendor banking changes and dual-authorization rules.',
+    type: 'wire-audit', difficulty: 'Hard', thumbnail: '🏦', xpReward: 80,
+    data: {
+      invoice: {
+        vendor: "Global Logistics Supply Corp.",
+        invoiceNo: "INV-2026-88419",
+        amount: "$148,500.00",
+        requestedBy: "CFO Executive Office (Urgent Email Notification)",
+        destinationBank: "Apex Offshore Holdings (Account #9941-002-88)",
+        previousBank: "Standard Corporate Bank (Account #1104-882-10)",
+        isFraud: true,
+        redFlagReason: "Sudden request to change destination wire instructions to an unknown offshore holding account via email without secondary voice verification."
+      },
+      threatAnalysis: { psychology: 'Executive Urgency & Authority Bypass', payload: 'Irrecoverable wire transfer of $148,500 to money mule accounts', defense: 'Mandatory out-of-band verbal confirmation with known vendor contacts for any banking detail changes.' }
+    }
+  },
+  {
+    id: 'wire_2', title: 'BEC Invoice Interception: Vendor Change', description: 'An invoice arrives from a long-time supplier requesting payment to a new bank account due to an audit.',
+    type: 'wire-audit', difficulty: 'Medium', thumbnail: '📜', xpReward: 65,
+    data: {
+      invoice: {
+        vendor: "Precision Manufacturing LLC",
+        invoiceNo: "PM-2026-4011",
+        amount: "$62,400.00",
+        requestedBy: "Accounts Receivable via email (reply-to: precision-mfg-billing.com)",
+        destinationBank: "Metropolitan Trust Bank (Account #8812-441-09)",
+        previousBank: "First National Commercial (Account #3301-992-11)",
+        isFraud: true,
+        redFlagReason: "Lookalike reply-to domain ('precision-mfg-billing.com' vs 'precision-mfg.com') paired with a sudden bank account update."
+      },
+      threatAnalysis: { psychology: 'Vendor Trust & Habitual Routine', payload: 'Diversion of legitimate vendor payments to attacker-controlled accounts', defense: 'Never update supplier payment details without calling the verified phone number from the original contract.' }
+    }
   }
 ];

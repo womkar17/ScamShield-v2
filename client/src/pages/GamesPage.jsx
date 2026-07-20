@@ -13,6 +13,9 @@ import QuizGame from '../components/games/QuizGame';
 import ChatGame from '../components/games/ChatGame';
 import AudioScamGame from '../components/games/AudioScamGame';
 import VisualScamGame from '../components/games/VisualScamGame';
+import TerminalGame from '../components/games/TerminalGame';
+import ForensicsGame from '../components/games/ForensicsGame';
+import WireAuditGame from '../components/games/WireAuditGame';
 
 const GamesPage = () => {
   const navigate = useNavigate();
@@ -109,9 +112,9 @@ const GamesPage = () => {
       return x - Math.floor(x);
     };
 
-    // Shuffle and pick 10
+    // Shuffle and pick 15
     const shuffled = [...MINIGAMES].sort(() => random() - 0.5);
-    return shuffled.slice(0, 10);
+    return shuffled.slice(0, 15);
   }, []);
 
   const handleGameComplete = (success) => {
@@ -153,6 +156,17 @@ const GamesPage = () => {
         break;
       case 'visual':
         GameComponent = VisualScamGame;
+        break;
+      case 'terminal':
+        GameComponent = TerminalGame;
+        break;
+      case 'forensics':
+      case 'phishing-investigator':
+        GameComponent = ForensicsGame;
+        break;
+      case 'wire-audit':
+      case 'wire-intercept':
+        GameComponent = WireAuditGame;
         break;
       default:
         GameComponent = QuizGame;
