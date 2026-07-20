@@ -8,6 +8,7 @@ import GamesPage from './pages/GamesPage';
 import CaseStudiesPage from './pages/CaseStudiesPage';
 import AdminPage from './pages/AdminPage';
 import SettingsPage from './pages/SettingsPage';
+import BadgesPage from './pages/BadgesPage';
 import PhishingAlertPage from './pages/PhishingAlertPage';
 import LevelUpModal from './components/LevelUpModal';
 import { GamificationContext } from './context/GamificationContext';
@@ -130,6 +131,9 @@ export default function App() {
         } />
         <Route path="/case-studies" element={
           <ProtectedRoute isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}><CaseStudiesPage /></ProtectedRoute>
+        } />
+        <Route path="/badges" element={
+          <ProtectedRoute isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}><BadgesPage /></ProtectedRoute>
         } />
         <Route path="/admin" element={
           <ProtectedRoute isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}><AdminPage /></ProtectedRoute>

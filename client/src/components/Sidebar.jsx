@@ -92,6 +92,37 @@ export default function Sidebar({ isOpen, setIsOpen }) {
             </button>
           );
         })}
+
+        {/* Mobile-Only Achievements & Badges Section in Menu */}
+        <div className="sidebar-mobile-badges-section" style={{ display: 'none', flexDirection: 'column', width: '100%', borderTop: '1px solid rgba(255, 255, 255, 0.08)', marginTop: '0.8rem', paddingTop: '0.8rem' }}>
+          {isOpen && (
+            <div style={{ fontSize: '0.72rem', fontWeight: '800', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '1px', padding: '0 1rem 0.4rem', opacity: 0.85 }}>
+              ACHIEVEMENTS
+            </div>
+          )}
+          <button
+            style={{ ...styles.menuBtn, ...(location.pathname === '/badges' ? styles.activeBtn : {}) }}
+            onClick={() => {
+              navigate('/badges');
+              if (window.innerWidth <= 768) setIsOpen(false);
+            }}
+            onMouseEnter={(e) => {
+              if (location.pathname !== '/badges') {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                e.currentTarget.style.color = '#fff';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (location.pathname !== '/badges') {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = 'var(--text2, #cbd5e1)';
+              }
+            }}
+          >
+            <span style={styles.icon}>🏆</span>
+            {isOpen && "Badges"}
+          </button>
+        </div>
       </div>
 
       <div style={styles.footer}>
