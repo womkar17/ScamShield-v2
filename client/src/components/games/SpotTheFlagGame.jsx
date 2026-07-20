@@ -101,7 +101,7 @@ const SpotTheFlagGame = ({ game, onComplete }) => {
       if (flag.text && flag.top === undefined) {
         const isFound = foundFlags.includes(flag.id);
         const bg = isFound ? 'rgba(245, 101, 101, 0.3)' : 'transparent';
-        const border = isFound ? '2px solid #f56565' : '1px dashed rgba(66, 153, 225, 0.4)';
+        const border = isFound ? '2px solid #f56565' : '2px solid transparent';
         const shadow = isFound ? '0 0 10px rgba(245, 101, 101, 0.5)' : 'none';
         const esc = flag.text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         const regex = new RegExp(`(${esc})`, 'g');
