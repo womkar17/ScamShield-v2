@@ -56,7 +56,11 @@ export default function TerminalGame({ game, onComplete }) {
   };
 
   if (showAnalysis) {
-    return <ThreatAnalysis analysis={threatAnalysis} onContinue={() => onComplete(score, 1)} />;
+    return (
+      <div style={{ position: 'relative', width: '100%', minHeight: '520px', display: 'flex', flex: 1 }}>
+        <ThreatAnalysis analysis={threatAnalysis} onContinue={() => onComplete(score, 1)} />
+      </div>
+    );
   }
 
   return (

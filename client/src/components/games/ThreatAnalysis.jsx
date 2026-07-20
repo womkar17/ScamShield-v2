@@ -16,10 +16,10 @@ export default function ThreatAnalysis({ data, analysis, threatAnalysis, onProce
   return (
     <div style={{
       position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, 
-      backgroundColor: 'rgba(15, 23, 42, 0.95)', color: '#f8fafc', 
+      backgroundColor: 'rgba(15, 23, 42, 0.98)', color: '#f8fafc', 
       display: 'flex', flexDirection: 'column', padding: '24px', 
       justifyContent: 'center', alignItems: 'center', zIndex: 1000,
-      backdropFilter: 'blur(8px)',
+      backdropFilter: 'blur(8px)', borderRadius: '24px', boxSizing: 'border-box',
       fontFamily: 'system-ui, -apple-system, sans-serif'
     }}>
       <div style={{

@@ -93,7 +93,7 @@ export default function ChatGame({ game, onComplete }) {
           👤
         </div>
         <div>
-          <div style={{ fontWeight: '600', fontSize: '16px' }}>{data.senderName || 'Unknown Number'}</div>
+          <div style={{ fontWeight: '600', fontSize: '16px' }}>{rawData.senderName || 'Unknown Number'}</div>
           <div style={{ fontSize: '13px', opacity: 0.9 }}>online</div>
         </div>
       </div>
@@ -163,7 +163,7 @@ export default function ChatGame({ game, onComplete }) {
       )}
 
       {showThreat && (
-        <ThreatAnalysis data={data.threatAnalysis} onProceed={handleComplete} />
+        <ThreatAnalysis data={rawData.threatAnalysis} onProceed={handleComplete} />
       )}
     </div>
   );

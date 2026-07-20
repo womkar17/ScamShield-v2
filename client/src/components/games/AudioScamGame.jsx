@@ -130,7 +130,7 @@ export default function AudioScamGame({ game, onComplete }) {
         </div>
         
         <div style={{ textAlign: 'center' }}>
-          <h2 style={{ margin: '0 0 12px 0', fontSize: '30px', fontWeight: '300' }}>{data.callerName || 'Unknown Caller'}</h2>
+          <h2 style={{ margin: '0 0 12px 0', fontSize: '30px', fontWeight: '300' }}>{rawData.callerName || 'Unknown Caller'}</h2>
           <p style={{ margin: 0, color: '#98989f', fontSize: '18px', fontVariantNumeric: 'tabular-nums' }}>
             {callEnded ? 'Call Ended' : (isPlaying ? formatTime(callDuration) : 'Incoming Call...')}
           </p>
@@ -181,7 +181,7 @@ export default function AudioScamGame({ game, onComplete }) {
       </div>
 
       {showThreat && (
-        <ThreatAnalysis data={data.threatAnalysis} onProceed={handleComplete} />
+        <ThreatAnalysis data={rawData.threatAnalysis} onProceed={handleComplete} />
       )}
     </div>
   );

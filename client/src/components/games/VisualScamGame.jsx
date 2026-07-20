@@ -95,7 +95,7 @@ export default function VisualScamGame({ game, onComplete }) {
           backgroundColor: 'white',
           maxWidth: '100%'
         }}>
-          {data.contentType === 'html' ? (
+          {rawData.contentType === 'html' ? (
             <div dangerouslySetInnerHTML={{ __html: content }} style={{ padding: '24px', pointerEvents: 'none' }} />
           ) : (
             <img src={content || 'https://via.placeholder.com/600x400/e2e8f0/64748b?text=Suspicious+Content'} alt="Scan Target" style={{ maxWidth: '100%', display: 'block', pointerEvents: 'none' }} />
@@ -112,7 +112,7 @@ export default function VisualScamGame({ game, onComplete }) {
               mixBlendMode: 'multiply'
             }}>
               {/* Optional region highlights */}
-              {data.artifactRegions?.map((region, i) => (
+              {rawData.artifactRegions?.map((region, i) => (
                 <div key={i} style={{
                   position: 'absolute',
                   top: region.top, left: region.left, width: region.width, height: region.height,
@@ -160,7 +160,7 @@ export default function VisualScamGame({ game, onComplete }) {
       )}
 
       {showThreat && (
-        <ThreatAnalysis data={data.threatAnalysis} onProceed={handleComplete} />
+        <ThreatAnalysis data={rawData.threatAnalysis} onProceed={handleComplete} />
       )}
     </div>
   );

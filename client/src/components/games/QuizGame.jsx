@@ -117,7 +117,11 @@ const QuizGame = ({ game, onComplete }) => {
   };
 
   if (showAnalysis) {
-    return <ThreatAnalysis analysis={threatAnalysis} onContinue={() => onComplete(score, questions.length)} />;
+    return (
+      <div style={{ position: 'relative', width: '100%', minHeight: '520px', display: 'flex', flex: 1 }}>
+        <ThreatAnalysis analysis={threatAnalysis} onContinue={() => onComplete(score, questions.length)} />
+      </div>
+    );
   }
 
   return (

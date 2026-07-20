@@ -61,7 +61,7 @@ const SpotTheFlagGame = ({ game, onComplete }) => {
   };
 
   if (showAnalysis) {
-    const analysis = data.threatAnalysis || {};
+    const analysis = rawData.threatAnalysis || game.threatAnalysis || {};
     return (
       <div style={styles.analysisOverlay}>
         <div style={styles.analysisCard}>
@@ -105,7 +105,7 @@ const SpotTheFlagGame = ({ game, onComplete }) => {
         const shadow = isFound ? '0 0 10px rgba(245, 101, 101, 0.5)' : 'none';
         const esc = flag.text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         const regex = new RegExp(`(${esc})`, 'g');
-        processed = processed.replace(regex, `<span class="spot-target-span" data-flag-id="${flag.id}" style="background-color: ${bg}; border-bottom: ${border}; box-shadow: ${shadow}; border-radius: 4px; padding: 1px 4px; cursor: pointer; transition: all 0.2s; display: inline-block;">$1</span>`);
+        processed = processed.replace(regex, `<span class="spot-target-span" data-flag-id="${flag.id}" style="background-color: ${bg}; border-bottom: ${border}; box-shadow: ${shadow}; border-radius: 4px; padding: 2px 6px; cursor: pointer; transition: all 0.2s; display: inline; line-height: inherit; vertical-align: baseline; word-break: break-word;">$1</span>`);
       }
     });
     return processed;
@@ -276,7 +276,9 @@ const styles = {
     width: '100%',
     minHeight: '400px',
     padding: '20px',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    lineHeight: '1.6',
+    fontSize: '16px'
   },
   flagOverlay: {
     position: 'absolute',
