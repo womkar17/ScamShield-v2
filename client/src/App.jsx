@@ -39,7 +39,8 @@ function ProtectedRoute({ children, isSidebarOpen, setIsSidebarOpen }) {
   return (
     <div className="app-root-layout" style={{ display: 'flex' }}>
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
-      <div className={`app-main-content ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`} style={{ flex: 1, transition: 'all 0.3s ease' }}>
+      <div className={`app-main-content ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`} style={{ flex: 1, transition: 'all 0.3s ease', display: 'flex', flexDirection: 'column' }}>
+        <LiveThreatBanner />
         {children}
       </div>
     </div>
@@ -57,7 +58,6 @@ export default function App() {
 
   return (
     <>
-      <LiveThreatBanner />
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />

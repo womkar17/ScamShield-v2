@@ -1,7 +1,18 @@
 import React from 'react';
 
-export default function ThreatAnalysis({ data, onProceed }) {
-  if (!data) return null;
+export default function ThreatAnalysis({ data, analysis, threatAnalysis, onProceed, onContinue, onComplete }) {
+  const info = data || analysis || threatAnalysis || {
+    psychology: "Scammers leverage urgency, emotional pressure, and authority impersonation to bypass logical scrutiny.",
+    payload: "May lead to credential theft, unauthorized financial transfers, or malware execution.",
+    defense: "Always verify unexpected or urgent requests through a separate, trusted verification channel."
+  };
+
+  const handleNext = () => {
+    if (typeof onProceed === 'function') return onProceed();
+    if (typeof onContinue === 'function') return onContinue();
+    if (typeof onComplete === 'function') return onComplete(true);
+  };
+
   return (
     <div style={{
       position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, 
@@ -34,12 +45,12 @@ export default function ThreatAnalysis({ data, onProceed }) {
         </h2>
         
         <div style={{ marginTop: '24px' }}>
-          <Section title="Psychological Tactic" content={data.psychology} />
-          <Section title="Payload / Goal" content={data.payload} />
-          <Section title="Defense Strategy" content={data.defense} isSuccess />
+          <Section title="Psychological Tactic" content={info.psychology || "Scammers leverage urgency and emotional pressure to force hasty decisions."} />
+          <Section title="Payload / Goal" content={info.payload || "May lead to credential theft or unauthorized data access."} />
+          <Section title="Defense Strategy" content={info.defense || "Always verify requests through a separate, trusted communication channel."} isSuccess />
         </div>
         
-        <button onClick={onProceed} style={{
+        <button onClick={handleNext} style={{
           width: '100%',
           padding: '16px 20px', 
           fontSize: '16px', 
