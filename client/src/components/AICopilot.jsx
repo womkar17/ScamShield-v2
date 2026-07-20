@@ -302,6 +302,7 @@ export default function AICopilot() {
 
           {/* Input Bar */}
           <form
+            className="ai-copilot-form"
             onSubmit={handleSend}
             style={{
               padding: '12px 16px',
@@ -312,9 +313,15 @@ export default function AICopilot() {
             }}
           >
             <input
+              className="ai-copilot-input"
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              onFocus={(e) => {
+                setTimeout(() => {
+                  e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
+              }}
               placeholder="Ask AI or paste scam link..."
               disabled={loading}
               style={{
@@ -329,6 +336,7 @@ export default function AICopilot() {
               }}
             />
             <button
+              className="ai-copilot-submit"
               type="submit"
               disabled={loading || !input.trim()}
               style={{
