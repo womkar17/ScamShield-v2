@@ -31,11 +31,12 @@ execSync(
 
 // Write function config
 writeFileSync(join(funcDir, '.vc-config.json'), JSON.stringify({
-  runtime: 'nodejs20.x',
-  handler: 'index.mjs',
-  launcherType: 'Nodejs',
-  maxDuration: 30
-}, null, 2));
+    runtime: 'nodejs18.x',
+    handler: 'index.mjs',
+    launcherType: 'Nodejs',
+    supportsResponseStreaming: false,
+    maxDuration: 30
+  }, null, 2));
 console.log('✅ API function bundled: api/index.func');
 
 // 5. Bundle simple standalone functions (test, ping)
@@ -44,9 +45,10 @@ for (const name of ['test', 'ping']) {
   mkdirSync(dir, { recursive: true });
   cpSync(`api/${name}.js`, join(dir, 'index.mjs'));
   writeFileSync(join(dir, '.vc-config.json'), JSON.stringify({
-    runtime: 'nodejs20.x',
+    runtime: 'nodejs18.x',
     handler: 'index.mjs',
-    launcherType: 'Nodejs'
+    launcherType: 'Nodejs',
+    supportsResponseStreaming: false
   }, null, 2));
   console.log(`✅ Function bundled: api/${name}.func`);
 }
@@ -55,8 +57,8 @@ for (const name of ['test', 'ping']) {
 writeFileSync(join(OUTPUT, 'config.json'), JSON.stringify({
   version: 3,
   routes: [
-    { src: '/api/(.*)', dest: '/api/index' },
     { handle: 'filesystem' },
+    { src: '/api/(.*)', dest: '/api/index' },
     { src: '/(.*)', dest: '/index.html' }
   ]
 }, null, 2));
@@ -66,3 +68,30 @@ console.log('🚀 Vercel Build Output API structure created!');
 console.log('   Static files: .vercel/output/static/');
 console.log('   Functions:    .vercel/output/functions/api/');
 console.log('   Config:       .vercel/output/config.json');
+
+// Debug: print the full output structure
+import { readdirSync, statSync, readFileSync } from 'fs';
+function listDir(dir, indent = '') {
+  try {
+    for (const item of readdirSync(dir)) {
+      const fullPath = join(dir, item);
+      const stat = statSync(fullPath);
+      if (stat.isDirectory()) {
+        if (item === 'static' || item === 'node_modules') {
+          console.log(`${indent}📁 ${item}/ (${readdirSync(fullPath).length} files)`);
+        } else {
+          console.log(`${indent}📁 ${item}/`);
+          listDir(fullPath, indent + '  ');
+        }
+      } else {
+        console.log(`${indent}📄 ${item} (${stat.size} bytes)`);
+      }
+    }
+  } catch(e) { console.log(`${indent}[error listing: ${e.message}]`); }
+}
+console.log('\n📋 Build output structure:');
+listDir('.vercel/output');
+console.log('\n📄 config.json contents:');
+console.log(readFileSync('.vercel/output/config.json', 'utf8'));
+console.log('\n📄 api/index.func/.vc-config.json:');
+console.log(readFileSync('.vercel/output/functions/api/index.func/.vc-config.json', 'utf8'));
