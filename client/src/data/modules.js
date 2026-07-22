@@ -12158,4 +12158,1027 @@ export const MODULES = [
           }
       ]
   }
+,
+  {
+      "id": 278,
+      "icon": "🕶️",
+      "title": "Fake Job Interview in Metaverse",
+      "desc": "A \"final interview\" happens in a VR metaverse office — pay a refundable deposit for the headset kit.",
+      "diff": "med",
+      "tag": "Job Fraud",
+      "url": "nexaverse-careers.io",
+      "badge": "Kit Shipped!",
+      "amount": "₹65,000/month",
+      "amountLabel": "Offered Salary",
+      "fee": "VR Kit Deposit: ₹3,499",
+      "feeNote": "Refundable (claimed) — headset kit",
+      "fields": [
+          {
+              "n": "bankAccount",
+              "p": "Bank Account Number",
+              "t": "text"
+          },
+          {
+              "n": "upiId",
+              "p": "UPI ID for Deposit",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Email",
+          "Phone Number",
+          "Avatar/Metaverse Handle",
+          "Bank Account Number",
+          "UPI ID",
+          "VR Kit Deposit"
+      ],
+      "reveal": "There is no VR headquarters, no HR avatar, and no real job. The \"headset kit deposit\" is the entire scam — no legitimate employer ships you hardware you must pay for before you've even been formally hired. Your bank and UPI details are now exposed.",
+      "flags": [
+          "Interview happens entirely in an unverifiable virtual space with no real company presence",
+          "Requires a paid \"deposit\" for hardware before any formal offer",
+          "Role and salary are vague and generic (\"Community Manager\")",
+          "No verifiable company registration or real-world office address"
+      ],
+      "tips": [
+          "No legitimate employer requires you to pay for interview or onboarding equipment.",
+          "Verify the company's real-world registration and office address independently.",
+          "Be skeptical of interviews that happen only in unverifiable virtual spaces with no way to confirm who's on the other side."
+      ],
+      "quiz": [
+          {
+              "q": "A company asks you to pay a \"refundable deposit\" for a VR headset kit before your metaverse interview. This is:",
+              "opts": [
+                  "Fine since it's described as refundable",
+                  "Standard practice for remote-first companies",
+                  "A scam pattern — legitimate employers don't charge for interview equipment",
+                  "Acceptable if the kit is expensive"
+              ],
+              "ans": 2,
+              "exp": "No real employer requires payment from a candidate to participate in an interview process."
+          },
+          {
+              "q": "What makes a \"metaverse interview\" harder to verify than a video call?",
+              "opts": [
+                  "It's easier to hide who's actually on the other end behind an avatar",
+                  "It's more expensive to fake",
+                  "It always uses real names",
+                  "It requires better internet"
+              ],
+              "ans": 0,
+              "exp": "Avatars and virtual spaces make it easy to impersonate a company without any real-world verification."
+          },
+          {
+              "q": "Before engaging with an unfamiliar metaverse-based employer, you should:",
+              "opts": [
+                  "Recommend it to friends first",
+                  "Share your bank OTP for verification",
+                  "Immediately pay for onboarding equipment",
+                  "Verify their real-world company registration and office address"
+              ],
+              "ans": 3,
+              "exp": "Real-world verification is the anchor point that separates a lookalike company from a genuine one, however that trust is established."
+          }
+      ],
+      "type": "simulation",
+      "component": "MetaverseJobInterviewScamSim",
+      "category": "Job & Corporate"
+  },
+  {
+      "id": 279,
+      "icon": "✈️",
+      "title": "Fake Job Offer Abroad",
+      "desc": "A recruiter offers a high-paying overseas job with no experience required — pay a visa sponsorship processing fee.",
+      "diff": "high",
+      "tag": "Job Fraud",
+      "url": "worldwidecareers-placement.com",
+      "badge": "Sponsorship Started!",
+      "amount": "€3,200/month",
+      "amountLabel": "Offered Salary",
+      "fee": "Processing Fee: €450",
+      "feeNote": "Covers work-permit filing (claimed)",
+      "fields": [
+          {
+              "n": "passportNumber",
+              "p": "Passport Number",
+              "t": "text"
+          },
+          {
+              "n": "bankAccount",
+              "p": "Bank Account (for fee payment)",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Phone Number",
+          "Email",
+          "Passport Number",
+          "Bank Account Number",
+          "Processing Fee"
+      ],
+      "reveal": "There is no employer sponsoring a work visa. Real employer-sponsored visas are paid for by the employer, not the candidate — a candidate being asked to pay \"processing fees\" for their own sponsorship is the clearest sign the job doesn't exist. Your passport number and bank details are now exposed for further misuse.",
+      "flags": [
+          "No work experience required for a well-paid skilled role — an unusually low bar",
+          "Candidate is asked to pay the visa/work-permit processing fee, which employers normally cover",
+          "Vague company details with no verifiable employer name",
+          "High-pressure, fast-moving process with little formal documentation"
+      ],
+      "tips": [
+          "In genuine employer-sponsored visas, the employer pays sponsorship and processing costs, not the candidate.",
+          "Verify the hiring company independently — check their official website, registration, and reviews.",
+          "Be wary of high salaries for low-experience roles; it's a common lure."
+      ],
+      "quiz": [
+          {
+              "q": "A recruiter offers a well-paid overseas job and asks you to pay a €450 \"visa processing fee.\" This is:",
+              "opts": [
+                  "Acceptable if a receipt is provided",
+                  "A red flag — genuine employer sponsorship is paid for by the employer, not the candidate",
+                  "Fine since it unlocks a high salary",
+                  "Normal — visa fees are always paid by the applicant"
+              ],
+              "ans": 1,
+              "exp": "In real employer sponsorship, the employer bears these costs; a candidate being billed for their own sponsorship is a scam signal."
+          },
+          {
+              "q": "What is a common lure in fake overseas job offers?",
+              "opts": [
+                  "Low salary matched to entry-level roles",
+                  "Interviews conducted by real HR staff",
+                  "High salary paired with unusually low experience requirements",
+                  "Detailed, verifiable job descriptions"
+              ],
+              "ans": 2,
+              "exp": "Scammers use an implausibly good salary-to-requirement ratio to attract many applicants quickly."
+          },
+          {
+              "q": "What should you verify before engaging with an overseas recruiter?",
+              "opts": [
+                  "The hiring company's real registration, website, and independent reviews",
+                  "Only that the salary sounds attractive",
+                  "That the email has a signature",
+                  "That the recruiter responds quickly"
+              ],
+              "ans": 0,
+              "exp": "Independent verification of the actual employer is the most reliable way to confirm a job offer is genuine."
+          }
+      ],
+      "type": "simulation",
+      "component": "FakeJobOfferAbroadScamSim",
+      "category": "Job & Corporate"
+  },
+  {
+      "id": 280,
+      "icon": "📬",
+      "title": "Fake Job Offer in Gulf Countries (Postal)",
+      "desc": "A printed \"appointment letter\" for a Gulf job arrives by courier — pay a visa stamping and emigration clearance fee.",
+      "diff": "high",
+      "tag": "Job Fraud",
+      "url": "al-manara-overseas.com",
+      "badge": "Visa Processing Started!",
+      "amount": "AED 3,800/month",
+      "amountLabel": "Offered Salary",
+      "fee": "Visa Stamping Fee: ₹28,500",
+      "feeNote": "Covers stamping, labor card, emigration clearance (claimed)",
+      "fields": [
+          {
+              "n": "passportNumber",
+              "p": "Passport Number",
+              "t": "text"
+          },
+          {
+              "n": "bankAccount",
+              "p": "Bank Account (for fee payment)",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Phone Number",
+          "Home Address",
+          "Passport Number",
+          "Bank Account Number",
+          "Visa Stamping Fee"
+      ],
+      "reveal": "The printed appointment letter and courier delivery are designed to feel more official than an email, but there is no real employer in the Gulf and no genuine visa being processed. Emigration clearance and visa stamping fees are handled through official government and employer channels — not paid upfront to a recruitment agency. Your passport number, address, and bank details are now exposed.",
+      "flags": [
+          "A physical courier letter is used to appear more official than a typical email or message",
+          "Requests a large upfront fee for \"visa stamping\" and \"emigration clearance\" — normally employer or government-handled costs",
+          "Salary and accommodation terms sound unusually generous for the stated role",
+          "No verifiable overseas employer name or licensed recruitment agency registration"
+      ],
+      "tips": [
+          "Genuine overseas recruitment in most countries requires the agency to be licensed — verify this with the relevant labor/emigration authority before paying anything.",
+          "Employer-sponsored visa costs are typically covered by the employer, not charged to the candidate as an upfront fee.",
+          "A printed letter or physical courier doesn't make an offer more legitimate — verify the actual employer independently."
+      ],
+      "quiz": [
+          {
+              "q": "A recruitment agency sends a printed appointment letter for a Gulf job and asks for a ₹28,500 \"visa stamping fee.\" This is:",
+              "opts": [
+                  "Fine as long as a receipt is given",
+                  "Standard procedure for Gulf recruitment",
+                  "Trustworthy because it arrived as a physical letter",
+                  "A red flag — this fee is normally handled by the employer or official government channels, not charged upfront to candidates"
+              ],
+              "ans": 3,
+              "exp": "Genuine visa stamping and emigration clearance costs are not paid upfront by the candidate to a private recruitment agency."
+          },
+          {
+              "q": "Why do scammers use a printed, courier-delivered letter instead of just an email?",
+              "opts": [
+                  "Printed letters cannot be faked",
+                  "It feels more official and harder to dismiss as a typical scam email",
+                  "It is cheaper than sending an email",
+                  "It is legally required for job offers"
+              ],
+              "ans": 1,
+              "exp": "A physical letter exploits the perception that formal-looking paperwork is more trustworthy, even though it's just as easy to fabricate."
+          },
+          {
+              "q": "What should you check before trusting an overseas recruitment agency?",
+              "opts": [
+                  "Whether the salary is very attractive",
+                  "Whether the courier arrived quickly",
+                  "Whether the agency is licensed with the relevant labor/emigration authority",
+                  "Whether the letter has a company letterhead"
+              ],
+              "ans": 2,
+              "exp": "Licensing verification with the official regulator is the most reliable way to confirm a recruitment agency is genuine."
+          }
+      ],
+      "type": "simulation",
+      "component": "GulfJobOfferPostalScamSim",
+      "category": "Job & Corporate"
+  },
+  {
+      "id": 281,
+      "icon": "🤝",
+      "title": "Fake Joint Venture Scam",
+      "desc": "An investment group offers a joint venture partnership — pay a matching capital stake to \"unlock\" their funding.",
+      "diff": "high",
+      "tag": "Business Fraud",
+      "url": "sterlingcross-ventures.com",
+      "badge": "Partnership Finalized!",
+      "amount": "₹50,00,000",
+      "amountLabel": "Promised Venture Capital",
+      "fee": "Matching Capital Stake: ₹2,50,000",
+      "feeNote": "Required to \"unlock\" the venture fund (claimed)",
+      "fields": [
+          {
+              "n": "panCard",
+              "p": "PAN Number",
+              "t": "text"
+          },
+          {
+              "n": "bankAccount",
+              "p": "Bank Account Number",
+              "t": "text"
+          }
+      ],
+      "exposed": [
+          "Full Name",
+          "Business Name",
+          "Email",
+          "Phone Number",
+          "PAN Number",
+          "Bank Account Number",
+          "Capital Contribution"
+      ],
+      "reveal": "There is no ₹50 lakh venture fund and no real investment group. Legitimate investors put their own capital in first and formalize terms through due diligence and legal agreements — they don't ask a small business owner to pay a \"matching stake\" upfront just to unlock funds that were supposedly already committed. Your PAN and bank details are now exposed for further financial fraud.",
+      "flags": [
+          "Unsolicited approach claiming your business was specifically identified for a large investment",
+          "Asks you to contribute capital upfront to \"unlock\" funds the investor claims to already have",
+          "No due diligence process, term sheet, or legal documentation before payment is requested",
+          "Investment group has no verifiable track record, portfolio, or registration"
+      ],
+      "tips": [
+          "Legitimate investors conduct due diligence and provide term sheets before any money changes hands — they don't ask you to pay first.",
+          "Verify any investment group's track record, registration, and past deals independently before engaging.",
+          "Be skeptical of unsolicited joint venture offers, especially ones requiring you to pay to \"unlock\" funds."
+      ],
+      "quiz": [
+          {
+              "q": "An investment group offers ₹50,00,000 in funding but asks you to contribute a ₹2,50,000 \"matching stake\" first. This is:",
+              "opts": [
+                  "A red flag — real investors don't require you to pay to unlock their own committed funds",
+                  "Safe if a contract is signed first",
+                  "A standard part of joint venture agreements",
+                  "Reasonable since it shows commitment"
+              ],
+              "ans": 0,
+              "exp": "Genuine investors put their capital in through due diligence and legal agreements, not by requiring the other party to pay an upfront \"unlock\" fee."
+          },
+          {
+              "q": "What should precede any real joint venture or investment deal?",
+              "opts": [
+                  "An upfront capital contribution from the smaller party",
+                  "Sharing your PAN and bank OTP",
+                  "A large advance payment to the investor",
+                  "Due diligence and a formal term sheet or legal agreement"
+              ],
+              "ans": 3,
+              "exp": "Legitimate deals are structured through due diligence and legal documentation before any funds are exchanged."
+          },
+          {
+              "q": "Why is an unsolicited joint venture offer especially suspicious?",
+              "opts": [
+                  "Unsolicited offers are always illegal",
+                  "Genuine large investors rarely approach small businesses out of the blue with a ready-made offer",
+                  "Business is never approached first",
+                  "It means the business is very successful"
+              ],
+              "ans": 1,
+              "exp": "Real investment relationships are typically built over time through networks and diligence, not unsolicited outreach with an immediate funding promise."
+          }
+      ],
+      "type": "simulation",
+      "component": "FakeJointVentureScamSim",
+      "category": "Job & Corporate"
+  },
+  {
+      "id": 568,
+      "icon": "🐞",
+      "title": "Fake Netsparker Scam",
+      "desc": "A fake vulnerability report used to steal admin credentials.",
+      "diff": "high",
+      "tag": "Enterprise Security",
+      "url": "invicti-security-reports.net",
+      "badge": "Critical Alert",
+      "amount": "4",
+      "amountLabel": "Vulnerabilities",
+      "fee": "N/A",
+      "feeNote": "Action Required",
+      "fields": [],
+      "exposed": [
+          "Admin Credentials",
+          "Server Access"
+      ],
+      "reveal": "Scammers often impersonate automated security scanners like Netsparker or Invicti to panic IT admins into clicking malicious links and giving up their passwords.",
+      "flags": [
+          "Unsolicited security report from a third-party domain.",
+          "Demands login credentials to view the report.",
+          "URL does not match the official vendor domain."
+      ],
+      "tips": [
+          "Always verify the sender domain for automated reports.",
+          "Never enter admin credentials on external or unfamiliar portals.",
+          "Use multi-factor authentication (MFA) on all admin accounts."
+      ],
+      "quiz": [
+          {
+              "q": "Why did you receive this vulnerability report?",
+              "opts": [
+                  "It is an official alert from Netsparker.",
+                  "It is a phishing attempt to steal admin credentials.",
+                  "Your website was actually hacked.",
+                  "It is a routine check."
+              ],
+              "ans": 1,
+              "exp": "Scammers send fake vulnerability alerts to trick you into handing over your credentials or downloading malware."
+          },
+          {
+              "q": "What is the biggest red flag in this scenario?",
+              "opts": [
+                  "The report found 4 bugs",
+                  "It asks you to log in to an external site to view the report",
+                  "It uses a red badge",
+                  "It is marked as critical"
+              ],
+              "ans": 1,
+              "exp": "Legitimate security tools will never ask you to enter your credentials on an external, unverified domain."
+          },
+          {
+              "q": "How should an IT Admin handle unexpected vulnerability emails?",
+              "opts": [
+                  "Click the link and log in to check",
+                  "Forward it to the entire company",
+                  "Verify the source internally without clicking links",
+                  "Ignore all security warnings"
+              ],
+              "ans": 2,
+              "exp": "Always verify unexpected alerts through official, internal channels rather than clicking links in the email."
+          }
+      ],
+      "type": "simulation",
+      "component": "FakeNetsparkerSim",
+      "category": "Cybersecurity"
+  },
+  {
+      "id": 569,
+      "icon": "⚙️",
+      "title": "Fake Nevercode Scam",
+      "desc": "A fake CI/CD build failure alert used to steal developer credentials.",
+      "diff": "high",
+      "tag": "Supply Chain Phishing",
+      "url": "nevercode-build-alerts.io",
+      "badge": "Build Failed",
+      "amount": "#492",
+      "amountLabel": "Failed Build",
+      "fee": "N/A",
+      "feeNote": "Authentication Required",
+      "fields": [],
+      "exposed": [
+          "GitHub Credentials",
+          "CI/CD Pipeline Access"
+      ],
+      "reveal": "Scammers target software developers by faking continuous integration (CI/CD) failure alerts. When developers try to log in to view the logs, their source code credentials are stolen, potentially compromising the entire company's supply chain.",
+      "flags": [
+          "Unsolicited build failure email sent to a developer.",
+          "Forces re-authentication on a non-standard domain.",
+          "High sense of urgency regarding a \"production build\"."
+      ],
+      "tips": [
+          "Always navigate directly to your CI/CD dashboard instead of clicking email links.",
+          "Check the sender address carefully for slight misspellings.",
+          "Employ strict SSO and hardware security keys for repository access."
+      ],
+      "quiz": [
+          {
+              "q": "What is the ultimate goal of a Fake CI/CD Alert scam?",
+              "opts": [
+                  "To crash your local computer",
+                  "To steal credentials and gain access to source code or deployment pipelines",
+                  "To sell you a new CI/CD product",
+                  "To generate ad revenue"
+              ],
+              "ans": 1,
+              "exp": "The attacker wants access to the company's repositories to inject malware or steal proprietary code."
+          },
+          {
+              "q": "If you receive an email saying a critical build failed, you should:",
+              "opts": [
+                  "Log in through the provided link immediately",
+                  "Ignore it",
+                  "Open your CI/CD platform directly via your browser bookmarks",
+                  "Forward it to the CEO"
+              ],
+              "ans": 2,
+              "exp": "Always navigate to your tools directly through trusted bookmarks or enterprise SSO portals."
+          },
+          {
+              "q": "Which red flag indicates this is a phishing page?",
+              "opts": [
+                  "The alert is marked as \"Failed\"",
+                  "It uses a GitHub login button",
+                  "The URL is a strange variant like \"nevercode-build-alerts.io\"",
+                  "It mentions a specific build number"
+              ],
+              "ans": 2,
+              "exp": "Phishing pages often use domains that look related to the official service but are actually controlled by attackers."
+          }
+      ],
+      "type": "simulation",
+      "component": "FakeNevercodeSim",
+      "category": "Cybersecurity"
+  },
+  {
+      "id": 571,
+      "icon": "📓",
+      "title": "Fake Nextjournal Scam",
+      "desc": "A fake research collaboration invite used to steal institutional credentials and data.",
+      "diff": "med",
+      "tag": "Academic/Research Phishing",
+      "url": "nextjournal-collaboration.com",
+      "badge": "Confidential",
+      "amount": "1",
+      "amountLabel": "New Invite",
+      "fee": "N/A",
+      "feeNote": "Authentication Required",
+      "fields": [],
+      "exposed": [
+          "Institutional SSO Credentials",
+          "Proprietary Research Data"
+      ],
+      "reveal": "Scammers target academics, data scientists, and researchers by faking collaboration invites to platforms like Nextjournal or Jupyter. When you log in, they steal your institutional credentials and gain access to your proprietary research.",
+      "flags": [
+          "Unsolicited collaboration invite for a highly \"confidential\" dataset.",
+          "Forces you to log in with institutional credentials on a third-party domain.",
+          "The sender is impersonated (e.g., a known colleague) but the email header does not match."
+      ],
+      "tips": [
+          "Always confirm collaboration invites via a secondary channel (like a quick message to your colleague).",
+          "Check the URL carefully; scammers use lookalike domains (e.g., nextjournal-collaboration.com instead of nextjournal.com).",
+          "Never use your main university or corporate password on an external platform."
+      ],
+      "quiz": [
+          {
+              "q": "Why do scammers target data science and research platforms?",
+              "opts": [
+                  "To learn how to code",
+                  "To steal proprietary research, datasets, and intellectual property",
+                  "To delete your notebooks",
+                  "To help you fix bugs"
+              ],
+              "ans": 1,
+              "exp": "Research and proprietary datasets are highly valuable intellectual property that attackers can steal and sell."
+          },
+          {
+              "q": "If a colleague shares a \"confidential\" notebook unexpectedly via email, what is the safest action?",
+              "opts": [
+                  "Click the link and log in immediately",
+                  "Forward the email to the entire research team",
+                  "Message your colleague on Slack/Teams to confirm they actually sent it",
+                  "Reply to the email with your password"
+              ],
+              "ans": 2,
+              "exp": "Always verify unexpected, urgent, or confidential requests out-of-band (using a different communication method)."
+          },
+          {
+              "q": "What is a common sign that the collaboration link is a phishing attempt?",
+              "opts": [
+                  "The email contains a polite greeting",
+                  "The URL is a slightly modified version of the real platform (e.g., nextjournal-collaboration.com)",
+                  "The notebook has a title",
+                  "It asks you to view the data"
+              ],
+              "ans": 1,
+              "exp": "Lookalike domains are a classic phishing tactic designed to trick you into thinking you are on the legitimate site."
+          }
+      ],
+      "type": "simulation",
+      "component": "FakeNextjournalSim",
+      "category": "Cybersecurity"
+  },
+  {
+      "id": 572,
+      "icon": "📦",
+      "title": "Fake Nexus Repository Scam",
+      "desc": "A fake package registry error used to steal npm/maven authentication tokens.",
+      "diff": "high",
+      "tag": "Developer Supply Chain",
+      "url": "cli/terminal",
+      "badge": "Auth Error",
+      "amount": "401",
+      "amountLabel": "Unauthorized",
+      "fee": "N/A",
+      "feeNote": "Token Required",
+      "fields": [],
+      "exposed": [
+          "NPM Auth Tokens",
+          "Developer Credentials"
+      ],
+      "reveal": "Scammers can inject fake CLI prompts or send phishing emails claiming your package repository (like Sonatype Nexus or npm) requires re-authentication. If you paste your access token into a compromised terminal or fake login page, attackers gain the ability to publish malicious code under your company's name (Dependency Confusion or Supply Chain Attack).",
+      "flags": [
+          "Unexpected 401 Unauthorized errors during standard CLI workflows.",
+          "Prompts for passwords or tokens in unverified, third-party terminal wrappers.",
+          "Emails claiming a critical internal package was \"un-published\"."
+      ],
+      "tips": [
+          "Always verify authentication endpoints in your .npmrc or maven settings.xml.",
+          "Never paste access tokens into terminals you do not trust or unverified web links.",
+          "Use short-lived, narrowly scoped access tokens instead of master passwords."
+      ],
+      "quiz": [
+          {
+              "q": "Why do attackers want your package registry (Nexus/npm) tokens?",
+              "opts": [
+                  "To speed up your downloads",
+                  "To publish malicious updates to your internal libraries, infecting all users",
+                  "To mine cryptocurrency on the registry servers",
+                  "To fix your code bugs"
+              ],
+              "ans": 1,
+              "exp": "Compromised registry tokens allow attackers to perform supply chain attacks by injecting malware into trusted company libraries."
+          },
+          {
+              "q": "If your CLI suddenly asks for your Nexus password during a routine push, what should you do?",
+              "opts": [
+                  "Type it in immediately to save time",
+                  "Check your configuration files (.npmrc, etc.) to ensure your registry URL hasn't been hijacked",
+                  "Share your token with a coworker",
+                  "Ignore the error"
+              ],
+              "ans": 1,
+              "exp": "Always verify that you are connecting to your legitimate internal registry URL and not a malicious proxy."
+          },
+          {
+              "q": "What is \"Dependency Confusion\"?",
+              "opts": [
+                  "When a developer forgets what package to use",
+                  "An attack where a public malicious package is given the same name as a private internal package to trick the package manager into downloading the malicious one",
+                  "When two packages conflict with each other",
+                  "A feature of modern package managers"
+              ],
+              "ans": 1,
+              "exp": "Attackers exploit package managers by publishing public packages that masquerade as private internal dependencies."
+          }
+      ],
+      "type": "simulation",
+      "component": "FakeNexusSim",
+      "category": "Cybersecurity"
+  },
+  {
+      "id": 578,
+      "icon": "🖥️",
+      "title": "Fake NoMachine Scam",
+      "desc": "A fake remote desktop web portal used to steal corporate Active Directory credentials.",
+      "diff": "med",
+      "tag": "Enterprise IT Phishing",
+      "url": "nx-webplayer.corp-remote-access.net",
+      "badge": "IT Alert",
+      "amount": "Remote",
+      "amountLabel": "Workstation",
+      "fee": "N/A",
+      "feeNote": "Authentication Required",
+      "fields": [],
+      "exposed": [
+          "Corporate Active Directory Credentials",
+          "VPN/Remote Desktop Access"
+      ],
+      "reveal": "Attackers send phishing emails posing as your company's IT Helpdesk, claiming you need to log in to a new \"NoMachine Web Portal\" or update your remote desktop client. If you enter your domain credentials, they can remotely access your corporate network and steal company data.",
+      "flags": [
+          "Unexpected email from \"IT Support\" requesting you to log in to a new remote access portal.",
+          "The URL does not match your company's official VPN or remote desktop domain.",
+          "The site lacks a secure SSL certificate or uses a generic, unbranded login page."
+      ],
+      "tips": [
+          "Always verify IT requests through internal communication channels (like Slack or Teams) before clicking links.",
+          "Only access remote desktop portals (like NoMachine, Citrix, or AnyDesk) through your company's official intranet or bookmarked URLs.",
+          "Use Multi-Factor Authentication (MFA) to protect your domain credentials."
+      ],
+      "quiz": [
+          {
+              "q": "Why do attackers spoof remote desktop software like NoMachine?",
+              "opts": [
+                  "To provide you with better technical support",
+                  "To trick you into handing over credentials that grant direct access to the corporate network",
+                  "To upgrade your operating system",
+                  "To sell you a software license"
+              ],
+              "ans": 1,
+              "exp": "Stealing remote desktop credentials gives attackers a direct backdoor into the company network, bypassing many external firewalls."
+          },
+          {
+              "q": "If you receive an urgent email from \"IT\" asking you to log into a new NX Web Player, what should you do?",
+              "opts": [
+                  "Log in immediately so you don't lose access",
+                  "Contact your actual IT department directly to verify the request",
+                  "Forward the email to a friend",
+                  "Enter a fake password to test it"
+              ],
+              "ans": 1,
+              "exp": "Never trust unexpected emails from IT. Always verify through a trusted, out-of-band channel like a direct Teams message or phone call."
+          },
+          {
+              "q": "Which is a strong indicator that the NoMachine login page is fake?",
+              "opts": [
+                  "It has a red logo",
+                  "The URL is slightly different from your company's usual secure portal (e.g., corp-remote-access.net instead of mycompany.com)",
+                  "It asks for your username and password",
+                  "It loads quickly"
+              ],
+              "ans": 1,
+              "exp": "Lookalike domains are a primary tactic in enterprise phishing. Always verify the domain perfectly matches your company's infrastructure."
+          }
+      ],
+      "type": "simulation",
+      "component": "FakeNoMachineSim",
+      "category": "Cybersecurity"
+  },
+  {
+      "id": 580,
+      "icon": "☁️",
+      "title": "Fake NoOps Scam",
+      "desc": "A fake Serverless cloud billing alert designed to steal Root Cloud Credentials.",
+      "diff": "high",
+      "tag": "Cloud Infrastructure Phishing",
+      "url": "console.serverless-noops-cloud.com",
+      "badge": "Billing Alert",
+      "amount": "$14,205",
+      "amountLabel": "Overdue Balance",
+      "fee": "N/A",
+      "feeNote": "Root Authentication Required",
+      "fields": [],
+      "exposed": [
+          "Root Cloud Credentials",
+          "Serverless Infrastructure Access"
+      ],
+      "reveal": "Scammers target developers using NoOps (Serverless) infrastructure by preying on the fear of \"Denial of Wallet\" attacks. They send fake emails claiming your automated scaling incurred a massive bill, tricking you into logging into a fake cloud console and handing over your Root credentials.",
+      "flags": [
+          "Urgent threats to terminate production infrastructure immediately.",
+          "Emails sent directly to developers rather than the official billing contact.",
+          "Lookalike cloud provider URLs (e.g., console.serverless-noops-cloud.com instead of aws.amazon.com)."
+      ],
+      "tips": [
+          "Never log in to your cloud provider via a link in a billing email; always navigate to your console bookmark.",
+          "Set up strict billing alarms inside your actual cloud dashboard so you aren't surprised by fake alerts.",
+          "Never use the Root account for daily troubleshooting; use narrowly scoped IAM roles."
+      ],
+      "quiz": [
+          {
+              "q": "What psychological fear does a Fake NoOps billing scam exploit?",
+              "opts": [
+                  "Fear of missing out on a software discount",
+                  "Fear of deploying bad code",
+                  "Fear of infinite auto-scaling resulting in a massive, unpayable cloud bill",
+                  "Fear of being fired by the CEO"
+              ],
+              "ans": 2,
+              "exp": "Serverless architecture scales automatically. Scammers exploit the well-known developer fear that a bug or DDoS attack caused a massive bill."
+          },
+          {
+              "q": "What is the absolute worst thing an attacker can steal in this scenario?",
+              "opts": [
+                  "Root Cloud Credentials",
+                  "Your IP Address",
+                  "A list of your lambda function names",
+                  "Your browser cookies"
+              ],
+              "ans": 0,
+              "exp": "Root credentials grant the attacker complete, unrestricted control over your entire company's cloud infrastructure."
+          },
+          {
+              "q": "How can you protect yourself from being tricked by fake billing alerts?",
+              "opts": [
+                  "Ignore all emails from your cloud provider",
+                  "Pay the bill immediately to avoid downtime",
+                  "Forward the email to the police",
+                  "Navigate to your cloud dashboard manually using a trusted bookmark to check your actual billing status"
+              ],
+              "ans": 3,
+              "exp": "Always bypass email links. Log into your cloud provider manually to verify if the alert is real."
+          }
+      ],
+      "type": "simulation",
+      "component": "FakeNoOpsSim",
+      "category": "Cybersecurity"
+  },
+  {
+      "id": 585,
+      "icon": "🎥",
+      "title": "Fake NoxInfluencer Scam",
+      "desc": "A fake brand sponsorship email used to hijack YouTube channels via malicious OAuth tokens.",
+      "diff": "high",
+      "tag": "Creator Economy Phishing",
+      "url": "nox-influencer-media.com",
+      "badge": "Sponsorship",
+      "amount": "$5,000",
+      "amountLabel": "Offer",
+      "fee": "N/A",
+      "feeNote": "OAuth Required",
+      "fields": [],
+      "exposed": [
+          "YouTube Channel Access",
+          "Google Session Token"
+      ],
+      "reveal": "Scammers target content creators with highly lucrative, fake brand deals. They impersonate analytics platforms like NoxInfluencer. When you click to \"View the Campaign,\" it prompts you to sign in with Google. If you approve, you grant a malicious app full access to manage (and hijack) your YouTube channel.",
+      "flags": [
+          "Lucrative sponsorship offers from unverified domains (e.g., nox-influencer-media.com instead of noxinfluencer.com).",
+          "Requests to authenticate via Google/YouTube just to view a PDF or contract.",
+          "The OAuth consent screen asks for permission to \"Manage your YouTube account\"."
+      ],
+      "tips": [
+          "Never grant third-party apps permission to manage your YouTube account unless you fully trust the platform.",
+          "Verify the sender's email domain perfectly matches the official company website.",
+          "Use a separate, non-admin email for receiving business inquiries to protect your main channel login."
+      ],
+      "quiz": [
+          {
+              "q": "Why do scammers target YouTube creators with fake sponsorships?",
+              "opts": [
+                  "To get a shoutout in their next video",
+                  "To hijack their channel, rename it, and run malicious cryptocurrency livestreams",
+                  "To offer them a real job",
+                  "To get free merchandise"
+              ],
+              "ans": 1,
+              "exp": "Hijacked YouTube channels with large subscriber bases are extremely valuable for running crypto-doubling scams before YouTube shuts them down."
+          },
+          {
+              "q": "What makes the \"Sign in with Google\" OAuth popup dangerous in this scenario?",
+              "opts": [
+                  "It tracks your IP address",
+                  "It installs a virus on your computer",
+                  "It gives a malicious third-party app an access token to bypass your password and 2FA, letting them control your channel",
+                  "It deletes your emails"
+              ],
+              "ans": 2,
+              "exp": "OAuth tokens bypass passwords and 2FA. If you grant \"Manage your YouTube account\" permissions, the attacker has full control."
+          },
+          {
+              "q": "How can you safely verify a sponsorship offer like this?",
+              "opts": [
+                  "Go directly to the official NoxInfluencer website and check your dashboard there",
+                  "Sign in with a fake password",
+                  "Click the link but don't accept the offer",
+                  "Download the contract instead of logging in"
+              ],
+              "ans": 0,
+              "exp": "Never click links in unexpected emails. Always navigate manually to the official, known website to verify your account or offers."
+          }
+      ],
+      "type": "simulation",
+      "component": "FakeNoxInfluencerSim",
+      "category": "Cybersecurity"
+  },
+  {
+      "id": 587,
+      "icon": "🎨",
+      "title": "Fake Nulled Theme Scam",
+      "desc": "A pirated \"nulled\" CMS theme containing a hidden PHP backdoor used to hijack web servers.",
+      "diff": "high",
+      "tag": "Webmaster Supply Chain",
+      "url": "cms-admin/theme-install.php",
+      "badge": "Malware",
+      "amount": "Root",
+      "amountLabel": "Compromise",
+      "fee": "N/A",
+      "feeNote": "Hidden Backdoor",
+      "fields": [],
+      "exposed": [
+          "Web Server Access",
+          "Database Credentials",
+          "SEO Ranking"
+      ],
+      "reveal": "Web developers often search for \"nulled\" (pirated) versions of premium WordPress or CMS themes to save money. Scammers upload these themes to forums for free, but inject hidden PHP backdoors (e.g., eval(base64_decode)) into the theme files. When installed, the attacker completely takes over the web server to host malware, inject SEO spam, or steal database credentials.",
+      "flags": [
+          "Downloading premium software for free from unofficial third-party forums or file-sharing sites.",
+          "Theme files containing heavily obfuscated code (like base64 strings) in core files like functions.php.",
+          "Sudden spikes in server CPU usage or strange outbound network connections after installing a new theme."
+      ],
+      "tips": [
+          "Never use \"nulled\" or pirated software in production environments; if a premium theme is free, you are the product.",
+          "Only download themes and plugins from official marketplaces or the developer's direct website.",
+          "Use server-side malware scanners (like Wordfence or Sucuri) to detect known backdoors in uploaded files."
+      ],
+      "quiz": [
+          {
+              "q": "Why do scammers offer expensive premium CMS themes for free?",
+              "opts": [
+                  "To help out developers on a tight budget",
+                  "To build their reputation as generous coders",
+                  "To get developers to voluntarily install backdoors onto their own web servers",
+                  "To advertise the theme to a wider audience"
+              ],
+              "ans": 2,
+              "exp": "Offering premium software for free is the easiest way to trick victims into bypassing security and installing malware themselves."
+          },
+          {
+              "q": "What is a common technique used to hide malicious code inside a \"nulled\" theme?",
+              "opts": [
+                  "Writing the code in green font",
+                  "Hiding it inside an image file on the frontend",
+                  "Placing it in the CSS file",
+                  "Obfuscating PHP commands using functions like eval(base64_decode(...))"
+              ],
+              "ans": 3,
+              "exp": "Attackers encode their malicious PHP scripts using base64 and execute them via eval() so they are not immediately readable by human developers."
+          },
+          {
+              "q": "What is the most likely consequence of installing a backdoored nulled theme?",
+              "opts": [
+                  "Your server gets hijacked to host SEO spam and phishing sites, ruining your domain reputation",
+                  "Your website loads 10% faster",
+                  "The theme author sues you for copyright infringement",
+                  "You receive a warning email from the CMS provider"
+              ],
+              "ans": 0,
+              "exp": "Attackers usually monetize compromised servers by silently injecting spam links to boost their own SEO, or by hosting phishing pages on your domain."
+          }
+      ],
+      "type": "simulation",
+      "component": "FakeNulledThemeSim",
+      "category": "Cybersecurity"
+  },
+  {
+      "id": 610,
+      "icon": "🛒",
+      "title": "Fake OpenCart Scam",
+      "desc": "A fake e-commerce security alert used to steal admin credentials and inject payment skimmers.",
+      "diff": "high",
+      "tag": "E-commerce Phishing",
+      "url": "opencart-security-patch.net/admin",
+      "badge": "Critical Vulnerability",
+      "amount": "Magecart",
+      "amountLabel": "Attack",
+      "fee": "N/A",
+      "feeNote": "Admin Access Required",
+      "fields": [],
+      "exposed": [
+          "Admin Credentials",
+          "Customer Credit Cards",
+          "Store Database"
+      ],
+      "reveal": "Scammers target e-commerce store owners (OpenCart, Magento, WooCommerce) with fake \"Critical Vulnerability\" emails. When the store owner logs in to the fake admin panel to apply a \"security patch,\" the attacker steals their credentials and installs a \"Magecart\" digital skimmer. This hidden script silently copies every customer's credit card during checkout.",
+      "flags": [
+          "Urgent emails demanding you install a security patch via an external link.",
+          "The login URL does not perfectly match your store's actual admin domain.",
+          "The patch is not mentioned on the official OpenCart forums or security bulletins."
+      ],
+      "tips": [
+          "Never log into your store's admin panel from a link in an email. Always use your bookmark.",
+          "Check official vendor security bulletins before installing emergency patches.",
+          "Use File Integrity Monitoring (FIM) on your web server to detect if unauthorized scripts (like skimmers) are injected into your checkout files."
+      ],
+      "quiz": [
+          {
+              "q": "What is a \"Magecart\" attack?",
+              "opts": [
+                  "A physical skimmer placed on an ATM",
+                  "A digital skimmer injected into an e-commerce checkout page to steal customer credit card details",
+                  "A type of shopping cart that gives customers free items",
+                  "A virus that deletes your product inventory"
+              ],
+              "ans": 1,
+              "exp": "Magecart is a broad term for cyberattacks where malicious JavaScript is injected into e-commerce checkout pages to silently record and steal customer payment data."
+          },
+          {
+              "q": "Why do attackers send store owners fake \"Critical Vulnerability\" emails?",
+              "opts": [
+                  "To panic the owner into logging into a fake admin portal so the attacker can steal their credentials",
+                  "To help them secure their store",
+                  "To sell them antivirus software",
+                  "To redirect their domain traffic"
+              ],
+              "ans": 0,
+              "exp": "Fear and urgency are classic phishing tactics. If a store owner panics and logs in, the attacker gets the keys to the store."
+          },
+          {
+              "q": "If you discover your store has been infected with a digital skimmer, what is a likely consequence?",
+              "opts": [
+                  "Your store's loading speed increases",
+                  "Your business may face massive fines, lawsuits, and loss of customer trust for leaking credit card data",
+                  "You will receive a refund from your hosting provider",
+                  "Nothing, it only affects the customers"
+              ],
+              "ans": 1,
+              "exp": "Store owners are legally and financially liable for securing customer data (PCI-DSS compliance). A skimmer breach can destroy a business."
+          }
+      ],
+      "type": "simulation",
+      "component": "FakeOpenCartSim",
+      "category": "Cybersecurity"
+  },
+  {
+      "id": 614,
+      "title": "Fake OpenMediaVault Scam",
+      "desc": "Identify fake local NAS login portals before attackers encrypt your personal storage.",
+      "icon": "💾",
+      "tag": "Ransomware",
+      "diff": "high",
+      "type": "simulation",
+      "component": "FakeOpenMediaVaultSim",
+      "category": "Cybersecurity",
+      "url": "192.168.1.100.omv-update-gateway.com",
+      "badge": "Critical Update",
+      "amount": "Ransomware",
+      "amountLabel": "Threat",
+      "fee": "N/A",
+      "feeNote": "Local Network Spoofing",
+      "fields": [],
+      "exposed": [
+          "NAS Admin Credentials",
+          "Personal Photos",
+          "Tax Documents",
+          "Enterprise Data"
+      ],
+      "reveal": "Scammers target Network-Attached Storage (NAS) owners using phishing links that look like local IP addresses (e.g., 192.168.x.x.fake-domain.com). If the victim logs in, attackers capture the admin credentials and deploy ransomware (like DeadBolt or eCh0raix) to encrypt the victim's entire storage drive.",
+      "flags": [
+          "The URL looks like a local IP address but actually ends in a public domain name.",
+          "Urgent claims about remote code execution vulnerabilities.",
+          "The connection is marked as \"Not Secure\" (HTTP) on a supposedly critical update gateway."
+      ],
+      "tips": [
+          "Never log into your local NAS via a link provided in an email or public forum.",
+          "Always type your local IP address manually into the browser bar (e.g., 192.168.1.50).",
+          "Disable remote internet access to your NAS dashboard unless absolutely necessary (use a VPN instead)."
+      ],
+      "quiz": [
+          {
+              "q": "Why do scammers create URLs like \"192.168.1.100.update-portal.com\"?",
+              "opts": [
+                  "To trick users into thinking they are connecting to their secure local network rather than a public website",
+                  "Because it makes the website load faster",
+                  "To test their routing tables",
+                  "Because IPv4 addresses are running out"
+              ],
+              "ans": 0,
+              "exp": "By prepending a local IP address as a subdomain on a public URL, attackers trick victims into believing they are securely logging into their local home network devices."
+          },
+          {
+              "q": "What is the primary goal of stealing NAS admin credentials?",
+              "opts": [
+                  "To steal internet bandwidth",
+                  "To deploy ransomware to encrypt all the victim's personal and business files stored on the network drive",
+                  "To use the NAS to mine cryptocurrency",
+                  "To delete the operating system"
+              ],
+              "ans": 1,
+              "exp": "NAS drives contain highly valuable data (photos, backups, business docs). Attackers deploy ransomware to encrypt these files and extort the victim for the decryption key."
+          },
+          {
+              "q": "What is the safest way to access your home NAS interface when you are away from home?",
+              "opts": [
+                  "Open port 80/443 on your router and access the dashboard directly over the internet",
+                  "Use a secure VPN connection to your home network, then access the NAS via its local IP",
+                  "Click the link in the daily status email sent by the NAS",
+                  "Use a free public proxy service"
+              ],
+              "ans": 1,
+              "exp": "Exposing a NAS dashboard directly to the public internet is extremely dangerous. A VPN provides a secure tunnel into your local network."
+          }
+      ]
+  }
 ];

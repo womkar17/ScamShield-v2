@@ -279,6 +279,24 @@ import MagistoSim from './MagistoSim';
 import MaglevSim from './MaglevSim';
 import MailchimpSim from './MailchimpSim';
 
+// new scamshield-4 (re-indexed 278-281)
+import MetaverseJobInterviewScamSim from './MetaverseJobInterviewScamSim';
+import FakeJobOfferAbroadScamSim from './FakeJobOfferAbroadScamSim';
+import GulfJobOfferPostalScamSim from './GulfJobOfferPostalScamSim';
+import FakeJointVentureScamSim from './FakeJointVentureScamSim';
+
+// mohan new scams (568-614)
+import FakeNetsparkerSim from './FakeNetsparkerSim';
+import FakeNevercodeSim from './FakeNevercodeSim';
+import FakeNextjournalSim from './FakeNextjournalSim';
+import FakeNexusSim from './FakeNexusSim';
+import FakeNoMachineSim from './FakeNoMachineSim';
+import FakeNoOpsSim from './FakeNoOpsSim';
+import FakeNoxInfluencerSim from './FakeNoxInfluencerSim';
+import FakeNulledThemeSim from './FakeNulledThemeSim';
+import FakeOpenCartSim from './FakeOpenCartSim';
+import FakeOpenMediaVaultSim from './FakeOpenMediaVaultSim';
+
 const SIM_MAP = {
   //team
   0: InstantLoanSim,
@@ -619,6 +637,24 @@ const SIM_MAP = {
   466: MagistoSim,
   467: MaglevSim,
   468: MailchimpSim,
+
+  // scamshield-4 (re-indexed)
+  278: MetaverseJobInterviewScamSim,
+  279: FakeJobOfferAbroadScamSim,
+  280: GulfJobOfferPostalScamSim,
+  281: FakeJointVentureScamSim,
+
+  // mohan new scams
+  568: FakeNetsparkerSim,
+  569: FakeNevercodeSim,
+  571: FakeNextjournalSim,
+  572: FakeNexusSim,
+  578: FakeNoMachineSim,
+  580: FakeNoOpsSim,
+  585: FakeNoxInfluencerSim,
+  587: FakeNulledThemeSim,
+  610: FakeOpenCartSim,
+  614: FakeOpenMediaVaultSim,
 };
 
 export default function ScamSimulatorEngine({ moduleId, moduleData, formData, handleInputChange, handleSimulationSubmit }) {

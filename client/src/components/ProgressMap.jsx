@@ -173,6 +173,22 @@ const UNITS = [
     description: '48 interactive scam simulations developed by Atharva.',
     color: '#8b5cf6',
     moduleIds: Array.from({ length: 48 }, (_, i) => 421 + i),
+  },
+  {
+    id: 'metaverse_abroad_joint_venture',
+    title: '🌐 Advanced Job & Corporate Ventures (IDs 278-281)',
+    icon: '🚀',
+    description: 'Protect against Metaverse job interviews, overseas employment traps, postal offers, and fake joint ventures.',
+    color: '#ec4899',
+    moduleIds: [278, 279, 280, 281],
+  },
+  {
+    id: 'enterprise_developer_supply_chain',
+    title: '🛠️ Enterprise & Developer Supply Chain (IDs 568-614)',
+    icon: '💻',
+    description: 'Identify targeted phishing against developer tools, cloud infrastructure, vulnerability scanners, and NAS admin portals.',
+    color: '#3b82f6',
+    moduleIds: [568, 569, 571, 572, 578, 580, 585, 587, 610, 614],
   }
 ];
 
