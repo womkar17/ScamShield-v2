@@ -16,6 +16,10 @@ import VisualScamGame from '../components/games/VisualScamGame';
 import TerminalGame from '../components/games/TerminalGame';
 import ForensicsGame from '../components/games/ForensicsGame';
 import WireAuditGame from '../components/games/WireAuditGame';
+import EmailThreadGame from '../components/games/EmailThreadGame';
+import ScamSimulatorGame from '../components/games/ScamSimulatorGame';
+import DeepfakeInterrogationGame from '../components/games/DeepfakeInterrogationGame';
+import PermissionPurgeGame from '../components/games/PermissionPurgeGame';
 
 const GamesPage = () => {
   const navigate = useNavigate();
@@ -104,18 +108,30 @@ const GamesPage = () => {
   }, []);
 
   const dailyGames = useMemo(() => {
-    const today = new Date().toISOString().split('T')[0];
-    let seed = parseInt(today.replace(/-/g, ''));
+    // Seeded random based on current date so it changes every 24 hours
+    const today = new Date();
+    const seedStr = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
     
+    // Simple hash for the seed
+    let seed = 0;
+    for (let i = 0; i < seedStr.length; i++) {
+      seed = ((seed << 5) - seed) + seedStr.charCodeAt(i);
+      seed |= 0; 
+    }
+    
+    // Pseudo-random number generator (Mulberry32)
     const random = () => {
-      const x = Math.sin(seed++) * 10000;
-      return x - Math.floor(x);
+      let t = seed += 0x6D2B79F5;
+      t = Math.imul(t ^ t >>> 15, t | 1);
+      t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
     };
 
-    // Shuffle and pick 15
-    const shuffled = [...MINIGAMES].sort(() => random() - 0.5);
-    return shuffled.slice(0, 15);
+    // Shuffle and pick 10
+    const shuffled = [...MINIGAMES].sort(() => 0.5 - random());
+    return shuffled.slice(0, 10);
   }, []);
+
 
   const handleGameComplete = (success) => {
     if (success && activeGame) {
@@ -168,13 +184,46 @@ const GamesPage = () => {
       case 'wire-intercept':
         GameComponent = WireAuditGame;
         break;
+      case 'email_thread':
+        GameComponent = EmailThreadGame;
+        break;
+      case 'scam_sim':
+        GameComponent = ScamSimulatorGame;
+        break;
+      case 'deepfake':
+        GameComponent = DeepfakeInterrogationGame;
+        break;
+      case 'permission':
+        GameComponent = PermissionPurgeGame;
+        break;
       default:
         GameComponent = QuizGame;
     }
     return (
       <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.9)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, overflow: 'auto', padding: '2rem' }}>
-        <div style={{ background: '#1e1e1e', padding: '2rem', borderRadius: '12px', position: 'relative', width: '100%', maxWidth: '800px', maxHeight: '90vh', overflowY: 'auto' }}>
-          <button onClick={() => setActiveGame(null)} style={{ position: 'absolute', top: '10px', right: '10px', background: 'transparent', border: 'none', color: 'white', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
+        <div style={{ background: 'var(--bg2)', padding: '2rem', borderRadius: '12px', position: 'relative', width: '100%', maxWidth: '800px', maxHeight: '90vh', overflowY: 'auto' }}>
+          <button 
+            onClick={() => setActiveGame(null)} 
+            style={{ 
+              position: 'absolute', 
+              top: '16px', 
+              right: '16px', 
+              background: 'var(--bg3)', 
+              border: '1px solid var(--border)', 
+              color: 'var(--text)', 
+              width: '36px', 
+              height: '36px', 
+              borderRadius: '50%', 
+              fontSize: '18px', 
+              cursor: 'pointer', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              zIndex: 1000
+            }}
+          >
+            ✕
+          </button>
           <GameComponent game={normalizeGame(activeGame)} onComplete={handleGameComplete} />
         </div>
       </div>
@@ -190,8 +239,8 @@ const GamesPage = () => {
         >
           ← Back to Dashboard
         </button>
-        <h1 style={{ fontSize: '3rem', color: 'var(--blue)', marginBottom: '1rem' }}>Cyber Arcade</h1>
-        <p style={{ fontSize: '1.2rem', color: 'var(--text2)', maxWidth: '600px', margin: '0 auto' }}>
+        <h1 style={{ fontSize: '3rem', color: 'var(--blue)', marginBottom: '1.5rem', lineHeight: '1.2' }}>Cyber Arcade</h1>
+        <p style={{ fontSize: '1.2rem', color: 'var(--text2)', maxWidth: '600px', margin: '0 auto', lineHeight: '1.6' }}>
           Test your instincts with interactive challenges. Earn XP, unlock badges, and sharpen your scam-spotting skills.
         </p>
       </header>
@@ -204,7 +253,7 @@ const GamesPage = () => {
           </h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2rem' }}>
             {customGames.map(game => (
-              <div key={game.id} onClick={() => { soundEffects.play('click'); setActiveGame(normalizeGame(game)); }} style={{ background: 'var(--card-bg, #2a2a2a)', padding: '1.5rem', borderRadius: '12px', cursor: 'pointer', transition: 'transform 0.2s', border: '1px solid #38bdf8', display: 'flex', flexDirection: 'column', boxShadow: '0 4px 12px rgba(56, 189, 248, 0.1)' }}>
+              <div key={game.id} onClick={() => { soundEffects.play('click'); setActiveGame(normalizeGame(game)); }} style={{ background: 'var(--card, var(--bg3))', padding: '1.5rem', borderRadius: '12px', cursor: 'pointer', transition: 'transform 0.2s', border: '1px solid #38bdf8', display: 'flex', flexDirection: 'column', boxShadow: '0 4px 12px rgba(56, 189, 248, 0.1)' }}>
                 <div style={{ fontSize: '3rem', textAlign: 'center', marginBottom: '1rem' }}>{game.thumbnail || '🎯'}</div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
                   <h3 style={{ margin: 0, color: 'var(--text)' }}>{game.title}</h3>
@@ -221,10 +270,10 @@ const GamesPage = () => {
         </div>
       )}
 
-      <h2 style={{ color: 'var(--text)', marginBottom: '1.5rem' }}>🎯 Today's Daily 10 Challenge</h2>
+      <h2 style={{ color: 'var(--text)', marginBottom: '1.5rem' }}>🎯 All Available Games (Testing Mode)</h2>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2rem', padding: '1rem' }}>
         {dailyGames.map(game => (
-          <div key={game.id} onClick={() => { soundEffects.play('click'); setActiveGame(normalizeGame(game)); }} style={{ background: 'var(--card-bg, #2a2a2a)', padding: '1.5rem', borderRadius: '12px', cursor: 'pointer', transition: 'transform 0.2s', border: '1px solid var(--border-color, #444)', display: 'flex', flexDirection: 'column' }}>
+          <div key={game.id} onClick={() => { soundEffects.play('click'); setActiveGame(normalizeGame(game)); }} style={{ background: 'var(--card, var(--bg3))', padding: '1.5rem', borderRadius: '12px', cursor: 'pointer', transition: 'transform 0.2s', border: '1px solid var(--border)', display: 'flex', flexDirection: 'column' }}>
             <div style={{ fontSize: '3rem', textAlign: 'center', marginBottom: '1rem' }}>{game.thumbnail}</div>
             <h3 style={{ margin: '0 0 0.5rem 0', color: 'var(--text)' }}>{game.title}</h3>
             <p style={{ color: 'var(--text2)', flex: 1, fontSize: '0.9rem' }}>{game.description}</p>
@@ -238,7 +287,7 @@ const GamesPage = () => {
       {renderActiveGame()}
       {completedModal && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1100 }}>
-          <div style={{ background: 'var(--bg2, #1e1e24)', padding: '2.5rem', borderRadius: '16px', border: '1px solid var(--border)', textAlign: 'center', maxWidth: '420px', width: '90%', boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}>
+          <div style={{ background: 'var(--bg2)', padding: '2.5rem', borderRadius: '16px', border: '1px solid var(--border)', textAlign: 'center', maxWidth: '420px', width: '90%', boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}>
             <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>{completedModal.success ? '🏆' : '⚠️'}</div>
             <h2 style={{ color: completedModal.success ? '#22c55e' : '#ef4444', fontSize: '1.8rem', marginBottom: '0.5rem' }}>
               {completedModal.success ? 'Challenge Conquered!' : 'Mission Failed'}

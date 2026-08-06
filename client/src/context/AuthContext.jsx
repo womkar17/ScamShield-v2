@@ -51,6 +51,15 @@ export function AuthProvider({ children }) {
   }, []);
 
   useEffect(() => {
+    // Apply theme globally on boot
+    const localTheme = localStorage.getItem('scamshield_theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', localTheme);
+    if (localTheme === 'light') {
+      document.documentElement.classList.add('light-mode');
+    } else {
+      document.documentElement.classList.remove('light-mode');
+    }
+
     let mounted = true;
 
     const handleSupabaseSession = async (session) => {
@@ -92,6 +101,12 @@ export function AuthProvider({ children }) {
           profile = { id: session.user.id, email: session.user.email, username, role: 'user', xp: 0, level: 1, streak: 1 };
         }
 
+        // Apply local storage overrides if backend didn't have them
+        const localTheme = localStorage.getItem('scamshield_theme') || 'dark';
+        const localAvatar = localStorage.getItem('scamshield_avatar') || 'Felix';
+        if (!profile.theme) profile.theme = localTheme;
+        if (!profile.avatar) profile.avatar = localAvatar;
+
         if (mounted) {
           const adminStatus = checkIsAdmin(profile.role);
           console.log('[Auth] FINAL → email:', profile.email, 'role:', profile.role, 'isAdmin:', adminStatus);
@@ -99,7 +114,12 @@ export function AuthProvider({ children }) {
           setUserProfile(profile);
           setIsLoggedIn(true);
           setIsAdmin(adminStatus);
-          document.documentElement.setAttribute('data-theme', 'dark');
+          document.documentElement.setAttribute('data-theme', profile.theme || 'dark');
+          if (profile.theme === 'light') {
+            document.documentElement.classList.add('light-mode');
+          } else {
+            document.documentElement.classList.remove('light-mode');
+          }
         }
         return true;
       } catch (err) {
@@ -172,7 +192,22 @@ export function AuthProvider({ children }) {
   }, []);
 
   const updateProfileLocal = (updates) => {
-    setUserProfile(prev => ({ ...prev, ...updates }));
+    setUserProfile(prev => {
+      const newProfile = { ...prev, ...updates };
+      if (updates.theme) {
+        localStorage.setItem('scamshield_theme', updates.theme);
+        document.documentElement.setAttribute('data-theme', updates.theme);
+        if (updates.theme === 'light') {
+          document.documentElement.classList.add('light-mode');
+        } else {
+          document.documentElement.classList.remove('light-mode');
+        }
+      }
+      if (updates.avatar) {
+        localStorage.setItem('scamshield_avatar', updates.avatar);
+      }
+      return newProfile;
+    });
   };
 
   const devBypassLogin = useCallback(() => {

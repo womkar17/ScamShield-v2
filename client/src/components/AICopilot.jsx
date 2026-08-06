@@ -153,9 +153,9 @@ export default function AICopilot() {
           style={{
             width: '380px',
             height: '560px',
-            background: 'rgba(15, 23, 42, 0.96)',
+            background: 'var(--bg2)',
             backdropFilter: 'blur(16px)',
-            border: '1px solid rgba(168, 85, 247, 0.4)',
+            border: '1px solid var(--border)',
             borderRadius: '20px',
             boxShadow: '0 10px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(168, 85, 247, 0.3)',
             display: 'flex',
@@ -168,8 +168,8 @@ export default function AICopilot() {
           <div
             style={{
               padding: '16px 20px',
-              background: 'linear-gradient(90deg, rgba(168, 85, 247, 0.2) 0%, rgba(99, 102, 241, 0.2) 100%)',
-              borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+              background: 'linear-gradient(90deg, rgba(168, 85, 247, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%)',
+              borderBottom: '1px solid var(--border)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between'
@@ -178,7 +178,7 @@ export default function AICopilot() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <span style={{ fontSize: '24px' }}>🤖</span>
               <div>
-                <h3 style={{ margin: 0, fontSize: '16px', fontWeight: '700', color: '#fff' }}>ScamShield Copilot</h3>
+                <h3 style={{ margin: 0, fontSize: '16px', fontWeight: '700', color: 'var(--text-h)' }}>ScamShield Copilot</h3>
                 <span style={{ fontSize: '11px', color: '#a855f7', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e', display: 'inline-block' }}></span>
                   {activeEngineLabel}
@@ -191,11 +191,11 @@ export default function AICopilot() {
               <button
                 onClick={() => setEngine(prev => prev === 'groq' ? 'gemini' : 'groq')}
                 style={{
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  background: 'var(--social-bg)',
+                  border: '1px solid var(--border)',
                   borderRadius: '12px',
                   padding: '4px 8px',
-                  color: '#e2e8f0',
+                  color: 'var(--text2)',
                   fontSize: '11px',
                   cursor: 'pointer',
                   fontWeight: '600'
@@ -211,7 +211,7 @@ export default function AICopilot() {
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  color: '#94a3b8',
+                  color: 'var(--text3)',
                   fontSize: '18px',
                   cursor: 'pointer',
                   padding: '4px',
@@ -226,7 +226,7 @@ export default function AICopilot() {
           </div>
 
           {/* Quick Action Pill */}
-          <div style={{ padding: '8px 16px', background: 'rgba(0, 0, 0, 0.3)', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', display: 'flex', gap: '8px' }}>
+          <div style={{ padding: '8px 16px', background: 'var(--bg3)', borderBottom: '1px solid var(--border)', display: 'flex', gap: '8px' }}>
             <button
               onClick={handleQuickScan}
               style={{
@@ -266,9 +266,9 @@ export default function AICopilot() {
                     maxWidth: '85%',
                     padding: '12px 14px',
                     borderRadius: isUser ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-                    background: isUser ? 'linear-gradient(135deg, #a855f7 0%, #6366f1 100%)' : 'rgba(30, 41, 59, 0.8)',
-                    border: isUser ? 'none' : '1px solid rgba(255, 255, 255, 0.1)',
-                    color: '#fff',
+                    background: isUser ? 'linear-gradient(135deg, #a855f7 0%, #6366f1 100%)' : 'var(--bg3)',
+                    border: isUser ? 'none' : '1px solid var(--border)',
+                    color: isUser ? '#fff' : 'var(--text)',
                     fontSize: '13.5px',
                     lineHeight: '1.5',
                     whiteSpace: 'pre-wrap',
@@ -286,8 +286,8 @@ export default function AICopilot() {
                   alignSelf: 'flex-start',
                   padding: '10px 16px',
                   borderRadius: '16px',
-                  background: 'rgba(30, 41, 59, 0.8)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  background: 'var(--bg3)',
+                  border: '1px solid var(--border)',
                   color: '#a855f7',
                   fontSize: '14px',
                   fontWeight: 'bold',
@@ -306,8 +306,8 @@ export default function AICopilot() {
             onSubmit={handleSend}
             style={{
               padding: '12px 16px',
-              background: 'rgba(15, 23, 42, 0.9)',
-              borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+              background: 'var(--bg2)',
+              borderTop: '1px solid var(--border)',
               display: 'flex',
               gap: '8px'
             }}
@@ -328,9 +328,9 @@ export default function AICopilot() {
                 flex: 1,
                 padding: '10px 14px',
                 borderRadius: '12px',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
-                background: 'rgba(0, 0, 0, 0.4)',
-                color: '#fff',
+                border: '1px solid var(--border)',
+                background: 'var(--bg3)',
+                color: 'var(--text)',
                 fontSize: '13px',
                 outline: 'none'
               }}

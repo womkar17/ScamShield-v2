@@ -8,6 +8,20 @@
     <meta name="description" content="Master scam detection with interactive AI copilot, cyber simulations, and gamified challenges." />
   </head>
   <body>
+    <script>
+      (function() {
+        try {
+          var theme = localStorage.getItem('scamshield_theme');
+          if (!theme) {
+            theme = 'dark';
+            localStorage.setItem('scamshield_theme', theme);
+          }
+          if (theme === 'light') {
+            document.documentElement.classList.add('light-mode');
+          }
+        } catch (e) {}
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

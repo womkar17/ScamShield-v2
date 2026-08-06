@@ -16,25 +16,25 @@ export default function ThreatAnalysis({ data, analysis, threatAnalysis, onProce
   return (
     <div style={{
       position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, 
-      backgroundColor: 'rgba(15, 23, 42, 0.98)', color: '#f8fafc', 
+      backgroundColor: 'var(--bg)', color: 'var(--text)', 
       display: 'flex', flexDirection: 'column', padding: '24px', 
       justifyContent: 'center', alignItems: 'center', zIndex: 1000,
       backdropFilter: 'blur(8px)', borderRadius: '24px', boxSizing: 'border-box',
       fontFamily: 'system-ui, -apple-system, sans-serif'
     }}>
       <div style={{
-        backgroundColor: '#1e293b',
+        backgroundColor: 'var(--bg2)',
         padding: '32px',
         borderRadius: '20px',
         boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)',
         maxWidth: '450px',
         width: '100%',
-        border: '1px solid #334155'
+        border: '1px solid var(--border)'
       }}>
         <h2 style={{ 
-          color: '#ef4444', 
+          color: 'var(--accent)', 
           marginTop: 0, 
-          borderBottom: '1px solid #334155', 
+          borderBottom: '1px solid var(--border)', 
           paddingBottom: '16px', 
           display: 'flex', 
           alignItems: 'center', 
@@ -80,7 +80,7 @@ function Section({ title, content, isSuccess }) {
   return (
     <div style={{ marginBottom: '24px' }}>
       <h4 style={{ 
-        color: '#94a3b8', 
+        color: 'var(--text3)', 
         margin: '0 0 8px 0', 
         textTransform: 'uppercase', 
         fontSize: '12px', 
@@ -92,7 +92,7 @@ function Section({ title, content, isSuccess }) {
         margin: 0, 
         lineHeight: '1.6', 
         fontSize: '15px',
-        color: isSuccess ? '#4ade80' : '#e2e8f0' 
+        color: isSuccess ? 'var(--green)' : 'var(--text2)' 
       }}>
         {content}
       </p>

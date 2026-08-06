@@ -19,12 +19,9 @@ export default function HomePage() {
         {/* Hero Section */}
         <div className="hero-section">
           <div className="hero-content" style={{ width: '100%' }}>
-            <h1 className="hero-title" style={{ marginTop: 0 }}>
+            <h1 className="hero-title" style={{ marginTop: 0, marginBottom: '2.5rem' }}>
               Welcome to ScamShield, <span style={styles.usernameHighlight}>{displayName}</span>!
             </h1>
-            <p className="hero-subtitle">
-              Learn to spot, avoid, and report the latest digital scams through interactive simulations.
-            </p>
           </div>
         </div>
 
@@ -53,6 +50,5 @@ const styles = {
     color: '#a855f7',
     textShadow: '0 0 15px rgba(168, 85, 247, 0.4)',
     fontWeight: '900',
-    display: 'inline-block'
   }
 };

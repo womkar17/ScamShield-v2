@@ -380,34 +380,104 @@ export default function CaseStudiesPage() {
     setGenerating(true);
     setGenError('');
     try {
-      const prompt = `Generate 1 documented, REAL-WORLD cybersecurity scam or data breach case study based on ACTUAL historical facts, verified security reports (e.g. FBI IC3, CISA, FTC, ENISA, or major cybersecurity intelligence reports), and real events from 2021–2026.
-      CRITICAL RULE: You MUST name a REAL, VERIFIED historical enterprise or organization (e.g. SolarWinds, Twilio, Uber, Okta, 3CX, AnyDesk, Colonial Pipeline, MGM Resorts, Change Healthcare, Arup Group). Do NOT generate fictional names, generic hypothetical scenarios, or AI examples under any circumstances.
-      You MUST include real facts and figures: the actual name of the organization or threat actor involved, the verified financial loss or ransom demand, the documented number of victims affected, and real dates.
-      Return ONLY a valid JSON object with EXACTLY these keys:
-      {
-        "title": "Real incident title (e.g. The 2024 Snowflake Cloud Account Takeover)",
-        "category": "One of: Deepfake & AI Fraud, Crypto & Social Engineering, SMS & Phishing, Workplace & Shadow IT",
-        "date": "Actual date/year of incident (e.g. April 2024)",
-        "loss": "Real financial loss and exact number of affected users/victims (e.g. 165 organizations breached, 500M+ customer records leaked, $30M+ ransom demands)",
-        "summary": "A comprehensive 4-5 sentence factual summary explaining the background of the organization, the attackers involved, the initial breach vector, and the aftermath.",
-        "setup": "A thorough, detailed technical breakdown (150-200 words) of the initial access vector, vulnerability exploited, social engineering tactics, and how attackers bypassed perimeter security controls.",
-        "trap": "A detailed analysis (150-200 words) of the exact climax, malware/payload deployment, lateral movement, credential harvesting technique, and how cognitive bias was weaponized against employees or systems.",
-        "timeline": [
-          "Factual Step 1: Detailed description of reconnaissance or initial access with timestamps/dates",
-          "Factual Step 2: Lateral movement and privilege escalation",
-          "Factual Step 3: Data exfiltration and encryption or ransom demand",
-          "Factual Step 4: Discovery, incident response, and public disclosure",
-          "Factual Step 5: Post-mortem remediation and regulatory penalties"
-        ],
-        "redFlags": ["Real Red Flag 1 with technical context", "Real Red Flag 2 with indicator of compromise", "Real Red Flag 3", "Real Red Flag 4"],
-        "psychologicalBias": "Which cognitive bias or security gap was exploited in this real incident and why it succeeded",
-        "prevention": "A detailed 3-part actionable defense roadmap (Technical controls, Employee training, and Policy changes) that would have prevented or mitigated this breach.",
-        "quiz": [
-          { "q": "Factual Question 1?", "opts": ["Opt 0", "Opt 1 (Correct)", "Opt 2", "Opt 3"], "ans": 1, "exp": "Explanation why 1 is correct based on the real case" },
-          { "q": "Factual Question 2?", "opts": ["Opt 0", "Opt 1", "Opt 2 (Correct)", "Opt 3"], "ans": 2, "exp": "Explanation" },
-          { "q": "Factual Question 3?", "opts": ["Opt 0 (Correct)", "Opt 1", "Opt 2", "Opt 3"], "ans": 0, "exp": "Explanation" }
-        ]
-      }`;
+      // Build exclusion list from ALL currently displayed case studies so the AI never repeats
+      const existingTitles = caseStudies.map(cs => cs.title);
+      const exclusionList = existingTitles.map((t, i) => `${i + 1}. ${t}`).join('\n');
+
+      // Randomize the category to force variety across different domains
+      const categoryPool = [
+        'Deepfake & AI Fraud', 'Crypto & Social Engineering', 'SMS & Phishing',
+        'Workplace & Shadow IT', 'Ransomware & Extortion', 'Supply Chain Attack',
+        'Cloud Security & Identity', 'Insider Threat', 'IoT & Critical Infrastructure',
+        'Healthcare & Medical Data Breach', 'Financial Services Fraud', 'Government & Military Espionage'
+      ];
+      const randomCategory = categoryPool[Math.floor(Math.random() * categoryPool.length)];
+
+      // Massive pool of real-world incident seeds to steer the AI toward lesser-known cases
+      const incidentSeeds = [
+        'SolarWinds Orion Supply Chain (2020)', 'Colonial Pipeline DarkSide (2021)', 'Kaseya VSA REvil (2021)',
+        'Log4Shell Apache Log4j (2021)', 'Uber Lapsus$ MFA Fatigue (2022)', 'Medibank AlphV (2022)',
+        'LastPass Developer Breach (2022)', 'Optus API Exposure (2022)', 'Rackspace Exchange ProxyNotShell (2022)',
+        'T-Mobile API Breach 37M (2023)', 'MOVEit Clop Mass Exploit (2023)', 'Barracuda ESG Zero-Day (2023)',
+        'Casino Scattered Spider (2023)', 'Boeing LockBit (2023)', 'Okta HAR Support Breach (2023)',
+        'Clorox Scattered Spider (2023)', 'Royal Mail LockBit (2023)', 'Reddit Phishing (2023)',
+        'Norton LifeLock Credential Stuffing (2023)', 'JumpCloud Nation-State (2023)',
+        'Microsoft Storm-0558 Outlook (2023)', 'Dish Network BlackBasta (2023)',
+        'Latitude Financial (2023)', 'Applied Materials Supply Chain (2023)',
+        'ICBC LockBit (2023)', 'Citrix Bleed NetScaler (2023)',
+        'Ascension Health Black Basta (2024)', 'Cencora/AmerisourceBergen (2024)',
+        'AT&T Snowflake (2024)', 'Dell API Scraping 49M (2024)',
+        'Ivanti Connect Secure Zero-Day (2024)', 'AnyDesk Production Breach (2024)',
+        'Microsoft Midnight Blizzard (2024)', 'Prudential Financial AlphV (2024)',
+        'UnitedHealth Change Healthcare (2024)', 'Synnovis NHS Qilin (2024)',
+        'CDK Global BlackSuit (2024)', 'Snowflake UNC5537 Wave (2024)',
+        'Roku Credential Stuffing 576K (2024)', 'Dropbox Sign Breach (2024)',
+        'London Drugs LockBit (2024)', 'Christie Auction House RansomHub (2024)',
+        'TeamViewer Midnight Blizzard (2024)', 'Evolve Bank LockBit (2024)',
+        'Patelco Credit Union (2024)', 'National Public Data Breach 2.9B (2024)',
+        'Internet Archive DDoS & Breach (2024)', 'Star Health Data Leak Telegram (2024)',
+        'Blue Yonder Supply Chain (2024)', 'Krispy Kreme Play Ransomware (2024)',
+        'PowerSchool Student Data Breach (2025)', 'Bybit $1.5B Lazarus Crypto Heist (2025)',
+        'Lee Enterprises Newspaper Ransomware (2025)', 'DISA Global Solutions 3.3M (2025)',
+        'Marks & Spencer Scattered Spider (2025)', 'Co-op DragonForce (2025)',
+        'Harrods Cyber Attack (2025)', 'NHS Synnovis Blood Test Leak (2024)',
+        'Twilio Authy 33M (2024)', 'Trello 15M User Scraping (2024)'
+      ];
+      // Pick 5 random seeds to suggest in the prompt for variety
+      const shuffled = [...incidentSeeds].sort(() => Math.random() - 0.5);
+      const suggestedIncidents = shuffled.slice(0, 5).join(', ');
+
+      const prompt = `You are a world-class cybersecurity threat intelligence analyst. Generate 1 documented, REAL-WORLD cybersecurity case study that has NOT been covered before in this session.
+
+ABSOLUTE REQUIREMENTS:
+1. The case MUST be about a REAL, VERIFIED historical incident with a REAL organization name, real dates, real financial losses, and real victim counts.
+2. It MUST be based on ACTUAL published reports from sources like FBI IC3, CISA, SEC filings, Mandiant, CrowdStrike, Sophos, or major news outlets.
+3. Do NOT invent fictional companies, hypothetical scenarios, or generic examples.
+4. Generate a case study in the category: "${randomCategory}" (or the closest matching real incident).
+5. Consider covering one of these real incidents for inspiration: ${suggestedIncidents}. But you may pick ANY real incident not in the exclusion list below.
+
+CRITICAL — DO NOT REPEAT THESE ALREADY-DISPLAYED CASE STUDIES:
+${exclusionList}
+
+You MUST pick a COMPLETELY DIFFERENT real-world incident from the ones listed above. There are hundreds of documented cybersecurity breaches from 2020–2025 — pick one that is NOT in the exclusion list.
+
+FORMAT REQUIREMENTS — Match the detail level and structure of professional threat intelligence case studies:
+- The "date" field MUST include source attribution in parentheses, e.g.: "June 2023 (Published by CISA, FBI & Progress Software)" or "September 2022 (Published by Uber Security, FBI & DOJ)". Always cite 2-3 real organizations that published reports on this incident.
+- The "loss" field must be specific and quantified with real numbers (e.g. "49 Million Customer Records Exposed" or "$4.4M Ransom Paid, East Coast Fuel Supply Disrupted for 6 Days").
+- The "setup" and "trap" fields must each be 150-200 words with deep technical detail about the attack chain.
+- The "timeline" must include real dates for each step, not generic placeholders.
+- The "redFlags" must include specific technical indicators of compromise (IoCs), not generic advice.
+- The "prevention" must be a detailed 3-part defense roadmap: (1) Technical controls, (2) Employee training measures, (3) Policy and governance changes.
+
+Return ONLY a valid JSON object (no markdown, no backticks, no explanation) with EXACTLY these keys:
+{
+  "title": "The [Year] [Organization] [Attack Type] (e.g. The 2023 MOVEit Clop Mass Exploitation)",
+  "category": "One of: Deepfake & AI Fraud, Crypto & Social Engineering, SMS & Phishing, Workplace & Shadow IT, Cloud Security & Identity",
+  "date": "Month Year (Published by Source1, Source2 & Source3) — e.g. June 2023 (Published by CISA, FBI & Progress Software)",
+  "loss": "Real financial loss with specific numbers (e.g. $100M+ in damages, 77M patient records exposed)",
+  "summary": "A comprehensive 4-5 sentence factual summary covering the organization background, attackers involved, breach vector, and real-world aftermath.",
+  "setup": "A thorough 150-200 word technical breakdown of the initial access vector, vulnerability exploited, social engineering tactics used, and how attackers bypassed security controls.",
+  "trap": "A detailed 150-200 word analysis of the attack climax — malware deployment, lateral movement, data exfiltration method, and which cognitive bias or security gap was weaponized.",
+  "timeline": [
+    "Step 1 with real dates: Initial reconnaissance or access",
+    "Step 2: Lateral movement and privilege escalation",
+    "Step 3: Data exfiltration or ransomware deployment",
+    "Step 4: Discovery and incident response",
+    "Step 5: Aftermath, remediation, and regulatory consequences"
+  ],
+  "redFlags": ["Specific technical red flag 1", "Red flag 2 with IoC context", "Red flag 3", "Red flag 4"],
+  "psychologicalBias": "Which cognitive bias or operational gap was exploited and why it succeeded",
+  "prevention": "A detailed 3-part defense roadmap: (1) Technical controls, (2) Employee training measures, (3) Policy and governance changes that would have prevented this.",
+  "quiz": [
+    { "q": "Factual question about the incident?", "opts": ["Wrong A", "Correct B", "Wrong C", "Wrong D"], "ans": 1, "exp": "Explanation referencing the real case" },
+    { "q": "Second factual question?", "opts": ["Wrong A", "Wrong B", "Correct C", "Wrong D"], "ans": 2, "exp": "Explanation" },
+    { "q": "Third factual question?", "opts": ["Correct A", "Wrong B", "Wrong C", "Wrong D"], "ans": 0, "exp": "Explanation" },
+    { "q": "Fourth question about prevention or impact?", "opts": ["Wrong A", "Wrong B", "Wrong C", "Correct D"], "ans": 3, "exp": "Explanation" },
+    { "q": "Fifth question about technical details?", "opts": ["Wrong A", "Correct B", "Wrong C", "Wrong D"], "ans": 1, "exp": "Explanation" }
+  ]
+}
+
+IMPORTANT: Vary the correct answer position randomly across questions (don't always put the answer at index 1). Return ONLY the JSON object, nothing else.`;
 
       let replyText = null;
       let usedEngine = 'Cloud AI Server (Groq Llama 3.3)';
@@ -445,8 +515,8 @@ export default function CaseStudiesPage() {
               body: JSON.stringify({
                 model: 'llama-3.3-70b-versatile',
                 messages: [{ role: 'user', content: prompt }],
-                temperature: 0.7,
-                max_tokens: 3072
+                temperature: 0.95,
+                max_tokens: 4096
               })
             });
             const groqData = await groqRes.json();
@@ -461,18 +531,18 @@ export default function CaseStudiesPage() {
         
         if (!replyText && geminiKey) {
           try {
-            const geminiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`, {
+            const geminiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 contents: [{ parts: [{ text: prompt }] }],
-                generationConfig: { temperature: 0.7, maxOutputTokens: 3072 }
+                generationConfig: { temperature: 0.95, maxOutputTokens: 4096 }
               })
             });
             const geminiData = await geminiRes.json();
             if (geminiData.candidates?.[0]?.content?.parts?.[0]?.text) {
               replyText = geminiData.candidates[0].content.parts[0].text;
-              usedEngine = 'Google Gemini 1.5 Flash';
+              usedEngine = 'Google Gemini 2.0 Flash';
             }
           } catch (e) {
             console.warn('Gemini client fallback failed:', e);
@@ -483,101 +553,435 @@ export default function CaseStudiesPage() {
       let newCase = null;
       if (replyText) {
         try {
-          const jsonMatch = replyText.match(/\{[\s\S]*\}/);
+          // Strip markdown code fences if the AI wrapped its response
+          let cleanedText = replyText.trim();
+          if (cleanedText.startsWith('```')) {
+            cleanedText = cleanedText.replace(/^```(?:json)?\s*/, '').replace(/\s*```$/, '');
+          }
+          const jsonMatch = cleanedText.match(/\{[\s\S]*\}/);
           if (jsonMatch) {
-            newCase = JSON.parse(jsonMatch[0]);
+            const parsed = JSON.parse(jsonMatch[0]);
+            // Deduplication: reject if this title is too similar to an existing one
+            const isDuplicate = existingTitles.some(t => {
+              const existingWords = t.toLowerCase().split(/\s+/);
+              const newWords = (parsed.title || '').toLowerCase().split(/\s+/);
+              const overlap = existingWords.filter(w => w.length > 3 && newWords.includes(w));
+              return overlap.length >= 4; // 4+ significant shared words = likely duplicate
+            });
+            if (!isDuplicate && parsed.title && parsed.summary) {
+              newCase = parsed;
+            } else {
+              console.warn('AI returned a duplicate or incomplete case, falling back to pool');
+            }
           }
         } catch (e) {
           console.warn('Failed to parse AI JSON, using fallback pool:', e);
         }
       }
 
-      // If API calls failed or keys missing on Vercel, generate from realistic 2026 Threat Pool
+      // If API calls failed, keys missing, or duplicate detected — use massive offline fallback pool
       if (!newCase) {
         const fallbacks = [
           {
-            title: "The AI Voice Clone Executive Impersonation",
-            category: "Deepfake & AI Fraud",
-            date: "June 2026",
-            loss: "$240,000",
-            summary: "An accounting manager received an urgent WhatsApp voice memo that sounded identical to the CEO, demanding an immediate wire transfer for a secret overseas acquisition.",
-            setup: "Scammers scraped 4 minutes of the CEO's keynote speeches from YouTube and fed them into a neural voice cloning AI. They then spoofed the CEO's phone number on WhatsApp.",
-            trap: "The cloned voice spoke with natural breathing pauses and urgency, creating panic. Because the CEO was boarding a flight, the employee skipped standard two-person verbal authentication.",
+            title: "The 2020 SolarWinds Orion Supply Chain Compromise",
+            category: "Workplace & Shadow IT",
+            date: "December 2020 (Discovered by FireEye/Mandiant)",
+            loss: "18,000+ Organizations Compromised Including US Treasury, DHS & Fortune 500",
+            summary: "Russian intelligence service (SVR/Cozy Bear) inserted a backdoor into SolarWinds Orion IT monitoring software updates, compromising 18,000+ organizations globally including multiple US federal agencies. The attack went undetected for over 9 months and is considered one of the most sophisticated supply chain attacks in history.",
+            setup: "Attackers gained access to SolarWinds' build environment and injected the 'SUNBURST' backdoor into legitimate Orion software updates distributed between March and June 2020. Because Orion runs with elevated network privileges to monitor infrastructure, the trojanized update gave attackers god-level access inside victim networks.",
+            trap: "The SUNBURST backdoor lay dormant for 2 weeks after installation before activating, used legitimate SolarWinds API calls to blend with normal traffic, and communicated via DNS subdomains that mimicked standard Orion telemetry. Attackers then deployed the TEARDROP memory-only dropper to install Cobalt Strike beacons, stealing emails from US Treasury, DOJ, and DHS officials.",
             timeline: [
-              "Day 1: Scammers harvest audio samples from public earnings calls and executive interviews.",
-              "Day 3: AI model trained to synthesize realistic emotional speech in the CEO's voice.",
-              "Day 5: Urgent voice note sent to finance department during lunchtime.",
-              "Day 5 (1:30 PM): $240k wired to an offshore mule account before the fraud is detected."
+              "Oct 2019: Attackers first breach SolarWinds internal build systems via password 'solarwinds123' on a public GitHub repo.",
+              "Feb 2020: SUNBURST code injected into the Orion build pipeline; test builds verify malware survives compilation.",
+              "Mar–Jun 2020: Trojanized Orion updates 2019.4 through 2020.2.1 distributed to 18,000+ customers worldwide.",
+              "Dec 8, 2020: FireEye discovers its own Red Team tools were stolen and traces the breach back to SolarWinds.",
+              "Dec 13, 2020: CISA issues Emergency Directive 21-01 ordering all federal agencies to disconnect SolarWinds Orion."
             ],
             redFlags: [
-              "Request to bypass standard multi-person financial authorization rules",
-              "Communication moved to personal messaging platforms (WhatsApp)",
-              "Urgency tied to a flight or unreachable status to prevent callback verification"
+              "Build pipeline credentials ('solarwinds123') exposed on a public GitHub repository",
+              "Software update serving as a trusted distribution channel for malware",
+              "Backdoor traffic disguised as legitimate Orion API telemetry",
+              "9-month dwell time without detection by any endpoint security product"
             ],
-            psychologicalBias: "Authority Bias & Urgency Manipulation — victims obey perceived leaders when stressed.",
-            prevention: "Always enforce a mandatory out-of-band callback verification using a pre-established phone number for any transfer over $10,000.",
+            psychologicalBias: "Trusted Vendor Blind Spot — Organizations inherently trust digitally-signed software updates from established vendors without inspecting the update payload itself.",
+            prevention: "Implement Software Bill of Materials (SBOM) verification, enforce build pipeline integrity checks with reproducible builds, and deploy behavioral analytics that detect anomalous DNS/API patterns even from trusted software.",
             quiz: [
-              { q: "What tool allowed scammers to replicate the CEO's exact voice?", opts: ["A standard tape recorder", "Neural AI voice cloning software using public video samples", "A stolen company phone", "An automated email script"], ans: 1, exp: "Modern AI models only need a few minutes of public audio to create convincing clones." },
-              { q: "Why did the employee fail to verify the request?", opts: ["They forgot their password", "The CEO claimed to be boarding a flight and unreachable", "The bank was closing", "They did not know the CEO's name"], ans: 1, exp: "Scammers manufacture artificial time constraints to prevent victims from verifying claims." }
+              { q: "What was the name of the backdoor inserted into SolarWinds Orion updates?", opts: ["SUNBURST", "WannaCry", "NotPetya", "HAFNIUM"], ans: 0, exp: "The backdoor was named SUNBURST by FireEye/Mandiant researchers who first discovered it." },
+              { q: "How long did the attack go undetected inside victim networks?", opts: ["2 days", "1 month", "Over 9 months", "5 years"], ans: 2, exp: "The trojanized updates were distributed from March 2020 and not discovered until December 2020." },
+              { q: "Which organization first discovered the SolarWinds compromise?", opts: ["The FBI", "Microsoft", "FireEye (now Mandiant)", "SolarWinds itself"], ans: 2, exp: "FireEye discovered the breach after noticing their own Red Team tools had been stolen via the SolarWinds backdoor." },
+              { q: "What embarrassing credential was found on SolarWinds' public GitHub?", opts: ["admin/admin", "password123", "solarwinds123", "guest/guest"], ans: 2, exp: "The password 'solarwinds123' was found on a public GitHub repo, highlighting poor credential hygiene." },
+              { q: "What technique made SUNBURST difficult to detect?", opts: ["It encrypted all network traffic", "It mimicked legitimate SolarWinds Orion API calls and DNS telemetry", "It only ran on weekends", "It disabled all antivirus software"], ans: 1, exp: "SUNBURST blended with normal Orion monitoring traffic, making it invisible to standard network monitoring." }
             ]
           },
           {
-            title: "The Malicious QR Code EV Charging Hijack",
+            title: "The 2021 Colonial Pipeline DarkSide Ransomware Shutdown",
+            category: "Workplace & Shadow IT",
+            date: "May 2021 (Published by FBI, DOJ & CISA)",
+            loss: "$4.4M Ransom Paid, East Coast Fuel Supply Disrupted for 6 Days",
+            summary: "Russian ransomware gang DarkSide breached Colonial Pipeline — operator of the largest refined fuel pipeline in the United States — through a single compromised VPN password, forcing a 6-day shutdown that caused gas station panic buying across the US East Coast.",
+            setup: "Colonial Pipeline transported 45% of all fuel consumed on the US East Coast. Attackers gained access through a legacy VPN account that used a compromised password (found in a dark web breach dump) and did not have Multi-Factor Authentication enabled.",
+            trap: "After gaining VPN access, DarkSide operators spent several days mapping the network and exfiltrating 100GB of corporate data before deploying ransomware. Colonial Pipeline preemptively shut down its entire 5,500-mile pipeline to prevent the ransomware from spreading to operational technology (OT) systems, causing immediate fuel shortages.",
+            timeline: [
+              "April 29, 2021: DarkSide operators log into Colonial Pipeline's network using a compromised VPN credential.",
+              "May 6, 2021: Attackers exfiltrate 100GB of data and prepare ransomware deployment.",
+              "May 7, 2021: Ransomware detonated; Colonial Pipeline shuts down entire 5,500-mile pipeline.",
+              "May 8–12, 2021: Fuel panic-buying causes gas station shortages across 17 US states; President Biden declares state of emergency.",
+              "May 8, 2021: Colonial Pipeline pays $4.4M in Bitcoin; FBI later recovers $2.3M."
+            ],
+            redFlags: [
+              "Legacy VPN account with password reuse and no MFA enforcement",
+              "No network segmentation between IT and operational technology (OT) systems",
+              "100GB data exfiltration went undetected for days",
+              "Lack of offline backup infrastructure for critical pipeline operations"
+            ],
+            psychologicalBias: "Legacy System Neglect — Assumption that older, low-profile VPN accounts are not targeted by sophisticated threat actors.",
+            prevention: "Enforce MFA on 100% of remote access points, implement strict IT/OT network segmentation, deploy Data Loss Prevention (DLP) monitoring, and maintain tested offline backup and recovery procedures.",
+            quiz: [
+              { q: "What percentage of US East Coast fuel supply did Colonial Pipeline handle?", opts: ["5%", "25%", "45%", "80%"], ans: 2, exp: "Colonial Pipeline transported approximately 45% of all refined fuel consumed on the US East Coast." },
+              { q: "How did DarkSide initially gain access to Colonial Pipeline?", opts: ["A phishing email", "A compromised VPN password without MFA", "A zero-day exploit", "Physical break-in"], ans: 1, exp: "The breach was traced to a single compromised VPN credential that lacked Multi-Factor Authentication." },
+              { q: "How much ransom did Colonial Pipeline pay in Bitcoin?", opts: ["$100,000", "$4.4 million", "$22 million", "$50 million"], ans: 1, exp: "Colonial paid $4.4M in Bitcoin, though the FBI later recovered approximately $2.3M of it." },
+              { q: "Why did Colonial shut down the entire pipeline preemptively?", opts: ["The ransomware destroyed the pipeline physically", "To prevent ransomware from spreading from IT networks to operational technology (OT) systems", "The FBI ordered them to", "They had no employees available"], ans: 1, exp: "The lack of IT/OT segmentation meant the ransomware could potentially reach pipeline control systems." },
+              { q: "How many US states experienced fuel shortages during the shutdown?", opts: ["3 states", "10 states", "17 states", "All 50 states"], ans: 2, exp: "Gas station shortages and panic buying affected approximately 17 states across the US East Coast." }
+            ]
+          },
+          {
+            title: "The 2021 Kaseya VSA REvil Mass Ransomware Attack",
+            category: "Workplace & Shadow IT",
+            date: "July 2021 (Published by CISA, FBI & Kaseya)",
+            loss: "1,500+ Businesses Encrypted, $70M Ransom Demanded",
+            summary: "Russian ransomware syndicate REvil exploited zero-day vulnerabilities in Kaseya VSA remote management software used by Managed Service Providers (MSPs), simultaneously encrypting systems at over 1,500 downstream businesses in a single weekend supply chain attack.",
+            setup: "Kaseya VSA is remote monitoring software used by MSPs to manage hundreds of client networks. REvil discovered and exploited authentication bypass vulnerabilities (CVE-2021-30116) in internet-facing VSA servers. Because MSPs use VSA with admin-level privileges across all client endpoints, compromising one VSA server meant instant access to every client.",
+            trap: "On July 2, 2021 (US Independence Day weekend), REvil pushed a fake 'Kaseya VSA Agent Hot-fix' through the legitimate VSA update mechanism. The malicious update disabled Windows Defender, dropped an encrypted REvil payload, and encrypted client systems across 60+ MSPs and 1,500+ end businesses simultaneously. REvil demanded $70 million for a universal decryptor.",
+            timeline: [
+              "June 2021: REvil discovers zero-day auth bypass in Kaseya VSA servers exposed to the internet.",
+              "July 2, 2021 (Friday 2PM ET): Malicious update pushed through VSA to MSP clients as holiday weekend begins.",
+              "July 2–4, 2021: 1,500+ businesses across 17 countries find systems encrypted including supermarket chains in Sweden.",
+              "July 5, 2021: REvil posts $70M universal decryptor ransom demand on dark web blog.",
+              "July 22, 2021: Kaseya obtains universal decryptor key (reportedly via FBI/intelligence sources)."
+            ],
+            redFlags: [
+              "Internet-facing management consoles without WAF protection or IP restriction",
+              "MSP software running with unrestricted admin privileges across all client endpoints",
+              "Attack timed for a major holiday weekend when IT staff coverage is minimal",
+              "Fake software update deployed through a trusted management channel"
+            ],
+            psychologicalBias: "Holiday Timing & Trusted Channel Exploitation — Attackers weaponized the trust MSPs place in their own management tools and struck when defenders were on vacation.",
+            prevention: "Restrict VSA/RMM server access to VPN-only, enforce least-privilege for MSP agent accounts, implement canary files to detect mass encryption, and maintain holiday weekend incident response coverage.",
+            quiz: [
+              { q: "How many businesses were simultaneously encrypted in the Kaseya attack?", opts: ["50", "500", "Over 1,500", "10,000"], ans: 2, exp: "REvil encrypted systems at over 1,500 downstream businesses through 60+ compromised MSPs." },
+              { q: "Why was the July 4th weekend specifically chosen for the attack?", opts: ["Because fireworks distracted people", "Because US IT security staff would be on holiday with minimal monitoring", "Because servers run slower on weekends", "It was random"], ans: 1, exp: "Holiday weekends significantly reduce incident response staffing and detection capabilities." },
+              { q: "What was the total ransom demand posted by REvil?", opts: ["$1 million", "$10 million", "$70 million", "$500 million"], ans: 2, exp: "REvil demanded $70M for a single universal decryptor key that would unlock all 1,500+ victims." },
+              { q: "How did REvil deliver the ransomware payload to victims?", opts: ["Via email attachments", "Through a fake software update pushed via Kaseya's own VSA management tool", "Through USB drives", "By hacking individual company firewalls"], ans: 1, exp: "The malicious payload was disguised as a legitimate Kaseya VSA hotfix update." },
+              { q: "What critical vulnerability did REvil exploit in Kaseya VSA?", opts: ["A SQL injection", "An authentication bypass zero-day (CVE-2021-30116)", "A weak WiFi password", "A physical server backdoor"], ans: 1, exp: "The authentication bypass allowed attackers to gain admin access to VSA servers without credentials." }
+            ]
+          },
+          {
+            title: "The 2022 Uber Lapsus$ MFA Fatigue Social Engineering Breach",
             category: "SMS & Phishing",
-            date: "May 2026",
-            loss: "$12,500",
-            summary: "Drivers at public EV charging stations scanned what appeared to be payment QR codes on chargers, but were directed to lookalike phishing portals that drained their bank accounts.",
-            setup: "Attackers printed high-gloss acrylic stickers with fraudulent QR codes and placed them directly over the legitimate payment QR codes on 40 public charging stations.",
-            trap: "When scanned, the QR code opened a site identical to the official charging network app, requesting Apple Pay or credit card credentials to initiate charging.",
+            date: "September 2022 (Published by Uber Security, FBI & DOJ)",
+            loss: "Complete Internal System Compromise, Source Code & Vulnerability Reports Exposed",
+            summary: "An 18-year-old member of the Lapsus$ hacking group breached Uber's entire internal network by purchasing a contractor's stolen credentials from the dark web and then bombarding their phone with MFA push notifications until they approved one out of sheer frustration.",
+            setup: "The attacker purchased valid Uber contractor credentials from an initial access broker on a dark web marketplace. The contractor had Duo MFA push notifications enabled. The attacker began sending dozens of MFA push requests to the contractor's phone, then contacted them on WhatsApp claiming to be Uber IT support, saying they needed to approve the notification to stop the spam.",
+            trap: "The exhausted contractor finally tapped 'Approve' on a Duo push notification. The attacker immediately gained VPN access, discovered a PowerShell script on an internal network share containing hardcoded admin credentials for Uber's Privileged Access Management (PAM) vault (Thycotic). With PAM access, they had keys to everything — Slack, Google Workspace, AWS, HackerOne vulnerability reports, and internal dashboards.",
             timeline: [
-              "Midnight: Attackers place lookalike acrylic QR stickers across city charging hubs.",
-              "7:30 AM: Morning commuters scan codes to pay for charging.",
-              "7:32 AM: Credentials captured; automated scripts initiate instant peer-to-peer bank transfers.",
-              "11:00 AM: Station operators notice customer complaints and peel off fake stickers."
+              "Sept 15, 2022: Attacker purchases contractor VPN credentials from a dark web marketplace.",
+              "Sept 15, 2022: Attacker sends 100+ MFA push notifications to contractor's phone over 1 hour.",
+              "Sept 15, 2022: Attacker contacts contractor on WhatsApp posing as Uber IT, convincing them to approve.",
+              "Sept 15, 2022: Attacker discovers hardcoded PAM credentials in internal PowerShell scripts.",
+              "Sept 16, 2022: Attacker posts screenshots of Uber internal systems in the company Slack channel."
             ],
             redFlags: [
-              "QR code sticker raised above the flat surface of the charging machine",
-              "URL in browser slightly misspelled (e.g., charge-ev-pay.com instead of charge-ev.com)",
-              "Payment page requesting full PIN or bank credentials instead of tokenized wallet pay"
+              "Dozens of unexpected MFA push notifications arriving in rapid succession",
+              "Unsolicited WhatsApp message from someone claiming to be corporate IT support",
+              "Hardcoded admin credentials stored in plaintext scripts on shared network drives",
+              "No rate-limiting or anomaly detection on repeated failed MFA attempts"
             ],
-            psychologicalBias: "Automaticity & Trust in Physical Infrastructure — users assume physical signs on official machines are safe.",
-            prevention: "Inspect QR codes for physical tampering (stickers placed over codes) and always use the official mobile app directly rather than scanning random QR codes.",
+            psychologicalBias: "MFA Fatigue & Helpfulness Bias — Repeated notifications create psychological exhaustion, and the fake IT support call provides a 'legitimate' reason to approve.",
+            prevention: "Replace push-based MFA with FIDO2 number-matching or hardware keys, implement MFA attempt rate-limiting and anomaly alerts, never store credentials in scripts, and train employees to recognize MFA fatigue attacks.",
             quiz: [
-              { q: "How did attackers deliver the phishing link to victims?", opts: ["By sending spam text messages", "By placing fraudulent physical stickers over legitimate QR codes on chargers", "By hacking the station's Wi-Fi", "By calling them on the phone"], ans: 1, exp: "Physical QR code replacement (Quishing) targets users in high-trust real-world environments." },
-              { q: "What is the safest way to pay at public kiosks without scanning QR codes?", opts: ["Pay with cash only", "Use the official verified mobile app downloaded previously", "Ask a stranger for help", "Scan the QR code twice"], ans: 1, exp: "Using a verified app directly avoids intermediary phishing links completely." }
+              { q: "What technique did the Lapsus$ attacker use to bypass Uber's MFA?", opts: ["Brute-force password cracking", "MFA Fatigue — bombarding the user with push notifications until they approved", "Stealing a hardware key", "Exploiting a zero-day in the MFA app"], ans: 1, exp: "MFA Fatigue involves overwhelming users with push requests until they approve one to stop the spam." },
+              { q: "How did the attacker convince the contractor to approve the MFA notification?", opts: ["They paid them", "They contacted them on WhatsApp pretending to be Uber IT support", "They sent them an email from the CEO", "They didn't — the contractor approved voluntarily"], ans: 1, exp: "Social engineering via WhatsApp impersonation of IT support added legitimacy to the MFA approval request." },
+              { q: "What critical security mistake did Uber have on its internal network shares?", opts: ["No firewall", "Hardcoded admin credentials for the PAM vault stored in plaintext PowerShell scripts", "Unlocked server rooms", "No WiFi passwords"], ans: 1, exp: "Storing privileged credentials in scripts on shared drives gave the attacker instant access to every critical system." },
+              { q: "How old was the Lapsus$ member who breached Uber?", opts: ["35 years old", "25 years old", "18 years old", "45 years old"], ans: 2, exp: "The attacker was an 18-year-old member of the Lapsus$ group, demonstrating that sophisticated attacks don't require advanced age." },
+              { q: "What MFA method would have completely prevented this attack?", opts: ["SMS codes", "Email verification", "FIDO2 number-matching or hardware security keys", "Longer passwords"], ans: 2, exp: "FIDO2 number-matching requires the user to type a specific number shown on screen, making blind 'approve' taps impossible." }
             ]
           },
           {
-            title: "The Shadow OAuth SaaS Ecosystem Compromise",
+            title: "The 2022 LastPass Developer Environment Breach & Vault Theft",
             category: "Cloud Security & Identity",
-            date: "April 2026",
-            loss: "$850,000",
-            summary: "A marketing agency employee clicked 'Connect with Google' on a rogue AI productivity tool, inadvertently granting attackers OAuth token access to corporate Google Drive and Gmail.",
-            setup: "Attackers built a functional, free AI meeting summarizer web app and promoted it via LinkedIn ads targeting corporate managers.",
-            trap: "During signup, the app requested OAuth permissions to 'Read and organize Google Drive files and email contacts.' Because it looked like a standard login prompt, the employee approved it.",
+            date: "August–December 2022 (Published by LastPass, GoTo & Mandiant)",
+            loss: "25+ Million Users' Encrypted Password Vaults Stolen, $4.4M+ in Crypto Thefts",
+            summary: "Threat actors breached LastPass twice — first compromising a developer's home computer through a vulnerable Plex media server, then using stolen credentials to access cloud storage containing backup copies of 25+ million users' encrypted password vaults, leading to millions in cryptocurrency theft.",
+            setup: "In August 2022, attackers breached LastPass's developer environment by targeting a senior DevOps engineer's personal home computer. They exploited a known vulnerability in Plex media server software running on the engineer's home machine, installed a keylogger, and captured the engineer's master password for the LastPass corporate vault.",
+            trap: "Using the engineer's stolen credentials, attackers accessed LastPass's AWS cloud storage containing backup snapshots of customer vault data. They exfiltrated encrypted vault backups for 25+ million users. While the vaults were AES-256 encrypted, users with weak master passwords became vulnerable to offline brute-force attacks. By 2023-2024, blockchain analysts traced $4.4M+ in cryptocurrency thefts directly to cracked LastPass vaults.",
             timeline: [
-              "Monday: Employee clicks LinkedIn ad for free AI meeting assistant.",
-              "Tuesday: Employee authorizes Google OAuth login, granting offline token access.",
-              "Wednesday: Automated attacker scripts use the token to download confidential client contracts and financial invoices from Google Drive.",
-              "Friday: Attackers demand $850k extortion ransom, threatening to leak client data."
+              "Aug 2022: Attackers breach LastPass developer environment via source code repository access.",
+              "Oct 2022: Attackers target a senior DevOps engineer's personal home Plex server and install a keylogger.",
+              "Nov 2022: Stolen credentials used to access AWS S3 buckets containing customer vault backups.",
+              "Dec 2022: LastPass discloses that customer vault data was stolen (initially downplaying severity).",
+              "2023–2024: $4.4M+ in cryptocurrency stolen from users whose weak master passwords were brute-forced."
             ],
             redFlags: [
-              "Unverified third-party app requesting broad Google Workspace read/write scopes",
-              "New productivity tool promoted through sponsored social media ads without IT approval",
-              "OAuth consent screen asking for access unrelated to core meeting transcription"
+              "Critical infrastructure credentials accessible from employees' personal home devices",
+              "Unpatched third-party software (Plex) on a device with access to corporate secrets",
+              "Cloud backup snapshots of sensitive customer data without additional encryption layers",
+              "Phased disclosure that initially minimized the severity of data exposure"
             ],
-            psychologicalBias: "Convenience Seduction & Familiarity Bias — users trust the familiar 'Sign in with Google' popup without reading permissions.",
-            prevention: "Implement strict enterprise Google Workspace policies blocking unapproved third-party OAuth apps from accessing company data.",
+            psychologicalBias: "Home Network Trust Fallacy — Employees and companies assume that work-from-home environments have adequate security, ignoring unpatched personal software as attack vectors.",
+            prevention: "Enforce hardware security keys for all privileged access, prohibit corporate credential access from unmanaged personal devices, implement additional encryption on cloud backups beyond vault-level encryption, and mandate strong master password policies.",
             quiz: [
-              { q: "Why did traditional password resets fail to stop this attack?", opts: ["The password was too short", "Attackers used an OAuth access token, which remains valid even if passwords change until revoked", "The employee did not have a password", "The hacker had physical access to the server"], ans: 1, exp: "OAuth tokens grant direct API access independently of user password credentials." },
-              { q: "What should employees check on a 'Sign in with Google' consent screen?", opts: ["The color of the button", "The specific permissions and scopes requested by the application", "The font size", "The time of day"], ans: 1, exp: "Always review what data the app is asking to read or modify before clicking Allow." }
+              { q: "How did attackers initially compromise the LastPass DevOps engineer?", opts: ["Through a phishing email", "By exploiting a vulnerability in Plex media server on the engineer's home computer", "Through a brute-force attack on LastPass.com", "Via a rogue USB drive"], ans: 1, exp: "Attackers exploited a known Plex vulnerability to install a keylogger on the engineer's personal home computer." },
+              { q: "How many users had their encrypted password vaults stolen?", opts: ["1,000", "100,000", "25+ million", "1 billion"], ans: 2, exp: "LastPass confirmed that vault data for over 25 million users was exfiltrated from cloud storage backups." },
+              { q: "Why were some users' vaults cracked despite AES-256 encryption?", opts: ["AES-256 was broken", "Users with weak or short master passwords were vulnerable to offline brute-force cracking", "The encryption key was stored in plaintext", "Quantum computers cracked them"], ans: 1, exp: "Weak master passwords with low iteration counts could be brute-forced offline since attackers had the encrypted vault files." },
+              { q: "How much cryptocurrency was traced to cracked LastPass vaults by 2024?", opts: ["$10,000", "$100,000", "$4.4 million+", "$1 billion"], ans: 2, exp: "Blockchain analysts like ZachXBT traced at least $4.4M in crypto thefts directly to keys extracted from cracked LastPass vaults." },
+              { q: "What critical policy failure allowed a home device to become the attack vector?", opts: ["No antivirus", "Allowing corporate privileged credentials to be accessed from unmanaged personal devices", "Using Windows instead of Mac", "Not having a VPN"], ans: 1, exp: "The engineer's personal home computer had access to critical corporate secrets without enterprise endpoint protection." }
+            ]
+          },
+          {
+            title: "The 2023 MOVEit Transfer Clop Mass Exploitation",
+            category: "Workplace & Shadow IT",
+            date: "May–June 2023 (Published by CISA, FBI & Progress Software)",
+            loss: "2,700+ Organizations Breached, 95M+ Individuals' Data Exposed",
+            summary: "Russian ransomware gang Clop exploited a critical SQL injection zero-day (CVE-2023-34362) in MOVEit Transfer file transfer software, mass-exfiltrating sensitive data from 2,700+ organizations including US government agencies, universities, banks, and healthcare providers without deploying any ransomware encryption.",
+            setup: "MOVEit Transfer is enterprise file transfer software used by thousands of organizations to share sensitive data. Clop discovered a SQL injection vulnerability in the web interface that allowed unauthenticated remote code execution. They pre-staged web shells on hundreds of vulnerable MOVEit servers weeks before the mass exploitation began.",
+            trap: "Over the US Memorial Day weekend (May 27-28, 2023), Clop simultaneously activated pre-planted web shells across hundreds of MOVEit servers worldwide. Automated scripts exfiltrated databases containing PII, financial records, and healthcare data. Unlike typical ransomware, Clop used pure data theft and extortion — no encryption, no system disruption — making detection much harder.",
+            timeline: [
+              "May 27, 2023 (Memorial Day Weekend): Clop activates pre-staged web shells on hundreds of MOVEit Transfer servers.",
+              "May 31, 2023: Progress Software discovers the zero-day and releases emergency patch CVE-2023-34362.",
+              "June 5, 2023: Clop begins posting victim names on their dark web extortion blog.",
+              "June–Dec 2023: Victim count grows to 2,700+ organizations across 84 countries; includes BBC, Shell, US DOE, and many universities.",
+              "Dec 2023: Estimated 95M+ individuals' personal data confirmed exposed across all victims."
+            ],
+            redFlags: [
+              "File transfer servers directly exposed to the public internet without WAF or IP restrictions",
+              "Critical software with SQL injection vulnerabilities in authentication-free web endpoints",
+              "No file integrity monitoring to detect pre-planted web shells on production servers",
+              "Attack timed for Memorial Day holiday weekend with reduced security staffing"
+            ],
+            psychologicalBias: "Patch Lag Complacency — Organizations assume enterprise file transfer tools are inherently secure and delay patching, especially during holiday weekends.",
+            prevention: "Place all file transfer servers behind VPN/Zero Trust access, implement Web Application Firewalls (WAF), deploy file integrity monitoring to detect web shells, and establish mandatory holiday weekend security monitoring coverage.",
+            quiz: [
+              { q: "What type of vulnerability did Clop exploit in MOVEit Transfer?", opts: ["Buffer overflow", "SQL injection zero-day (CVE-2023-34362)", "Weak password", "DNS poisoning"], ans: 1, exp: "The vulnerability was a SQL injection in MOVEit's web interface allowing unauthenticated remote code execution." },
+              { q: "How many organizations were ultimately breached in the MOVEit campaign?", opts: ["50", "500", "2,700+", "100,000"], ans: 2, exp: "Over 2,700 organizations across 84 countries were confirmed breached, affecting 95M+ individuals." },
+              { q: "What was unusual about Clop's tactic compared to typical ransomware?", opts: ["They used quantum computing", "They used pure data theft and extortion without encrypting any systems", "They only targeted governments", "They demanded payment in gold"], ans: 1, exp: "Clop skipped encryption entirely, relying solely on stolen data extortion to pressure victims into paying." },
+              { q: "When did Clop time the mass exploitation and why?", opts: ["Monday morning for maximum disruption", "US Memorial Day holiday weekend when security staffing was minimal", "During a solar eclipse", "On New Year's Eve"], ans: 1, exp: "Holiday weekends provide attackers with extended dwell time before defenders detect and respond." },
+              { q: "What should organizations do with file transfer servers to prevent similar attacks?", opts: ["Leave them as-is", "Place them behind VPN/Zero Trust access with WAF and file integrity monitoring", "Turn them off permanently", "Only use them on weekdays"], ans: 1, exp: "Restricting access, adding WAF protection, and monitoring file integrity are essential defenses for internet-facing file transfer tools." }
+            ]
+          },
+          {
+            title: "The 2023 Okta Support System Customer Data Breach",
+            category: "Cloud Security & Identity",
+            date: "October 2023 (Published by Okta, BeyondTrust & Cloudflare)",
+            loss: "All Okta Customer Support Users' Data Exposed (100% of Customer Base)",
+            summary: "Threat actors breached Okta's customer support case management system by stealing a service account credential, accessing HTTP Archive (HAR) files uploaded by customers that contained valid session tokens, and using those tokens to infiltrate customer environments including BeyondTrust and Cloudflare.",
+            setup: "Okta's customer support workflow required customers to upload HAR (HTTP Archive) files for debugging. These HAR files frequently contained live session tokens and cookies. An attacker compromised an Okta support system service account credential (stored in a personal Google account that was synced to a corporate laptop).",
+            trap: "Using the stolen service account, attackers accessed Okta's support case management system and downloaded HAR files uploaded by customers. They extracted valid session tokens from these files and used them to impersonate legitimate admins at customer organizations. BeyondTrust detected suspicious activity within 2 hours and alerted Okta, but Okta took 17 days to acknowledge the breach publicly.",
+            timeline: [
+              "Sept 28, 2023: Attacker compromises Okta employee's personal Google account synced to a work laptop, stealing service credentials.",
+              "Oct 2–12, 2023: Attacker downloads HAR files from Okta's support system and extracts customer session tokens.",
+              "Oct 2, 2023: BeyondTrust detects unauthorized Okta admin activity and alerts Okta (Okta initially dismisses the report).",
+              "Oct 11, 2023: Cloudflare detects and blocks an intrusion attempt using a stolen Okta session token.",
+              "Oct 19, 2023: Okta publicly acknowledges the breach; later confirms 100% of support customers' data was accessed."
+            ],
+            redFlags: [
+              "Customer debugging files (HAR) containing live session tokens stored without scrubbing in support systems",
+              "Service account credentials synced to personal cloud accounts on corporate devices",
+              "17-day delay between initial customer security alert and public acknowledgment",
+              "Lack of session token rotation after HAR file upload"
+            ],
+            psychologicalBias: "Diagnostic Data Blindness — Support teams routinely request debugging files without recognizing they contain live authentication material that is as valuable as passwords.",
+            prevention: "Automatically sanitize HAR files to strip session tokens before storage, enforce credential isolation (no personal cloud sync on corporate devices), implement immediate session rotation after support file uploads, and respond to customer security alerts within hours.",
+            quiz: [
+              { q: "What sensitive data was contained in the HAR files customers uploaded to Okta support?", opts: ["Only error messages", "Live session tokens and authentication cookies", "Employee phone numbers", "Server IP addresses only"], ans: 1, exp: "HAR files capture full HTTP requests including authentication headers, cookies, and session tokens." },
+              { q: "How was the Okta service account credential initially compromised?", opts: ["Brute-force attack", "Through a personal Google account synced to a corporate laptop", "A phishing email to the CEO", "Physical theft of a laptop"], ans: 1, exp: "The credential was stored in an employee's personal Google account that was synced to their Okta corporate device." },
+              { q: "Which company first detected and alerted Okta about the breach?", opts: ["Microsoft", "BeyondTrust", "Google", "AWS"], ans: 1, exp: "BeyondTrust detected suspicious Okta admin activity within 2 hours and immediately alerted Okta." },
+              { q: "How long did Okta take to publicly acknowledge the breach after being alerted?", opts: ["2 hours", "2 days", "17 days", "3 months"], ans: 2, exp: "The 17-day delay between BeyondTrust's alert and Okta's public disclosure drew significant industry criticism." },
+              { q: "What percentage of Okta's customer support users had their data accessed?", opts: ["1%", "25%", "50%", "100% of all support customers"], ans: 3, exp: "Okta ultimately confirmed that the breach affected data for 100% of their customer support users." }
+            ]
+          },
+          {
+            title: "The 2024 National Public Data Breach — 2.9 Billion Records Exposed",
+            category: "Crypto & Social Engineering",
+            date: "April–August 2024 (Published by Cybersecurity Researchers & US Congressional Hearings)",
+            loss: "2.9 Billion Records Exposed Including SSNs, Full Names, Addresses for Nearly All Americans",
+            summary: "Data broker National Public Data (NPD) suffered a catastrophic breach exposing 2.9 billion records containing Social Security numbers, full names, addresses, and phone numbers for nearly every American adult. The breach was discovered after the stolen database appeared for sale on dark web forums for $3.5 million.",
+            setup: "National Public Data is a background check and data broker company that scrapes and aggregates personal information from public records, court documents, and other sources. The company stored billions of unencrypted personal records in a centralized database accessible via a web application with weak access controls.",
+            trap: "A threat actor breached NPD's systems in late 2023 and exfiltrated the entire 277GB database containing 2.9 billion records. The data appeared on dark web forums in April 2024 offered for $3.5M. By August 2024, portions were leaked for free, exposing SSNs and personal details of nearly every American. NPD filed for bankruptcy in October 2024 due to litigation costs.",
+            timeline: [
+              "Dec 2023: Initial breach of National Public Data systems via compromised web application credentials.",
+              "April 2024: Threat actor 'USDoD' lists the 2.9-billion-record database for sale at $3.5 million on dark web forum.",
+              "June 2024: Cybersecurity researchers verify the legitimacy of the stolen data.",
+              "Aug 2024: Complete database leaked for free on hacking forums; mass identity theft alerts issued.",
+              "Oct 2024: National Public Data parent company Jerico Pictures files Chapter 11 bankruptcy."
+            ],
+            redFlags: [
+              "Billions of personal records including SSNs stored without encryption or tokenization",
+              "No breach detection for months while the entire database was exfiltrated",
+              "Weak web application access controls on a system containing the most sensitive PII",
+              "Data broker with minimal regulatory oversight holding more records than the US census"
+            ],
+            psychologicalBias: "Invisible Data Exposure — Individuals had no idea this company possessed their SSN and personal data, and therefore could take no protective action.",
+            prevention: "Federal legislation requiring data brokers to encrypt all PII, mandatory breach notification within 72 hours, individual opt-out rights from data broker databases, and proactive credit freezes for all consumers.",
+            quiz: [
+              { q: "How many records were exposed in the National Public Data breach?", opts: ["1 million", "100 million", "2.9 billion", "10 billion"], ans: 2, exp: "The breach exposed 2.9 billion records, one of the largest data exposures in history." },
+              { q: "What sensitive information was included in the leaked records?", opts: ["Only email addresses", "Social Security numbers, full names, addresses, and phone numbers", "Only usernames and passwords", "Credit card numbers only"], ans: 1, exp: "The data included SSNs and comprehensive personal information for nearly every American adult." },
+              { q: "How much was the stolen database initially listed for on the dark web?", opts: ["$100", "$10,000", "$3.5 million", "$100 million"], ans: 2, exp: "The complete 277GB database was initially offered for $3.5 million before being leaked for free." },
+              { q: "What happened to National Public Data after the breach was disclosed?", opts: ["They grew larger", "They were acquired by Google", "The parent company filed for Chapter 11 bankruptcy", "Nothing happened"], ans: 2, exp: "Parent company Jerico Pictures filed for bankruptcy in October 2024 due to overwhelming litigation costs." },
+              { q: "What is the biggest problem with data broker security practices?", opts: ["They charge too much", "They store billions of unencrypted personal records with minimal regulatory oversight", "They have too many employees", "Their offices are too large"], ans: 1, exp: "Data brokers aggregate massive amounts of sensitive PII with often inadequate security controls and limited regulatory requirements." }
+            ]
+          },
+          {
+            title: "The 2024 Microsoft Midnight Blizzard Email System Breach",
+            category: "Cloud Security & Identity",
+            date: "January 2024 (Published by Microsoft, CISA & SEC Filings)",
+            loss: "Senior Executive Email Accounts Compromised, Source Code Repositories Accessed",
+            summary: "Russian state-sponsored group Midnight Blizzard (Nobelium/APT29) breached Microsoft's corporate email system by password-spraying a legacy test tenant account without MFA, then used its OAuth permissions to access senior executive mailboxes and later pivoted to Microsoft source code repositories.",
+            setup: "Midnight Blizzard performed low-and-slow password spraying against Microsoft's corporate accounts. They identified a legacy test tenant account that had no MFA, breached it, and discovered it had elevated OAuth application permissions to the Microsoft corporate environment — a configuration oversight from years prior.",
+            trap: "Using the test account's OAuth permissions, attackers created additional malicious OAuth applications and granted them access to Microsoft 365 mailboxes. They read emails from senior leadership, cybersecurity, and legal teams — specifically searching for communications about what Microsoft knew about Midnight Blizzard's own operations. They later used secrets found in emails to access Microsoft source code repositories.",
+            timeline: [
+              "Nov 2023: Midnight Blizzard begins password-spraying Microsoft corporate accounts at low volume to avoid detection.",
+              "Late Nov 2023: Attackers breach a legacy test tenant account without MFA and discover its OAuth access.",
+              "Dec 2023–Jan 2024: Attackers read emails from senior executives, cybersecurity, and legal teams.",
+              "Jan 12, 2024: Microsoft detects the breach and initiates incident response.",
+              "March 2024: Microsoft discloses attackers used email-found secrets to access source code repositories."
+            ],
+            redFlags: [
+              "Legacy test tenant accounts with production-level OAuth permissions still active",
+              "No MFA on any tenant account, including test environments",
+              "Low-volume password spraying designed to fly under rate-limiting thresholds",
+              "OAuth applications with overly broad permissions to executive email"
+            ],
+            psychologicalBias: "Test Environment Neglect — Organizations assume test/dev accounts are harmless and exempt them from production security controls, creating backdoors.",
+            prevention: "Audit and decommission all legacy test accounts, enforce MFA on 100% of tenant accounts regardless of purpose, implement OAuth application governance, and restrict mailbox access to least-privilege scopes.",
+            quiz: [
+              { q: "How did Midnight Blizzard initially breach Microsoft's corporate environment?", opts: ["A zero-day exploit", "Password-spraying a legacy test tenant account that lacked MFA", "Bribing an employee", "Hacking the Azure cloud platform"], ans: 1, exp: "A forgotten test tenant account without MFA was password-sprayed at low volume to avoid detection." },
+              { q: "What did the attackers search for in executive emails?", opts: ["Financial reports", "Information about what Microsoft knew about Midnight Blizzard's own operations", "Employee vacation schedules", "Marketing plans"], ans: 1, exp: "The attackers specifically targeted intelligence about Microsoft's knowledge of their own espionage campaigns." },
+              { q: "What did attackers access after reading Microsoft emails?", opts: ["Customer databases", "Microsoft source code repositories using secrets found in emails", "Azure billing systems", "Xbox game servers"], ans: 1, exp: "Secrets and credentials found in executive emails were used to pivot into Microsoft's source code repositories." },
+              { q: "What is 'low-and-slow password spraying'?", opts: ["Typing passwords very slowly", "Testing a small number of common passwords across many accounts at low volume to avoid triggering lockout or detection thresholds", "Using a dictionary attack at maximum speed", "Guessing passwords once per year"], ans: 1, exp: "Low-volume spraying stays under rate-limiting and lockout thresholds, making it nearly invisible to standard monitoring." },
+              { q: "What critical oversight allowed the test tenant to become a breach vector?", opts: ["It had the same password as production", "It retained elevated OAuth permissions to the production corporate environment from years ago", "It was connected to the internet", "It ran Windows instead of Linux"], ans: 1, exp: "The legacy test account had OAuth application permissions granting access to production Microsoft 365 mailboxes." }
+            ]
+          },
+          {
+            title: "The 2024 Ivanti Connect Secure Zero-Day Mass Exploitation",
+            category: "SMS & Phishing",
+            date: "January–February 2024 (Published by Volexity, Mandiant & CISA)",
+            loss: "2,100+ VPN Appliances Compromised Globally Including US Government Agencies",
+            summary: "Chinese state-sponsored threat actor UTA0178 exploited two chained zero-day vulnerabilities in Ivanti Connect Secure VPN appliances (CVE-2024-21887 & CVE-2023-46805), compromising over 2,100 VPN gateways globally and forcing CISA to order all US federal agencies to disconnect and rebuild their Ivanti devices.",
+            setup: "Ivanti Connect Secure (formerly Pulse Secure) is a widely deployed enterprise VPN gateway. Volexity discovered two chained zero-days: an authentication bypass and a command injection vulnerability. Chinese threat actors exploited these in combination to gain unauthenticated remote code execution on VPN appliances directly from the internet.",
+            trap: "Attackers deployed custom web shells (GLASSTOKEN, BUSHWALK) on compromised Ivanti appliances, enabling persistent access that survived reboots and even factory resets. The web shells blended with legitimate Ivanti system files. Even Ivanti's own Integrity Checker Tool failed to detect the compromise initially. CISA issued Emergency Directive 24-01 requiring federal agencies to physically disconnect Ivanti devices.",
+            timeline: [
+              "Dec 3, 2023: Volexity detects suspicious lateral movement from a client's Ivanti Connect Secure VPN.",
+              "Jan 10, 2024: Volexity publicly discloses the two zero-days; Ivanti releases mitigations (not patches).",
+              "Jan 19, 2024: Mass exploitation begins; 2,100+ appliances compromised globally within days.",
+              "Jan 31, 2024: CISA issues Emergency Directive 24-01 ordering federal agencies to disconnect all Ivanti VPN devices.",
+              "Feb 2024: CISA warns that even factory resets may not remove persistent backdoors; full hardware replacement recommended."
+            ],
+            redFlags: [
+              "VPN gateway appliances directly exposed to the internet without additional access controls",
+              "Zero-day chain allowing unauthenticated remote code execution with no user interaction",
+              "Vendor integrity checking tools unable to detect sophisticated persistence mechanisms",
+              "Mitigations released weeks before actual patches, leaving a window of exposure"
+            ],
+            psychologicalBias: "Vendor Trust Overreliance — Organizations trusted Ivanti's own integrity checking tools and mitigations, not realizing sophisticated attackers could bypass both.",
+            prevention: "Deploy network-level access controls in front of VPN appliances, maintain tested incident response playbooks for VPN compromise scenarios, validate vendor integrity tools with independent forensic analysis, and plan for full hardware replacement in worst-case scenarios.",
+            quiz: [
+              { q: "What two vulnerabilities were chained together in the Ivanti exploit?", opts: ["SQL injection and XSS", "Authentication bypass (CVE-2023-46805) and command injection (CVE-2024-21887)", "Buffer overflow and race condition", "DNS poisoning and ARP spoofing"], ans: 1, exp: "The attack chain combined an auth bypass with a command injection to achieve unauthenticated remote code execution." },
+              { q: "How many VPN appliances were compromised globally during mass exploitation?", opts: ["50", "500", "2,100+", "50,000"], ans: 2, exp: "Over 2,100 Ivanti Connect Secure appliances were compromised within days of mass exploitation beginning." },
+              { q: "What unprecedented action did CISA take regarding Ivanti devices?", opts: ["Recommended updating antivirus", "Ordered all federal agencies to physically disconnect and rebuild their Ivanti VPN devices", "Sent a warning email", "Nothing"], ans: 1, exp: "CISA Emergency Directive 24-01 ordered immediate disconnection — an extremely rare directive for a specific product." },
+              { q: "Why was factory resetting compromised Ivanti devices insufficient?", opts: ["Factory reset takes too long", "Sophisticated backdoors could persist even through factory resets", "Factory reset deletes all users", "It wasn't insufficient"], ans: 1, exp: "CISA warned that advanced persistence mechanisms could survive factory resets, requiring full hardware replacement." },
+              { q: "Which nation-state group was attributed with the initial zero-day exploitation?", opts: ["Russian FSB", "North Korean Lazarus", "Chinese state-sponsored group UTA0178", "Iranian APT33"], ans: 2, exp: "Volexity and Mandiant attributed the initial exploitation to Chinese state-sponsored threat actor UTA0178." }
+            ]
+          },
+          {
+            title: "The 2024 Dell API Scraping Breach — 49 Million Customer Records",
+            category: "Crypto & Social Engineering",
+            date: "May 2024 (Published by Dell Technologies & BleepingComputer)",
+            loss: "49 Million Customer Records Including Names, Addresses & Order History Exposed",
+            summary: "A threat actor scraped 49 million Dell customer records by registering fake partner accounts and exploiting an unauthenticated Dell partner portal API. The attacker sent nearly 5,000 API requests per minute for almost 3 weeks without being rate-limited or detected.",
+            setup: "Dell's partner program portal allowed registered partners to look up customer purchase information via an API. The attacker registered multiple fake business partner accounts under fictitious company names. The API endpoint had no proper authentication validation, no rate limiting, and no anomaly detection.",
+            trap: "The attacker wrote automated scripts that systematically queried Dell's partner API with sequential 7-digit service tags, extracting full customer purchase records including names, physical addresses, Dell hardware models, order numbers, and warranty details. Over 3 weeks, nearly 49 million records were extracted before Dell noticed.",
+            timeline: [
+              "March 2024: Threat actor registers multiple fake partner accounts on Dell's partner portal.",
+              "March–April 2024: Automated scripts send ~5,000 API requests per minute, scraping customer records by sequential service tag.",
+              "April 2024: 49 million customer records exfiltrated over approximately 3 weeks.",
+              "April 28, 2024: Stolen data offered for sale on Breach Forums by threat actor 'Menelik'.",
+              "May 9, 2024: Dell emails 49 million customers notifying them of the data breach."
+            ],
+            redFlags: [
+              "Partner portal API with no rate limiting allowing thousands of requests per minute",
+              "No validation of partner account legitimacy during registration",
+              "Sequential enumeration of service tags not flagged as anomalous behavior",
+              "Three weeks of continuous high-volume API scraping without detection"
+            ],
+            psychologicalBias: "API Security Blind Spot — Organizations focus security on web front-ends while leaving backend APIs unprotected, assuming partner portals are low-risk.",
+            prevention: "Implement strict API rate limiting and anomaly detection, validate partner account registrations with business verification, use randomized non-sequential identifiers instead of predictable service tags, and deploy API gateways with behavioral monitoring.",
+            quiz: [
+              { q: "How many Dell customer records were scraped in this breach?", opts: ["1,000", "100,000", "49 million", "1 billion"], ans: 2, exp: "The attacker scraped approximately 49 million customer records over a 3-week period." },
+              { q: "How did the attacker gain access to Dell's partner API?", opts: ["SQL injection", "By registering fake business partner accounts with no verification", "Phishing Dell employees", "Brute-forcing admin passwords"], ans: 1, exp: "The attacker simply registered fictitious partner accounts — Dell did not verify business legitimacy." },
+              { q: "Why wasn't the scraping detected for 3 weeks?", opts: ["Dell's security team was on vacation", "The API had no rate limiting, anomaly detection, or behavioral monitoring", "The scraping only happened at night", "The firewall was turned off"], ans: 1, exp: "The complete absence of API rate limiting and behavioral analysis allowed sustained high-volume scraping to go unnoticed." },
+              { q: "What made Dell's service tags easy to enumerate?", opts: ["They were published online", "They were sequential 7-digit numbers that could be guessed and iterated", "They were all the same", "They were only 2 characters long"], ans: 1, exp: "Predictable, sequential identifiers allow attackers to systematically enumerate all records without needing any insider knowledge." },
+              { q: "What is the primary defense against API scraping attacks?", opts: ["Stronger WiFi passwords", "API rate limiting, anomaly detection, and behavioral monitoring at the API gateway", "Changing the website color scheme", "Adding more servers"], ans: 1, exp: "API gateways with rate limiting and behavioral analytics can detect and block anomalous enumeration patterns in real-time." }
+            ]
+          },
+          {
+            title: "The 2025 Bybit $1.5 Billion Lazarus Cryptocurrency Heist",
+            category: "Crypto & Social Engineering",
+            date: "February 2025 (Published by FBI, Bybit & Blockchain Analysts)",
+            loss: "$1.5 Billion in Ethereum Stolen — Largest Single Crypto Theft in History",
+            summary: "North Korean state-sponsored Lazarus Group executed the largest single cryptocurrency heist in history, stealing $1.5 billion in Ethereum from the Bybit exchange by compromising the multi-signature cold wallet approval workflow through a supply chain attack on the Safe{Wallet} infrastructure.",
+            setup: "Bybit used Safe{Wallet} (formerly Gnosis Safe) for multi-signature cold wallet management. Lazarus Group compromised the development environment of a Safe{Wallet} developer, injecting malicious JavaScript into the Safe{Wallet} UI that was served specifically to Bybit's wallet signers during transaction approval.",
+            trap: "When Bybit's authorized signers initiated a routine cold-to-warm wallet transfer, the compromised Safe{Wallet} UI displayed the correct transaction details on screen but actually submitted a different transaction to the blockchain — one that changed the wallet's smart contract logic to transfer ownership to Lazarus-controlled addresses. Multiple signers approved what appeared to be a legitimate transfer.",
+            timeline: [
+              "Early Feb 2025: Lazarus compromises a Safe{Wallet} developer's machine and injects malicious code into the transaction UI.",
+              "Feb 21, 2025: Bybit initiates routine ETH cold-to-warm wallet transfer; compromised UI shows correct details while submitting a different transaction.",
+              "Feb 21, 2025: Multiple Bybit signers approve the displayed transaction, unknowingly authorizing wallet ownership transfer.",
+              "Feb 21, 2025: $1.5B in ETH transferred to Lazarus-controlled addresses; Bybit detects unauthorized movement.",
+              "Feb 22–March 2025: FBI attributes the attack to Lazarus Group; laundering through mixers and cross-chain bridges begins."
+            ],
+            redFlags: [
+              "Supply chain compromise of a third-party wallet management UI",
+              "UI displaying different transaction details than what was actually submitted on-chain",
+              "No independent on-chain verification of transaction parameters before multi-sig approval",
+              "Single developer compromise enabling manipulation of production transaction signing interface"
+            ],
+            psychologicalBias: "UI Trust & Verification Fatigue — Signers trusted the visual display of the wallet interface without independently verifying the actual on-chain transaction payload.",
+            prevention: "Implement independent on-chain transaction verification (comparing displayed parameters against actual blockchain data), require air-gapped signing devices, enforce multi-party verification from different devices/interfaces, and audit supply chain security of all third-party wallet infrastructure.",
+            quiz: [
+              { q: "How much cryptocurrency was stolen in the Bybit heist?", opts: ["$1 million", "$100 million", "$1.5 billion", "$10 billion"], ans: 2, exp: "The Lazarus Group stole $1.5 billion in Ethereum, making it the largest single crypto theft in history." },
+              { q: "How did Lazarus compromise the transaction signing process?", opts: ["By brute-forcing wallet passwords", "By injecting malicious code into Safe{Wallet}'s UI that showed correct details but submitted a different transaction", "By stealing private keys from a USB drive", "By bribing Bybit employees"], ans: 1, exp: "The compromised UI displayed legitimate-looking transaction details while actually submitting ownership-transfer transactions." },
+              { q: "Which nation-state group was attributed with this attack?", opts: ["Russian GRU", "Chinese APT10", "North Korean Lazarus Group", "Iranian APT33"], ans: 2, exp: "The FBI attributed the attack to North Korea's Lazarus Group, which funds weapons programs through cryptocurrency theft." },
+              { q: "What is the core weakness that multi-signature wallets should address?", opts: ["Having too many signers", "Signers trusting the UI display without independently verifying the actual on-chain transaction payload", "Using Ethereum instead of Bitcoin", "Having cold wallets"], ans: 1, exp: "Independent verification of what's actually being submitted on-chain — not just what the UI shows — is critical for multi-sig security." },
+              { q: "What supply chain component was compromised to enable the attack?", opts: ["The blockchain itself", "The Safe{Wallet} developer environment and transaction signing UI", "Bybit's mobile app", "The Ethereum network"], ans: 1, exp: "Lazarus compromised a Safe{Wallet} developer's machine to inject malicious code into the production wallet UI." }
             ]
           }
         ];
+
+        // Filter out any fallbacks that match already-displayed titles
+        const availableFallbacks = fallbacks.filter(fb => 
+          !existingTitles.some(t => t.toLowerCase().includes(fb.title.toLowerCase().split(' ').slice(1, 4).join(' ')))
+        );
         
-        const randomIndex = Math.floor(Math.random() * fallbacks.length);
-        newCase = JSON.parse(JSON.stringify(fallbacks[randomIndex]));
+        const pool = availableFallbacks.length > 0 ? availableFallbacks : fallbacks;
+        const randomIndex = Math.floor(Math.random() * pool.length);
+        newCase = JSON.parse(JSON.stringify(pool[randomIndex]));
         usedEngine = 'ScamShield 2026 Neural Threat Pool (Built-in Fallback)';
+      }
+
+      // Normalize category to match filter system
+      const validCategories = ['Deepfake & AI Fraud', 'Crypto & Social Engineering', 'SMS & Phishing', 'Workplace & Shadow IT'];
+      if (newCase.category && !validCategories.includes(newCase.category)) {
+        // Map extended categories back to the 4 main filters
+        const categoryMap = {
+          'Ransomware & Extortion': 'Workplace & Shadow IT',
+          'Supply Chain Attack': 'Workplace & Shadow IT',
+          'Cloud Security & Identity': 'Crypto & Social Engineering',
+          'Insider Threat': 'Workplace & Shadow IT',
+          'IoT & Critical Infrastructure': 'Workplace & Shadow IT',
+          'Healthcare & Medical Data Breach': 'SMS & Phishing',
+          'Financial Services Fraud': 'Crypto & Social Engineering',
+          'Government & Military Espionage': 'Deepfake & AI Fraud'
+        };
+        newCase.category = categoryMap[newCase.category] || validCategories[Math.floor(Math.random() * validCategories.length)];
       }
 
       newCase.id = Date.now();
@@ -620,10 +1024,10 @@ export default function CaseStudiesPage() {
   };
 
   return (
-    <div style={{ padding: '32px', minHeight: '100vh', background: 'var(--bg, #0f172a)', color: '#fff', fontFamily: "'Inter', sans-serif" }}>
+    <div style={{ padding: '32px', minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)', fontFamily: "'Inter', sans-serif" }}>
       {/* Header Banner */}
       <div style={{
-        background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%)',
+        background: 'var(--bg3)',
         border: '1px solid rgba(168, 85, 247, 0.3)',
         borderRadius: '24px',
         padding: '32px',
@@ -636,15 +1040,11 @@ export default function CaseStudiesPage() {
         boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)'
       }}>
         <div style={{ maxWidth: '650px' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', background: 'rgba(168, 85, 247, 0.2)', border: '1px solid rgba(168, 85, 247, 0.4)', borderRadius: '30px', color: '#d8b4fe', fontSize: '13px', fontWeight: '600', marginBottom: '16px' }}>
-            <span>⚡ Threat Intelligence Archive</span>
-            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e' }}></span>
-            <span>Updated Twice Weekly + Interactive Quizzes</span>
-          </div>
-          <h1 style={{ fontSize: '36px', fontWeight: '800', margin: '0 0 12px 0', background: 'linear-gradient(90deg, #fff 0%, #cbd5e1 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+
+          <h1 style={{ fontSize: '36px', fontWeight: '800', margin: '0 0 12px 0', paddingBottom: '4px', lineHeight: '1.3', background: 'linear-gradient(90deg, var(--text-h) 0%, var(--text2) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             Real-World Cyber Case Studies
           </h1>
-          <p style={{ fontSize: '16px', color: '#94a3b8', lineHeight: '1.6', margin: 0 }}>
+          <p style={{ fontSize: '16px', color: 'var(--text3)', lineHeight: '1.6', margin: 0 }}>
             Analyze actual breaches, make private investigation notes, and take our **10-Question Mastery Quiz** after reading each case study to test what you grasped!
           </p>
         </div>
@@ -685,9 +1085,9 @@ export default function CaseStudiesPage() {
             style={{
               padding: '10px 18px',
               borderRadius: '12px',
-              background: filter === cat ? 'linear-gradient(135deg, #a855f7 0%, #6366f1 100%)' : 'rgba(30, 41, 59, 0.6)',
-              border: filter === cat ? 'none' : '1px solid rgba(255, 255, 255, 0.1)',
-              color: filter === cat ? '#fff' : '#cbd5e1',
+              background: filter === cat ? 'linear-gradient(135deg, #a855f7 0%, #6366f1 100%)' : 'var(--bg3)',
+              border: filter === cat ? 'none' : '1px solid var(--border)',
+              color: filter === cat ? '#fff' : 'var(--text2)',
               fontSize: '14px',
               fontWeight: filter === cat ? '700' : '500',
               cursor: 'pointer',
@@ -705,8 +1105,8 @@ export default function CaseStudiesPage() {
           <div
             key={cs.id}
             style={{
-              background: 'rgba(30, 41, 59, 0.7)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
+              background: 'var(--card, var(--bg3))',
+              border: '1px solid var(--border)',
               borderRadius: '20px',
               padding: '24px',
               display: 'flex',
@@ -733,7 +1133,7 @@ export default function CaseStudiesPage() {
                 <span style={{ fontSize: '12px', color: '#64748b', fontWeight: '600' }}>{cs.date}</span>
               </div>
 
-              <h3 style={{ fontSize: '20px', fontWeight: '700', color: '#fff', margin: '0 0 12px 0', lineHeight: '1.4' }}>
+              <h3 style={{ fontSize: '20px', fontWeight: '700', color: 'var(--text-h)', margin: '0 0 12px 0', lineHeight: '1.4' }}>
                 {cs.title}
               </h3>
 
@@ -742,7 +1142,7 @@ export default function CaseStudiesPage() {
                 <span style={{ fontWeight: '800' }}>{cs.loss}</span>
               </div>
 
-              <p style={{ color: '#94a3b8', fontSize: '14px', lineHeight: '1.6', margin: '0 0 20px 0' }}>
+              <p style={{ color: 'var(--text3)', fontSize: '14px', lineHeight: '1.6', margin: '0 0 20px 0' }}>
                 {cs.summary}
               </p>
             </div>
@@ -753,9 +1153,9 @@ export default function CaseStudiesPage() {
                 width: '100%',
                 padding: '12px',
                 borderRadius: '12px',
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
-                color: '#fff',
+                background: 'var(--social-bg)',
+                border: '1px solid var(--border)',
+                color: 'var(--text-h)',
                 fontSize: '14px',
                 fontWeight: '600',
                 cursor: 'pointer',
@@ -766,7 +1166,7 @@ export default function CaseStudiesPage() {
                 transition: 'background 0.2s'
               }}
               onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(168, 85, 247, 0.2)'}
-              onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'}
+              onMouseLeave={(e) => e.currentTarget.style.background = 'var(--social-bg)'}
             >
               <span>📖 Read Full Case, Notes & 10-Q Quiz</span>
               <span>→</span>
@@ -789,8 +1189,8 @@ export default function CaseStudiesPage() {
           padding: '20px'
         }}>
           <div style={{
-            background: '#0f172a',
-            border: '1px solid rgba(168, 85, 247, 0.4)',
+            background: 'var(--bg)',
+            border: '1px solid var(--border)',
             borderRadius: '24px',
             maxWidth: '850px',
             width: '100%',
@@ -805,11 +1205,11 @@ export default function CaseStudiesPage() {
               onClick={() => setSelectedCase(null)}
               style={{
                 position: 'absolute',
-                top: '24px',
-                right: '24px',
-                background: 'rgba(255, 255, 255, 0.1)',
-                border: 'none',
-                color: '#fff',
+                top: '16px',
+                right: '16px',
+                background: 'var(--bg3)',
+                border: '1px solid var(--border)',
+                color: 'var(--text)',
                 width: '36px',
                 height: '36px',
                 borderRadius: '50%',
@@ -817,12 +1217,12 @@ export default function CaseStudiesPage() {
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                zIndex: 1000
               }}
             >
               ✕
             </button>
-
             <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap' }}>
               <span style={{ fontSize: '13px', fontWeight: '700', color: '#a855f7', background: 'rgba(168, 85, 247, 0.15)', padding: '4px 12px', borderRadius: '8px' }}>
                 {selectedCase.category}
@@ -832,16 +1232,16 @@ export default function CaseStudiesPage() {
               </span>
             </div>
 
-            <h2 style={{ fontSize: '28px', fontWeight: '800', color: '#fff', margin: '0 0 20px 0', lineHeight: '1.3' }}>
+            <h2 style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text-h)', margin: '0 0 20px 0', lineHeight: '1.3' }}>
               {selectedCase.title}
             </h2>
 
             {/* Psychological Bias Banner */}
             <div style={{ background: 'linear-gradient(90deg, rgba(168, 85, 247, 0.2) 0%, rgba(99, 102, 241, 0.2) 100%)', borderLeft: '4px solid #a855f7', padding: '16px 20px', borderRadius: '8px', marginBottom: '24px' }}>
-              <h4 style={{ margin: '0 0 6px 0', color: '#d8b4fe', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <h4 style={{ margin: '0 0 6px 0', color: 'var(--purple)', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <span>🧠 Cognitive Bias Weaponized:</span>
               </h4>
-              <p style={{ margin: 0, color: '#fff', fontSize: '15px', fontWeight: '600', lineHeight: '1.5' }}>
+              <p style={{ margin: 0, color: 'var(--text)', fontSize: '15px', fontWeight: '600', lineHeight: '1.5' }}>
                 {selectedCase.psychologicalBias}
               </p>
             </div>
@@ -849,19 +1249,19 @@ export default function CaseStudiesPage() {
             {/* Sections */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
               <div>
-                <h4 style={{ fontSize: '17px', color: '#cbd5e1', margin: '0 0 8px 0', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '6px' }}>
+                <h4 style={{ fontSize: '17px', color: 'var(--text2)', margin: '0 0 8px 0', borderBottom: '1px solid var(--border)', paddingBottom: '6px' }}>
                   🎯 The Setup & Trust Building
                 </h4>
-                <p style={{ color: '#94a3b8', fontSize: '15px', lineHeight: '1.7', margin: 0 }}>
+                <p style={{ color: 'var(--text3)', fontSize: '15px', lineHeight: '1.7', margin: 0 }}>
                   {selectedCase.setup}
                 </p>
               </div>
 
               <div>
-                <h4 style={{ fontSize: '17px', color: '#cbd5e1', margin: '0 0 8px 0', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '6px' }}>
+                <h4 style={{ fontSize: '17px', color: 'var(--text2)', margin: '0 0 8px 0', borderBottom: '1px solid var(--border)', paddingBottom: '6px' }}>
                   🪤 The Trap Closes
                 </h4>
-                <p style={{ color: '#94a3b8', fontSize: '15px', lineHeight: '1.7', margin: 0 }}>
+                <p style={{ color: 'var(--text3)', fontSize: '15px', lineHeight: '1.7', margin: 0 }}>
                   {selectedCase.trap}
                 </p>
               </div>
@@ -871,7 +1271,7 @@ export default function CaseStudiesPage() {
                   <h4 style={{ fontSize: '17px', color: '#d8b4fe', margin: '0 0 10px 0', borderBottom: '1px solid rgba(168, 85, 247, 0.3)', paddingBottom: '6px' }}>
                     ⏱️ Attack Timeline Breakdown
                   </h4>
-                  <ul style={{ margin: 0, paddingLeft: '20px', color: '#cbd5e1', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <ul style={{ margin: 0, paddingLeft: '20px', color: 'var(--text2)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     {selectedCase.timeline.map((step, idx) => (
                       <li key={idx} style={{ fontSize: '14.5px', lineHeight: '1.5' }}>{step}</li>
                     ))}
@@ -886,7 +1286,7 @@ export default function CaseStudiesPage() {
                 <ul style={{ margin: 0, paddingLeft: '20px', color: '#f87171', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   {selectedCase.redFlags?.map((flag, idx) => (
                     <li key={idx} style={{ fontSize: '14.5px', lineHeight: '1.5', color: '#fca5a5' }}>
-                      <span style={{ color: '#fff' }}>{flag}</span>
+                      <span style={{ color: 'var(--text)' }}>{flag}</span>
                     </li>
                   ))}
                 </ul>
@@ -896,17 +1296,17 @@ export default function CaseStudiesPage() {
                 <h4 style={{ margin: '0 0 8px 0', color: '#4ade80', fontSize: '16px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <span>🛡️ ScamShield Golden Rule of Prevention</span>
                 </h4>
-                <p style={{ margin: 0, color: '#e2e8f0', fontSize: '15px', lineHeight: '1.6', fontWeight: '500' }}>
+                <p style={{ margin: 0, color: 'var(--text)', fontSize: '15px', lineHeight: '1.6', fontWeight: '500' }}>
                   {selectedCase.prevention}
                 </p>
               </div>
 
               {/* Interactive Notes Section */}
-              <div style={{ background: 'rgba(15, 23, 42, 0.9)', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '16px', padding: '20px', marginTop: '10px' }}>
+              <div style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: '16px', padding: '20px', marginTop: '10px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                  <h4 style={{ margin: 0, color: '#fff', fontSize: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <h4 style={{ margin: 0, color: 'var(--text-h)', fontSize: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span>📝 My Investigation Notes</span>
-                    <span style={{ fontSize: '11px', color: '#94a3b8', fontWeight: 'normal' }}>(Saved in your browser)</span>
+                    <span style={{ fontSize: '11px', color: 'var(--text3)', fontWeight: 'normal' }}>(Saved in your browser)</span>
                   </h4>
                   {noteSaved && <span style={{ color: '#4ade80', fontSize: '12px', fontWeight: 'bold' }}>✓ Saved!</span>}
                 </div>
@@ -919,9 +1319,9 @@ export default function CaseStudiesPage() {
                     minHeight: '90px',
                     padding: '12px',
                     borderRadius: '10px',
-                    background: 'rgba(0, 0, 0, 0.5)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    color: '#fff',
+                    background: 'var(--bg4, var(--bg3))',
+                    border: '1px solid var(--border)',
+                    color: 'var(--text)',
                     fontSize: '14px',
                     lineHeight: '1.5',
                     outline: 'none',
@@ -950,7 +1350,7 @@ export default function CaseStudiesPage() {
             </div>
 
             {/* Footer Action Bar with 10-Question Mastery Quiz Trigger */}
-            <div style={{ marginTop: '32px', paddingTop: '24px', borderTop: '1px solid rgba(255, 255, 255, 0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+            <div style={{ marginTop: '32px', paddingTop: '24px', borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
               <button
                 onClick={() => startQuiz(selectedCase.quiz)}
                 style={{
@@ -980,9 +1380,9 @@ export default function CaseStudiesPage() {
                 style={{
                   padding: '12px 20px',
                   borderRadius: '14px',
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  color: '#fff',
+                  background: 'var(--social-bg)',
+                  border: '1px solid var(--border)',
+                  color: 'var(--text-h)',
                   fontSize: '14px',
                   fontWeight: '600',
                   cursor: 'pointer',
@@ -1012,7 +1412,7 @@ export default function CaseStudiesPage() {
           padding: '20px'
         }}>
           <div style={{
-            background: '#0f172a',
+            background: 'var(--bg)',
             border: '1px solid rgba(34, 197, 94, 0.5)',
             borderRadius: '24px',
             maxWidth: '650px',
@@ -1026,12 +1426,12 @@ export default function CaseStudiesPage() {
                   <span style={{ fontSize: '13px', color: '#4ade80', fontWeight: '700', background: 'rgba(34, 197, 94, 0.15)', padding: '4px 12px', borderRadius: '20px' }}>
                     Question {currentQIdx + 1} of {activeQuiz.length}
                   </span>
-                  <span style={{ fontSize: '13px', color: '#cbd5e1', fontWeight: '600' }}>
+                  <span style={{ fontSize: '13px', color: 'var(--text2)', fontWeight: '600' }}>
                     Current Score: {score}
                   </span>
                 </div>
 
-                <h3 style={{ fontSize: '20px', color: '#fff', margin: '0 0 24px 0', lineHeight: '1.4' }}>
+                <h3 style={{ fontSize: '20px', color: 'var(--text-h)', margin: '0 0 24px 0', lineHeight: '1.4' }}>
                   {activeQuiz[currentQIdx].q}
                 </h3>
 
@@ -1039,8 +1439,8 @@ export default function CaseStudiesPage() {
                   {activeQuiz[currentQIdx].opts.map((opt, idx) => {
                     const isSelected = selectedOpt === idx;
                     const isCorrect = idx === activeQuiz[currentQIdx].ans;
-                    let bg = 'rgba(30, 41, 59, 0.8)';
-                    let border = '1px solid rgba(255, 255, 255, 0.1)';
+                    let bg = 'var(--bg3)';
+                    let border = '1px solid var(--border)';
                     if (selectedOpt !== null) {
                       if (isCorrect) {
                         bg = 'rgba(34, 197, 94, 0.25)';
@@ -1061,7 +1461,7 @@ export default function CaseStudiesPage() {
                           borderRadius: '12px',
                           background: bg,
                           border: border,
-                          color: '#fff',
+                          color: 'var(--text)',
                           fontSize: '15px',
                           textAlign: 'left',
                           cursor: selectedOpt !== null ? 'default' : 'pointer',
@@ -1080,8 +1480,8 @@ export default function CaseStudiesPage() {
                 </div>
 
                 {selectedOpt !== null && (
-                  <div style={{ background: 'rgba(255, 255, 255, 0.05)', padding: '16px', borderRadius: '12px', marginBottom: '20px', borderLeft: selectedOpt === activeQuiz[currentQIdx].ans ? '4px solid #22c55e' : '4px solid #ef4444' }}>
-                    <p style={{ margin: 0, fontSize: '14px', color: '#cbd5e1', lineHeight: '1.5' }}>
+                  <div style={{ background: 'var(--social-bg)', padding: '16px', borderRadius: '12px', marginBottom: '20px', borderLeft: selectedOpt === activeQuiz[currentQIdx].ans ? '4px solid #22c55e' : '4px solid #ef4444' }}>
+                    <p style={{ margin: 0, fontSize: '14px', color: 'var(--text2)', lineHeight: '1.5' }}>
                       <strong style={{ color: selectedOpt === activeQuiz[currentQIdx].ans ? '#4ade80' : '#f87171' }}>
                         {selectedOpt === activeQuiz[currentQIdx].ans ? 'Correct! ' : 'Incorrect. '}
                       </strong>
@@ -1093,7 +1493,7 @@ export default function CaseStudiesPage() {
                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
                   <button
                     onClick={() => setActiveQuiz(null)}
-                    style={{ padding: '10px 18px', borderRadius: '10px', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#94a3b8', cursor: 'pointer' }}
+                    style={{ padding: '10px 18px', borderRadius: '10px', background: 'transparent', border: '1px solid var(--border)', color: 'var(--text3)', cursor: 'pointer' }}
                   >
                     Quit Quiz
                   </button>
@@ -1112,10 +1512,10 @@ export default function CaseStudiesPage() {
                 <div style={{ fontSize: '64px', marginBottom: '16px' }}>
                   {score >= 8 ? '🏆' : score >= 5 ? '⭐' : '📖'}
                 </div>
-                <h2 style={{ fontSize: '28px', color: '#fff', margin: '0 0 12px 0' }}>
+                <h2 style={{ fontSize: '28px', color: 'var(--text-h)', margin: '0 0 12px 0' }}>
                   Quiz Completed!
                 </h2>
-                <p style={{ fontSize: '18px', color: '#cbd5e1', margin: '0 0 24px 0' }}>
+                <p style={{ fontSize: '18px', color: 'var(--text2)', margin: '0 0 24px 0' }}>
                   You scored <strong style={{ color: '#4ade80', fontSize: '24px' }}>{score} / {activeQuiz.length}</strong>
                 </p>
 

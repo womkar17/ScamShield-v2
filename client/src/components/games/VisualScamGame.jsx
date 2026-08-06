@@ -47,6 +47,11 @@ export default function VisualScamGame({ game, onComplete }) {
       display: 'flex', flexDirection: 'column', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
       fontFamily: 'system-ui, -apple-system, sans-serif'
     }}>
+      <style>{`
+        .visual-html-wrapper h1, .visual-html-wrapper h2, .visual-html-wrapper h3, .visual-html-wrapper h4, .visual-html-wrapper p {
+          color: inherit !important;
+        }
+      `}</style>
       
       {/* Toolbar */}
       <div style={{ backgroundColor: '#0f172a', padding: '20px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #334155' }}>
@@ -95,8 +100,8 @@ export default function VisualScamGame({ game, onComplete }) {
           backgroundColor: 'white',
           maxWidth: '100%'
         }}>
-          {rawData.contentType === 'html' ? (
-            <div dangerouslySetInnerHTML={{ __html: content }} style={{ padding: '24px', pointerEvents: 'none' }} />
+          {(rawData.contentType === 'html' || (typeof content === 'string' && content.trim().startsWith('<'))) ? (
+            <div className="visual-html-wrapper" dangerouslySetInnerHTML={{ __html: content }} style={{ padding: '24px', pointerEvents: 'none' }} />
           ) : (
             <img src={content || 'https://via.placeholder.com/600x400/e2e8f0/64748b?text=Suspicious+Content'} alt="Scan Target" style={{ maxWidth: '100%', display: 'block', pointerEvents: 'none' }} />
           )}

@@ -245,32 +245,77 @@ export const MINIGAMES = [
   {
     id: 'pass_1', title: 'Hack the Hacker', description: 'Create a password strong enough to survive a brute-force attack.',
     type: 'password', difficulty: 'Easy', thumbnail: '🔓', xpReward: 40,
-    data: { threatAnalysis: { psychology: 'Convenience over Security — people reuse simple passwords', payload: 'Complete account takeover across all platforms using that password', defense: 'Use a password manager. Every account should have a unique, 16+ character password with mixed cases, numbers, and symbols.' } }
+    data: { 
+      rules: [
+        { id: 'length', text: 'LENGTH >= 12', type: 'minLength', value: 12 },
+        { id: 'uppercase', text: 'CONTAINS UPPERCASE', type: 'hasRegex', value: '[A-Z]' },
+        { id: 'number', text: 'CONTAINS NUMBER', type: 'hasRegex', value: '[0-9]' },
+        { id: 'symbol', text: 'CONTAINS SYMBOL', type: 'hasRegex', value: '[^A-Za-z0-9]' }
+      ],
+      threatAnalysis: { psychology: 'Convenience over Security — people reuse simple passwords', payload: 'Complete account takeover across all platforms using that password', defense: 'Use a password manager. Every account should have a unique, 16+ character password with mixed cases, numbers, and symbols.' } 
+    }
   },
   {
     id: 'pass_2', title: 'Fort Knox Mode', description: 'Build an unbreakable digital fortress.',
     type: 'password', difficulty: 'Medium', thumbnail: '🏰', xpReward: 50,
-    data: { threatAnalysis: { psychology: 'Laziness — using the same password everywhere', payload: 'Credential stuffing attacks across banking, email, and social media', defense: 'Enable 2FA on every account. Use biometric authentication where available.' } }
+    data: { 
+      rules: [
+        { id: 'length', text: 'LENGTH >= 16', type: 'minLength', value: 16 },
+        { id: 'uppercase', text: 'CONTAINS UPPERCASE', type: 'hasRegex', value: '[A-Z]' },
+        { id: 'number', text: 'CONTAINS NUMBER', type: 'hasRegex', value: '[0-9]' },
+        { id: 'symbol', text: 'CONTAINS SYMBOL', type: 'hasRegex', value: '[^A-Za-z0-9]' }
+      ],
+      threatAnalysis: { psychology: 'Laziness — using the same password everywhere', payload: 'Credential stuffing attacks across banking, email, and social media', defense: 'Enable 2FA on every account. Use biometric authentication where available.' } 
+    }
   },
   {
     id: 'pass_3', title: 'Cipher Challenge', description: 'Can you create a password that takes centuries to crack?',
     type: 'password', difficulty: 'Hard', thumbnail: '🧬', xpReward: 60,
-    data: { threatAnalysis: { psychology: 'Overconfidence in "clever" passwords like P@ssw0rd', payload: 'Dictionary attacks crack common substitutions in seconds', defense: 'Passphrases like "correct horse battery staple" are stronger than "P@$$w0rd". Length beats complexity.' } }
+    data: { 
+      rules: [
+        { id: 'exact', text: 'EXACTLY 12 CHARACTERS', type: 'exactLength', value: 12 },
+        { id: 'uppercase', text: 'CONTAINS UPPERCASE', type: 'hasRegex', value: '[A-Z]' },
+        { id: 'no_symbol', text: 'NO SYMBOLS', type: 'noRegex', value: '[^A-Za-z0-9]' }
+      ],
+      threatAnalysis: { psychology: 'Overconfidence in "clever" passwords like P@ssw0rd', payload: 'Dictionary attacks crack common substitutions in seconds', defense: 'Passphrases like "correct horse battery staple" are stronger than "P@$$w0rd". Length beats complexity.' } 
+    }
   },
   {
     id: 'pass_4', title: 'Brute Force Survivor', description: 'Your password vs. a GPU farm. Who wins?',
     type: 'password', difficulty: 'Hard', thumbnail: '⚡', xpReward: 70,
-    data: { threatAnalysis: { psychology: 'Underestimating attacker resources', payload: 'Modern GPUs can test billions of passwords per second', defense: 'Use passwords of 20+ characters. Even simple long passphrases are exponentially harder to crack.' } }
+    data: { 
+      rules: [
+        { id: 'length', text: 'LENGTH >= 20', type: 'minLength', value: 20 },
+        { id: 'uppercase', text: 'CONTAINS UPPERCASE', type: 'hasRegex', value: '[A-Z]' },
+        { id: 'no_number', text: 'NO NUMBERS', type: 'noRegex', value: '[0-9]' }
+      ],
+      threatAnalysis: { psychology: 'Underestimating attacker resources', payload: 'Modern GPUs can test billions of passwords per second', defense: 'Use passwords of 20+ characters. Even simple long passphrases are exponentially harder to crack.' } 
+    }
   },
   {
     id: 'pass_5', title: 'Passphrase Pro', description: 'Turn a sentence into an unbreakable key.',
     type: 'password', difficulty: 'Medium', thumbnail: '📝', xpReward: 50,
-    data: { threatAnalysis: { psychology: 'Thinking short complex passwords are better than long simple ones', payload: 'Short passwords fall to brute force regardless of complexity', defense: 'A 4-word random passphrase like "purple-elephant-dancing-raincoat" is both memorable AND secure.' } }
+    data: { 
+      rules: [
+        { id: 'length', text: 'LENGTH >= 15', type: 'minLength', value: 15 },
+        { id: 'has_word1', text: 'CONTAINS "APPLE"', type: 'hasRegex', value: 'apple' },
+        { id: 'has_word2', text: 'CONTAINS "TREE"', type: 'hasRegex', value: 'tree' },
+        { id: 'no_symbol', text: 'NO SYMBOLS', type: 'noRegex', value: '[^A-Za-z0-9 ]' }
+      ],
+      threatAnalysis: { psychology: 'Thinking short complex passwords are better than long simple ones', payload: 'Short passwords fall to brute force regardless of complexity', defense: 'A 4-word random passphrase like "purple-elephant-dancing-raincoat" is both memorable AND secure.' } 
+    }
   },
   {
     id: 'pass_6', title: 'Rainbow Table Escape', description: 'Make a password that can\'t be found in any leaked database.',
     type: 'password', difficulty: 'Hard', thumbnail: '🌈', xpReward: 60,
-    data: { threatAnalysis: { psychology: 'Using real words, birthdays, or pet names', payload: 'Rainbow table attacks match pre-computed hashes of common passwords', defense: 'Check haveibeenpwned.com to see if your passwords have been leaked. Never reuse compromised passwords.' } }
+    data: { 
+      rules: [
+        { id: 'length', text: 'LENGTH >= 14', type: 'minLength', value: 14 },
+        { id: 'number', text: 'AT LEAST 3 NUMBERS', type: 'hasRegex', value: '.*[0-9].*[0-9].*[0-9]' },
+        { id: 'symbol', text: 'AT LEAST 2 SYMBOLS', type: 'hasRegex', value: '.*[^A-Za-z0-9].*[^A-Za-z0-9]' }
+      ],
+      threatAnalysis: { psychology: 'Using real words, birthdays, or pet names', payload: 'Rainbow table attacks match pre-computed hashes of common passwords', defense: 'Check haveibeenpwned.com to see if your passwords have been leaked. Never reuse compromised passwords.' } 
+    }
   },
 
   // ──────────── QUIZ GAMES (23-30) ────────────
@@ -623,13 +668,13 @@ export const MINIGAMES = [
     }
   },
   {
-    id: 'visual_4', title: 'Deepfake Video Clues', description: 'This video call screenshot has AI artifacts. Can you find them?',
-    type: 'visual', difficulty: 'Hard', thumbnail: '🎭', xpReward: 70,
+    id: 'visual_4', title: 'Fake Government Tax Notice', description: 'You received this income tax notice. Is it legitimate or forged?',
+    type: 'visual', difficulty: 'Hard', thumbnail: '📜', xpReward: 70,
     data: {
-      content: '<div style="padding:20px;background:#000;border-radius:12px;color:white;font-family:Arial"><div style="position:relative;background:#1a1a1a;border-radius:8px;padding:30px;text-align:center"><h3>Video Call Screenshot</h3><div style="width:200px;height:200px;margin:15px auto;background:linear-gradient(135deg,#ffd5cd,#c9b1ff);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:60px;position:relative">👤<div style="position:absolute;bottom:5px;right:15px;width:12px;height:18px;background:#c9b1ff;border-radius:2px;transform:rotate(15deg)"></div></div><p>Notice: Earring on one side only. Slight blur where hair meets background. Skin tone is unnaturally smooth with no pores.</p><p style="color:#e94560;font-size:12px">Background objects have inconsistent lighting direction</p></div></div>',
-      flaws: ['Asymmetric accessories (earring on one side)', 'Blur at hair-background boundary', 'Unnaturally smooth skin with no pores or texture', 'Inconsistent lighting/shadows in background'],
+      content: '<div style="padding:20px;background:#fff;border-radius:12px;font-family:Georgia,serif;color:#1a1a2e;border:2px solid #b91c1c"><div style="text-align:center;border-bottom:2px solid #1a1a2e;padding-bottom:12px;margin-bottom:15px"><h2 style="margin:0;color:#1a1a2e;font-size:18px">GOVERNMENT OF INDIA</h2><h3 style="margin:4px 0;color:#b91c1c;font-size:15px">DEPARTMENT OF INCOME TAX AND REVENUE</h3><p style="margin:2px 0;font-size:11px;color:#666">Central Board of Direct Taxes</p></div><div style="background:#fef2f2;padding:12px;border-radius:6px;margin-bottom:12px;border-left:4px solid #b91c1c"><p style="margin:0;font-weight:bold;color:#b91c1c;font-size:13px">⚠️ URGENT: Notice u/s 148A — Reassessment of Income</p></div><p style="font-size:13px;margin:8px 0"><b>To:</b> Mr. Vikram Patel</p><p style="font-size:13px;margin:8px 0"><b>PAN:</b> ABCPD1234Z</p><p style="font-size:13px;margin:8px 0"><b>Assessment Year:</b> 2023-24</p><p style="font-size:13px;margin:8px 0"><b>Outstanding Demand:</b> ₹4,87,200</p><p style="font-size:12px;margin:12px 0;color:#333">Our records indicate undisclosed income of ₹18,40,000. You are required to remit the above demand within <b>48 hours</b> to avoid prosecution under Section 276C of the Income Tax Act, 1961.</p><p style="font-size:12px;margin:8px 0;color:#333"><b>Payment Mode:</b> UPI transfer to <b>incometax.refund@oksbi</b></p><p style="font-size:11px;margin:12px 0;color:#666">For queries, contact: incometax.helpdesk2024@gmail.com</p><p style="font-size:10px;margin-top:15px;color:#999;text-align:right">Notice ID: IT/RAS/2024/00491-X</p></div>',
+      flaws: ['"Department of Income Tax and Revenue" — The correct name is "Department of Revenue" or "Income Tax Department"', 'PAN format ABCPD1234Z is suspiciously generic (real notices use your actual PAN)', '48-hour payment deadline with prosecution threat — real IT notices give 30 days minimum', 'Payment via UPI to a personal-looking handle — IT Department uses official portals, not UPI', 'Contact email is a Gmail address — government departments use @incometax.gov.in'],
       isFake: true,
-      threatAnalysis: { psychology: 'We trust video more than any other medium — seeing is believing', payload: 'Deepfake video calls used for CEO fraud, romance scams, and identity theft', defense: 'Look for: asymmetric features, edge blurring, unnatural skin, inconsistent lighting. Always verify via a separate communication channel.' }
+      threatAnalysis: { psychology: 'Fear of government prosecution + urgency of a 48-hour deadline + authority of official-looking letterhead', payload: 'UPI payment to scammer accounts + potential identity theft via PAN/Aadhaar shared in response', defense: 'The Income Tax Department communicates through the official e-Filing portal (incometax.gov.in). They NEVER demand payment via UPI or threaten 48-hour arrests. Verify any notice on the official portal.' }
     }
   },
   {
@@ -653,7 +698,7 @@ export const MINIGAMES = [
     }
   },
   {
-    id: 'quiz_8', title: 'The Bias Buster', description: 'Which cognitive bias is the hacker using to manipulate your mind?',
+    id: 'quiz_10', title: 'The Bias Buster', description: 'Which cognitive bias is the hacker using to manipulate your mind?',
     type: 'quiz', difficulty: 'Medium', thumbnail: '🧠', xpReward: 60,
     data: {
       questions: [
@@ -796,6 +841,286 @@ export const MINIGAMES = [
         redFlagReason: "Lookalike reply-to domain ('precision-mfg-billing.com' vs 'precision-mfg.com') paired with a sudden bank account update."
       },
       threatAnalysis: { psychology: 'Vendor Trust & Habitual Routine', payload: 'Diversion of legitimate vendor payments to attacker-controlled accounts', defense: 'Never update supplier payment details without calling the verified phone number from the original contract.' }
+    }
+  },
+  
+  // ──────────── NEW GAMES: BEC SANDBOX (EmailThreadGame) ────────────
+  {
+    id: 'email_thread_1', title: 'The Urgent Wire', description: 'Find where the email thread gets hijacked.',
+    type: 'email_thread', difficulty: 'Medium', thumbnail: '📧', xpReward: 60,
+    data: {
+      emails: [
+        { id: 1, sender: 'CEO <ceo@company.com>', subject: 'Re: Q3 Report', content: 'Good work on the report. Are we ready for the board meeting?', timestamp: 'Oct 12, 09:14 AM', isSuspicious: false },
+        { id: 2, sender: 'You <you@company.com>', subject: 'Re: Q3 Report', content: 'Yes, I have prepared all the slides. I will present them at 2 PM.', timestamp: 'Oct 12, 09:45 AM', isSuspicious: false },
+        { id: 3, sender: 'CEO <ceo@c0mpany.com>', subject: 'Re: Q3 Report', content: 'Actually, change of plans. I need you to wire $50,000 to our new vendor ASAP before the meeting. Attached are the wire instructions.', timestamp: 'Oct 12, 10:02 AM', isSuspicious: true }
+      ],
+      threatAnalysis: { psychology: 'Authority & Urgency', payload: 'Direct wire transfer to offshore accounts', defense: 'Look closely at the sender email domain. "c0mpany.com" uses a zero instead of an O.' }
+    }
+  },
+  {
+    id: 'email_thread_2', title: 'The Fake Invoice', description: 'A vendor requests a change of banking details.',
+    type: 'email_thread', difficulty: 'Hard', thumbnail: '💸', xpReward: 70,
+    data: {
+      emails: [
+        { id: 1, sender: 'Vendor <billing@acmesupplies.com>', subject: 'Invoice #8412', content: 'Please find attached the invoice for this month.', timestamp: 'Nov 4, 11:00 AM', isSuspicious: false },
+        { id: 2, sender: 'You <you@company.com>', subject: 'Re: Invoice #8412', content: 'Received. We will process this on Friday.', timestamp: 'Nov 4, 11:30 AM', isSuspicious: false },
+        { id: 3, sender: 'Vendor <billing@acmesupplies-inc.com>', subject: 'Re: Invoice #8412 [UPDATE]', content: 'Wait, we are undergoing an audit. Please route the payment to our secondary account instead. Details below.', timestamp: 'Nov 4, 11:45 AM', isSuspicious: true }
+      ],
+      threatAnalysis: { psychology: 'Trust in existing relationships', payload: 'Misdirection of funds', defense: 'Always verify bank changes via a known phone number. Do not trust an emailed bank change.' }
+    }
+  },
+
+  // ──────────── NEW GAMES: SCAM SIMULATOR (ScamSimulatorGame) ────────────
+  {
+    id: 'scam_sim_1', title: 'Infiltrate GlobalTech', description: 'Play as the attacker targeting an HR department.',
+    type: 'scam_sim', difficulty: 'Medium', thumbnail: '🥷', xpReward: 80,
+    data: {
+      stages: [
+        {
+          prompt: 'TARGET: GlobalTech HR. \nObjective: Steal employee database. \n\nSelect Initial Access Vector:',
+          options: [
+            { text: 'run exploit_eternalblue -target 192.168.1.0/24', isCorrect: false, feedback: '[FAILED] GlobalTech patched this vulnerability years ago. Intrusion Detection System triggered.' },
+            { text: 'send_phish -template "Urgent Payroll Update" -target hr_group', isCorrect: true, feedback: '[SUCCESS] Phishing email bypassed spam filters. One user clicked the link.' }
+          ]
+        },
+        {
+          prompt: 'We have a hook. The user is at the fake login page. What payload do we serve?',
+          options: [
+            { text: 'serve_payload -type "Ransomware"', isCorrect: false, feedback: '[FAILED] Endpoint detection quarantined the ransomware payload immediately. Access lost.' },
+            { text: 'serve_payload -type "CredentialHarvester"', isCorrect: true, feedback: '[SUCCESS] User entered credentials. We have HR_Admin access.' }
+          ]
+        }
+      ],
+      threatAnalysis: { psychology: 'Phishing exploits human error, not system flaws.', payload: 'Credential harvesting', defense: 'Understanding how attackers think helps us build better defenses and spot their lures.' }
+    }
+  },
+  {
+    id: 'scam_sim_2', title: 'The Supply Chain Attack', description: 'Compromise a widely used software update.',
+    type: 'scam_sim', difficulty: 'Hard', thumbnail: '🔗', xpReward: 100,
+    data: {
+      stages: [
+        {
+          prompt: 'TARGET: DevCorp Codebase. \n\nHow do we inject our malicious code?',
+          options: [
+            { text: 'Attempt brute force on SSH servers.', isCorrect: false, feedback: '[FAILED] DevCorp uses strong passwords and fail2ban. IP blocked.' },
+            { text: 'Compromise an open-source library they depend on.', isCorrect: true, feedback: '[SUCCESS] We infected "left-pad". DevCorp pulled the update.' }
+          ]
+        },
+        {
+          prompt: 'The payload is inside their CI/CD pipeline. What now?',
+          options: [
+            { text: 'Exfiltrate environment variables (API keys).', isCorrect: true, feedback: '[SUCCESS] We stole their AWS keys.' },
+            { text: 'Delete all their code.', isCorrect: false, feedback: '[FAILED] They have backups, and we lose our foothold.' }
+          ]
+        }
+      ],
+      threatAnalysis: { psychology: 'Trusting third-party code implicitly', payload: 'Supply chain compromise', defense: 'Use dependency pinning and software bill of materials (SBOM) to track supply chain risks.' }
+    }
+  },
+
+  // ──────────── NEW GAMES: AUDIO DEEPFAKE (DeepfakeInterrogationGame) ────────────
+  {
+    id: 'deepfake_1', title: 'The Fake CEO Voice', description: 'Analyze a voicemail from the "CEO".',
+    type: 'deepfake', difficulty: 'Medium', thumbnail: '🎙️', xpReward: 65,
+    data: {
+      transcript: "Hey [0.2s silence] John. This is [metallic artifact] the CEO. I need you to wire [monotone] $50,000 to the new vendor [0.5s silence] immediately. Don't call me back, I am [metallic artifact] in a meeting.",
+      options: [
+        { id: 'glitch', text: 'Metallic voice glitches / Audio artifacts', isCorrect: true },
+        { id: 'breathing', text: 'Heavy breathing', isCorrect: false },
+        { id: 'emotion', text: 'Flat emotional delivery / Monotone', isCorrect: true },
+        { id: 'urgency', text: 'Creating false urgency ("immediately")', isCorrect: true }
+      ],
+      threatAnalysis: { psychology: 'Authority spoofing with deepfake audio', payload: 'Financial fraud via voice', defense: 'AI voice clones often lack natural breathing, have metallic glitches, and sound monotone. Always hang up and call the person back on a known number.' }
+    }
+  },
+  {
+    id: 'deepfake_2', title: 'Family Emergency', description: 'A frantic voicemail from a "relative".',
+    type: 'deepfake', difficulty: 'Hard', thumbnail: '😰', xpReward: 75,
+    data: {
+      transcript: "Mom! Help me! I'm in [robotic stutter] jail. I need bail money. The lawyer said to send crypto to [unnatural pause] this address. Please hurry!",
+      options: [
+        { id: 'stutter', text: 'Robotic stuttering', isCorrect: true },
+        { id: 'pause', text: 'Unnatural pause before key info', isCorrect: true },
+        { id: 'payment', text: 'Requesting cryptocurrency', isCorrect: true },
+        { id: 'accent', text: 'Foreign accent', isCorrect: false }
+      ],
+      threatAnalysis: { psychology: 'Panic and emotional manipulation', payload: 'Irreversible crypto transfer', defense: 'Scammers use AI to clone voices of loved ones. Establish a "safe word" with your family to verify identity in emergencies.' }
+    }
+  },
+
+  // ──────────── NEW GAMES: PERMISSION PURGE (PermissionPurgeGame) ────────────
+  {
+    id: 'permission_1', title: 'Super Flashlight App', description: 'Review permissions for a simple utility app.',
+    type: 'permission', difficulty: 'Easy', thumbnail: '🔦', xpReward: 40,
+    data: {
+      appName: "Super Flashlight",
+      permissions: [
+        { id: 'camera', name: 'Camera / Flash', isDangerous: false, required: true },
+        { id: 'contacts', name: 'Read Contacts', isDangerous: true, required: false },
+        { id: 'location', name: 'Precise Location', isDangerous: true, required: false },
+        { id: 'mic', name: 'Microphone', isDangerous: true, required: false }
+      ],
+      threatAnalysis: { psychology: 'Users blindly accept permissions to use apps quickly', payload: 'Data harvesting and surveillance', defense: 'A flashlight ONLY needs camera access. Never give unnecessary permissions to utility apps.' }
+    }
+  },
+  {
+    id: 'permission_2', title: 'Free PDF Scanner', description: 'A document scanner wants access to your phone.',
+    type: 'permission', difficulty: 'Medium', thumbnail: '📄', xpReward: 50,
+    data: {
+      appName: "Free PDF Scanner",
+      permissions: [
+        { id: 'camera', name: 'Camera (to scan)', isDangerous: false, required: true },
+        { id: 'storage', name: 'Storage (to save PDFs)', isDangerous: false, required: true },
+        { id: 'sms', name: 'Read/Send SMS', isDangerous: true, required: false },
+        { id: 'phone', name: 'Make Phone Calls', isDangerous: true, required: false }
+      ],
+      threatAnalysis: { psychology: 'Hiding dangerous permissions alongside legitimate ones', payload: 'Premium SMS fraud and intercepting 2FA codes', defense: 'While a scanner needs camera and storage, it has NO reason to read your texts or make phone calls.' }
+    }
+  },
+  
+  // ──────────── NEW GAMES BATCH 2: BEC SANDBOX (EmailThreadGame) ────────────
+  {
+    id: 'email_thread_3', title: 'The Gift Card Pivot', description: 'Find where the project update turns into a scam.',
+    type: 'email_thread', difficulty: 'Medium', thumbnail: '🎁', xpReward: 60,
+    data: {
+      emails: [
+        { id: 1, sender: 'CEO <ceo@company.com>', subject: 'Q4 Marketing Push', content: 'How are we looking for the final push this quarter?', timestamp: 'Dec 2, 09:14 AM', isSuspicious: false },
+        { id: 2, sender: 'You <you@company.com>', subject: 'Re: Q4 Marketing Push', content: 'On track! Assets are being finalized today.', timestamp: 'Dec 2, 09:45 AM', isSuspicious: false },
+        { id: 3, sender: 'CEO <ceo@c0mpany.com>', subject: 'Re: Q4 Marketing Push', content: 'Great. Also, I am tied up in meetings all day. Can you quickly buy 5x $100 Apple gift cards for a client presentation? I will reimburse you.', timestamp: 'Dec 2, 10:02 AM', isSuspicious: true }
+      ],
+      threatAnalysis: { psychology: 'Authority & Urgency', payload: 'Untraceable gift card fraud', defense: 'CEOs will never ask you to personally buy gift cards via email. Also, check the sender domain carefully.' }
+    }
+  },
+  {
+    id: 'email_thread_4', title: 'IT Helpdesk Upgrade', description: 'Spot the malicious account suspension threat.',
+    type: 'email_thread', difficulty: 'Hard', thumbnail: '💻', xpReward: 70,
+    data: {
+      emails: [
+        { id: 1, sender: 'IT Dept <it-support@company.com>', subject: 'Server Maintenance Notice', content: 'Servers will be down from 2 AM to 4 AM on Sunday.', timestamp: 'May 4, 11:00 AM', isSuspicious: false },
+        { id: 2, sender: 'You <you@company.com>', subject: 'Re: Server Maintenance Notice', content: 'Noted, thanks.', timestamp: 'May 4, 11:30 AM', isSuspicious: false },
+        { id: 3, sender: 'IT Dept <admin@it-support-portal.net>', subject: 'URGENT: Account Suspension', content: 'Your account will be suspended in 24 hours due to a missing security update. Click here to verify your credentials immediately.', timestamp: 'May 4, 11:45 AM', isSuspicious: true }
+      ],
+      threatAnalysis: { psychology: 'Panic and fear of consequence', payload: 'Credential harvesting via fake login page', defense: 'Legitimate IT departments do not threaten immediate account suspension via generic emails with external links.' }
+    }
+  },
+  {
+    id: 'email_thread_5', title: 'The Compromised Partner', description: 'A legitimate vendor account sends something suspicious.',
+    type: 'email_thread', difficulty: 'Expert', thumbnail: '🤝', xpReward: 85,
+    data: {
+      emails: [
+        { id: 1, sender: 'Vendor <contact@acmepartners.com>', subject: 'Next Week Sync', content: 'Are we still on for Tuesday at 10?', timestamp: 'Jun 10, 09:00 AM', isSuspicious: false },
+        { id: 2, sender: 'You <you@company.com>', subject: 'Re: Next Week Sync', content: 'Yes, looking forward to it.', timestamp: 'Jun 10, 09:15 AM', isSuspicious: false },
+        { id: 3, sender: 'Vendor <contact@acmepartners.com>', subject: 'Re: Next Week Sync', content: 'Please review the attached Secure Document beforehand to confirm the details. [Link to OneDrive login]', timestamp: 'Jun 10, 10:30 AM', isSuspicious: true }
+      ],
+      threatAnalysis: { psychology: 'Pre-existing Trust', payload: 'Phishing via compromised supply chain account', defense: 'Even if the email address is 100% legitimate, unexpected secure documents requiring a login are a massive red flag. Call the vendor to verify.' }
+    }
+  },
+
+  // ──────────── NEW GAMES BATCH 2: SCAM SIMULATOR (ScamSimulatorGame) ────────────
+  {
+    id: 'scam_sim_3', title: 'The Evil Twin', description: 'Play as an attacker targeting a CEO at a coffee shop.',
+    type: 'scam_sim', difficulty: 'Medium', thumbnail: '☕', xpReward: 80,
+    data: {
+      stages: [
+        {
+          prompt: 'TARGET: CEO at StarBeans Cafe. \nObjective: Intercept web traffic. \n\nSelect Initial Vector:',
+          options: [
+            { text: 'Brute-force the cafe WPA2 password.', isCorrect: false, feedback: '[FAILED] Brute forcing takes too long. The CEO will leave before you finish.' },
+            { text: 'Deploy a Wi-Fi Pineapple (Evil Twin).', isCorrect: true, feedback: '[SUCCESS] The CEO\'s laptop auto-connected to your stronger "StarBeans_Free_WiFi" signal.' }
+          ]
+        },
+        {
+          prompt: 'They are connected to your AP. How do we bypass HTTPS?',
+          options: [
+            { text: 'Launch SSL Stripping attack.', isCorrect: true, feedback: '[SUCCESS] Downgraded their connection to HTTP. Credentials captured!' },
+            { text: 'Do a simple packet capture (Wireshark).', isCorrect: false, feedback: '[FAILED] All traffic is encrypted (HTTPS). You just captured unreadable ciphertext.' }
+          ]
+        }
+      ],
+      threatAnalysis: { psychology: 'Convenience over security', payload: 'Man-in-the-Middle (MitM) credential theft', defense: 'Never use public Wi-Fi for sensitive work without a trusted VPN.' }
+    }
+  },
+  {
+    id: 'scam_sim_4', title: 'Double Extortion', description: 'Play as a ransomware operator aiming for maximum profit.',
+    type: 'scam_sim', difficulty: 'Hard', thumbnail: '🔒', xpReward: 100,
+    data: {
+      stages: [
+        {
+          prompt: 'TARGET: MegaCorp Network. \nStatus: We have Domain Admin rights. \n\nWhat is our first move?',
+          options: [
+            { text: 'Deploy ransomware immediately to all endpoints.', isCorrect: false, feedback: '[FAILED] They restored from offline backups and refused to pay. Profit: $0.' },
+            { text: 'Exfiltrate customer databases and financial records.', isCorrect: true, feedback: '[SUCCESS] We have 500GB of sensitive data on our offshore servers.' }
+          ]
+        },
+        {
+          prompt: 'Data exfiltrated. Now what?',
+          options: [
+            { text: 'Encrypt the network and threaten to leak the data if they don\'t pay.', isCorrect: true, feedback: '[SUCCESS] Classic Double Extortion. They paid the ransom to prevent a massive data breach.' },
+            { text: 'Just encrypt the network.', isCorrect: false, feedback: '[FAILED] You missed out on the leverage of threatening a data leak.' }
+          ]
+        }
+      ],
+      threatAnalysis: { psychology: 'Leveraging reputational damage', payload: 'Data exfiltration followed by ransomware', defense: 'Backups are not enough anymore. Strong data-loss prevention (DLP) and zero-trust architecture are required.' }
+    }
+  },
+
+  // ──────────── NEW GAMES BATCH 2: AUDIO DEEPFAKE (DeepfakeInterrogationGame) ────────────
+  {
+    id: 'deepfake_3', title: 'The Bank Fraud Dept', description: 'Analyze a voicemail from your "Bank".',
+    type: 'deepfake', difficulty: 'Medium', thumbnail: '🏦', xpReward: 65,
+    data: {
+      transcript: "Hello, this is [robotic tone] Bank of America Fraud Department. We detected suspicious [unnatural pause] activity on your card. Please verify your identity by [metallic artifact] entering your PIN on the keypad.",
+      options: [
+        { id: 'tone', text: 'Robotic or unnatural tone', isCorrect: true },
+        { id: 'pause', text: 'Unnatural pauses', isCorrect: true },
+        { id: 'artifact', text: 'Metallic audio artifacts', isCorrect: true },
+        { id: 'pin', text: 'Asking for PIN (Banks never do this)', isCorrect: true }
+      ],
+      threatAnalysis: { psychology: 'Authority and fear of financial loss', payload: 'PIN and credential theft via voice', defense: 'Banks will NEVER ask you for your PIN or password over the phone.' }
+    }
+  },
+  {
+    id: 'deepfake_4', title: 'Celebrity Crypto Endorsement', description: 'A leaked audio clip of a famous CEO.',
+    type: 'deepfake', difficulty: 'Hard', thumbnail: '📈', xpReward: 75,
+    data: {
+      transcript: "Hey guys, [0.5s silence] it's Elon. I'm secretly backing a new project called [metallic glitch] TeslaCoin. If you send 1 ETH to this address, [monotone] I will personally send you back 2 ETH. It's guaranteed.",
+      options: [
+        { id: 'glitch', text: 'Metallic voice glitches', isCorrect: true },
+        { id: 'monotone', text: 'Flat emotional delivery', isCorrect: true },
+        { id: 'promise', text: 'Absurd promise (Send 1 get 2)', isCorrect: true },
+        { id: 'accent', text: 'Incorrect accent', isCorrect: false }
+      ],
+      threatAnalysis: { psychology: 'Greed and celebrity trust', payload: 'Irreversible cryptocurrency theft', defense: 'Deepfakes are commonly used to create fake celebrity endorsements for scams. Always verify through official channels.' }
+    }
+  },
+
+  // ──────────── NEW GAMES BATCH 2: PERMISSION PURGE (PermissionPurgeGame) ────────────
+  {
+    id: 'permission_3', title: 'Simple Calculator', description: 'Review permissions for a basic calculator.',
+    type: 'permission', difficulty: 'Easy', thumbnail: '🧮', xpReward: 40,
+    data: {
+      appName: "Simple Calculator Pro",
+      permissions: [
+        { id: 'location', name: 'Precise Location', isDangerous: true, required: false },
+        { id: 'contacts', name: 'Read Contacts', isDangerous: true, required: false },
+        { id: 'mic', name: 'Microphone', isDangerous: true, required: false },
+        { id: 'camera', name: 'Camera', isDangerous: true, required: false }
+      ],
+      threatAnalysis: { psychology: 'Users blindly clicking "Accept"', payload: 'Data harvesting', defense: 'A calculator needs absolutely zero permissions to function. Deny all of them or uninstall the app.' }
+    }
+  },
+  {
+    id: 'permission_4', title: 'Local Weather Widget', description: 'A weather app wants access to your phone.',
+    type: 'permission', difficulty: 'Medium', thumbnail: '☀️', xpReward: 50,
+    data: {
+      appName: "Local Weather Widget",
+      permissions: [
+        { id: 'location', name: 'Location (for local forecast)', isDangerous: false, required: true },
+        { id: 'camera', name: 'Camera', isDangerous: true, required: false },
+        { id: 'sms', name: 'Read/Send SMS', isDangerous: true, required: false },
+        { id: 'storage', name: 'Access Photos/Media', isDangerous: true, required: false }
+      ],
+      threatAnalysis: { psychology: 'Mixing legitimate needs with malicious ones', payload: 'Spyware and SMS interception', defense: 'While it legitimately needs location data for weather, it has no business accessing your camera, texts, or photos.' }
     }
   }
 ];

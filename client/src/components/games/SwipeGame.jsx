@@ -261,7 +261,7 @@ const styles = {
   contentText: {
     fontSize: '1.4rem',
     color: '#2d3748',
-    wordBreak: 'break-all',
+    wordBreak: 'break-word',
     fontWeight: '600'
   },
   actions: {

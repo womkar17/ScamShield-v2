@@ -216,8 +216,8 @@ export default function LandingPage() {
 const styles = {
   page: {
     minHeight: '100vh',
-    background: 'var(--bg, #0a0a1a)',
-    color: 'var(--text, #e0e0e0)',
+    background: 'var(--bg)',
+    color: 'var(--text)',
     fontFamily: "'Inter', 'Segoe UI', sans-serif",
     overflowX: 'hidden',
   },
@@ -230,9 +230,9 @@ const styles = {
     right: 0,
     zIndex: 1000,
     padding: '1rem 2rem',
-    backgroundColor: 'rgba(10, 10, 26, 0.85)',
+    backgroundColor: 'var(--bg)',
     backdropFilter: 'blur(15px)',
-    borderBottom: '1px solid rgba(255,255,255,0.05)',
+    borderBottom: '1px solid var(--border)',
   },
   navInner: {
     maxWidth: '1200px',
@@ -260,7 +260,7 @@ const styles = {
     gap: '2rem',
   },
   navLink: {
-    color: 'rgba(255,255,255,0.7)',
+    color: 'var(--text2)',
     textDecoration: 'none',
     fontSize: '0.95rem',
     transition: 'color 0.2s',
@@ -305,8 +305,8 @@ const styles = {
   heroBadge: {
     display: 'inline-block',
     padding: '0.5rem 1.2rem',
-    background: 'rgba(102, 126, 234, 0.1)',
-    border: '1px solid rgba(102, 126, 234, 0.3)',
+    background: 'var(--accent-bg, rgba(102, 126, 234, 0.1))',
+    border: '1px solid var(--accent-border, rgba(102, 126, 234, 0.3))',
     borderRadius: '50px',
     fontSize: '0.85rem',
     color: '#667eea',
@@ -317,17 +317,18 @@ const styles = {
     fontWeight: '800',
     lineHeight: 1.1,
     margin: '0 0 1.5rem 0',
-    color: 'white',
+    color: 'var(--text-h)',
   },
   heroHighlight: {
     background: 'linear-gradient(135deg, #667eea, #ec4899)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
+    paddingBottom: '0.1em',
   },
   heroSubtitle: {
     fontSize: '1.15rem',
     lineHeight: 1.7,
-    color: 'rgba(255,255,255,0.6)',
+    color: 'var(--text3)',
     maxWidth: '650px',
     margin: '0 auto 2.5rem',
   },
@@ -353,9 +354,9 @@ const styles = {
   secondaryBtn: {
     padding: '1rem 2.5rem',
     background: 'transparent',
-    border: '1px solid rgba(255,255,255,0.2)',
+    border: '1px solid var(--border)',
     borderRadius: '12px',
-    color: 'white',
+    color: 'var(--text-h)',
     fontSize: '1.05rem',
     fontWeight: 'bold',
     cursor: 'pointer',
@@ -382,13 +383,13 @@ const styles = {
   },
   statLabel: {
     fontSize: '0.8rem',
-    color: 'rgba(255,255,255,0.5)',
+    color: 'var(--text3)',
     marginTop: '0.3rem',
   },
   statDivider: {
     width: '1px',
     height: '40px',
-    background: 'rgba(255,255,255,0.1)',
+    background: 'var(--border)',
   },
 
   /* Sections */
@@ -400,16 +401,16 @@ const styles = {
     margin: '0 auto',
   },
   sectionTitle: {
-    fontSize: '2.2rem',
+    fontSize: '2.5rem',
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: '1rem',
-    color: 'white',
+    marginBottom: '4rem',
+    color: 'var(--text-h)',
   },
   sectionSubtitle: {
     fontSize: '1.05rem',
     lineHeight: 1.7,
-    color: 'rgba(255,255,255,0.55)',
+    color: 'var(--text3)',
     textAlign: 'center',
     maxWidth: '700px',
     margin: '0 auto 3rem',
@@ -422,8 +423,8 @@ const styles = {
     gap: '1.5rem',
   },
   infoCard: {
-    background: 'rgba(255,255,255,0.03)',
-    border: '1px solid rgba(255,255,255,0.08)',
+    background: 'var(--bg3)',
+    border: '1px solid var(--border)',
     borderRadius: '16px',
     padding: '2rem',
     transition: 'transform 0.2s, border-color 0.2s',
@@ -435,13 +436,13 @@ const styles = {
   cardTitle: {
     fontSize: '1.15rem',
     fontWeight: 'bold',
-    color: 'white',
+    color: 'var(--text-h)',
     marginBottom: '0.75rem',
   },
   cardText: {
     fontSize: '0.9rem',
     lineHeight: 1.6,
-    color: 'rgba(255,255,255,0.5)',
+    color: 'var(--text3)',
   },
 
   /* Feature Cards */
@@ -451,8 +452,8 @@ const styles = {
     gap: '2rem',
   },
   featureCard: {
-    background: 'rgba(255,255,255,0.03)',
-    border: '1px solid rgba(255,255,255,0.08)',
+    background: 'var(--bg3)',
+    border: '1px solid var(--border)',
     borderRadius: '16px',
     padding: '2.5rem 2rem',
   },
@@ -466,7 +467,7 @@ const styles = {
   featureTitle: {
     fontSize: '1.3rem',
     fontWeight: 'bold',
-    color: 'white',
+    color: 'var(--text-h)',
     marginBottom: '1rem',
   },
 
@@ -477,23 +478,27 @@ const styles = {
     gap: '1.5rem',
   },
   threatCard: {
-    background: 'rgba(236, 72, 153, 0.05)',
-    border: '1px solid rgba(236, 72, 153, 0.15)',
+    background: 'var(--bg3)',
+    border: '1px solid var(--border)',
     borderRadius: '16px',
-    padding: '2rem',
+    padding: '2.5rem 2rem',
     textAlign: 'center',
+    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.05)',
+    transition: 'transform 0.2s ease',
   },
   threatStat: {
-    fontSize: '3rem',
+    fontSize: '3.2rem',
     fontWeight: '900',
     color: '#f97316',
     textShadow: '0 0 20px rgba(249, 115, 22, 0.4)',
-    marginBottom: '0.5rem',
+    marginBottom: '1rem',
+    lineHeight: '1.2',
   },
   threatLabel: {
-    fontSize: '0.9rem',
-    color: 'rgba(255,255,255,0.5)',
-    lineHeight: 1.5,
+    fontSize: '1rem',
+    color: 'var(--text2)',
+    lineHeight: 1.6,
+    fontWeight: '500',
   },
 
   /* CTA Section */
@@ -509,12 +514,12 @@ const styles = {
   ctaTitle: {
     fontSize: '2.2rem',
     fontWeight: 'bold',
-    color: 'white',
+    color: 'var(--text-h)',
     marginBottom: '1rem',
   },
   ctaSubtitle: {
     fontSize: '1.05rem',
-    color: 'rgba(255,255,255,0.55)',
+    color: 'var(--text3)',
     marginBottom: '2rem',
     lineHeight: 1.6,
   },
@@ -522,7 +527,7 @@ const styles = {
   /* Footer */
   footer: {
     padding: '3rem 2rem',
-    borderTop: '1px solid rgba(255,255,255,0.05)',
+    borderTop: '1px solid var(--border)',
     textAlign: 'center',
   },
   footerInner: {
@@ -537,12 +542,12 @@ const styles = {
     marginBottom: '1rem',
   },
   footerText: {
-    color: 'rgba(255,255,255,0.4)',
+    color: 'var(--text3)',
     fontSize: '0.9rem',
     marginBottom: '0.5rem',
   },
   footerCopy: {
-    color: 'rgba(255,255,255,0.25)',
+    color: 'var(--text3)',
     fontSize: '0.8rem',
   },
 };

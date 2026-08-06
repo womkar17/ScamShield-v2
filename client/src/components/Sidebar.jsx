@@ -29,7 +29,9 @@ export default function Sidebar({ isOpen, setIsOpen }) {
         style={styles.toggleBtn}
         title={isOpen ? "Collapse Sidebar" : "Expand Sidebar"}
       >
-        {isOpen ? '◀' : '▶'}
+        <span style={{ marginLeft: isOpen ? '-2px' : '2px', display: 'flex', alignItems: 'center' }}>
+          {isOpen ? '◀' : '▶'}
+        </span>
       </button>
 
       {isOpen && (
@@ -57,8 +59,12 @@ export default function Sidebar({ isOpen, setIsOpen }) {
       )}
 
       <div style={styles.userSection}>
-        <div style={{...styles.avatar, width: isOpen ? '60px' : '40px', height: isOpen ? '60px' : '40px', fontSize: isOpen ? '1.5rem' : '1.2rem', transition: 'all 0.3s ease'}}>
-          {displayName[0]?.toUpperCase() || '?'}
+        <div style={{...styles.avatar, width: isOpen ? '60px' : '40px', height: isOpen ? '60px' : '40px', transition: 'all 0.3s ease', overflow: 'hidden', padding: 0, background: 'var(--bg3)'}}>
+          <img 
+            src={`https://api.dicebear.com/7.x/bottts/svg?seed=${userProfile?.avatar || 'Felix'}`} 
+            alt="Avatar" 
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+          />
         </div>
         {isOpen && <div style={styles.userName}>{displayName}</div>}
       </div>
@@ -69,15 +75,20 @@ export default function Sidebar({ isOpen, setIsOpen }) {
           return (
             <button
               key={item.name}
-              style={{ ...styles.menuBtn, ...(isActive ? styles.activeBtn : {}) }}
+              style={{ 
+                ...styles.menuBtn, 
+                ...(isActive ? styles.activeBtn : {}),
+                justifyContent: isOpen ? 'flex-start' : 'center',
+                padding: isOpen ? '12px 15px' : '12px 0'
+              }}
               onClick={() => {
                 navigate(item.path);
                 if (window.innerWidth <= 768) setIsOpen(false);
               }}
               onMouseEnter={(e) => {
                 if (!isActive) {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                  e.currentTarget.style.color = '#fff';
+                  e.currentTarget.style.background = 'var(--social-bg)';
+                  e.currentTarget.style.color = 'var(--text-h)';
                 }
               }}
               onMouseLeave={(e) => {
@@ -94,22 +105,27 @@ export default function Sidebar({ isOpen, setIsOpen }) {
         })}
 
         {/* Mobile-Only Achievements & Badges Section in Menu */}
-        <div className="sidebar-mobile-badges-section" style={{ display: 'none', flexDirection: 'column', width: '100%', borderTop: '1px solid rgba(255, 255, 255, 0.08)', marginTop: '0.8rem', paddingTop: '0.8rem' }}>
+        <div className="sidebar-mobile-badges-section" style={{ display: 'none', flexDirection: 'column', width: '100%', borderTop: '1px solid var(--border)', marginTop: '0.8rem', paddingTop: '0.8rem' }}>
           {isOpen && (
             <div style={{ fontSize: '0.72rem', fontWeight: '800', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '1px', padding: '0 1rem 0.4rem', opacity: 0.85 }}>
               ACHIEVEMENTS
             </div>
           )}
           <button
-            style={{ ...styles.menuBtn, ...(location.pathname === '/badges' ? styles.activeBtn : {}) }}
+            style={{ 
+              ...styles.menuBtn, 
+              ...(location.pathname === '/badges' ? styles.activeBtn : {}),
+              justifyContent: isOpen ? 'flex-start' : 'center',
+              padding: isOpen ? '12px 15px' : '12px 0'
+            }}
             onClick={() => {
               navigate('/badges');
               if (window.innerWidth <= 768) setIsOpen(false);
             }}
             onMouseEnter={(e) => {
               if (location.pathname !== '/badges') {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                e.currentTarget.style.color = '#fff';
+                e.currentTarget.style.background = 'var(--social-bg)';
+                e.currentTarget.style.color = 'var(--text-h)';
               }
             }}
             onMouseLeave={(e) => {
@@ -127,7 +143,12 @@ export default function Sidebar({ isOpen, setIsOpen }) {
 
       <div style={styles.footer}>
         <button 
-          style={{ ...styles.menuBtn, ...styles.logoutBtn }} 
+          style={{ 
+            ...styles.menuBtn, 
+            ...styles.logoutBtn,
+            justifyContent: isOpen ? 'flex-start' : 'center',
+            padding: isOpen ? '12px 15px' : '12px 0'
+          }} 
           onClick={() => {
             if (window.innerWidth <= 768) setIsOpen(false);
             navigate('/');
@@ -178,7 +199,7 @@ const styles = {
   },
   userSection: {
     padding: '20px',
-    borderBottom: '1px solid rgba(255,255,255,0.05)',
+    borderBottom: '1px solid var(--border)',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -198,7 +219,7 @@ const styles = {
     boxShadow: '0 4px 12px rgba(102, 126, 234, 0.4)',
   },
   userName: {
-    color: 'white',
+    color: 'var(--text-h)',
     fontWeight: 'bold',
     fontSize: '1.1rem',
   },
@@ -226,7 +247,7 @@ const styles = {
     textAlign: 'left',
   },
   activeBtn: {
-    background: 'rgba(59, 130, 246, 0.15)',
+    background: 'var(--accent-bg, rgba(59, 130, 246, 0.15))',
     color: 'var(--blue, #3b82f6)',
     fontWeight: 'bold',
   },
@@ -235,7 +256,7 @@ const styles = {
   },
   footer: {
     padding: '20px 10px',
-    borderTop: '1px solid rgba(255,255,255,0.05)',
+    borderTop: '1px solid var(--border)',
   },
   logoutBtn: {
     color: '#fc8181',

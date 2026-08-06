@@ -125,30 +125,30 @@ const QuizGame = ({ game, onComplete }) => {
   }
 
   return (
-    <div style={{ padding: '20px', color: 'white', fontFamily: "'Inter', sans-serif" }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px', borderBottom: '1px solid #334155', paddingBottom: '12px' }}>
-        <span style={{ background: 'rgba(59, 130, 246, 0.2)', color: '#60a5fa', padding: '4px 12px', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 'bold' }}>
+    <div style={{ padding: '20px', color: 'var(--text)', fontFamily: "'Inter', sans-serif" }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px', borderBottom: '1px solid var(--border)', paddingBottom: '12px' }}>
+        <span style={{ background: 'var(--accent-bg)', color: 'var(--blue)', padding: '4px 12px', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 'bold' }}>
           Question {currentIndex + 1} of {questions.length} ({game.difficulty || 'Medium'})
         </span>
-        <span style={{ color: '#4ade80', fontWeight: 'bold', fontSize: '0.9rem' }}>
+        <span style={{ color: 'var(--green)', fontWeight: 'bold', fontSize: '0.9rem' }}>
           Score: {score} / {questions.length}
         </span>
       </div>
 
-      <h2 style={{ marginBottom: '22px', fontSize: '1.4rem', color: '#facc15', lineHeight: '1.5' }}>
+      <h2 style={{ marginBottom: '22px', fontSize: '1.4rem', color: 'var(--text)', lineHeight: '1.5' }}>
         {currentQ.question}
       </h2>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
         {options.map((opt, idx) => {
-          let bg = '#1e293b';
-          let borderCol = '#334155';
+          let bg = 'var(--bg3)';
+          let borderCol = 'var(--border)';
           if (selectedIdx === idx) {
-            bg = opt.isCorrect ? 'rgba(34, 197, 94, 0.25)' : 'rgba(239, 68, 68, 0.25)';
-            borderCol = opt.isCorrect ? '#22c55e' : '#ef4444';
+            bg = opt.isCorrect ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)';
+            borderCol = opt.isCorrect ? 'var(--green)' : 'var(--accent)';
           } else if (selectedIdx !== null && opt.isCorrect) {
-            bg = 'rgba(34, 197, 94, 0.15)';
-            borderCol = '#22c55e';
+            bg = 'rgba(34, 197, 94, 0.1)';
+            borderCol = 'var(--green)';
           }
           
           return (
@@ -161,7 +161,7 @@ const QuizGame = ({ game, onComplete }) => {
                 borderRadius: '12px',
                 border: `1.5px solid ${borderCol}`,
                 background: bg,
-                color: '#f8fafc',
+                color: 'var(--text)',
                 fontSize: '1.05rem',
                 textAlign: 'left',
                 cursor: selectedIdx !== null ? 'default' : 'pointer',
@@ -179,10 +179,10 @@ const QuizGame = ({ game, onComplete }) => {
         <div style={{ 
           marginTop: '20px', 
           padding: '16px', 
-          background: options[selectedIdx]?.isCorrect ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)', 
-          borderLeft: `4px solid ${options[selectedIdx]?.isCorrect ? '#22c55e' : '#ef4444'}`,
+          background: options[selectedIdx]?.isCorrect ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)', 
+          borderLeft: `4px solid ${options[selectedIdx]?.isCorrect ? 'var(--green)' : 'var(--accent)'}`,
           borderRadius: '8px',
-          color: '#e2e8f0',
+          color: 'var(--text)',
           fontSize: '0.95rem',
           lineHeight: '1.5'
         }}>

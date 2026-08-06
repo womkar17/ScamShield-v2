@@ -32,35 +32,35 @@ export default function StatsBar() {
             <div className="stats-icon" style={{ fontSize: '2.2rem', flexShrink: 0, width: '52px', height: '52px', lineHeight: 1 }}>⭐</div>
             <div style={{ minWidth: 0, flex: 1 }}>
               <div className="stats-value" style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--gold)', whiteSpace: 'nowrap', lineHeight: 1.2 }}>
-                {xp.toLocaleString()} <span style={{ fontSize: '0.9rem', fontWeight: '600', color: '#cbd5e1' }}>Total XP</span>
+                {xp.toLocaleString()} <span style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--text2)' }}>Total XP</span>
               </div>
-              <div className="stats-label" style={{ fontSize: '0.9rem', fontWeight: '700', color: '#e2e8f0', display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap', marginTop: '5px' }}>
+              <div className="stats-label" style={{ fontSize: '0.9rem', fontWeight: '700', color: 'var(--text)', display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap', marginTop: '5px' }}>
                 <span style={{ background: 'linear-gradient(90deg, #a855f7, #6366f1)', padding: '0.2rem 0.6rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: '800', color: '#fff', whiteSpace: 'nowrap' }}>
                   LEVEL {level.number}
                 </span>
-                <span style={{ fontWeight: '800', color: '#f8fafc', whiteSpace: 'normal', wordBreak: 'normal' }}>{level.name}</span>
+                <span style={{ fontWeight: '800', color: 'var(--text-h)', whiteSpace: 'normal', wordBreak: 'normal' }}>{level.name}</span>
               </div>
             </div>
           </div>
-          <div style={{ textAlign: 'right', fontSize: '0.82rem', color: '#94a3b8', fontWeight: '700', whiteSpace: 'nowrap', background: 'rgba(255, 255, 255, 0.05)', padding: '0.35rem 0.75rem', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.1)', alignSelf: 'center', flexShrink: 0 }}>
+          <div style={{ textAlign: 'right', fontSize: '0.82rem', color: 'var(--text2)', fontWeight: '700', whiteSpace: 'nowrap', background: 'var(--bg2)', padding: '0.35rem 0.75rem', borderRadius: '8px', border: '1px solid var(--border)', alignSelf: 'center', flexShrink: 0 }}>
             Next: Level {level.number + 1}
           </div>
         </div>
 
         {/* XP Bar Track */}
         <div style={{ width: '100%', marginTop: '0.2rem', boxSizing: 'border-box' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: '#cbd5e1', marginBottom: '0.4rem', fontWeight: '600', flexWrap: 'wrap', gap: '4px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text)', marginBottom: '0.4rem', fontWeight: '600', flexWrap: 'wrap', gap: '4px' }}>
             <span>Level Progress</span>
             <span>{xp} / {level.maxXp} XP ({progress.percentToNextLevel}%)</span>
           </div>
-          <div style={{ width: '100%', height: '10px', background: 'rgba(0, 0, 0, 0.4)', borderRadius: '5px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
+          <div style={{ width: '100%', height: '10px', background: 'var(--bg4)', borderRadius: '5px', overflow: 'hidden', border: '1px solid var(--border)' }}>
             <div style={{ 
               width: `${progress.percentToNextLevel}%`, 
               height: '100%', 
-              background: 'linear-gradient(90deg, #f59e0b, #ec4899, #a855f7)', 
+              background: 'linear-gradient(90deg, var(--blue), var(--purple))', 
               borderRadius: '5px', 
               transition: 'width 0.5s ease', 
-              boxShadow: '0 0 12px rgba(245, 158, 11, 0.6)' 
+              boxShadow: '0 0 12px rgba(59, 130, 246, 0.4)' 
             }} />
           </div>
         </div>

@@ -16,26 +16,49 @@ const LEVEL_THRESHOLDS = [
 const BADGE_CATALOG = [
   { id: 'first_blood', name: 'First Blood', icon: '🎯', description: 'Complete your first module' },
   { id: 'speed_demon', name: 'Speed Demon', icon: '⚡', description: 'Complete a module in under 2 minutes' },
-  { id: 'untouchable', name: 'Untouchable', icon: '💎', description: 'Get 100% on 3 quizzes in a row' },
-  { id: 'scam_spotter', name: 'Scam Spotter', icon: '🔍', description: 'Correctly identify 10 phishing emails in games' },
+  { id: 'untouchable', name: 'Untouchable', icon: '💎', description: 'Get 100% on 10 quizzes in a row' },
+  { id: 'scam_spotter', name: 'Scam Spotter', icon: '🔍', description: 'Correctly identify 25 phishing emails in games' },
   { id: 'shield_master', name: 'Shield Master', icon: '🛡️', description: 'Complete all 23 modules' },
   { id: 'streak_starter', name: 'Streak Starter', icon: '🔥', description: 'Maintain a 3-day streak' },
   { id: 'week_warrior', name: 'Week Warrior', icon: '⚔️', description: 'Maintain a 7-day streak' },
   { id: 'month_master', name: 'Month Master', icon: '👑', description: 'Maintain a 30-day streak' },
   { id: 'quiz_whiz', name: 'Quiz Whiz', icon: '🧠', description: 'Score 100% on 5 different quizzes' },
-  { id: 'game_on', name: 'Game On', icon: '🎮', description: 'Complete 5 different games' },
+  { id: 'game_on', name: 'Game On', icon: '🎮', description: 'Complete 25 different games' },
   { id: 'half_way', name: 'Half Way There', icon: '🏔️', description: 'Complete 12 modules' },
   { id: 'rising_star', name: 'Rising Star', icon: '⭐', description: 'Reach Level 2 (Aware)' },
   { id: 'defender_badge', name: 'Defender', icon: '🏰', description: 'Reach Level 3 (Defender)' },
   { id: 'guardian_badge', name: 'Guardian', icon: '🗡️', description: 'Reach Level 4 (Guardian)' },
-  { id: 'perfectionist', name: 'Perfectionist', icon: '✨', description: 'Complete any 5 modules with 100% quiz scores' }
+  { id: 'perfectionist', name: 'Perfectionist', icon: '✨', description: 'Complete any 15 modules with 100% quiz scores' },
+  { id: 'arcade_master', name: 'Arcade Master', icon: '🕹️', description: 'Complete 50 different arcade minigames' },
+  { id: 'completionist', name: 'Completionist', icon: '🏆', description: 'Complete all 75 pre-loaded minigames' },
+  { id: 'ironclad', name: 'Ironclad', icon: '🛡️', description: 'Maintain a 60-day active streak' },
+  { id: 'century_club', name: 'Century Club', icon: '💯', description: 'Maintain a 100-day active streak' },
+  { id: 'deepfake_detective', name: 'Deepfake Detective', icon: '🎭', description: 'Successfully complete 10 Deepfake Interrogation games' },
+  { id: 'threat_intel_analyst', name: 'Threat Intel Analyst', icon: '📚', description: 'Read 10 Real-World Case Studies' },
+  { id: 'zero_day_hero', name: 'Zero-Day Hero', icon: '🦸', description: 'Reach Level 5 (Shield Master)' },
+  { id: 'eagle_eye', name: 'Eagle Eye', icon: '🦅', description: 'Spot 50 red flags across Spot-the-Flag games' },
+  { id: 'unbreakable', name: 'Unbreakable', icon: '🔐', description: 'Successfully secure 15 passwords in the Password games' },
+  { id: 'wire_fraud_expert', name: 'Wire Fraud Expert', icon: '💸', description: 'Successfully complete 10 Wire Audit or Swipe games' },
+  { id: 'lore_master', name: 'Lore Master', icon: '📜', description: 'Complete 40 Modules' },
+  { id: 'flawless_victory', name: 'Flawless Victory', icon: '✨', description: 'Complete 25 modules with a 100% score on the first attempt' }
 ].map(b => ({ ...b, unlocked: false, unlockedAt: null }));
 
 const DEFAULT_STATE = {
   xp: 0,
   level: LEVEL_THRESHOLDS[0],
   streak: { count: 0, lastLoginDate: null, isActive: false },
-  badges: BADGE_CATALOG
+  badges: BADGE_CATALOG,
+  stats: {
+    gamesPlayed: 0,
+    caseStudiesRead: 0,
+    flagsSpotted: 0,
+    passwordsSecured: 0,
+    deepfakesSurvived: 0,
+    wireFraudsCaught: 0,
+    phishingEmailsIdentified: 0,
+    flawlessModules: 0,
+    quizzes100Streak: 0
+  }
 };
 
 export function GamificationProvider({ children }) {
@@ -49,7 +72,21 @@ export function GamificationProvider({ children }) {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        setState(prev => ({ ...prev, ...parsed }));
+        
+        let mergedBadges = [...DEFAULT_STATE.badges];
+        if (parsed.badges) {
+          mergedBadges = mergedBadges.map(defaultBadge => {
+            const savedBadge = parsed.badges.find(b => b.id === defaultBadge.id);
+            return savedBadge ? { ...defaultBadge, unlocked: savedBadge.unlocked, unlockedAt: savedBadge.unlockedAt } : defaultBadge;
+          });
+        }
+
+        setState(prev => ({ 
+          ...prev, 
+          ...parsed,
+          badges: mergedBadges,
+          stats: { ...DEFAULT_STATE.stats, ...(parsed.stats || {}) }
+        }));
       } catch (e) {
         console.error('Failed to parse gamification data', e);
       }
@@ -102,7 +139,8 @@ export function GamificationProvider({ children }) {
             xp: mergedXp,
             level: mergedLevel,
             streak: { ...prev.streak, count: mergedStreak },
-            badges: mergedBadges
+            badges: mergedBadges,
+            stats: { ...DEFAULT_STATE.stats, ...(prev.stats || {}) }
           };
 
           localStorage.setItem('ss_gamification', JSON.stringify(newState));
@@ -226,19 +264,52 @@ export function GamificationProvider({ children }) {
     });
   }, [saveState, showToast]);
 
-  const checkBadges = useCallback((context) => {
+  const trackStat = useCallback((statName, incrementAmount = 1) => {
+    setState(prev => {
+      const newStats = { ...prev.stats, [statName]: (prev.stats?.[statName] || 0) + incrementAmount };
+      const newState = { ...prev, stats: newStats };
+      saveState(newState);
+      return newState;
+    });
+  }, [saveState]);
+
+  const checkBadges = useCallback((context = {}) => {
+    // Basic progression
     if (context.completedModules?.length > 0) unlockBadge('first_blood');
-    if (context.completedModules?.length >= 23) unlockBadge('shield_master');
     if (context.completedModules?.length >= 12) unlockBadge('half_way');
-    
+    if (context.completedModules?.length >= 23) unlockBadge('shield_master');
+    if (context.completedModules?.length >= 40) unlockBadge('lore_master');
+
+    // Streaks
     if (state.streak.count >= 3) unlockBadge('streak_starter');
     if (state.streak.count >= 7) unlockBadge('week_warrior');
     if (state.streak.count >= 30) unlockBadge('month_master');
+    if (state.streak.count >= 60) unlockBadge('ironclad');
+    if (state.streak.count >= 100) unlockBadge('century_club');
     
+    // Levels
     if (state.level.number >= 2) unlockBadge('rising_star');
     if (state.level.number >= 3) unlockBadge('defender_badge');
     if (state.level.number >= 4) unlockBadge('guardian_badge');
-  }, [state.streak.count, state.level.number, unlockBadge]);
+    if (state.level.number >= 5) unlockBadge('zero_day_hero');
+
+    // Advanced Stats (from state.stats)
+    const stats = state.stats || DEFAULT_STATE.stats;
+    if (stats.gamesPlayed >= 25) unlockBadge('game_on');
+    if (stats.gamesPlayed >= 50) unlockBadge('arcade_master');
+    if (stats.gamesPlayed >= 75) unlockBadge('completionist');
+    
+    if (stats.quizzes100Streak >= 10) unlockBadge('untouchable');
+    if (stats.phishingEmailsIdentified >= 25) unlockBadge('scam_spotter');
+    if (stats.deepfakesSurvived >= 10) unlockBadge('deepfake_detective');
+    if (stats.caseStudiesRead >= 10) unlockBadge('threat_intel_analyst');
+    if (stats.flagsSpotted >= 50) unlockBadge('eagle_eye');
+    if (stats.passwordsSecured >= 15) unlockBadge('unbreakable');
+    if (stats.wireFraudsCaught >= 10) unlockBadge('wire_fraud_expert');
+    if (stats.flawlessModules >= 25) unlockBadge('flawless_victory');
+    if (stats.flawlessModules >= 15) unlockBadge('perfectionist');
+
+  }, [state.streak.count, state.level.number, state.stats, unlockBadge]);
 
   const getProgress = useCallback(() => {
     const { minXp, maxXp } = state.level;
@@ -262,6 +333,7 @@ export function GamificationProvider({ children }) {
       ...state, 
       levelUpData,
       addXP, 
+      trackStat,
       checkBadges, 
       getProgress,
       clearLevelUp,

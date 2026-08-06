@@ -21,6 +21,10 @@
       --purple: #a855f7;
       --border: #1e3a5f;
       --card: #111827;
+      --text-h: #ffffff;
+      --social-bg: rgba(30, 41, 59, 0.5);
+      --accent-bg: rgba(102, 126, 234, 0.15);
+      --accent-border: rgba(102, 126, 234, 0.3);
       --font: 'Space Grotesk', sans-serif;
     }
 
@@ -2976,14 +2980,14 @@
   animation: fadeIn 0.2s ease;
 }
 [data-theme="light"] {
-  --bg: #f8fafc;
+  --bg: #f4f6f8;
   --bg2: #ffffff;
-  --bg3: #f1f5f9;
+  --bg3: #eef2f6;
   --bg4: #e2e8f0;
-  --text: #0f172a;
-  --text2: #334155;
+  --text: #1e293b;
+  --text2: #475569;
   --text3: #64748b;
-  --border: #cbd5e1;
+  --border: #e2e8f0;
   --card: #ffffff;
 }
 
@@ -3139,3 +3143,133 @@
   }
 }
 
+/* =========================================================
+   LIGHT MODE OVERRIDES
+   ========================================================= */
+:root.light-mode {
+  --bg: #f8fafc;
+  --bg2: #ffffff;
+  --bg3: #f1f5f9;
+  --bg4: #e2e8f0;
+  --card: #ffffff;
+  --text: #1e293b;
+  --text2: #475569;
+  --text3: #64748b;
+  --border: #cbd5e1;
+  --gold: #d97706;
+  --green: #16a34a;
+  --blue: #2563eb;
+  --purple: #7e22ce;
+  --text-h: #0f172a;
+  --social-bg: rgba(15, 23, 42, 0.05);
+  --accent-bg: rgba(102, 126, 234, 0.12);
+  --accent-border: rgba(102, 126, 234, 0.25);
+}
+
+.light-mode .hero-tag {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+.light-mode .alert-box {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+.light-mode .cert-box {
+  background: linear-gradient(135deg, #f8fafc, #eef2ff);
+  color: #1e293b;
+}
+
+.light-mode .cert-mod {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.light-mode .url-display {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+.light-mode .admin-login-box,
+.light-mode .user-auth-box,
+.light-mode .confirm-box {
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+  border: 1px solid #cbd5e1;
+}
+
+.light-mode .diff-high { color: #dc2626; }
+.light-mode .diff-med { color: #d97706; }
+.light-mode .diff-low { color: #16a34a; }
+
+.light-mode .badge-high { color: #dc2626; }
+.light-mode .badge-med { color: #d97706; }
+.light-mode .badge-low { color: #16a34a; }
+
+.light-mode .badge-easy { color: #16a34a; }
+.light-mode .badge-medium { color: #d97706; }
+.light-mode .badge-hard { color: #dc2626; }
+.light-mode .badge-mixed { color: #2563eb; }
+
+.light-mode .admin-link { color: #6d28d9; }
+
+.light-mode .games-nav-btn { color: #6d28d9; }
+
+.light-mode .data-table tr:hover td {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.light-mode .dropdown-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #0f172a;
+}
+
+.light-mode .alert-title { color: #dc2626; }
+.light-mode .red-flag-title { color: #dc2626; }
+.light-mode .data-exposed-title { color: #dc2626; }
+.light-mode .chip { color: #dc2626; }
+
+.light-mode .learn-tag { color: #2563eb; }
+
+.light-mode .quiz-opt.correct { color: #16a34a; }
+.light-mode .quiz-opt.wrong { color: #dc2626; }
+
+.light-mode .btn-export { color: #2563eb; }
+.light-mode .btn-wipe { color: #dc2626; }
+.light-mode .btn-del-row { color: #dc2626; }
+.light-mode .btn-del-mod { color: #dc2626; }
+.light-mode .btn-del-user { color: #dc2626; }
+
+.light-mode .toast.err { color: #dc2626; }
+.light-mode .toast-new.err .toast-title { color: #dc2626; }
+.light-mode .toast-new.warn .toast-title { color: #d97706; }
+.light-mode .toast-new.info .toast-title { color: #2563eb; }
+
+.light-mode .game-btn-legit { color: #16a34a; }
+.light-mode .game-btn-phish { color: #dc2626; }
+.light-mode .game-feedback-box.correct { color: #16a34a; }
+.light-mode .game-feedback-box.wrong { color: #dc2626; }
+
+.light-mode .url-display .url-legit { color: #16a34a; }
+.light-mode .url-display .url-sus { color: #dc2626; }
+.light-mode .url-display .url-neutral { color: #2563eb; }
+
+.light-mode .checklist-item.selected-flag { color: #dc2626; }
+.light-mode .checklist-item.selected-safe { color: #16a34a; }
+
+.light-mode .admin-login-error,
+.light-mode .user-auth-error { color: #dc2626; }
+.light-mode .user-auth-success { color: #16a34a; }
+
+.light-mode .user-info-pill { color: #16a34a; }
+.light-mode .login-nav-btn { color: #2563eb; }
+.light-mode .user-auth-footer a:hover { color: #2563eb; }
+
+.light-mode .mc-opt.correct { color: #16a34a; }
+.light-mode .mc-opt.wrong { color: #dc2626; }
+
+/* Sidebar in light mode */
+.light-mode .sidebar-nav {
+  background: #ffffff !important;
+  border-right: 1px solid #e2e8f0 !important;
+}

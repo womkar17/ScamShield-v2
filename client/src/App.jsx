@@ -72,8 +72,8 @@ function ProtectedRoute({ children, isSidebarOpen, setIsSidebarOpen }) {
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '12px 16px',
-          background: '#0f172a',
-          borderBottom: '1px solid #1e293b',
+          background: 'var(--bg2)',
+          borderBottom: '1px solid var(--border)',
           position: 'sticky',
           top: 0,
           zIndex: 85,
@@ -83,9 +83,9 @@ function ProtectedRoute({ children, isSidebarOpen, setIsSidebarOpen }) {
           <button
             onClick={() => setIsSidebarOpen(true)}
             style={{
-              background: 'rgba(255, 255, 255, 0.08)',
-              border: '1px solid #334155',
-              color: '#fff',
+              background: 'var(--social-bg)',
+              border: '1px solid var(--border)',
+              color: 'var(--text-h)',
               padding: '8px 12px',
               borderRadius: '8px',
               display: 'flex',
@@ -98,11 +98,15 @@ function ProtectedRoute({ children, isSidebarOpen, setIsSidebarOpen }) {
           >
             <span style={{ fontSize: '1.2rem', lineHeight: 1 }}>☰</span> Menu
           </button>
-          <div style={{ fontSize: '1.2rem', fontWeight: '900', background: 'linear-gradient(90deg, #a855f7, #6366f1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+          <div style={{ fontSize: '1.2rem', fontWeight: '900', paddingBottom: '0.1em', background: 'linear-gradient(90deg, #a855f7, #6366f1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             🛡️ ScamShield
           </div>
-          <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'linear-gradient(135deg, #667eea, #764ba2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 'bold', fontSize: '1rem', boxShadow: '0 2px 8px rgba(102, 126, 234, 0.4)' }}>
-            {(userProfile?.username || userProfile?.email || currentUser?.email || 'U')[0]?.toUpperCase()}
+          <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'var(--bg3)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(102, 126, 234, 0.4)', overflow: 'hidden' }}>
+            <img 
+              src={`https://api.dicebear.com/7.x/bottts/svg?seed=${userProfile?.avatar || 'Felix'}`} 
+              alt="Avatar" 
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+            />
           </div>
         </header>
         <LiveThreatBanner />

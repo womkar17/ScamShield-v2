@@ -386,7 +386,7 @@ export default function ModulePage() {
 
                 {/* The Reveal */}
                 <div style={{
-                  background: 'rgba(255,255,255,0.03)',
+                  background: 'var(--social-bg)',
                   borderRadius: '12px',
                   padding: '1.5rem',
                   marginBottom: '2rem',
@@ -451,7 +451,7 @@ export default function ModulePage() {
                     display: 'flex',
                     alignItems: 'flex-start',
                     gap: '1rem',
-                    background: 'rgba(255,255,255,0.03)',
+                    background: 'var(--social-bg)',
                     padding: '1rem 1.2rem',
                     borderRadius: '10px',
                     border: '1px solid var(--border)'
@@ -496,7 +496,7 @@ export default function ModulePage() {
                     display: 'flex',
                     alignItems: 'flex-start',
                     gap: '1rem',
-                    background: 'rgba(255,255,255,0.03)',
+                    background: 'var(--social-bg)',
                     padding: '1rem 1.2rem',
                     borderRadius: '10px',
                     border: '1px solid var(--border)'

@@ -39,24 +39,25 @@ export default function ChatGame({ game, onComplete }) {
   }, [chatHistory, isTyping, showChoices]);
 
   useEffect(() => {
+    let timeoutId;
     if (messageIndex < messages.length) {
-      receiveMessage();
+      setIsTyping(true);
+      setShowChoices(false);
+      
+      timeoutId = setTimeout(() => {
+        soundEffects.play('click');
+        setChatHistory(prev => [...prev, { sender: 'scammer', text: messages[messageIndex].text }]);
+        setIsTyping(false);
+        setMessageIndex(prev => prev + 1);
+      }, 1500);
     } else {
       setShowChoices(true);
     }
-  }, [messageIndex]);
-
-  const receiveMessage = () => {
-    setIsTyping(true);
-    setShowChoices(false);
     
-    setTimeout(() => {
-      soundEffects.play('click');
-      setChatHistory(prev => [...prev, { sender: 'scammer', text: messages[messageIndex].text }]);
-      setIsTyping(false);
-      setMessageIndex(prev => prev + 1);
-    }, 1500);
-  };
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [messageIndex, messages]);
 
   const handleChoice = (choice) => {
     setChatHistory(prev => [...prev, { sender: 'user', text: choice.text }]);

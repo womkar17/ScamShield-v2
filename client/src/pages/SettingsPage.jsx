@@ -7,12 +7,18 @@ export default function SettingsPage() {
   const { userProfile, currentUser, updateProfileLocal } = useContext(AuthContext);
   
   const [username, setUsername] = useState('');
+  const [theme, setTheme] = useState('dark');
+  const [avatar, setAvatar] = useState('Felix');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+
+  const AVATARS = ['Felix', 'Aneka', 'Bandit', 'Jasper', 'Max', 'Mimi', 'Buster', 'Salem', 'Jack', 'Gizmo'];
 
   useEffect(() => {
     if (userProfile) {
       setUsername(userProfile.username || userProfile.email?.split('@')[0] || '');
+      setTheme(userProfile.theme || localStorage.getItem('scamshield_theme') || 'dark');
+      setAvatar(userProfile.avatar || localStorage.getItem('scamshield_avatar') || 'Felix');
     }
   }, [userProfile]);
 
@@ -21,6 +27,9 @@ export default function SettingsPage() {
     
     setLoading(true);
     setMessage('');
+    
+    // Optimistically apply locally first so UI updates instantly
+    updateProfileLocal({ username, theme, avatar });
     
     try {
       const token = localStorage.getItem('scamshield_token');
@@ -31,19 +40,20 @@ export default function SettingsPage() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ username, theme: 'dark' })
+        body: JSON.stringify({ username, theme, avatar })
       });
 
       const data = await res.json();
-      if (!res.ok || !data.ok) throw new Error(data.err || 'Failed to update');
-
-      updateProfileLocal({ username, theme: 'dark' });
+      if (!res.ok || !data.ok) {
+        console.warn('Backend update failed but saved locally:', data.err);
+      }
       
       setMessage('Settings saved successfully!');
       setTimeout(() => setMessage(''), 3000);
     } catch (err) {
-      console.error('Error saving settings:', err);
-      setMessage('Error saving settings. Please try again.');
+      console.warn('Network error saving settings, but saved locally:', err);
+      setMessage('Settings saved locally! (Offline mode)');
+      setTimeout(() => setMessage(''), 3000);
     } finally {
       setLoading(false);
     }
@@ -66,6 +76,43 @@ export default function SettingsPage() {
             placeholder="Enter your username"
           />
           <p style={styles.hint}>This is how you will appear on the leaderboards.</p>
+        </div>
+
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Avatar</label>
+          <div style={styles.avatarGrid}>
+            {AVATARS.map(seed => (
+              <img 
+                key={seed}
+                src={`https://api.dicebear.com/7.x/bottts/svg?seed=${seed}`}
+                alt={seed}
+                onClick={() => setAvatar(seed)}
+                style={{
+                  ...styles.avatarIcon,
+                  border: avatar === seed ? '2px solid var(--accent)' : '2px solid transparent',
+                  background: avatar === seed ? 'var(--accent-bg)' : 'var(--bg2)'
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Theme</label>
+          <div style={styles.themeToggle}>
+            <button 
+              style={{ ...styles.themeBtn, ...(theme === 'dark' ? styles.themeBtnActive : {}) }}
+              onClick={() => setTheme('dark')}
+            >
+              🌙 Dark
+            </button>
+            <button 
+              style={{ ...styles.themeBtn, ...(theme === 'light' ? styles.themeBtnActive : {}) }}
+              onClick={() => setTheme('light')}
+            >
+              ☀️ Light
+            </button>
+          </div>
         </div>
 
         <div style={styles.actions}>
@@ -135,6 +182,19 @@ const styles = {
     color: 'var(--text3)',
     marginTop: '6px',
   },
+  avatarGrid: {
+    display: 'flex',
+    gap: '10px',
+    flexWrap: 'wrap',
+  },
+  avatarIcon: {
+    width: '50px',
+    height: '50px',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    padding: '4px',
+    transition: 'all 0.2s',
+  },
   themeToggle: {
     display: 'flex',
     gap: '10px',
@@ -151,9 +211,9 @@ const styles = {
     transition: 'all 0.2s',
   },
   themeBtnActive: {
-    background: 'rgba(59, 130, 246, 0.15)',
-    border: '1px solid var(--blue)',
-    color: 'var(--blue)',
+    background: 'var(--accent-bg)',
+    border: '1px solid var(--accent)',
+    color: 'var(--accent)',
   },
   actions: {
     display: 'flex',
@@ -161,7 +221,7 @@ const styles = {
     gap: '15px',
     marginTop: '2rem',
     paddingTop: '1.5rem',
-    borderTop: '1px solid rgba(255,255,255,0.05)',
+    borderTop: '1px solid var(--border)',
   },
   saveBtn: {
     padding: '12px 24px',

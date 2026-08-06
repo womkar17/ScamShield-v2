@@ -413,7 +413,7 @@
 }
 
 .badge-item:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--social-bg);
 }
 
 .badge-icon-wrap {
@@ -898,4 +898,42 @@
   .module-grid {
     padding: 1.25rem 0 !important;
   }
+}
+
+/* =========================================================
+   LIGHT MODE OVERRIDES (GAMIFICATION)
+   ========================================================= */
+.light-mode .stats-card {
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.light-mode .stats-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04), inset 0 0 20px rgba(0, 0, 0, 0.01);
+}
+
+.light-mode .stats-icon {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.light-mode .unit-icon {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.light-mode .unit-progress {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.light-mode .unit-lock-badge {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.light-mode .bg-glass {
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.light-mode .xp-bar-fill::after {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
 }

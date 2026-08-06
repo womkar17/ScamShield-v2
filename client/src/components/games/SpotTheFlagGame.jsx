@@ -128,6 +128,9 @@ const SpotTheFlagGame = ({ game, onComplete }) => {
           70% { box-shadow: 0 0 0 15px rgba(245, 101, 101, 0); }
           100% { box-shadow: 0 0 0 0 rgba(245, 101, 101, 0); }
         }
+        .spot-html-wrapper h1, .spot-html-wrapper h2, .spot-html-wrapper h3, .spot-html-wrapper h4, .spot-html-wrapper p {
+          color: inherit !important;
+        }
       `}</style>
       <div style={styles.header}>
         <div style={styles.scoreBoard}>
@@ -149,7 +152,7 @@ const SpotTheFlagGame = ({ game, onComplete }) => {
         {isImage ? (
           <img src={content} alt="Spot the flags" style={styles.contentImg} />
         ) : (
-          <div style={styles.contentHtml} dangerouslySetInnerHTML={{ __html: getProcessedHtml() }} />
+          <div className="spot-html-wrapper" style={styles.contentHtml} dangerouslySetInnerHTML={{ __html: getProcessedHtml() }} />
         )}
 
         {/* Magnifier */}
@@ -180,7 +183,7 @@ const SpotTheFlagGame = ({ game, onComplete }) => {
               {isImage ? (
                 <img src={content} alt="Magnified content" style={styles.contentImg} />
               ) : (
-                <div style={styles.contentHtml} dangerouslySetInnerHTML={{ __html: getProcessedHtml() }} />
+                <div className="spot-html-wrapper" style={styles.contentHtml} dangerouslySetInnerHTML={{ __html: getProcessedHtml() }} />
               )}
             </div>
           </div>

@@ -7,37 +7,56 @@ const PasswordGame = ({ game, onComplete }) => {
   const [strengthScore, setStrengthScore] = useState(0);
   const [timeToHack, setTimeToHack] = useState('0.0001s');
   const [showAnalysis, setShowAnalysis] = useState(false);
-  const [checks, setChecks] = useState({
-    length: false,
-    uppercase: false,
-    number: false,
-    symbol: false
-  });
+  const [checkStatus, setCheckStatus] = useState({});
+
+  const rawData = typeof game.data === 'string'
+    ? (() => { try { return JSON.parse(game.data); } catch (e) { return {}; } })()
+    : (game.data || {});
+
+  const rules = Array.isArray(rawData.rules) && rawData.rules.length > 0
+    ? rawData.rules
+    : [
+        { id: 'length', text: 'LENGTH >= 12', type: 'minLength', value: 12 },
+        { id: 'uppercase', text: 'CONTAINS UPPERCASE', type: 'hasRegex', value: '[A-Z]' },
+        { id: 'number', text: 'CONTAINS NUMBER', type: 'hasRegex', value: '[0-9]' },
+        { id: 'symbol', text: 'CONTAINS SYMBOL', type: 'hasRegex', value: '[^A-Za-z0-9]' }
+      ];
+
+  const evaluateRule = (rule, pwd) => {
+    switch (rule.type) {
+      case 'minLength': return pwd.length >= rule.value;
+      case 'maxLength': return pwd.length > 0 && pwd.length <= rule.value;
+      case 'exactLength': return pwd.length === rule.value;
+      case 'hasRegex': return new RegExp(rule.value).test(pwd);
+      case 'noRegex': return pwd.length > 0 && !new RegExp(rule.value, 'i').test(pwd);
+      default: return false;
+    }
+  };
 
   useEffect(() => {
-    let score = 0;
-    const newChecks = {
-      length: password.length >= 12,
-      uppercase: /[A-Z]/.test(password),
-      number: /[0-9]/.test(password),
-      symbol: /[^A-Za-z0-9]/.test(password)
-    };
+    const newStatus = {};
+    let passedCount = 0;
 
-    if (newChecks.length) score += 25;
-    if (newChecks.uppercase) score += 25;
-    if (newChecks.number) score += 25;
-    if (newChecks.symbol) score += 25;
+    rules.forEach(rule => {
+      const passed = evaluateRule(rule, password);
+      newStatus[rule.id] = passed;
+      if (passed) passedCount++;
+    });
 
-    setChecks(newChecks);
+    setCheckStatus(newStatus);
+    
+    // Calculate score based on percentage of rules passed
+    const score = Math.floor((passedCount / rules.length) * 100);
     setStrengthScore(score);
 
     if (score === 0) setTimeToHack('0.0001s');
-    else if (score === 25) setTimeToHack('12 seconds');
-    else if (score === 50) setTimeToHack('45 minutes');
-    else if (score === 75) setTimeToHack('14 days');
+    else if (score < 30) setTimeToHack('12 seconds');
+    else if (score < 60) setTimeToHack('45 minutes');
+    else if (score < 90) setTimeToHack('14 days');
     else if (score === 100) setTimeToHack('4.2 billion years');
+    else setTimeToHack('3 months');
 
-  }, [password]);
+  }, [password, rules]);
 
   const handleSubmit = () => {
     if (strengthScore === 100) {
@@ -49,7 +68,7 @@ const PasswordGame = ({ game, onComplete }) => {
   };
 
   if (showAnalysis) {
-    const analysis = game.data?.threatAnalysis || {};
+    const analysis = rawData.threatAnalysis || {};
     return (
       <div style={styles.analysisOverlay}>
         <div style={styles.analysisCard}>
@@ -99,8 +118,8 @@ const PasswordGame = ({ game, onComplete }) => {
       `}</style>
       <div style={{...styles.terminal, ...(isWeak ? styles.shake : {})}}>
         <div style={styles.header}>
-          <h2 style={styles.title}>▶ HACKER TERMINAL V2.4</h2>
-          <p style={styles.subtitle}>// TARGET: GENERATE UNCRACKABLE CIPHER</p>
+          <h2 style={styles.title}>▶ {game.title ? game.title.toUpperCase() : 'HACKER TERMINAL V2.4'}</h2>
+          <p style={styles.subtitle}>// TARGET: {game.description ? game.description.toUpperCase() : 'GENERATE UNCRACKABLE CIPHER'}</p>
         </div>
 
         <div style={styles.inputGroup}>
@@ -110,7 +129,7 @@ const PasswordGame = ({ game, onComplete }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             style={styles.input}
-            placeholder="ENTER_PASSWORD..."
+            placeholder="ENTER_SECRET..."
             spellCheck="false"
           />
           <button 
@@ -138,10 +157,9 @@ const PasswordGame = ({ game, onComplete }) => {
         </div>
 
         <div style={styles.checklist}>
-          <CheckItem checked={checks.length} text="LENGTH >= 12" />
-          <CheckItem checked={checks.uppercase} text="CONTAINS UPPERCASE" />
-          <CheckItem checked={checks.number} text="CONTAINS NUMBER" />
-          <CheckItem checked={checks.symbol} text="CONTAINS SYMBOL" />
+          {rules.map((rule) => (
+            <CheckItem key={rule.id} checked={checkStatus[rule.id]} text={rule.text} />
+          ))}
         </div>
 
         <button 
