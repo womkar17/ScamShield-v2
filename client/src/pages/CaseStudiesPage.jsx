@@ -473,11 +473,16 @@ Return ONLY a valid JSON object (no markdown, no backticks, no explanation) with
     { "q": "Second factual question?", "opts": ["Wrong A", "Wrong B", "Correct C", "Wrong D"], "ans": 2, "exp": "Explanation" },
     { "q": "Third factual question?", "opts": ["Correct A", "Wrong B", "Wrong C", "Wrong D"], "ans": 0, "exp": "Explanation" },
     { "q": "Fourth question about prevention or impact?", "opts": ["Wrong A", "Wrong B", "Wrong C", "Correct D"], "ans": 3, "exp": "Explanation" },
-    { "q": "Fifth question about technical details?", "opts": ["Wrong A", "Correct B", "Wrong C", "Wrong D"], "ans": 1, "exp": "Explanation" }
+    { "q": "Fifth question about technical details?", "opts": ["Wrong A", "Correct B", "Wrong C", "Wrong D"], "ans": 1, "exp": "Explanation" },
+    { "q": "Sixth question?", "opts": ["Wrong A", "Wrong B", "Correct C", "Wrong D"], "ans": 2, "exp": "Explanation" },
+    { "q": "Seventh question?", "opts": ["Correct A", "Wrong B", "Wrong C", "Wrong D"], "ans": 0, "exp": "Explanation" },
+    { "q": "Eighth question?", "opts": ["Wrong A", "Wrong B", "Wrong C", "Correct D"], "ans": 3, "exp": "Explanation" },
+    { "q": "Ninth question?", "opts": ["Wrong A", "Correct B", "Wrong C", "Wrong D"], "ans": 1, "exp": "Explanation" },
+    { "q": "Tenth question?", "opts": ["Wrong A", "Wrong B", "Correct C", "Wrong D"], "ans": 2, "exp": "Explanation" }
   ]
 }
 
-IMPORTANT: Vary the correct answer position randomly across questions (don't always put the answer at index 1). Return ONLY the JSON object, nothing else.`;
+IMPORTANT: You MUST generate EXACTLY 10 questions in the quiz array. The answers to ALL 10 questions MUST be explicitly stated within the text you generated for the summary, setup, trap, and timeline fields. Do NOT ask questions about outside facts not mentioned in your generated case study. Vary the correct answer position randomly across questions. Return ONLY the JSON object, nothing else.`;
 
       let replyText = null;
       let usedEngine = 'Cloud AI Server (Groq Llama 3.3)';
