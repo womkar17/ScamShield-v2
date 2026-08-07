@@ -175,7 +175,7 @@ export default function FakeFedExDeliverySimulator({ onComplete }) {
               placeholder="Enter Mobile Number"
               value={mobile}
               onChange={(e) => {
-                setMobile(e.target.value);
+                (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 15); e.target.value = v; setMobile(v); })();
                 setError('');
               }}
               style={inputStyle}

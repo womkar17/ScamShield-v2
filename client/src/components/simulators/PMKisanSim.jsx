@@ -136,7 +136,7 @@ export default function PMKisanSim({ onComplete }) {
               </div>
               <div style={{ marginBottom: '18px' }}>
                 <label style={{ display: 'block', marginBottom: '5px', fontWeight: '600', fontSize: '0.88rem', color: '#444' }}>Enter OTP</label>
-                <input type="text" value={otp} onChange={e => { setOtp(e.target.value); setError(''); }} maxLength={6}
+                <input type="text" value={otp} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); e.target.value = v; setOtp(v); })(); setError(''); }} maxLength={6}
                   style={{ width: '100%', padding: '11px 14px', border: '1px solid #bbb', borderRadius: '4px', fontSize: '1.1rem', boxSizing: 'border-box', outline: 'none', color: '#333', letterSpacing: '8px', textAlign: 'center' }} />
               </div>
               <button type="submit" disabled={loading} style={{ width: '100%', padding: '13px', background: loading ? '#999' : '#2e7d32', color: '#fff', border: 'none', borderRadius: '4px', fontSize: '1rem', fontWeight: '600', cursor: loading ? 'not-allowed' : 'pointer' }}>

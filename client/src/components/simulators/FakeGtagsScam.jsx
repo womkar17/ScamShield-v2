@@ -234,8 +234,8 @@ export default function FakeGtagsScam({ onComplete }) {
             </div>
 
             <h2 style={{ color: "#2dd4bf" }}>📝 Register for gtags-pro</h2>
-            <input placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} style={inputStyle} />
-            <input placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} style={inputStyle} />
+            <input placeholder="Full Name" value={name} onChange={(e) => (() => { const v = e.target.value.replace(/[^a-zA-Z\s.-]/g, ''); e.target.value = v; setName(v); })()} style={inputStyle} />
+            <input placeholder="Email Address" value={email} onChange={(e) => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })()} style={inputStyle} />
             <input placeholder="GitHub Username" value={githubUsername} onChange={(e) => setGithubUsername(e.target.value)} style={inputStyle} />
             <input placeholder="Main Project Path (e.g., /home/user/project)" value={projectPath} onChange={(e) => setProjectPath(e.target.value)} style={inputStyle} />
 

@@ -5,6 +5,7 @@ import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
 import ModulePage from './pages/ModulePage';
 import GamesPage from './pages/GamesPage';
+import ExamPage from './pages/ExamPage';
 import CaseStudiesPage from './pages/CaseStudiesPage';
 import AdminPage from './pages/AdminPage';
 import SettingsPage from './pages/SettingsPage';
@@ -143,6 +144,9 @@ export default function App() {
         } />
         <Route path="/games" element={
           <ProtectedRoute isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}><GamesPage /></ProtectedRoute>
+        } />
+        <Route path="/exam" element={
+          <ProtectedRoute isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}><ExamPage /></ProtectedRoute>
         } />
         <Route path="/case-studies" element={
           <ProtectedRoute isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}><CaseStudiesPage /></ProtectedRoute>

@@ -4,7 +4,9 @@
 // Game types: swipe, spot-flag, password, quiz, chat, audio, visual
 // ============================================================
 
-export const MINIGAMES = [
+import { EXAM_MINIGAMES } from './minigames-exam';
+
+const EXISTING_MINIGAMES = [
 
   // ──────────── SWIPE GAMES (1-8) ────────────
   {
@@ -1124,3 +1126,5 @@ export const MINIGAMES = [
     }
   }
 ];
+
+export const MINIGAMES = [...EXISTING_MINIGAMES, ...EXAM_MINIGAMES];

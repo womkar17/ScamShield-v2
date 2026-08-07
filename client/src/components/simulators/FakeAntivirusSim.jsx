@@ -125,7 +125,7 @@ export default function FakeAntivirusSim({ onComplete }) {
                 required
                 placeholder="4532 •••• •••• ••••"
                 value={cardNumber}
-                onChange={(e) => setCardNumber(e.target.value)}
+                onChange={(e) => (() => { const v = e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim().slice(0, 19); e.target.value = v; setCardNumber(v); })()}
                 style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #475569', background: '#1e293b', color: '#fff' }}
               />
             </div>

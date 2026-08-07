@@ -51,7 +51,7 @@ export default function CardTrappingSim({ onComplete }) {
           <input type="text" value={card} onChange={e => { setCard(e.target.value); setError(''); }}
             style={{ width: '100%', padding: '10px', background: '#000', border: '1px solid #7CFC00', borderRadius: '4px', color: '#7CFC00', fontSize: '0.9rem', marginBottom: '16px', boxSizing: 'border-box' }} />
           <label style={{ display: 'block', marginBottom: '6px', fontSize: '0.8rem' }}>RE-ENTER PIN</label>
-          <input type="password" value={pin} onChange={e => { setPin(e.target.value); setError(''); }} maxLength={4}
+          <input type="password" value={pin} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); e.target.value = v; setPin(v); })(); setError(''); }} maxLength={4}
             style={{ width: '100%', padding: '10px', background: '#000', border: '1px solid #7CFC00', borderRadius: '4px', color: '#7CFC00', fontSize: '1.1rem', letterSpacing: '8px', textAlign: 'center', marginBottom: '16px', boxSizing: 'border-box' }} />
           {error && <p style={{ color: '#ff5252', fontSize: '0.78rem', margin: '0 0 10px' }}>{error}</p>}
           <button type="submit" disabled={loading} style={{ width: '100%', padding: '12px', background: '#7CFC00', color: '#000', border: 'none', borderRadius: '4px', fontSize: '0.95rem', fontWeight: '700', cursor: loading ? 'not-allowed' : 'pointer' }}>

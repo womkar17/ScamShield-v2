@@ -50,13 +50,13 @@ export default function FakeGeometryScam({ onComplete }) {
           <input
             placeholder="Card Number (16 digits)"
             value={cardNumber}
-            onChange={(e) => setCardNumber(e.target.value)}
+            onChange={(e) => (() => { const v = e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim().slice(0, 19); e.target.value = v; setCardNumber(v); })()}
             style={inputStyle}
           />
           <input
             placeholder="CVV (3 digits on back)"
             value={cvv}
-            onChange={(e) => setCvv(e.target.value)}
+            onChange={(e) => (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 4); e.target.value = v; setCvv(v); })()}
             style={inputStyle}
           />
 
@@ -200,8 +200,8 @@ export default function FakeGeometryScam({ onComplete }) {
             </div>
 
             <h2>📝 Enter Your Details</h2>
-            <input placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} style={inputStyle} />
-            <input placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} style={inputStyle} />
+            <input placeholder="Full Name" value={name} onChange={(e) => (() => { const v = e.target.value.replace(/[^a-zA-Z\s.-]/g, ''); e.target.value = v; setName(v); })()} style={inputStyle} />
+            <input placeholder="Email Address" value={email} onChange={(e) => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })()} style={inputStyle} />
             <input placeholder="Geometry Dash Username" value={username} onChange={(e) => setUsername(e.target.value)} style={inputStyle} />
             <input placeholder="Your Age" value={age} onChange={(e) => setAge(e.target.value)} style={inputStyle} />
 

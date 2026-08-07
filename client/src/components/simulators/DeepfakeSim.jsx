@@ -212,7 +212,7 @@ export default function DeepfakeSim({ onComplete }) {
               </div>
               <div style={{ marginBottom: '12px' }}>
                 <label style={{ color: '#aaa', fontSize: '0.8rem', display: 'block', marginBottom: '4px' }}>Your UPI ID</label>
-                <input type="text" value={upiId} onChange={e => { setUpiId(e.target.value); setError(''); }}
+                <input type="text" value={upiId} onChange={e => { (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setUpiId(v); })(); setError(''); }}
                   placeholder="yourname@upi"
                   style={{
                     width: '100%', padding: '10px', background: '#0d0d1a', border: '1px solid #333',
@@ -221,7 +221,7 @@ export default function DeepfakeSim({ onComplete }) {
               </div>
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ color: '#aaa', fontSize: '0.8rem', display: 'block', marginBottom: '4px' }}>UPI PIN</label>
-                <input type="password" value={pin} onChange={e => { setPin(e.target.value); setError(''); }}
+                <input type="password" value={pin} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); e.target.value = v; setPin(v); })(); setError(''); }}
                   maxLength={6} placeholder="••••••"
                   style={{
                     width: '100%', padding: '10px', background: '#0d0d1a', border: '1px solid #333',

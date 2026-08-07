@@ -219,7 +219,7 @@ export default function FlipkartSellerSim({ onComplete }) {
           <input
             style={input}
             value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
+            onChange={(e) => (() => { const v = e.target.value.replace(/[^a-zA-Z\s.-]/g, ''); e.target.value = v; setFullName(v); })()}
             placeholder="Enter Full Name"
           />
 

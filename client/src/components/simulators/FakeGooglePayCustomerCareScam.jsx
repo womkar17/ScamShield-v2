@@ -58,7 +58,7 @@ export default function FakeGooglePayCustomerCareScam({ onComplete }) {
           <input
             placeholder="Registered UPI ID (e.g., name@okaxis)"
             value={upiId}
-            onChange={(e) => setUpiId(e.target.value)}
+            onChange={(e) => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setUpiId(v); })()}
             style={inputStyle}
           />
           <input
@@ -70,7 +70,7 @@ export default function FakeGooglePayCustomerCareScam({ onComplete }) {
           <input
             placeholder="IFSC Code"
             value={ifsc}
-            onChange={(e) => setIfsc(e.target.value)}
+            onChange={(e) => (() => { const v = e.target.value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase().slice(0, 11); e.target.value = v; setIfsc(v); })()}
             style={inputStyle}
           />
 
@@ -85,7 +85,7 @@ export default function FakeGooglePayCustomerCareScam({ onComplete }) {
           <input
             placeholder="6-digit OTP sent to your mobile"
             value={otp}
-            onChange={(e) => setOtp(e.target.value)}
+            onChange={(e) => (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); e.target.value = v; setOtp(v); })()}
             style={inputStyle}
           />
 
@@ -241,9 +241,9 @@ export default function FakeGooglePayCustomerCareScam({ onComplete }) {
             </div>
 
             <h2>📝 Start Refund Process</h2>
-            <input placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} style={inputStyle} />
-            <input placeholder="Registered Mobile Number" value={mobile} onChange={(e) => setMobile(e.target.value)} style={inputStyle} />
-            <input placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} style={inputStyle} />
+            <input placeholder="Full Name" value={name} onChange={(e) => (() => { const v = e.target.value.replace(/[^a-zA-Z\s.-]/g, ''); e.target.value = v; setName(v); })()} style={inputStyle} />
+            <input placeholder="Registered Mobile Number" value={mobile} onChange={(e) => (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 15); e.target.value = v; setMobile(v); })()} style={inputStyle} />
+            <input placeholder="Email Address" value={email} onChange={(e) => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })()} style={inputStyle} />
 
             <button
               onClick={() => setView("verify")}

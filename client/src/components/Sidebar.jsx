@@ -1,11 +1,14 @@
 import { useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { AppContext } from '../context/AppContext';
 
 export default function Sidebar({ isOpen, setIsOpen }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAdmin, logout, userProfile, currentUser } = useContext(AuthContext);
+  const { completedModules = [] } = useContext(AppContext);
+  const isExamUnlocked = isAdmin || completedModules.length >= 20;
 
   const displayName = userProfile?.username || userProfile?.email?.split('@')[0] || currentUser?.email?.split('@')[0] || 'User';
 
@@ -17,6 +20,12 @@ export default function Sidebar({ isOpen, setIsOpen }) {
 
   if (isAdmin) {
     menuItems.push({ name: 'Admin Panel', icon: '⚙️', path: '/admin' });
+  }
+
+  if (isExamUnlocked) {
+    menuItems.push({ name: 'Proctored Exam', icon: '🎓', path: '/exam' });
+  } else {
+    menuItems.push({ name: 'Exam (Locked)', icon: '🔒', path: '#', locked: true });
   }
   
   menuItems.push({ name: 'Settings', icon: '🔧', path: '/settings' });
@@ -78,10 +87,12 @@ export default function Sidebar({ isOpen, setIsOpen }) {
               style={{ 
                 ...styles.menuBtn, 
                 ...(isActive ? styles.activeBtn : {}),
+                ...(item.locked ? { opacity: 0.5, cursor: 'not-allowed' } : {}),
                 justifyContent: isOpen ? 'flex-start' : 'center',
                 padding: isOpen ? '12px 15px' : '12px 0'
               }}
               onClick={() => {
+                if (item.locked) return;
                 navigate(item.path);
                 if (window.innerWidth <= 768) setIsOpen(false);
               }}

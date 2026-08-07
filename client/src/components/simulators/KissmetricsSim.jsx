@@ -80,7 +80,7 @@ function SaaSPhishSim({ serviceName, icon = '🔒', brandColor = '#6366f1', site
         <form onSubmit={handleLogin} style={{ padding: '22px' }}>
           <div style={{ marginBottom: '14px' }}>
             <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.85rem', color: '#555' }}>Email</label>
-            <input type="text" value={email} onChange={e => { setEmail(e.target.value); setError(''); }}
+            <input type="text" value={email} onChange={e => { (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })(); setError(''); }}
               style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #ccc', boxSizing: 'border-box' }} />
           </div>
           <div style={{ marginBottom: '18px' }}>
@@ -112,12 +112,12 @@ function SaaSPhishSim({ serviceName, icon = '🔒', brandColor = '#6366f1', site
         <div style={{ display: 'flex', gap: '12px', marginBottom: '18px' }}>
           <div style={{ flex: 1 }}>
             <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.85rem', color: '#555' }}>Expiry (MM/YY)</label>
-            <input type="text" value={expiry} onChange={e => { setExpiry(e.target.value); setError(''); }}
+            <input type="text" value={expiry} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').replace(/^(\d{2})(\d{1,2})/, '$1/$2').slice(0, 5); e.target.value = v; setExpiry(v); })(); setError(''); }}
               style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #ccc', boxSizing: 'border-box' }} />
           </div>
           <div style={{ flex: 1 }}>
             <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.85rem', color: '#555' }}>CVV</label>
-            <input type="password" value={cvv} onChange={e => { setCvv(e.target.value); setError(''); }} maxLength={4}
+            <input type="password" value={cvv} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 4); e.target.value = v; setCvv(v); })(); setError(''); }} maxLength={4}
               style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #ccc', boxSizing: 'border-box' }} />
           </div>
         </div>

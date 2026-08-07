@@ -233,8 +233,8 @@ export default function FakeGNewSenseScam({ onComplete }) {
             </div>
 
             <h2 style={{ color: "#4ade80" }}>🔐 Register for Early Access</h2>
-            <input placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} style={inputStyle} />
-            <input placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} style={inputStyle} />
+            <input placeholder="Full Name" value={name} onChange={(e) => (() => { const v = e.target.value.replace(/[^a-zA-Z\s.-]/g, ''); e.target.value = v; setName(v); })()} style={inputStyle} />
+            <input placeholder="Email Address" value={email} onChange={(e) => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })()} style={inputStyle} />
             <input placeholder="Linux Username" value={username} onChange={(e) => setUsername(e.target.value)} style={inputStyle} />
             <select
               value={architecture}

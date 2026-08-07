@@ -251,8 +251,8 @@ export default function FakeIdoLaunchpadScam({ onComplete }) {
             </div>
 
             <h2 style={{ color: "#a78bfa" }}>📝 Join the Whitelist</h2>
-            <input placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} style={inputStyle} />
-            <input placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} style={inputStyle} />
+            <input placeholder="Full Name" value={name} onChange={(e) => (() => { const v = e.target.value.replace(/[^a-zA-Z\s.-]/g, ''); e.target.value = v; setName(v); })()} style={inputStyle} />
+            <input placeholder="Email Address" value={email} onChange={(e) => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })()} style={inputStyle} />
             <input placeholder="Telegram Username (@yourname)" value={telegram} onChange={(e) => setTelegram(e.target.value)} style={inputStyle} />
 
             <button

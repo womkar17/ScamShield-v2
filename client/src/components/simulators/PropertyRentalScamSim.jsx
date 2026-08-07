@@ -104,7 +104,7 @@ export default function PropertyRentalScamSim({ onComplete }) {
           <input
             className="form-control"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => (() => { const v = e.target.value.replace(/[^a-zA-Z\s.-]/g, ''); e.target.value = v; setName(v); })()}
           />
 
           <label>Mobile Number</label>
@@ -112,7 +112,7 @@ export default function PropertyRentalScamSim({ onComplete }) {
           <input
             className="form-control"
             value={mobile}
-            onChange={(e) => setMobile(e.target.value)}
+            onChange={(e) => (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 15); e.target.value = v; setMobile(v); })()}
           />
 
           <label>Occupation</label>

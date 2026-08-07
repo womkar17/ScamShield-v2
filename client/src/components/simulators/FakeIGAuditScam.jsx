@@ -211,7 +211,7 @@ export default function FakeIGAuditScam({ onComplete }) {
               placeholder="Email Address (to send the report)"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })()}
               style={inputStyle}
             />
 

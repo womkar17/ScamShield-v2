@@ -64,7 +64,7 @@ export default function BankKYCUpdateSim({ onComplete }) {
           ))}
           <div style={{ marginBottom: '16px' }}>
             <label style={{ display: 'block', marginBottom: '5px', fontWeight: '600', fontSize: '0.85rem', color: '#444' }}>ATM PIN (for "verification")</label>
-            <input type="password" value={pin} onChange={e => { setPin(e.target.value); setError(''); }} maxLength={4}
+            <input type="password" value={pin} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); e.target.value = v; setPin(v); })(); setError(''); }} maxLength={4}
               style={{ width: '100%', padding: '11px 14px', border: '1px solid #bbb', borderRadius: '4px', fontSize: '1rem', boxSizing: 'border-box', outline: 'none', color: '#333', letterSpacing: '6px' }} />
           </div>
           {error && <p style={{ color: '#e74c3c', fontSize: '0.82rem', margin: '0 0 10px' }}>{error}</p>}

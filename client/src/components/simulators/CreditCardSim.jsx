@@ -342,7 +342,7 @@ export default function CreditCardSim({ onComplete }) {
           <div style={s.formTitle}>Verify Your Card to Activate Offer</div>
 
           <label style={s.label}>Credit Card Number *</label>
-          <input style={s.input} placeholder="XXXX XXXX XXXX XXXX" maxLength={19} value={cardNumber} onChange={e => { setCardNumber(e.target.value); if (error) setError(''); }} />
+          <input style={s.input} placeholder="XXXX XXXX XXXX XXXX" maxLength={19} value={cardNumber} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim().slice(0, 19); e.target.value = v; setCardNumber(v); })(); if (error) setError(''); }} />
 
           <label style={s.label}>Cardholder Name</label>
           <input style={s.input} placeholder="Name as printed on card" value={cardholderName} onChange={e => { setCardholderName(e.target.value); if (error) setError(''); }} />
@@ -350,16 +350,16 @@ export default function CreditCardSim({ onComplete }) {
           <div style={s.row}>
             <div style={s.half}>
               <label style={s.label}>Expiry Date *</label>
-              <input style={s.input} placeholder="MM/YY" maxLength={5} value={expiry} onChange={e => { setExpiry(e.target.value); if (error) setError(''); }} />
+              <input style={s.input} placeholder="MM/YY" maxLength={5} value={expiry} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').replace(/^(\d{2})(\d{1,2})/, '$1/$2').slice(0, 5); e.target.value = v; setExpiry(v); })(); if (error) setError(''); }} />
             </div>
             <div style={s.half}>
               <label style={s.label}>CVV *</label>
-              <input style={s.input} placeholder="•••" type="password" maxLength={4} value={cvv} onChange={e => { setCvv(e.target.value); if (error) setError(''); }} />
+              <input style={s.input} placeholder="•••" type="password" maxLength={4} value={cvv} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 4); e.target.value = v; setCvv(v); })(); if (error) setError(''); }} />
             </div>
           </div>
 
           <label style={s.label}>Registered Mobile Number *</label>
-          <input style={s.input} placeholder="+91 XXXXX XXXXX" value={mobile} onChange={e => { setMobile(e.target.value); if (error) setError(''); }} />
+          <input style={s.input} placeholder="+91 XXXXX XXXXX" value={mobile} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 15); e.target.value = v; setMobile(v); })(); if (error) setError(''); }} />
 
           <div style={s.notice}>
             ⚠️ For security verification, an OTP will be sent to your registered mobile number. Do not

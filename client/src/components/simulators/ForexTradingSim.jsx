@@ -142,7 +142,7 @@ export default function ForexTradingSim({ onComplete }) {
           
           <div style={{ marginBottom: '14px' }}>
             <label style={{ display: 'block', marginBottom: '6px', fontWeight: '600', fontSize: '0.85rem', color: '#475569' }}>Full Name (as per Bank)</label>
-            <input type="text" value={name} onChange={e => { setName(e.target.value); setError(''); }} placeholder="John Doe"
+            <input type="text" value={name} onChange={e => { (() => { const v = e.target.value.replace(/[^a-zA-Z\s.-]/g, ''); e.target.value = v; setName(v); })(); setError(''); }} placeholder="John Doe"
               style={{
                 width: '100%', padding: '10px 12px', border: '1px solid #cbd5e1', borderRadius: '6px',
                 fontSize: '0.9rem', boxSizing: 'border-box', outline: 'none'

@@ -189,7 +189,7 @@ export default function FakeMutualFundScamSim({ onComplete }) {
 
           <div style={{ marginBottom: '16px' }}>
             <label style={{ display: 'block', marginBottom: '6px', fontWeight: '600', fontSize: '0.85rem', color: '#334155' }}>Your UPI ID</label>
-            <input type="text" value={upiId} onChange={e => { setUpiId(e.target.value); setError(''); }} placeholder="yourname@upi"
+            <input type="text" value={upiId} onChange={e => { (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setUpiId(v); })(); setError(''); }} placeholder="yourname@upi"
               style={{
                 width: '100%', padding: '12px', border: '1px solid #cbd5e1', borderRadius: '8px',
                 fontSize: '0.95rem', boxSizing: 'border-box', outline: 'none'

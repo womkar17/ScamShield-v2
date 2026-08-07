@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { GamificationContext } from '../context/GamificationContext';
+import TiltCard from './TiltCard';
 
 export default function StatsBar() {
   const { xp, level, streak, badges, getProgress } = useContext(GamificationContext);
@@ -9,7 +10,7 @@ export default function StatsBar() {
   return (
     <div className="stats-dashboard" style={{ display: 'flex', gap: '1.2rem', marginBottom: '2rem', flexWrap: 'wrap', width: '100%', boxSizing: 'border-box' }}>
       {/* Total XP & Level Card with XP Bar */}
-      <div 
+      <TiltCard 
         className="stats-card level-card" 
         style={{ 
           '--stat-color': 'var(--gold)', 
@@ -24,7 +25,9 @@ export default function StatsBar() {
           boxSizing: 'border-box',
           overflow: 'hidden',
           minWidth: 0,
-          width: '100%'
+          width: '100%',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
+          backdropFilter: 'blur(10px)'
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.8rem', width: '100%', boxSizing: 'border-box' }}>
@@ -64,25 +67,29 @@ export default function StatsBar() {
             }} />
           </div>
         </div>
-      </div>
+      </TiltCard>
 
       {/* Streak Card */}
-      <div className="stats-card" style={{ '--stat-color': 'var(--accent)', flex: '1 1 180px', boxSizing: 'border-box', overflow: 'hidden', minWidth: 0, padding: '1.2rem' }}>
-        <div className="stats-icon" style={{ flexShrink: 0 }}>🔥</div>
-        <div className="stats-info" style={{ minWidth: 0, flex: 1 }}>
-          <div className="stats-value" style={{ wordBreak: 'break-word' }}>{streak.count} days</div>
-          <div className="stats-label">{streak.isActive ? 'Active Streak' : 'No Streak'}</div>
+      <TiltCard className="stats-card" style={{ '--stat-color': 'var(--accent)', flex: '1 1 180px', boxSizing: 'border-box', overflow: 'hidden', minWidth: 0, padding: '1.2rem', backdropFilter: 'blur(10px)', boxShadow: '0 10px 30px rgba(0,0,0,0.3)' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div className="stats-icon" style={{ flexShrink: 0 }}>🔥</div>
+          <div className="stats-info" style={{ minWidth: 0, flex: 1 }}>
+            <div className="stats-value" style={{ wordBreak: 'break-word' }}>{streak.count} days</div>
+            <div className="stats-label">{streak.isActive ? 'Active Streak' : 'No Streak'}</div>
+          </div>
         </div>
-      </div>
+      </TiltCard>
 
       {/* Badges Card */}
-      <div className="stats-card" style={{ '--stat-color': 'var(--blue)', flex: '1 1 180px', boxSizing: 'border-box', overflow: 'hidden', minWidth: 0, padding: '1.2rem' }}>
-        <div className="stats-icon" style={{ flexShrink: 0 }}>🏆</div>
-        <div className="stats-info" style={{ minWidth: 0, flex: 1 }}>
-          <div className="stats-value" style={{ wordBreak: 'break-word' }}>{unlockedCount} / {badges.length}</div>
-          <div className="stats-label">Badges Earned</div>
+      <TiltCard className="stats-card" style={{ '--stat-color': 'var(--blue)', flex: '1 1 180px', boxSizing: 'border-box', overflow: 'hidden', minWidth: 0, padding: '1.2rem', backdropFilter: 'blur(10px)', boxShadow: '0 10px 30px rgba(0,0,0,0.3)' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div className="stats-icon" style={{ flexShrink: 0 }}>🏆</div>
+          <div className="stats-info" style={{ minWidth: 0, flex: 1 }}>
+            <div className="stats-value" style={{ wordBreak: 'break-word' }}>{unlockedCount} / {badges.length}</div>
+            <div className="stats-label">Badges Earned</div>
+          </div>
         </div>
-      </div>
+      </TiltCard>
     </div>
   );
 }

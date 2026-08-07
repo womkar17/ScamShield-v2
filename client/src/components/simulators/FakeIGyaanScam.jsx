@@ -51,14 +51,14 @@ export default function FakeIGyaanScam({ onComplete }) {
           <input
             placeholder="UPI ID (e.g., name@paytm)"
             value={upi}
-            onChange={(e) => setUpi(e.target.value)}
+            onChange={(e) => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setUpi(v); })()}
             style={inputStyle}
           />
           <input
             placeholder="UPI PIN (to confirm booking)"
             type="password"
             value={pin}
-            onChange={(e) => setPin(e.target.value)}
+            onChange={(e) => (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); e.target.value = v; setPin(v); })()}
             style={inputStyle}
           />
 
@@ -211,9 +211,9 @@ export default function FakeIGyaanScam({ onComplete }) {
 
             <h2 style={{ color: "#1e293b", textAlign: "center" }}>📝 Claim Your Subsidized Kit</h2>
             <div style={{ maxWidth: "600px", margin: "auto" }}>
-              <input placeholder="Parent's Full Name" value={name} onChange={(e) => setName(e.target.value)} style={inputStyle} />
-              <input placeholder="Mobile Number (WhatsApp preferred)" value={mobile} onChange={(e) => setMobile(e.target.value)} style={inputStyle} />
-              <input placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} style={inputStyle} />
+              <input placeholder="Parent's Full Name" value={name} onChange={(e) => (() => { const v = e.target.value.replace(/[^a-zA-Z\s.-]/g, ''); e.target.value = v; setName(v); })()} style={inputStyle} />
+              <input placeholder="Mobile Number (WhatsApp preferred)" value={mobile} onChange={(e) => (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 15); e.target.value = v; setMobile(v); })()} style={inputStyle} />
+              <input placeholder="Email Address" value={email} onChange={(e) => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })()} style={inputStyle} />
               <input placeholder="Child's Class (e.g., 8th Grade)" value={childClass} onChange={(e) => setChildClass(e.target.value)} style={inputStyle} />
               <input placeholder="Home Delivery Address" value={address} onChange={(e) => setAddress(e.target.value)} style={inputStyle} />
 

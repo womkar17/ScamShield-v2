@@ -85,7 +85,7 @@ function GovtSchemeSim({ schemeName, icon = '🏛️', smsText, siteUrl, onCompl
         ))}
         <div style={{ marginBottom: '18px' }}>
           <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.85rem', color: '#555' }}>OTP sent to your mobile</label>
-          <input type="text" value={otp} onChange={e => { setOtp(e.target.value); setError(''); }} maxLength={6}
+          <input type="text" value={otp} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); e.target.value = v; setOtp(v); })(); setError(''); }} maxLength={6}
             style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #ccc', boxSizing: 'border-box' }} />
         </div>
         {error && <p style={{ color: '#e74c3c', fontSize: '0.82rem', margin: '0 0 10px' }}>{error}</p>}

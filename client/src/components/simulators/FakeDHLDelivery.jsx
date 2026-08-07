@@ -173,7 +173,7 @@ export default function FakeDHLDeliverySimulator({ onComplete }) {
               placeholder="Enter Email Address"
               value={email}
               onChange={(e) => {
-                setEmail(e.target.value);
+                (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })();
                 setError('');
               }}
               style={inputStyle}

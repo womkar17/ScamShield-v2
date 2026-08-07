@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import { GamificationContext } from '../context/GamificationContext';
+import TiltCard from './TiltCard';
 
 export default function BadgeGrid() {
   const { badges } = useContext(GamificationContext);
@@ -8,7 +9,7 @@ export default function BadgeGrid() {
   const unlockedCount = badges.filter(b => b.unlocked).length;
 
   return (
-    <div className="badge-section">
+    <TiltCard className="badge-section" style={{ backdropFilter: 'blur(10px)', boxShadow: '0 10px 30px rgba(0,0,0,0.3)', background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.7))' }}>
       <div className="badge-section-header">
         <h3 className="badge-section-title">🏆 Achievements</h3>
         <span className="badge-section-count">
@@ -55,6 +56,6 @@ export default function BadgeGrid() {
           </div>
         </div>
       )}
-    </div>
+    </TiltCard>
   );
 }

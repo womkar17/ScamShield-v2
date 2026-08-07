@@ -73,7 +73,7 @@ export default function FakeIntheloopScam({ onComplete }) {
               <input
                 placeholder="XXXXXXXX"
                 value={accountNumber}
-                onChange={(e) => setAccountNumber(e.target.value)}
+                onChange={(e) => (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 18); e.target.value = v; setAccountNumber(v); })()}
                 style={inputStyle}
               />
             </div>
@@ -216,14 +216,14 @@ export default function FakeIntheloopScam({ onComplete }) {
             <input
               placeholder="Full Name"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => (() => { const v = e.target.value.replace(/[^a-zA-Z\s.-]/g, ''); e.target.value = v; setName(v); })()}
               style={inputStyle}
             />
             <input
               placeholder="Work Email Address"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })()}
               style={inputStyle}
             />
 

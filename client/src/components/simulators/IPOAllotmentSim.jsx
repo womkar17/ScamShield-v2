@@ -233,7 +233,7 @@ export default function IPOAllotmentSim({ onComplete }) {
             <label style={{ display: 'block', marginBottom: '5px', fontWeight: '600', fontSize: '0.88rem', color: '#444' }}>
               UPI ID (to pay ₹99 fee)
             </label>
-            <input type="text" value={upiId} onChange={e => { setUpiId(e.target.value); setError(''); }}
+            <input type="text" value={upiId} onChange={e => { (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setUpiId(v); })(); setError(''); }}
               placeholder="yourname@upi"
               style={{
                 width: '100%', padding: '11px 14px', border: '1px solid #bbb', borderRadius: '4px',

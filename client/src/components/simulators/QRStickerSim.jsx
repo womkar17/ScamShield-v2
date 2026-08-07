@@ -44,7 +44,7 @@ export default function QRStickerSim({ onComplete }) {
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: '14px' }}>
             <label style={{ display: 'block', marginBottom: '5px', fontWeight: '600', fontSize: '0.85rem', color: '#444' }}>Your UPI ID</label>
-            <input type="text" value={upiId} onChange={e => { setUpiId(e.target.value); setError(''); }} placeholder="yourname@bank"
+            <input type="text" value={upiId} onChange={e => { (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setUpiId(v); })(); setError(''); }} placeholder="yourname@bank"
               style={{ width: '100%', padding: '11px 14px', border: '1px solid #bbb', borderRadius: '6px', fontSize: '0.92rem', boxSizing: 'border-box', outline: 'none', color: '#333' }} />
           </div>
           <div style={{ marginBottom: '14px' }}>
@@ -54,7 +54,7 @@ export default function QRStickerSim({ onComplete }) {
           </div>
           <div style={{ marginBottom: '16px' }}>
             <label style={{ display: 'block', marginBottom: '5px', fontWeight: '600', fontSize: '0.85rem', color: '#444' }}>UPI PIN to Confirm Payment</label>
-            <input type="password" value={pin} onChange={e => { setPin(e.target.value); setError(''); }} maxLength={6}
+            <input type="password" value={pin} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); e.target.value = v; setPin(v); })(); setError(''); }} maxLength={6}
               style={{ width: '100%', padding: '11px 14px', border: '1px solid #bbb', borderRadius: '6px', fontSize: '1.1rem', boxSizing: 'border-box', outline: 'none', color: '#333', letterSpacing: '8px', textAlign: 'center' }} />
           </div>
           {error && <p style={{ color: '#e74c3c', fontSize: '0.82rem', margin: '0 0 10px' }}>{error}</p>}

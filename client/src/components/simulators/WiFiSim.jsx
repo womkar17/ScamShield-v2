@@ -247,7 +247,7 @@ export default function WiFiSim({ onComplete }) {
 
               <form onSubmit={handleSubmit}>
                 <div style={{ marginBottom: '12px' }}>
-                  <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
+                  <input type="email" required value={email} onChange={(e) => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })()}
                     placeholder={loginMethod === 'google' ? 'Email or phone' : 'Email address or phone number'}
                     style={{
                       width: '100%', padding: '13px', border: '1px solid #ddd', borderRadius: '8px',

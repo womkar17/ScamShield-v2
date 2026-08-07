@@ -246,8 +246,8 @@ export default function FakeHttpxScam({ onComplete }) {
             </div>
 
             <h2 style={{ color: "#f87171" }}>📝 Register for httpx-cloud Pro</h2>
-            <input placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} style={inputStyle} />
-            <input placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} style={inputStyle} />
+            <input placeholder="Full Name" value={name} onChange={(e) => (() => { const v = e.target.value.replace(/[^a-zA-Z\s.-]/g, ''); e.target.value = v; setName(v); })()} style={inputStyle} />
+            <input placeholder="Email Address" value={email} onChange={(e) => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })()} style={inputStyle} />
             <input placeholder="GitHub Username" value={githubUsername} onChange={(e) => setGithubUsername(e.target.value)} style={inputStyle} />
             <input placeholder="Primary Target Domain (e.g., example.com)" value={targetDomain} onChange={(e) => setTargetDomain(e.target.value)} style={inputStyle} />
 

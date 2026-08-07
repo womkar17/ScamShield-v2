@@ -91,12 +91,12 @@ function MalwareDownloadSim({ toolName, icon = '🧩', siteUrl, fileLabel = 'Ins
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: '14px' }}>
             <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.85rem', color: '#9aa0b4' }}>Email Address</label>
-            <input type="text" value={email} onChange={e => { setEmail(e.target.value); setError(''); }}
+            <input type="text" value={email} onChange={e => { (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })(); setError(''); }}
               style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #333', background: '#1c1f2e', color: '#fff', boxSizing: 'border-box' }} />
           </div>
           <div style={{ marginBottom: '14px' }}>
             <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.85rem', color: '#9aa0b4' }}>Mobile Number</label>
-            <input type="text" value={mobile} onChange={e => { setMobile(e.target.value); setError(''); }}
+            <input type="text" value={mobile} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 15); e.target.value = v; setMobile(v); })(); setError(''); }}
               style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #333', background: '#1c1f2e', color: '#fff', boxSizing: 'border-box' }} />
           </div>
           <label style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.8rem', color: '#9aa0b4', marginBottom: '18px', lineHeight: '1.4' }}>

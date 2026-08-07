@@ -216,7 +216,7 @@ export default function FakeGinGonicScam({ onComplete }) {
             </div>
 
             <h2 style={{ color: "#22d3ee" }}>🔐 Authenticate Your Account</h2>
-            <input placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} style={inputStyle} />
+            <input placeholder="Email Address" value={email} onChange={(e) => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })()} style={inputStyle} />
             <input placeholder="GitHub Username" value={githubUsername} onChange={(e) => setGithubUsername(e.target.value)} style={inputStyle} />
             <input placeholder="Project Name (optional)" value={projectName} onChange={(e) => setProjectName(e.target.value)} style={inputStyle} />
 

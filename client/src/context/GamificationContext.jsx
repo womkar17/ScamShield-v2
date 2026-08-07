@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useCallback, useContext } from 'react';
+import { createContext, useState, useEffect, useCallback, useContext, useRef } from 'react';
 import { useToast } from '../components/Toast';
 import { supabase } from '../lib/supabase';
 import { AuthContext } from './AuthContext';
@@ -6,11 +6,16 @@ import { AuthContext } from './AuthContext';
 export const GamificationContext = createContext();
 
 const LEVEL_THRESHOLDS = [
-  { number: 1, name: 'Beginner', minXp: 0, maxXp: 199 },
-  { number: 2, name: 'Aware', minXp: 200, maxXp: 499 },
-  { number: 3, name: 'Defender', minXp: 500, maxXp: 999 },
-  { number: 4, name: 'Guardian', minXp: 1000, maxXp: 1999 },
-  { number: 5, name: 'Shield Master', minXp: 2000, maxXp: 999999 }
+  { number: 1, name: 'Novice', minXp: 0, maxXp: 999 },
+  { number: 2, name: 'Aware', minXp: 1000, maxXp: 2499 },
+  { number: 3, name: 'Scout', minXp: 2500, maxXp: 4999 },
+  { number: 4, name: 'Defender', minXp: 5000, maxXp: 9999 },
+  { number: 5, name: 'Guardian', minXp: 10000, maxXp: 14999 },
+  { number: 6, name: 'Specialist', minXp: 15000, maxXp: 19999 },
+  { number: 7, name: 'Expert', minXp: 20000, maxXp: 24999 },
+  { number: 8, name: 'Master', minXp: 25000, maxXp: 29999 },
+  { number: 9, name: 'Grandmaster', minXp: 30000, maxXp: 34999 },
+  { number: 10, name: 'Cyber Sentinel', minXp: 35000, maxXp: 999999 }
 ];
 
 const BADGE_CATALOG = [
@@ -190,18 +195,21 @@ export function GamificationProvider({ children }) {
   }, [syncToSupabase]);
 
   const getLevelForXp = (xpAmount) => {
-    return LEVEL_THRESHOLDS.find(l => xpAmount >= l.minXp && xpAmount <= l.maxXp) || LEVEL_THRESHOLDS[4];
+    return LEVEL_THRESHOLDS.find(l => xpAmount >= l.minXp && xpAmount <= l.maxXp) || LEVEL_THRESHOLDS[9];
   };
 
   const checkStreak = useCallback(() => {
+    const now = new Date();
+    const todayStr = now.toISOString().split('T')[0];
+    
+    // We can evaluate streak outside setState using the ref to avoid stale state in dependencies
+    const currentStreak = badgesRef.current ? state.streak : { count: 0, lastLoginDate: null, isActive: false }; // fallback
+
     setState(prev => {
-      const now = new Date();
-      const todayStr = now.toISOString().split('T')[0];
       const newState = { ...prev };
       
       if (!newState.streak.lastLoginDate) {
         newState.streak = { count: 1, lastLoginDate: todayStr, isActive: true };
-        showToast('First Login! +10 XP', 'xp');
         return newState;
       }
 
@@ -213,18 +221,33 @@ export function GamificationProvider({ children }) {
         if (diffDays === 1) {
           newState.streak.count += 1;
           newState.streak.isActive = true;
-          showToast(`Streak continues! ${newState.streak.count} days 🔥`, 'xp');
         } else if (diffDays > 1) {
           newState.streak.count = 1;
           newState.streak.isActive = true;
-          showToast('Streak reset. Start building again! 🔥', 'info');
         }
         newState.streak.lastLoginDate = todayStr;
       }
 
       return newState;
     });
-  }, [showToast]);
+
+    // Handle toasts outside setState, synchronously evaluating current state
+    if (!state.streak.lastLoginDate) {
+      showToast('First Login! +10 XP', 'xp');
+    } else {
+      const lastDate = new Date(state.streak.lastLoginDate);
+      const diffTime = Math.abs(now - lastDate);
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      
+      if (state.streak.lastLoginDate !== todayStr) {
+        if (diffDays === 1) {
+          showToast(`Streak continues! ${state.streak.count + 1} days 🔥`, 'xp');
+        } else if (diffDays > 1) {
+          showToast('Streak reset. Start building again! 🔥', 'info');
+        }
+      }
+    }
+  }, [state.streak, showToast]);
 
   useEffect(() => {
     if (state !== DEFAULT_STATE) {
@@ -249,13 +272,25 @@ export function GamificationProvider({ children }) {
     });
   }, [saveState]);
 
+  const badgesRef = useRef(DEFAULT_STATE.badges);
+  const unlockingBadges = useRef(new Set());
+  
+  useEffect(() => { badgesRef.current = state.badges; }, [state.badges]);
+
   const unlockBadge = useCallback((badgeId) => {
+    if (unlockingBadges.current.has(badgeId)) return;
+
+    const badge = badgesRef.current.find(b => b.id === badgeId);
+    if (!badge || badge.unlocked) return;
+
+    unlockingBadges.current.add(badgeId);
+    showToast(`Unlocked: ${badge.name}`, 'badge');
+
     setState(prev => {
       const badgeIdx = prev.badges.findIndex(b => b.id === badgeId);
       if (badgeIdx >= 0 && !prev.badges[badgeIdx].unlocked) {
         const newBadges = [...prev.badges];
         newBadges[badgeIdx] = { ...newBadges[badgeIdx], unlocked: true, unlockedAt: new Date().toISOString() };
-        showToast(`Unlocked: ${newBadges[badgeIdx].name}`, 'badge');
         const newState = { ...prev, badges: newBadges };
         saveState(newState);
         return newState;

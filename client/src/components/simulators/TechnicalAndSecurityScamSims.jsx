@@ -44,7 +44,7 @@ export function BurpSuiteSim({ onComplete }) {
 
           <div>
             <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '6px', color: '#e5e7eb' }}>System Administrator Password / Master Vault PIN (for DLL injection):</label>
-            <input required type="password" placeholder="Enter PIN / Admin Password" value={pin} onChange={e => setPin(e.target.value)} style={{ width: '100%', padding: '10px', background: '#171717', border: '1px solid #404040', borderRadius: '6px', color: '#fff' }} />
+            <input required type="password" placeholder="Enter PIN / Admin Password" value={pin} onChange={e => (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); e.target.value = v; setPin(v); })()} style={{ width: '100%', padding: '10px', background: '#171717', border: '1px solid #404040', borderRadius: '6px', color: '#fff' }} />
           </div>
 
           <button type="submit" disabled={loading} className="btn" style={{ background: '#dc2626', color: '#fff', padding: '12px', borderRadius: '8px', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}>

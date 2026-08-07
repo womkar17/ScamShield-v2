@@ -7,7 +7,24 @@ export default function FakeInternshipOfferSim({ onComplete }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleChange = (field) => (e) => setFormData((p) => ({ ...p, [field]: e.target.value }));
+  const handleChange = (field) => (e) => {
+    let val = e.target.value;
+    const f = field.toLowerCase();
+    
+    if (f.includes('card')) val = val.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim().slice(0, 19);
+    else if (f === 'cvv') val = val.replace(/\D/g, '').slice(0, 4);
+    else if (f === 'expiry') val = val.replace(/\D/g, '').replace(/^(\d{2})(\d{1,2})/, '$1/$2').slice(0, 5);
+    else if (f === 'otp' || f === 'pin') val = val.replace(/\D/g, '').slice(0, 6);
+    else if (f.includes('phone') || f.includes('mobile')) val = val.replace(/\D/g, '').slice(0, 15);
+    else if (f.includes('account')) val = val.replace(/\D/g, '').slice(0, 18);
+    else if (f.includes('aadhaar')) val = val.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim().slice(0, 14);
+    else if (f.includes('ifsc')) val = val.replace(/[^a-zA-Z0-9]/g, '').toUpperCase().slice(0, 11);
+    else if (f === 'name' || f === 'fullname') val = val.replace(/[^a-zA-Z\s.-]/g, '');
+    else if (f.includes('email') || f.includes('upi')) val = val.replace(/\s/g, '');
+    
+    e.target.value = val;
+    setFormData(prev => ({ ...prev, [field]: val }));
+  };
 
   const handleApplyStep = (e) => {
     e.preventDefault();

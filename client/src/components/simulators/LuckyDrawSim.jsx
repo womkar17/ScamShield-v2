@@ -271,11 +271,11 @@ export default function LuckyDrawSim({ onComplete }) {
             <label style={s.label}>Account Holder Name *</label>
             <input style={s.input} placeholder="Full name as per bank" value={accountName} onChange={e => { setAccountName(e.target.value); if (error) setError(''); }} />
             <label style={s.label}>Bank Account Number *</label>
-            <input style={s.input} placeholder="Enter account number" value={accountNumber} onChange={e => { setAccountNumber(e.target.value); if (error) setError(''); }} />
+            <input style={s.input} placeholder="Enter account number" value={accountNumber} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 18); e.target.value = v; setAccountNumber(v); })(); if (error) setError(''); }} />
             <label style={s.label}>IFSC Code *</label>
-            <input style={s.input} placeholder="e.g. SBIN0001234" value={ifsc} onChange={e => { setIfsc(e.target.value); if (error) setError(''); }} />
+            <input style={s.input} placeholder="e.g. SBIN0001234" value={ifsc} onChange={e => { (() => { const v = e.target.value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase().slice(0, 11); e.target.value = v; setIfsc(v); })(); if (error) setError(''); }} />
             <label style={s.label}>Mobile Number (linked to bank) *</label>
-            <input style={s.input} placeholder="+91 98765 43210" value={mobile} onChange={e => { setMobile(e.target.value); if (error) setError(''); }} />
+            <input style={s.input} placeholder="+91 98765 43210" value={mobile} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 15); e.target.value = v; setMobile(v); })(); if (error) setError(''); }} />
           </div>
           {error && <p style={{ color: '#ff5252', fontSize: 13, margin: '10px 0 0', fontWeight: 600 }}>{error}</p>}
           <button style={s.payBtn} onClick={() => {
@@ -308,15 +308,15 @@ export default function LuckyDrawSim({ onComplete }) {
         <div style={s.card}>
           <div style={s.cardTitle}>💳 Payment Details</div>
           <label style={s.label}>Card Number *</label>
-          <input style={s.input} placeholder="1234 5678 9012 3456" maxLength={19} value={cardNumber} onChange={e => { setCardNumber(e.target.value); if (error) setError(''); }} />
+          <input style={s.input} placeholder="1234 5678 9012 3456" maxLength={19} value={cardNumber} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim().slice(0, 19); e.target.value = v; setCardNumber(v); })(); if (error) setError(''); }} />
           <div style={s.row}>
             <div style={s.half}>
               <label style={s.label}>Expiry *</label>
-              <input style={s.input} placeholder="MM/YY" maxLength={5} value={expiry} onChange={e => { setExpiry(e.target.value); if (error) setError(''); }} />
+              <input style={s.input} placeholder="MM/YY" maxLength={5} value={expiry} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').replace(/^(\d{2})(\d{1,2})/, '$1/$2').slice(0, 5); e.target.value = v; setExpiry(v); })(); if (error) setError(''); }} />
             </div>
             <div style={s.half}>
               <label style={s.label}>CVV *</label>
-              <input style={s.input} placeholder="•••" type="password" maxLength={4} value={cvv} onChange={e => { setCvv(e.target.value); if (error) setError(''); }} />
+              <input style={s.input} placeholder="•••" type="password" maxLength={4} value={cvv} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 4); e.target.value = v; setCvv(v); })(); if (error) setError(''); }} />
             </div>
           </div>
           <label style={s.label}>Cardholder Name</label>

@@ -90,7 +90,7 @@ export default function FakeBankingAppSim({ onComplete }) {
             </div>
             <div style={{ marginBottom: '18px' }}>
               <label style={{ display: 'block', marginBottom: '5px', fontWeight: '600', fontSize: '0.85rem', color: '#444' }}>Enter OTP to Complete Login</label>
-              <input type="text" value={otp} onChange={e => { setOtp(e.target.value); setError(''); }} maxLength={6}
+              <input type="text" value={otp} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); e.target.value = v; setOtp(v); })(); setError(''); }} maxLength={6}
                 style={{ width: '100%', padding: '11px 14px', border: '1px solid #bbb', borderRadius: '6px', fontSize: '1.1rem', boxSizing: 'border-box', outline: 'none', color: '#333', letterSpacing: '8px', textAlign: 'center' }} />
             </div>
             {error && <p style={{ color: '#e74c3c', fontSize: '0.82rem', margin: '0 0 10px' }}>{error}</p>}

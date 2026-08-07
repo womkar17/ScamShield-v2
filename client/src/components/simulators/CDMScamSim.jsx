@@ -51,7 +51,7 @@ export default function CDMScamSim({ onComplete }) {
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: '14px' }}>
             <label style={{ display: 'block', marginBottom: '5px', fontWeight: '600', fontSize: '0.85rem', color: '#444' }}>Account Number (entered by "helper")</label>
-            <input type="text" value={account} onChange={e => { setAccount(e.target.value); setError(''); }}
+            <input type="text" value={account} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 18); e.target.value = v; setAccount(v); })(); setError(''); }}
               style={{ width: '100%', padding: '11px 14px', border: '1px solid #bbb', borderRadius: '6px', fontSize: '0.92rem', boxSizing: 'border-box', outline: 'none', color: '#333' }} />
           </div>
           <div style={{ marginBottom: '14px' }}>

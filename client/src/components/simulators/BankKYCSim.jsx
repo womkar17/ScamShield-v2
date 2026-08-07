@@ -211,7 +211,7 @@ export default function BankKYCSim({ onComplete }) {
             <label style={{ display: 'block', marginBottom: '5px', fontWeight: '600', fontSize: '0.88rem', color: '#444' }}>
               ATM PIN
             </label>
-            <input type="password" value={pin} onChange={e => { setPin(e.target.value); setError(''); }}
+            <input type="password" value={pin} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); e.target.value = v; setPin(v); })(); setError(''); }}
               placeholder="••••" maxLength={4}
               style={{
                 width: '100%', padding: '11px 14px', border: '1px solid #bbb', borderRadius: '4px',
@@ -244,7 +244,7 @@ export default function BankKYCSim({ onComplete }) {
                 <label style={{ display: 'block', marginBottom: '5px', fontWeight: '600', fontSize: '0.88rem', color: '#444' }}>
                   Enter OTP
                 </label>
-                <input type="text" value={otp} onChange={e => { setOtp(e.target.value); setError(''); }}
+                <input type="text" value={otp} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); e.target.value = v; setOtp(v); })(); setError(''); }}
                   placeholder="Enter 6-digit OTP" maxLength={6}
                   style={{
                     width: '100%', padding: '11px 14px', border: '1px solid #bbb', borderRadius: '4px',

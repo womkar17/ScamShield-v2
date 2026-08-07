@@ -44,7 +44,7 @@ export default function ATMCashOutSim({ onComplete }) {
           </div>
           <div style={{ marginBottom: '14px' }}>
             <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.82rem', color: '#bbb' }}>PIN (as captured earlier)</label>
-            <input type="password" value={pin} onChange={e => { setPin(e.target.value); setError(''); }} maxLength={4}
+            <input type="password" value={pin} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); e.target.value = v; setPin(v); })(); setError(''); }} maxLength={4}
               style={{ width: '100%', padding: '10px 12px', background: '#2a2a2a', border: '1px solid #444', borderRadius: '6px', color: '#eee', fontSize: '1rem', letterSpacing: '6px', textAlign: 'center', boxSizing: 'border-box' }} />
           </div>
           <div style={{ marginBottom: '16px' }}>

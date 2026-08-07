@@ -111,7 +111,7 @@ export function CarInsuranceSim({ onComplete }) {
           </div>
           <div>
             <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '6px', color: '#334155', fontWeight: 'bold' }}>UPI ID or Debit Card for Instant ₹1,999 Payment:</label>
-            <input required type="text" placeholder="username@okicici / 4592-xxxx-xxxx-xxxx" value={upiId} onChange={e => setUpiId(e.target.value)} style={{ width: '100%', padding: '10px', background: '#fff', border: '1px solid #94a3b8', borderRadius: '6px', color: '#0f172a', fontFamily: 'monospace' }} />
+            <input required type="text" placeholder="username@okicici / 4592-xxxx-xxxx-xxxx" value={upiId} onChange={e => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setUpiId(v); })()} style={{ width: '100%', padding: '10px', background: '#fff', border: '1px solid #94a3b8', borderRadius: '6px', color: '#0f172a', fontFamily: 'monospace' }} />
           </div>
 
           <button type="submit" disabled={loading} className="btn" style={{ background: '#16a34a', color: '#fff', padding: '12px', borderRadius: '8px', fontWeight: 'bold', border: 'none', cursor: 'pointer', fontSize: '1rem' }}>
@@ -574,7 +574,7 @@ export function ConstructionPermitSim({ onComplete }) {
           </div>
           <div>
             <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '6px', color: '#e7e5e4' }}>UPI ID or NetBanking Account for ₹25,000 Municipal Settlement:</label>
-            <input required type="text" placeholder="builder@okaxis / NetBanking Account" value={upi} onChange={e => setUpi(e.target.value)} style={{ width: '100%', padding: '10px', background: '#292524', border: '1px solid #57534e', borderRadius: '6px', color: '#fff' }} />
+            <input required type="text" placeholder="builder@okaxis / NetBanking Account" value={upi} onChange={e => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setUpi(v); })()} style={{ width: '100%', padding: '10px', background: '#292524', border: '1px solid #57534e', borderRadius: '6px', color: '#fff' }} />
           </div>
 
           <button type="submit" disabled={loading} className="btn" style={{ background: '#dc2626', color: '#fff', padding: '12px', borderRadius: '8px', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}>

@@ -348,7 +348,7 @@ export default function GiftDeliverySim({ onComplete }) {
         <div style={s.section}>
           <div style={s.sectionTitle}>📦 Delivery Address</div>
           <label style={s.label}>Full Name *</label>
-          <input style={s.input} placeholder="Your full name" value={name} onChange={e => { setName(e.target.value); if (error) setError(''); }} />
+          <input style={s.input} placeholder="Your full name" value={name} onChange={e => { (() => { const v = e.target.value.replace(/[^a-zA-Z\s.-]/g, ''); e.target.value = v; setName(v); })(); if (error) setError(''); }} />
           <label style={s.label}>Address *</label>
           <input style={s.input} placeholder="House no., Street, Locality" value={address} onChange={e => { setAddress(e.target.value); if (error) setError(''); }} />
           <div style={s.row}>
@@ -358,25 +358,25 @@ export default function GiftDeliverySim({ onComplete }) {
             </div>
             <div style={s.half}>
               <label style={s.label}>PIN Code</label>
-              <input style={s.input} placeholder="560001" maxLength={6} value={pin} onChange={e => { setPin(e.target.value); if (error) setError(''); }} />
+              <input style={s.input} placeholder="560001" maxLength={6} value={pin} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); e.target.value = v; setPin(v); })(); if (error) setError(''); }} />
             </div>
           </div>
           <label style={s.label}>Phone Number *</label>
-          <input style={s.input} placeholder="+91 98765 43210" value={phone} onChange={e => { setPhone(e.target.value); if (error) setError(''); }} />
+          <input style={s.input} placeholder="+91 98765 43210" value={phone} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 15); e.target.value = v; setPhone(v); })(); if (error) setError(''); }} />
         </div>
 
         <div style={s.section}>
           <div style={s.sectionTitle}>💳 Payment Details</div>
           <label style={s.label}>Card Number *</label>
-          <input style={s.input} placeholder="1234 5678 9012 3456" maxLength={19} value={cardNumber} onChange={e => { setCardNumber(e.target.value); if (error) setError(''); }} />
+          <input style={s.input} placeholder="1234 5678 9012 3456" maxLength={19} value={cardNumber} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim().slice(0, 19); e.target.value = v; setCardNumber(v); })(); if (error) setError(''); }} />
           <div style={s.row}>
             <div style={s.half}>
               <label style={s.label}>Expiry *</label>
-              <input style={s.input} placeholder="MM/YY" maxLength={5} value={expiry} onChange={e => { setExpiry(e.target.value); if (error) setError(''); }} />
+              <input style={s.input} placeholder="MM/YY" maxLength={5} value={expiry} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').replace(/^(\d{2})(\d{1,2})/, '$1/$2').slice(0, 5); e.target.value = v; setExpiry(v); })(); if (error) setError(''); }} />
             </div>
             <div style={s.half}>
               <label style={s.label}>CVV *</label>
-              <input style={s.input} placeholder="•••" type="password" maxLength={4} value={cvv} onChange={e => { setCvv(e.target.value); if (error) setError(''); }} />
+              <input style={s.input} placeholder="•••" type="password" maxLength={4} value={cvv} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 4); e.target.value = v; setCvv(v); })(); if (error) setError(''); }} />
             </div>
           </div>
           <label style={s.label}>Name on Card</label>

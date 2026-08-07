@@ -45,7 +45,7 @@ const FALLBACK_QUESTIONS = [
   }
 ];
 
-const QuizGame = ({ game, onComplete }) => {
+const QuizGame = ({ game, onComplete, isExamMode }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedIdx, setSelectedIdx] = useState(null);
   const [feedback, setFeedback] = useState('');
@@ -93,6 +93,13 @@ const QuizGame = ({ game, onComplete }) => {
     setSelectedIdx(idx);
     const isCorrect = options[idx]?.isCorrect;
     
+    if (isExamMode) {
+      setTimeout(() => {
+        onComplete(isCorrect ? 1 : 0, 1);
+      }, 300);
+      return;
+    }
+
     if (isCorrect) {
       soundEffects.play('success');
       setScore(s => s + 1);
@@ -143,10 +150,16 @@ const QuizGame = ({ game, onComplete }) => {
         {options.map((opt, idx) => {
           let bg = 'var(--bg3)';
           let borderCol = 'var(--border)';
+          
           if (selectedIdx === idx) {
-            bg = opt.isCorrect ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)';
-            borderCol = opt.isCorrect ? 'var(--green)' : 'var(--accent)';
-          } else if (selectedIdx !== null && opt.isCorrect) {
+            if (isExamMode) {
+              bg = 'var(--accent-bg)';
+              borderCol = 'var(--accent)';
+            } else {
+              bg = opt.isCorrect ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)';
+              borderCol = opt.isCorrect ? 'var(--green)' : 'var(--accent)';
+            }
+          } else if (selectedIdx !== null && opt.isCorrect && !isExamMode) {
             bg = 'rgba(34, 197, 94, 0.1)';
             borderCol = 'var(--green)';
           }
@@ -175,7 +188,7 @@ const QuizGame = ({ game, onComplete }) => {
         })}
       </div>
 
-      {selectedIdx !== null && (
+      {!isExamMode && selectedIdx !== null && (
         <div style={{ 
           marginTop: '20px', 
           padding: '16px', 

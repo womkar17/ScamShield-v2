@@ -110,7 +110,7 @@ export default function MLMInvestmentScamSim({ onComplete }) {
           <input
             className="form-control"
             value={name}
-            onChange={(e)=>setName(e.target.value)}
+            onChange={(e)=>(() => { const v = e.target.value.replace(/[^a-zA-Z\s.-]/g, ''); e.target.value = v; setName(v); })()}
           />
 
           <label>Mobile Number</label>
@@ -118,7 +118,7 @@ export default function MLMInvestmentScamSim({ onComplete }) {
           <input
             className="form-control"
             value={mobile}
-            onChange={(e)=>setMobile(e.target.value)}
+            onChange={(e)=>(() => { const v = e.target.value.replace(/\D/g, '').slice(0, 15); e.target.value = v; setMobile(v); })()}
           />
 
           <label>Email</label>
@@ -126,7 +126,7 @@ export default function MLMInvestmentScamSim({ onComplete }) {
           <input
             className="form-control"
             value={email}
-            onChange={(e)=>setEmail(e.target.value)}
+            onChange={(e)=>(() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })()}
           />
 
           <label>Joining Investment (₹)</label>

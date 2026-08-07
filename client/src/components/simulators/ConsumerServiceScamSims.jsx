@@ -172,7 +172,7 @@ export function ContentSamuraiSim({ onComplete }) {
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           <div>
             <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '6px', color: '#e4e4e7' }}>Your Account Email for Lifetime License Activation:</label>
-            <input required type="email" placeholder="creator@youtube.com" value={email} onChange={e => setEmail(e.target.value)} style={{ width: '100%', padding: '10px', background: '#27272a', border: '1px solid #52525b', borderRadius: '6px', color: '#fff' }} />
+            <input required type="email" placeholder="creator@youtube.com" value={email} onChange={e => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })()} style={{ width: '100%', padding: '10px', background: '#27272a', border: '1px solid #52525b', borderRadius: '6px', color: '#fff' }} />
           </div>
           <div>
             <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '6px', color: '#e4e4e7' }}>Stripe Credit Card Details for $49 One-Time Payment:</label>
@@ -300,7 +300,7 @@ export function COVIDTestSim({ onComplete }) {
           </div>
           <div>
             <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '6px', color: '#e2e8f0' }}>UPI ID / Card for ₹1,499 Emergency Lab Verification Fee:</label>
-            <input required type="text" placeholder="traveler@okicici / Card Number" value={upi} onChange={e => setUpi(e.target.value)} style={{ width: '100%', padding: '10px', background: '#020617', border: '1px solid #475569', borderRadius: '6px', color: '#fff' }} />
+            <input required type="text" placeholder="traveler@okicici / Card Number" value={upi} onChange={e => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setUpi(v); })()} style={{ width: '100%', padding: '10px', background: '#020617', border: '1px solid #475569', borderRadius: '6px', color: '#fff' }} />
           </div>
 
           <button type="submit" disabled={loading} className="btn" style={{ background: '#0284c7', color: '#fff', padding: '12px', borderRadius: '8px', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}>
@@ -417,7 +417,7 @@ export function DesignWizardSim({ onComplete }) {
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           <div>
             <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '6px', color: '#e4e4e7' }}>Your Email Address for Pro Suite Dashboard Delivery:</label>
-            <input required type="email" placeholder="designer@studio.com" value={email} onChange={e => setEmail(e.target.value)} style={{ width: '100%', padding: '10px', background: '#27272a', border: '1px solid #52525b', borderRadius: '6px', color: '#fff' }} />
+            <input required type="email" placeholder="designer@studio.com" value={email} onChange={e => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })()} style={{ width: '100%', padding: '10px', background: '#27272a', border: '1px solid #52525b', borderRadius: '6px', color: '#fff' }} />
           </div>
           <div>
             <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '6px', color: '#e4e4e7' }}>Credit Card Details for $39 Lifetime Pass Checkout:</label>

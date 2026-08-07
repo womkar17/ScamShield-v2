@@ -7,189 +7,221 @@ import { MODULES } from '../data/modules';
 // Group modules into themed units for the Duolingo-style progress map
 const UNITS = [
   {
-    id: 'financial',
-    title: 'Financial Frauds',
-    icon: '💰',
-    description: 'Learn to spot loan scams, investment traps, and payment fraud',
-    color: '#ff6b6b',
-    moduleIds: [0, 3, 9, 15, 8, 62, 69, 72, 169, 170, 171, 173, 174, 176, 179, 183, 184, 186, 193, 194, 199, 203, 204, 206, 209, 210],
-  },
-  {
-    id: 'identity',
-    title: 'Identity & Accounts',
-    icon: '🔐',
-    description: 'Protect your personal data, accounts, and digital identity',
-    color: '#4ecdc4',
-    moduleIds: [12, 22, 17, 16, 13, 64, 177, 178, 187, 189, 195, 220],
-  },
-  {
-    id: 'social',
-    title: 'Social Engineering',
-    icon: '👥',
-    description: 'Learn how to detect manipulation, impersonation, and deepfakes',
-    color: '#3b82f6',
-    moduleIds: [10, 11, 14, 19, 21, 63, 65, 66, 67, 68, 70, 71, 168, 185, 188, 192, 197, 198, 201, 212, 213],
-  },
-  {
-    id: 'shopping',
-    title: 'Online Shopping & Delivery',
-    icon: '🛒',
-    description: 'Stay safe while shopping, dealing, and receiving parcels online',
-    color: '#f1c40f',
-    moduleIds: [2, 6, 4, 20, 18, 74, 190, 200, 214, 219, 224, 225, 229],
-  },
-  {
-    id: 'advanced',
-    title: 'Advanced Threats',
-    icon: '🤖',
-    description: 'Master emerging threats: deepfakes, crypto scams, and AI attacks',
-    color: '#3b82f6',
-    moduleIds: [1, 5, 7, 58, 59, 60, 61, 73, 182, 191, 196, 202, 205, 208, 211, 215, 216, 217, 218, 221, 222, 223, 226, 227, 228],
-  },
-  {
-    id: 'psychology_workplace',
-    title: 'Psychology & Workplace Defense',
-    icon: '🧠',
-    description: 'Master cognitive bias defense, shadow IT risks, and enterprise security',
-    color: '#ec4899',
-    moduleIds: [23, 24, 207],
-  },
-  {
-    id: 'banking_upi_atm',
-    title: 'Banking, UPI & ATM Security',
-    icon: '💳',
-    description: 'Defend against QR code traps, UPI payment frauds, ATM card trapping, and banking Trojans.',
-    color: '#8b5cf6',
-    moduleIds: [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41],
-  },
-  {
-    id: 'marketplace_scams',
-    title: 'Marketplace Scams',
-    icon: '🛍️',
-    description: 'Learn to identify rental, resale, courier and marketplace frauds',
-    color: '#f97316',
-    moduleIds: [75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91],
-  },
-  {
-    id: 'job_visa_education',
-    title: 'Career, Visa & Higher Education Frauds',
-    icon: '💼',
-    description: 'Avoid fake HR interviews, recruitment portals, visa consultancies, and admission guarantees.',
-    color: '#ec4899',
-    moduleIds: [92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108],
-  },
-  {
-    id: 'medical_scams',
-    title: 'Medical & Health Scams',
-    icon: '🏥',
-    description: 'Learn to spot fake hospital bills, fake pharmacies, and health card frauds.',
-    color: '#e74c3c',
-    moduleIds: [109, 110, 111, 112, 113],
-  },
-  {
-    id: 'charity_scams',
-    title: 'Charity & Donation Frauds',
-    icon: '🤝',
-    description: 'Protect your donations from fake NGOs, disaster relief scams, and fake crowdfunding.',
+    id: 'level_1',
+    title: 'Level 1',
+    icon: '🟢',
+    description: 'Master these 14 simulations.',
     color: '#2ecc71',
-    moduleIds: [114, 115, 116, 117, 118, 119, 120],
+    moduleIds: [1, 4, 6, 7, 14, 15, 20, 22, 28, 29, 61, 78, 98, 99],
   },
   {
-    id: 'technical_scams',
-    title: 'Technical & Malware Scams',
-    icon: '💻',
-    description: 'Defend against fake software updates, malicious USBs, and tech support scams.',
-    color: '#34495e',
-    moduleIds: [121, 122, 123, 124, 125],
+    id: 'level_2',
+    title: 'Level 2',
+    icon: '🌟',
+    description: 'Master these 14 simulations.',
+    color: '#3498db',
+    moduleIds: [100, 110, 111, 134, 135, 139, 140, 144, 146, 147, 150, 152, 153, 155],
   },
   {
-    id: 'live_threat_sims',
-    title: 'Live Threat Simulations',
+    id: 'level_3',
+    title: 'Level 3',
+    icon: '🛡️',
+    description: 'Master these 14 simulations.',
+    color: '#9b59b6',
+    moduleIds: [158, 162, 163, 164, 165, 174, 234, 238, 240, 249, 188, 192, 194, 197],
+  },
+  {
+    id: 'level_4',
+    title: 'Level 4',
+    icon: '📦',
+    description: 'Master these 14 simulations.',
+    color: '#f1c40f',
+    moduleIds: [212, 213, 0, 2, 5, 8, 10, 11, 13, 16, 17, 18, 19, 21],
+  },
+  {
+    id: 'level_5',
+    title: 'Level 5',
+    icon: '📱',
+    description: 'Master these 14 simulations.',
+    color: '#e67e22',
+    moduleIds: [25, 26, 30, 33, 34, 36, 41, 58, 59, 60, 64, 65, 66, 67],
+  },
+  {
+    id: 'level_6',
+    title: 'Level 6',
+    icon: '💳',
+    description: 'Master these 14 simulations.',
+    color: '#e74c3c',
+    moduleIds: [68, 70, 63, 71, 72, 74, 75, 76, 77, 79, 80, 81, 82, 84],
+  },
+  {
+    id: 'level_7',
+    title: 'Level 7',
     icon: '🚨',
-    description: 'Interactive real-world scam simulations: Tech Support, Crypto Drainers, SIM Hijacking, Vishing & more',
-    color: '#00d2d3',
-    moduleIds: [126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142],
+    description: 'Master these 14 simulations.',
+    color: '#1abc9c',
+    moduleIds: [89, 93, 95, 96, 97, 101, 102, 103, 104, 105, 107, 108, 109, 112],
   },
   {
-    id: 'travel_parcel_utility',
-    title: 'Travel, Parcel Delivery & Utility Frauds',
-    icon: '✈️',
-    description: 'Spot fake pilgrimage packages, courier re-delivery fees, customs holds, and utility disconnections.',
-    color: '#14b8a6',
-    moduleIds: [143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159],
+    id: 'level_8',
+    title: 'Level 8',
+    icon: '🛒',
+    description: 'Master these 14 simulations.',
+    color: '#34495e',
+    moduleIds: [113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 127, 130],
   },
   {
-    id: 'misc_frauds',
-    title: 'Miscellaneous Cyber Frauds',
+    id: 'level_9',
+    title: 'Level 9',
     icon: '🎮',
-    description: 'Learn to protect yourself against gaming and youth-targeted scams',
-    color: '#10b981',
-    moduleIds: [160, 161, 162, 163, 175, 181],
+    description: 'Master these 14 simulations.',
+    color: '#2ecc71',
+    moduleIds: [131, 132, 133, 136, 137, 138, 141, 142, 143, 145, 148, 149, 151, 154],
   },
   {
-    id: 'education_frauds',
-    title: 'Education & Tuition Frauds',
-    icon: '🎓',
-    description: 'Fake admissions, scholarships, WhatsApp parent groups, or coaching institutes.',
-    color: '#f97316',
-    moduleIds: [164, 165, 167],
-  },
-  {
-    id: 'impersonation_frauds',
-    title: 'Impersonation Scams',
-    icon: '🎭',
-    description: 'Scammer pretends to be from government, bank, or company.',
-    color: '#ef4444',
-    moduleIds: [166, 180],
-  },
-  {
-    id: 'utility_frauds',
-    title: 'Utility & EV Charging Scams',
-    icon: '⚡',
-    description: 'Fake bills for electricity, gas, water, or EV charging stations.',
-    color: '#0ea5e9',
-    moduleIds: [172],
-  },
-  {
-    id: 'software_tools_utilities',
-    title: '🧪 Software Tools & IT Utilities (IDs 230-277)',
-    icon: '🔥',
-    description: 'Identify scams targeting developer tools, system utilities, and professional subscriptions.',
-    color: '#ff9f43',
-    moduleIds: Array.from({ length: 48 }, (_, i) => 230 + i),
-  },
-  {
-    id: 'lifestyle_shopping_entertainment',
-    title: '🛍️ Lifestyle, Shopping & Entertainment (IDs 325-369)',
+    id: 'level_10',
+    title: 'Level 10',
     icon: '🚀',
-    description: 'Learn to detect frauds disguised as shopping apps, streaming services, and lifestyle platforms.',
-    color: '#10b981',
-    moduleIds: Array.from({ length: 45 }, (_, i) => 325 + i),
+    description: 'Master these 14 simulations.',
+    color: '#3498db',
+    moduleIds: [157, 159, 160, 161, 166, 167, 168, 169, 170, 171, 172, 175, 177, 178],
   },
   {
-    id: 'analytics_enterprise_apps',
-    title: '📊 Analytics, Server Admin & Enterprise Apps (IDs 421-468)',
-    icon: '⚡',
-    description: 'Defend against phishing attacks targeting web analytics, terminal tools, and enterprise accounts.',
-    color: '#8b5cf6',
-    moduleIds: Array.from({ length: 48 }, (_, i) => 421 + i),
+    id: 'level_11',
+    title: 'Level 11',
+    icon: '🧠',
+    description: 'Master these 14 simulations.',
+    color: '#9b59b6',
+    moduleIds: [180, 181, 182, 183, 230, 232, 235, 236, 239, 241, 242, 244, 245, 247],
   },
   {
-    id: 'metaverse_abroad_joint_venture',
-    title: '🌐 Advanced Job & Corporate Ventures (IDs 278-281)',
+    id: 'level_12',
+    title: 'Level 12',
+    icon: '💼',
+    description: 'Master these 14 simulations.',
+    color: '#f1c40f',
+    moduleIds: [248, 250, 252, 253, 254, 255, 256, 257, 258, 259, 260, 262, 263, 265],
+  },
+  {
+    id: 'level_13',
+    title: 'Level 13',
+    icon: '🟢',
+    description: 'Master these 14 simulations.',
+    color: '#e67e22',
+    moduleIds: [266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 325, 326],
+  },
+  {
+    id: 'level_14',
+    title: 'Level 14',
+    icon: '🌟',
+    description: 'Master these 14 simulations.',
+    color: '#e74c3c',
+    moduleIds: [327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340],
+  },
+  {
+    id: 'level_15',
+    title: 'Level 15',
+    icon: '🛡️',
+    description: 'Master these 14 simulations.',
+    color: '#1abc9c',
+    moduleIds: [341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 353, 354],
+  },
+  {
+    id: 'level_16',
+    title: 'Level 16',
+    icon: '📦',
+    description: 'Master these 14 simulations.',
+    color: '#34495e',
+    moduleIds: [355, 356, 357, 358, 359, 360, 361, 362, 363, 364, 365, 366, 367, 368],
+  },
+  {
+    id: 'level_17',
+    title: 'Level 17',
+    icon: '📱',
+    description: 'Master these 14 simulations.',
+    color: '#2ecc71',
+    moduleIds: [369, 421, 422, 423, 424, 425, 426, 427, 428, 429, 430, 431, 432, 433],
+  },
+  {
+    id: 'level_18',
+    title: 'Level 18',
+    icon: '💳',
+    description: 'Master these 14 simulations.',
+    color: '#3498db',
+    moduleIds: [434, 435, 436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447],
+  },
+  {
+    id: 'level_19',
+    title: 'Level 19',
+    icon: '🚨',
+    description: 'Master these 14 simulations.',
+    color: '#9b59b6',
+    moduleIds: [448, 449, 450, 451, 452, 453, 454, 455, 456, 457, 458, 459, 460, 461],
+  },
+  {
+    id: 'level_20',
+    title: 'Level 20',
+    icon: '🛒',
+    description: 'Master these 14 simulations.',
+    color: '#f1c40f',
+    moduleIds: [462, 463, 464, 465, 466, 467, 468, 278, 279, 280, 281, 568, 569, 571],
+  },
+  {
+    id: 'level_21',
+    title: 'Level 21',
+    icon: '🎮',
+    description: 'Master these 14 simulations.',
+    color: '#e67e22',
+    moduleIds: [572, 578, 580, 585, 587, 610, 614, 187, 189, 190, 191, 193, 195, 196],
+  },
+  {
+    id: 'level_22',
+    title: 'Level 22',
     icon: '🚀',
-    description: 'Protect against Metaverse job interviews, overseas employment traps, postal offers, and fake joint ventures.',
-    color: '#ec4899',
-    moduleIds: [278, 279, 280, 281],
+    description: 'Master these 14 simulations.',
+    color: '#e74c3c',
+    moduleIds: [198, 199, 200, 201, 202, 204, 205, 206, 208, 214, 215, 216, 217, 218],
   },
   {
-    id: 'enterprise_developer_supply_chain',
-    title: '🛠️ Enterprise & Developer Supply Chain (IDs 568-614)',
-    icon: '💻',
-    description: 'Identify targeted phishing against developer tools, cloud infrastructure, vulnerability scanners, and NAS admin portals.',
-    color: '#3b82f6',
-    moduleIds: [568, 569, 571, 572, 578, 580, 585, 587, 610, 614],
-  }
+    id: 'level_23',
+    title: 'Level 23',
+    icon: '🧠',
+    description: 'Master these 14 simulations.',
+    color: '#1abc9c',
+    moduleIds: [219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 3, 9, 12],
+  },
+  {
+    id: 'level_24',
+    title: 'Level 24',
+    icon: '💼',
+    description: 'Master these 14 simulations.',
+    color: '#34495e',
+    moduleIds: [27, 31, 32, 35, 37, 38, 39, 40, 69, 73, 62, 83, 85, 86],
+  },
+  {
+    id: 'level_25',
+    title: 'Level 25',
+    icon: '🟢',
+    description: 'Master these 14 simulations.',
+    color: '#2ecc71',
+    moduleIds: [87, 88, 90, 91, 92, 94, 106, 125, 126, 128, 129, 156, 173, 176],
+  },
+  {
+    id: 'level_26',
+    title: 'Level 26',
+    icon: '🌟',
+    description: 'Master these 14 simulations.',
+    color: '#3498db',
+    moduleIds: [179, 231, 233, 237, 243, 246, 251, 261, 264, 184, 185, 186, 203, 207],
+  },
+  {
+    id: 'level_27',
+    title: 'Level 27',
+    icon: '🛡️',
+    description: 'Master the final 3 simulations.',
+    color: '#9b59b6',
+    moduleIds: [209, 210, 211],
+  },
 ];
 
 export default function ProgressMap() {
@@ -220,9 +252,15 @@ export default function ProgressMap() {
           ? Math.round((completedInUnit / unitModules.length) * 100)
           : 0;
 
-        // Units unlock based on level: first 2 always open, rest need higher levels
-        // For testing/development, we unlock all units so you can see them!
-        const isUnlocked = true; // unitIndex < 2 || level.number >= unitIndex;
+        // A Level unlocks only if it's the first Level, OR if all simulations in the previous Level are complete.
+        const prevUnit = unitIndex > 0 ? UNITS[unitIndex - 1] : null;
+        let prevUnitCompleted = true;
+        if (prevUnit) {
+          const prevModules = prevUnit.moduleIds.filter(Boolean);
+          const completedPrev = prevModules.filter(id => completedModules.includes(id)).length;
+          prevUnitCompleted = completedPrev === prevModules.length && prevModules.length > 0;
+        }
+        const isUnlocked = unitIndex === 0 || prevUnitCompleted;
 
         return (
           <div
@@ -265,14 +303,12 @@ export default function ProgressMap() {
 
             {/* Module Nodes */}
             {isUnlocked && (
-              <div className="module-grid">
+              <div className="module-path">
                 {unitModules.map((mod, modIndex) => {
                   const isCompleted = completedModules.includes(mod.id);
-                  // First module in unit is always active; others need previous to be complete
-                  // Temporarily unlock all modules for testing
-                  const prevCompleted = true; // modIndex === 0 || completedModules.includes(unitModules[modIndex - 1]?.id);
+                  const prevCompleted = modIndex === 0 || completedModules.includes(unitModules[modIndex - 1]?.id);
                   const isActive = !isCompleted && prevCompleted;
-                  const isModLocked = false; // !isCompleted && !isActive;
+                  const isModLocked = !isCompleted && !isActive;
 
                   const diffColors = {
                     low: 'var(--green)',
@@ -280,15 +316,65 @@ export default function ProgressMap() {
                     high: 'var(--accent)',
                   };
 
+                  // Duolingo zigzag offsets: center(0) → right(+90) → center(0) → left(-90)
+                  const getOffset = (idx) => {
+                    const c = idx % 4;
+                    return c === 0 ? 0 : c === 1 ? 90 : c === 2 ? 0 : -90;
+                  };
+
+                  const currentOffset = getOffset(modIndex);
+                  const positionClass = currentOffset > 0 ? 'path-right' 
+                    : currentOffset < 0 ? 'path-left' 
+                    : 'path-center';
+
+                  // Compute SVG connector that bridges from previous node to current
+                  let connectorSvg = null;
+                  if (modIndex > 0) {
+                    const prevOffset = getOffset(modIndex - 1);
+                    const offsetDiff = prevOffset - currentOffset;
+                    const connectorActive = isCompleted || isActive;
+
+                    if (offsetDiff === 0) {
+                      // Straight vertical connector (same column)
+                      connectorSvg = (
+                        <div className={`path-connector ${connectorActive ? 'path-connector-active' : ''}`}
+                             style={{ width: '4px', height: '50px' }}>
+                          <svg viewBox="0 0 4 50" width="4" height="50">
+                            <line x1="2" y1="0" x2="2" y2="50" className="path-curve" />
+                          </svg>
+                        </div>
+                      );
+                    } else {
+                      // Curved connector between different columns
+                      const absOff = Math.abs(offsetDiff);
+                      const svgW = absOff + 4;
+                      const svgH = 70;
+                      // Start at previous node's side, end at current node's side
+                      const startX = offsetDiff > 0 ? svgW - 2 : 2;
+                      const endX = offsetDiff > 0 ? 2 : svgW - 2;
+
+                      connectorSvg = (
+                        <div className={`path-connector ${connectorActive ? 'path-connector-active' : ''}`}
+                             style={{
+                               width: `${svgW}px`,
+                               height: `${svgH}px`,
+                               transform: `translateX(${offsetDiff / 2}px)`
+                             }}>
+                          <svg viewBox={`0 0 ${svgW} ${svgH}`} width={svgW} height={svgH}>
+                            <path
+                              d={`M ${startX} 0 C ${startX} ${svgH * 0.5}, ${endX} ${svgH * 0.5}, ${endX} ${svgH}`}
+                              fill="none"
+                              className="path-curve"
+                            />
+                          </svg>
+                        </div>
+                      );
+                    }
+                  }
+
                   return (
-                    <div key={mod.id} className="module-node-wrap">
-                      {/* Connector line */}
-                      {modIndex > 0 && (
-                        <div
-                          className={`module-connector ${isCompleted || isActive ? 'connector-active' : ''
-                            }`}
-                        />
-                      )}
+                    <div key={mod.id} className={`path-node-wrap ${positionClass}`}>
+                      {connectorSvg}
 
                       <button
                         className={`module-node ${isCompleted

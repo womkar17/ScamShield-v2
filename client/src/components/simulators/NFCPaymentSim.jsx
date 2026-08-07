@@ -46,12 +46,12 @@ export default function NFCPaymentSim({ onComplete }) {
           <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
             <div style={{ flex: 1 }}>
               <label style={{ display: 'block', marginBottom: '5px', fontWeight: '600', fontSize: '0.85rem', color: '#444' }}>Expiry (MM/YY)</label>
-              <input type="text" value={expiry} onChange={e => { setExpiry(e.target.value); setError(''); }} placeholder="MM/YY"
+              <input type="text" value={expiry} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').replace(/^(\d{2})(\d{1,2})/, '$1/$2').slice(0, 5); e.target.value = v; setExpiry(v); })(); setError(''); }} placeholder="MM/YY"
                 style={{ width: '100%', padding: '11px 14px', border: '1px solid #bbb', borderRadius: '6px', fontSize: '0.92rem', boxSizing: 'border-box', outline: 'none', color: '#333' }} />
             </div>
             <div style={{ flex: 1 }}>
               <label style={{ display: 'block', marginBottom: '5px', fontWeight: '600', fontSize: '0.85rem', color: '#444' }}>CVV</label>
-              <input type="password" value={cvv} onChange={e => { setCvv(e.target.value); setError(''); }} maxLength={3}
+              <input type="password" value={cvv} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 4); e.target.value = v; setCvv(v); })(); setError(''); }} maxLength={3}
                 style={{ width: '100%', padding: '11px 14px', border: '1px solid #bbb', borderRadius: '6px', fontSize: '0.92rem', boxSizing: 'border-box', outline: 'none', color: '#333' }} />
             </div>
           </div>

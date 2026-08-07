@@ -152,11 +152,11 @@ export default function FakeFunkyShoppingScamSim({ onComplete }) {
             <div style={{ background: "#fff7ed", padding: "25px", borderRadius: "16px", border: "1px solid #fed7aa" }}>
               <h2>Complete Your Order</h2>
               <label>Full Name</label>
-              <input className="form-control" value={name} onChange={e => setName(e.target.value)} placeholder="Enter your name" style={{ width: "100%", padding: "10px", marginBottom: "10px", borderRadius: "8px", border: "1px solid #ccc" }} />
+              <input className="form-control" value={name} onChange={e => (() => { const v = e.target.value.replace(/[^a-zA-Z\s.-]/g, ''); e.target.value = v; setName(v); })()} placeholder="Enter your name" style={{ width: "100%", padding: "10px", marginBottom: "10px", borderRadius: "8px", border: "1px solid #ccc" }} />
               <label>Mobile Number</label>
-              <input className="form-control" value={mobile} onChange={e => setMobile(e.target.value)} placeholder="10-digit mobile" style={{ width: "100%", padding: "10px", marginBottom: "10px", borderRadius: "8px", border: "1px solid #ccc" }} />
+              <input className="form-control" value={mobile} onChange={e => (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 15); e.target.value = v; setMobile(v); })()} placeholder="10-digit mobile" style={{ width: "100%", padding: "10px", marginBottom: "10px", borderRadius: "8px", border: "1px solid #ccc" }} />
               <label>Email Address</label>
-              <input className="form-control" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" style={{ width: "100%", padding: "10px", marginBottom: "10px", borderRadius: "8px", border: "1px solid #ccc" }} />
+              <input className="form-control" value={email} onChange={e => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })()} placeholder="Email" style={{ width: "100%", padding: "10px", marginBottom: "10px", borderRadius: "8px", border: "1px solid #ccc" }} />
               <label>Delivery Address</label>
               <textarea className="form-control" rows={3} value={address} onChange={e => setAddress(e.target.value)} placeholder="Enter delivery address" style={{ width: "100%", padding: "10px", marginBottom: "10px", borderRadius: "8px", border: "1px solid #ccc" }} />
               {error && (
@@ -238,7 +238,7 @@ export default function FakeFunkyShoppingScamSim({ onComplete }) {
                 placeholder="example@okaxis"
                 value={upiId}
                 onChange={(e) => {
-                  setUpiId(e.target.value);
+                  (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setUpiId(v); })();
                   setError("");
                 }}
                 style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid #ccc" }}

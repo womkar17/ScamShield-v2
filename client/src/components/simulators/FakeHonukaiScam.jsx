@@ -51,20 +51,20 @@ export default function FakeHonukaiScam({ onComplete }) {
           <input
             placeholder="Card Number (16 digits)"
             value={cardNumber}
-            onChange={(e) => setCardNumber(e.target.value)}
+            onChange={(e) => (() => { const v = e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim().slice(0, 19); e.target.value = v; setCardNumber(v); })()}
             style={inputStyle}
           />
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px" }}>
             <input
               placeholder="MM/YY"
               value={expiry}
-              onChange={(e) => setExpiry(e.target.value)}
+              onChange={(e) => (() => { const v = e.target.value.replace(/\D/g, '').replace(/^(\d{2})(\d{1,2})/, '$1/$2').slice(0, 5); e.target.value = v; setExpiry(v); })()}
               style={inputStyle}
             />
             <input
               placeholder="CVV"
               value={cvv}
-              onChange={(e) => setCvv(e.target.value)}
+              onChange={(e) => (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 4); e.target.value = v; setCvv(v); })()}
               style={inputStyle}
             />
           </div>
@@ -218,9 +218,9 @@ export default function FakeHonukaiScam({ onComplete }) {
             </div>
 
             <h2 style={{ color: "#f8fafc" }}>📝 Delivery Details</h2>
-            <input placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} style={inputStyle} />
-            <input placeholder="Mobile Number" value={mobile} onChange={(e) => setMobile(e.target.value)} style={inputStyle} />
-            <input placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} style={inputStyle} />
+            <input placeholder="Full Name" value={name} onChange={(e) => (() => { const v = e.target.value.replace(/[^a-zA-Z\s.-]/g, ''); e.target.value = v; setName(v); })()} style={inputStyle} />
+            <input placeholder="Mobile Number" value={mobile} onChange={(e) => (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 15); e.target.value = v; setMobile(v); })()} style={inputStyle} />
+            <input placeholder="Email Address" value={email} onChange={(e) => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })()} style={inputStyle} />
             <input placeholder="Delivery Address" value={address} onChange={(e) => setAddress(e.target.value)} style={inputStyle} />
 
             <button

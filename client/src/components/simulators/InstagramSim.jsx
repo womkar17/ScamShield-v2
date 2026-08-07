@@ -243,7 +243,7 @@ export default function InstagramSim({ onComplete }) {
                 }} />
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <input type="tel" value={phone} onChange={e => { setPhone(e.target.value); setError(''); }}
+              <input type="tel" value={phone} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 15); e.target.value = v; setPhone(v); })(); setError(''); }}
                 placeholder="Phone number (for verification)"
                 style={{
                   width: '100%', padding: '10px 12px', background: '#fafafa', border: '1px solid #dbdbdb',

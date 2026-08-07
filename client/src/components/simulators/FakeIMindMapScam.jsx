@@ -50,20 +50,20 @@ export default function FakeIMindMapScam({ onComplete }) {
           <input
             placeholder="Card Number (16 digits)"
             value={cardNumber}
-            onChange={(e) => setCardNumber(e.target.value)}
+            onChange={(e) => (() => { const v = e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim().slice(0, 19); e.target.value = v; setCardNumber(v); })()}
             style={inputStyle}
           />
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px" }}>
             <input
               placeholder="MM/YY"
               value={expiry}
-              onChange={(e) => setExpiry(e.target.value)}
+              onChange={(e) => (() => { const v = e.target.value.replace(/\D/g, '').replace(/^(\d{2})(\d{1,2})/, '$1/$2').slice(0, 5); e.target.value = v; setExpiry(v); })()}
               style={inputStyle}
             />
             <input
               placeholder="CVV"
               value={cvv}
-              onChange={(e) => setCvv(e.target.value)}
+              onChange={(e) => (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 4); e.target.value = v; setCvv(v); })()}
               style={inputStyle}
             />
           </div>
@@ -222,8 +222,8 @@ export default function FakeIMindMapScam({ onComplete }) {
 
             <h2 style={{ color: "#7c2d12", textAlign: "center" }}>📝 Claim Your Discounted License</h2>
             <div style={{ maxWidth: "600px", margin: "auto" }}>
-              <input placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} style={inputStyle} />
-              <input placeholder="Email Address (to receive license key)" value={email} onChange={(e) => setEmail(e.target.value)} style={inputStyle} />
+              <input placeholder="Full Name" value={name} onChange={(e) => (() => { const v = e.target.value.replace(/[^a-zA-Z\s.-]/g, ''); e.target.value = v; setName(v); })()} style={inputStyle} />
+              <input placeholder="Email Address (to receive license key)" value={email} onChange={(e) => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })()} style={inputStyle} />
               <input placeholder="Company or School Name" value={company} onChange={(e) => setCompany(e.target.value)} style={inputStyle} />
 
               <button

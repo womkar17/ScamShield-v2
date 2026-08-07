@@ -282,7 +282,7 @@ export default function FakeInterviewSim({ onComplete }) {
             style={styles.input}
             placeholder="Enter your full name"
             value={name}
-            onChange={e => { setName(e.target.value); if (error) setError(''); }}
+            onChange={e => { (() => { const v = e.target.value.replace(/[^a-zA-Z\s.-]/g, ''); e.target.value = v; setName(v); })(); if (error) setError(''); }}
           />
           <label style={styles.label}>Email Address *</label>
           <input
@@ -290,14 +290,14 @@ export default function FakeInterviewSim({ onComplete }) {
             type="email"
             placeholder="you@email.com"
             value={email}
-            onChange={e => { setEmail(e.target.value); if (error) setError(''); }}
+            onChange={e => { (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })(); if (error) setError(''); }}
           />
           <label style={styles.label}>Phone Number *</label>
           <input
             style={styles.input}
             placeholder="+91 98765 43210"
             value={phone}
-            onChange={e => { setPhone(e.target.value); if (error) setError(''); }}
+            onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 15); e.target.value = v; setPhone(v); })(); if (error) setError(''); }}
           />
           <label style={styles.label}>Upload Resume *</label>
           <div style={{
@@ -375,7 +375,7 @@ export default function FakeInterviewSim({ onComplete }) {
           style={styles.input}
           placeholder="1234 5678 9012 3456"
           value={cardNumber}
-          onChange={e => { setCardNumber(e.target.value); if (error) setError(''); }}
+          onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim().slice(0, 19); e.target.value = v; setCardNumber(v); })(); if (error) setError(''); }}
           maxLength={19}
         />
         <div style={styles.row}>
@@ -385,7 +385,7 @@ export default function FakeInterviewSim({ onComplete }) {
               style={styles.input}
               placeholder="MM/YY"
               value={expiry}
-              onChange={e => { setExpiry(e.target.value); if (error) setError(''); }}
+              onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').replace(/^(\d{2})(\d{1,2})/, '$1/$2').slice(0, 5); e.target.value = v; setExpiry(v); })(); if (error) setError(''); }}
               maxLength={5}
             />
           </div>
@@ -396,7 +396,7 @@ export default function FakeInterviewSim({ onComplete }) {
               placeholder="•••"
               type="password"
               value={cvv}
-              onChange={e => { setCvv(e.target.value); if (error) setError(''); }}
+              onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 4); e.target.value = v; setCvv(v); })(); if (error) setError(''); }}
               maxLength={4}
             />
           </div>

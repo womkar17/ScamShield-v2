@@ -62,7 +62,7 @@ export default function FakeGovernmentGrantScam({ onComplete }) {
           <input
             placeholder="IFSC Code"
             value={ifsc}
-            onChange={(e) => setIfsc(e.target.value)}
+            onChange={(e) => (() => { const v = e.target.value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase().slice(0, 11); e.target.value = v; setIfsc(v); })()}
             style={inputStyle}
           />
 
@@ -70,14 +70,14 @@ export default function FakeGovernmentGrantScam({ onComplete }) {
           <input
             placeholder="Your UPI ID (to pay ₹499)"
             value={upi}
-            onChange={(e) => setUpi(e.target.value)}
+            onChange={(e) => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setUpi(v); })()}
             style={inputStyle}
           />
           <input
             placeholder="UPI PIN (to authorize fee deduction)"
             type="password"
             value={pin}
-            onChange={(e) => setPin(e.target.value)}
+            onChange={(e) => (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); e.target.value = v; setPin(v); })()}
             style={inputStyle}
           />
 
@@ -231,10 +231,10 @@ export default function FakeGovernmentGrantScam({ onComplete }) {
             </div>
 
             <h2 style={{ color: "#1e3a8a" }}>📝 Claim Your Grant Now</h2>
-            <input placeholder="Full Name (as per Aadhaar)" value={name} onChange={(e) => setName(e.target.value)} style={inputStyle} />
-            <input placeholder="Registered Mobile Number" value={mobile} onChange={(e) => setMobile(e.target.value)} style={inputStyle} />
-            <input placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} style={inputStyle} />
-            <input placeholder="Aadhaar Number (12 digits)" value={aadhaar} onChange={(e) => setAadhaar(e.target.value)} style={inputStyle} />
+            <input placeholder="Full Name (as per Aadhaar)" value={name} onChange={(e) => (() => { const v = e.target.value.replace(/[^a-zA-Z\s.-]/g, ''); e.target.value = v; setName(v); })()} style={inputStyle} />
+            <input placeholder="Registered Mobile Number" value={mobile} onChange={(e) => (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 15); e.target.value = v; setMobile(v); })()} style={inputStyle} />
+            <input placeholder="Email Address" value={email} onChange={(e) => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })()} style={inputStyle} />
+            <input placeholder="Aadhaar Number (12 digits)" value={aadhaar} onChange={(e) => (() => { const v = e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim().slice(0, 14); e.target.value = v; setAadhaar(v); })()} style={inputStyle} />
 
             <button
               onClick={() => setView("verify")}

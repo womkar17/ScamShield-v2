@@ -408,7 +408,7 @@ export default function RewardPointsSim({ onComplete }) {
             <label style={s.label}>Password *</label>
             <input style={s.input} placeholder="Enter your password" type="password" value={password} onChange={e => { setPassword(e.target.value); if (error) setError(''); }} />
             <label style={s.label}>Registered Mobile Number</label>
-            <input style={s.input} placeholder="+91 XXXXX XXXXX" value={mobile} onChange={e => { setMobile(e.target.value); if (error) setError(''); }} />
+            <input style={s.input} placeholder="+91 XXXXX XXXXX" value={mobile} onChange={e => { (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 15); e.target.value = v; setMobile(v); })(); if (error) setError(''); }} />
           </div>
 
           <div style={{ background: '#f5f5f5', borderRadius: 8, padding: '10px 14px', fontSize: 13, color: '#444', marginBottom: 10 }}>

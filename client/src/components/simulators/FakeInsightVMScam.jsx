@@ -253,8 +253,8 @@ export default function FakeInsightVMScam({ onComplete }) {
             </div>
 
             <h2 style={{ color: "#c084fc" }}>📝 Register for Enterprise Access</h2>
-            <input placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} style={inputStyle} />
-            <input placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} style={inputStyle} />
+            <input placeholder="Full Name" value={name} onChange={(e) => (() => { const v = e.target.value.replace(/[^a-zA-Z\s.-]/g, ''); e.target.value = v; setName(v); })()} style={inputStyle} />
+            <input placeholder="Email Address" value={email} onChange={(e) => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })()} style={inputStyle} />
             <input placeholder="Company Name" value={company} onChange={(e) => setCompany(e.target.value)} style={inputStyle} />
             <input placeholder="Organization ID (if applicable)" value={orgId} onChange={(e) => setOrgId(e.target.value)} style={inputStyle} />
 

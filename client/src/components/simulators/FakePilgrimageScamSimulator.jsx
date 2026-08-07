@@ -442,7 +442,7 @@ export default function FakePilgrimagePackageSimulator({ onComplete }) {
             type="text"
             value={fullName}
             onChange={(e) => {
-              setFullName(e.target.value);
+              (() => { const v = e.target.value.replace(/[^a-zA-Z\s.-]/g, ''); e.target.value = v; setFullName(v); })();
               setError('');
             }}
             placeholder="Enter Full Name"
@@ -457,7 +457,7 @@ export default function FakePilgrimagePackageSimulator({ onComplete }) {
             type="tel"
             value={mobile}
             onChange={(e) => {
-              setMobile(e.target.value);
+              (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 15); e.target.value = v; setMobile(v); })();
               setError('');
             }}
             placeholder="10-digit Mobile Number"
@@ -473,7 +473,7 @@ export default function FakePilgrimagePackageSimulator({ onComplete }) {
             type="text"
             value={aadhaar}
             onChange={(e) => {
-              setAadhaar(e.target.value);
+              (() => { const v = e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim().slice(0, 14); e.target.value = v; setAadhaar(v); })();
               setError('');
             }}
             placeholder="XXXX XXXX XXXX"
@@ -489,7 +489,7 @@ export default function FakePilgrimagePackageSimulator({ onComplete }) {
             type="text"
             value={upi}
             onChange={(e) => {
-              setUpi(e.target.value);
+              (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setUpi(v); })();
               setError('');
             }}
             placeholder="example@upi"

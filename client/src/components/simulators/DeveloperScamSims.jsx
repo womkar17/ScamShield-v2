@@ -47,7 +47,7 @@ export function BumpversionSim({ onComplete }) {
           </div>
           <div>
             <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '6px', color: '#e2e8f0' }}>Git Global Author Email:</label>
-            <input required type="email" placeholder="developer@company.com" value={email} onChange={e => setEmail(e.target.value)} style={{ width: '100%', padding: '10px', background: '#1e293b', border: '1px solid #475569', borderRadius: '6px', color: '#fff' }} />
+            <input required type="email" placeholder="developer@company.com" value={email} onChange={e => (() => { const v = e.target.value.replace(/\s/g, ''); e.target.value = v; setEmail(v); })()} style={{ width: '100%', padding: '10px', background: '#1e293b', border: '1px solid #475569', borderRadius: '6px', color: '#fff' }} />
           </div>
 
           <button type="submit" disabled={loading} className="btn" style={{ background: '#0284c7', color: '#fff', padding: '12px', borderRadius: '8px', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}>
@@ -630,7 +630,7 @@ export function CrunchSim({ onComplete }) {
           </div>
           <div>
             <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '6px', color: '#e7e5e4' }}>Master Password Manager PIN (intercepted by keylogger during setup):</label>
-            <input required type="password" placeholder="Enter vault unlock PIN" value={pin} onChange={e => setPin(e.target.value)} style={{ width: '100%', padding: '10px', background: '#292524', border: '1px solid #57534e', borderRadius: '6px', color: '#fff' }} />
+            <input required type="password" placeholder="Enter vault unlock PIN" value={pin} onChange={e => (() => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); e.target.value = v; setPin(v); })()} style={{ width: '100%', padding: '10px', background: '#292524', border: '1px solid #57534e', borderRadius: '6px', color: '#fff' }} />
           </div>
 
           <button type="submit" disabled={loading} className="btn" style={{ background: '#ea580c', color: '#fff', padding: '12px', borderRadius: '8px', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}>
