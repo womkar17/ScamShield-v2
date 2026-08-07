@@ -283,6 +283,14 @@ export function GamificationProvider({ children }) {
     const badge = badgesRef.current.find(b => b.id === badgeId);
     if (!badge || badge.unlocked) return;
 
+    // Also check localStorage to prevent re-toasting on refresh
+    // (badgesRef may not be updated yet from loaded state)
+    try {
+      const saved = JSON.parse(localStorage.getItem('ss_gamification') || '{}');
+      const savedBadge = saved.badges?.find(b => b.id === badgeId);
+      if (savedBadge?.unlocked) return;
+    } catch (e) { /* ignore parse errors */ }
+
     unlockingBadges.current.add(badgeId);
     showToast(`Unlocked: ${badge.name}`, 'badge');
 
