@@ -19,7 +19,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
   ];
 
   if (isAdmin) {
-    menuItems.push({ name: 'Admin Panel', icon: '⚙️', path: '/admin' });
+    menuItems.push({ name: 'Admin Panel', icon: '👑', path: '/admin' });
   }
 
   if (isExamUnlocked) {

@@ -1029,7 +1029,7 @@ IMPORTANT: You MUST generate EXACTLY 10 questions in the quiz array. The answers
   };
 
   return (
-    <div style={{ padding: '32px', minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)', fontFamily: "'Inter', sans-serif" }}>
+    <div style={{ padding: '32px', minHeight: '100vh', background: 'transparent', color: 'var(--text)', fontFamily: "'Inter', sans-serif" }}>
       {/* Header Banner */}
       <div style={{
         background: 'var(--bg3)',
