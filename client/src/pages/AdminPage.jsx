@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
@@ -9,10 +9,10 @@ const INITIAL_PHISHING_CAMPAIGNS = [];
 const EMAIL_TEMPLATES = {
   "Password Reset Urgency": {
     from: "IT Security Helpdesk <support@company-auth-verify.net>",
-    subject: "ðŸš¨ URGENT: Mandatory Domain Password Reset Required (Expires in 30 Mins)",
+    subject: "🚨 URGENT: Mandatory Domain Password Reset Required (Expires in 30 Mins)",
     date: "Today at 2:14 PM",
     body: `Dear Employee,\n\nWe detected unauthorized login attempts against your corporate account from an unrecognized IP address (185.220.101.4). To prevent immediate account suspension and lock out, you must verify your identity and update your domain password immediately.\n\nFailure to comply within 30 minutes will result in your network credentials being revoked, requiring in-person identity verification at the IT Service Desk.`,
-    buttonText: "ðŸ”’ Verify Identity & Reset Password Now",
+    buttonText: "🔒 Verify Identity & Reset Password Now",
     buttonUrl: "https://company-auth-verify.net/reset-portal?token=8f9a2b",
     redFlags: [
       "Sender domain is 'company-auth-verify.net' instead of official corporate domain",
@@ -25,7 +25,7 @@ const EMAIL_TEMPLATES = {
     subject: "CONFIDENTIAL: Q3 Compensation & Salary Adjustment Schedule",
     date: "Today at 9:05 AM",
     body: `Hi Team Member,\n\nFollowing the recent executive board meeting, our company has finalized the Q3 performance-based compensation adjustments and cost-of-living salary increases.\n\nPlease review your updated salary document and sign the attached digital acknowledgment form before end of day Friday to ensure your new pay rate is reflected in the upcoming payroll cycle.\n\nNote: This document contains strictly confidential compensation figures. Do not share with colleagues.`,
-    buttonText: "ðŸ“„ View Confidential Salary Document (PDF)",
+    buttonText: "📄 View Confidential Salary Document (PDF)",
     buttonUrl: "https://workforce-portal-update.com/login?doc=salary_q3",
     redFlags: [
       "External domain 'workforce-portal-update.com' impersonating HR",
@@ -38,7 +38,7 @@ const EMAIL_TEMPLATES = {
     subject: "Quick favor needed for client meeting today",
     date: "Today at 11:30 AM",
     body: `Hi,\n\nI am currently tied up in an all-day confidential client negotiation with prospective investors and my calendar is blocked. I need a quick professional favor from you.\n\nWe want to present our client partners with digital Apple / Amazon gift cards as a token of appreciation before we close the deal at 2:00 PM. Could you please purchase 5 Apple gift cards ($200 value each) from the online store and reply directly with the digital redemption codes?\n\nI will instruct Accounts Payable to reimburse your corporate expense report immediately upon my return to the office tonight. Keep this discreet as it is a surprise for the client team.`,
-    buttonText: "âœ‰ï¸ Reply Directly with Gift Card Codes",
+    buttonText: "✉️ Reply Directly with Gift Card Codes",
     buttonUrl: "mailto:chief.exec.direct@gmail.com?subject=Gift%20Card%20Codes",
     redFlags: [
       "Executive using a personal free Gmail address instead of corporate email",
@@ -51,7 +51,7 @@ const EMAIL_TEMPLATES = {
     subject: "Upgrade your workflow: Free Enterprise AI Summarizer Access Assigned",
     date: "Today at 4:45 PM",
     body: `Hello,\n\nYou have been selected by your team lead to test our new automated AI Document & Contract Summarizer tool for enterprise workflows.\n\nOur system allows you to upload lengthy PDF agreements, NDA contracts, and codebase files for instant 10-second summaries. To activate your free enterprise license, click below and paste your company AWS or API access token for verification.\n\nIncrease your productivity by 10x today!`,
-    buttonText: "ðŸš€ Activate Free AI Summarizer & Paste API Key",
+    buttonText: "🚀 Activate Free AI Summarizer & Paste API Key",
     buttonUrl: "https://ai-summarizer-free.io/activate",
     redFlags: [
       "Unsolicited third-party software invitation (Shadow IT risk)",
@@ -61,10 +61,10 @@ const EMAIL_TEMPLATES = {
   },
   "Mandatory VPN Client Upgrade": {
     from: "Enterprise Network Security <admin@vpn-security-client.net>",
-    subject: "ðŸš¨ [MANDATORY ACTION] Critical Security Patch for Corporate VPN Client",
+    subject: "🚨 [MANDATORY ACTION] Critical Security Patch for Corporate VPN Client",
     date: "Today at 9:15 AM",
     body: `Attention Remote & Hybrid Teams,\n\nOur cybersecurity operations team has identified a critical zero-day vulnerability (CVE-2026-1184) in our legacy corporate VPN software.\n\nAll employees must immediately download and install the patched VPN Security Suite via the secure portal below before 5:00 PM today. Failure to update will result in automatic termination of remote network access and Slack connectivity.\n\nClick below to install the security certificate and authenticate your corporate credentials.`,
-    buttonText: "ðŸ›¡ï¸ Download Patched VPN Security Client",
+    buttonText: "🛡️ Download Patched VPN Security Client",
     buttonUrl: "https://vpn-security-client.net/download?auth=token",
     redFlags: [
       "Sender domain 'vpn-security-client.net' is an external unverified domain",
@@ -74,10 +74,10 @@ const EMAIL_TEMPLATES = {
   },
   "Urgent Package Delivery Exception": {
     from: "Global Courier Express <tracking@express-logistics-delivery.com>",
-    subject: "ðŸ“¦ Delivery Failed: Signature Required for High-Value Corporate Parcel",
+    subject: "📦 Delivery Failed: Signature Required for High-Value Corporate Parcel",
     date: "Today at 1:40 PM",
     body: `Hello,\n\nWe attempted to deliver a registered high-value corporate parcel addressed to your name at the front reception desk today at 1:15 PM, but our driver was unable to secure a verified signature.\n\nTo prevent return shipment to the sender and avoid storage penalties, please confirm your delivery time and pay the $1.85 customs processing fee using the link below.\n\nYou must verify your company address within 24 hours.`,
-    buttonText: "ðŸšš Reschedule Delivery & Pay $1.85 Fee",
+    buttonText: "🚚 Reschedule Delivery & Pay $1.85 Fee",
     buttonUrl: "https://express-logistics-delivery.com/track?parcel=88192A",
     redFlags: [
       "Unexpected package delivery notification demanding immediate payment",
@@ -90,7 +90,7 @@ const EMAIL_TEMPLATES = {
     subject: "URGENT: Join Confidential M&A Video Conference (Board Members Waiting)",
     date: "Today at 3:50 PM",
     body: `Hi,\n\nThe CFO and legal counsel have initiated an emergency video conference regarding an urgent merger acquisition. They require your immediate presence on the call to verify financial transaction details.\n\nYour standard Zoom link will not work for this high-security conference. Please use the secure enterprise bridge link below and log in using your corporate SSO credentials to join the call immediately.\n\nNote: The executive team is already on the bridge waiting for you. Do not delay.`,
-    buttonText: "ðŸŽ¥ Join Confidential Executive Video Conference",
+    buttonText: "🎥 Join Confidential Executive Video Conference",
     buttonUrl: "https://conf-video-call.io/room/sso-login?id=cfo_ma_room",
     redFlags: [
       "High-pressure executive impersonation demanding immediate video call entry",
@@ -100,10 +100,10 @@ const EMAIL_TEMPLATES = {
   },
   "Crypto Wallet Security Drainer Alert": {
     from: "Web3 Vault Security <security@decentralized-wallet-auth.io>",
-    subject: "âš ï¸ SECURITY ALERT: Unauthorized Withdrawal Attempt Detected on Your Wallet",
+    subject: "⚠️ SECURITY ALERT: Unauthorized Withdrawal Attempt Detected on Your Wallet",
     date: "Today at 6:10 PM",
     body: `Dear Wallet Holder,\n\nWe detected a pending smart contract withdrawal request for 4.5 ETH ($14,200) originating from an unrecognized IP in Minsk, Belarus.\n\nIf you did not authorize this transaction, you must connect your hardware or Web3 wallet immediately to revoke the smart contract permissions and freeze your assets before the block is finalized on-chain.\n\nFailure to revoke within 15 minutes will result in irreversible funds transfer.`,
-    buttonText: "ðŸ›‘ Connect Wallet & Revoke Transaction Now",
+    buttonText: "🛑 Connect Wallet & Revoke Transaction Now",
     buttonUrl: "https://decentralized-wallet-auth.io/revoke?tx=0x8f9b2a",
     redFlags: [
       "Classic Web3 phishing drainer tactics creating intense loss aversion",
@@ -376,7 +376,7 @@ export default function AdminPage() {
   };
 
   const resetAllUsersXp = async () => {
-    if (!window.confirm('âš ï¸ Reset ALL platform users to 0 XP and Level 1? This will wipe the XP leaderboard for everyone!')) return;
+    if (!window.confirm('⚠️ Reset ALL platform users to 0 XP and Level 1? This will wipe the XP leaderboard for everyone!')) return;
     try {
       const apiUrl = getApiUrl();
       await fetch(`${apiUrl}/api/admin/users/reset-all-xp`, { method: 'POST' });
@@ -387,7 +387,7 @@ export default function AdminPage() {
       userProfile.xp = 0;
       userProfile.level = 1;
     }
-    alert('âœ… All platform users have been reset to 0 XP and Level 1!');
+    alert('✅ All platform users have been reset to 0 XP and Level 1!');
     loadData();
   };
 
@@ -418,7 +418,7 @@ export default function AdminPage() {
     } catch (e) {}
 
     setNewGame({ title: '', description: '', type: 'quiz', difficulty: 'Easy', xpReward: 50, data: null });
-    alert("âœ… Custom Game saved with full playable content! Other users will see it in the Arcade immediately.");
+    alert("✅ Custom Game saved with full playable content! Other users will see it in the Arcade immediately.");
   };
 
   const deleteCustomGame = async (id) => {
@@ -446,15 +446,15 @@ export default function AdminPage() {
     try {
       const apiUrl = getApiUrl();
       const prompts = {
-        quiz: `Generate a multi-round cybersecurity quiz game about "${title}" (${diff} difficulty, exactly ${qCount} distinct scenario questions) styled like an existing high-quality arcade challenge. Return ONLY valid JSON:\n{"description":"Engaging 1-2 sentence scenario description","thumbnail":"ðŸ§ ","data":{"questions":[{"question":"Question 1 scenario?","options":[{"text":"Wrong option A","isCorrect":false,"explanation":"Why wrong"},{"text":"Correct secure action","isCorrect":true,"explanation":"Why correct"},{"text":"Wrong option B","isCorrect":false,"explanation":"Why wrong"}]},{"question":"Question 2 scenario?","options":[{"text":"...","isCorrect":false,"explanation":"..."},{"text":"...","isCorrect":true,"explanation":"..."}]}],"threatAnalysis":{"psychology":"Psychological manipulation tactic used","payload":"What attacker gains","defense":"Best defense habit"}}}`,
-        swipe: `Generate a swipe card cybersecurity game about "${title}" (${diff} difficulty, exactly ${swipeCount} distinct items) styled like Tinder for Scam vs Safe items. Return ONLY valid JSON:\n{"description":"Engaging 1-2 sentence description inviting players to swipe Safe or Scam","thumbnail":"ðŸŽ£","data":{"items":[{"content":"sender@example.com - Subject: Urgent Account Lockout","isScam":true,"explanation":"Domain lookalike and urgency."},{"content":"Legitimate notification item","isScam":false,"explanation":"Why safe."},{"content":"Suspicious SMS/URL item","isScam":true,"explanation":"Why scam."},{"content":"Official safe portal link","isScam":false,"explanation":"Why safe."},{"content":"Phishing bait message","isScam":true,"explanation":"Why scam."}],"threatAnalysis":{"psychology":"Urgency & Brand Trust","payload":"Credential theft","defense":"Always check full sender domain and URL."}}}`,
-        chat: `Generate a WhatsApp-style chat scam simulation about "${title}" (${diff} difficulty). Return ONLY valid JSON:\n{"description":"Engaging 1-2 sentence scenario description","thumbnail":"ðŸ’¬","data":{"messages":[{"sender":"scammer","text":"Hi! This is IT support..."},{"sender":"scammer","text":"We need you to verify your password immediately..."}],"choices":[{"text":"Sure, sending credentials now.","isCorrect":false,"explanation":"Never share passwords in chat."},{"text":"I will verify through official IT support desk first.","isCorrect":true,"explanation":"Always verify through official channels."},{"text":"Can you send a link instead?","isCorrect":false,"explanation":"Links can lead to phishing."}],"threatAnalysis":{"psychology":"Authority Impersonation","payload":"Account takeover","defense":"IT Support never asks for passwords via chat."}}}`,
-        audio: `Generate a vishing (voice phishing) phone call script about "${title}" (${diff} difficulty). Return ONLY valid JSON:\n{"description":"Engaging 1-2 sentence description of the phone call scenario","thumbnail":"ðŸ“ž","data":{"script":[{"text":"Hello, this is the fraud department calling...","isRedFlag":false},{"text":"We detected suspicious activity on your card...","isRedFlag":false},{"text":"Please read out the OTP sent to your phone immediately to block it.","isRedFlag":true},{"text":"Failure to read the OTP will result in permanent account freeze.","isRedFlag":true}],"threatAnalysis":{"psychology":"Fear of financial loss + urgency","payload":"OTP authorization for scam transfer","defense":"Banks never ask for OTP over the phone."}}}`,
+        quiz: `Generate a multi-round cybersecurity quiz game about "${title}" (${diff} difficulty, exactly ${qCount} distinct scenario questions) styled like an existing high-quality arcade challenge. Return ONLY valid JSON:\n{"description":"Engaging 1-2 sentence scenario description","thumbnail":"🧠","data":{"questions":[{"question":"Question 1 scenario?","options":[{"text":"Wrong option A","isCorrect":false,"explanation":"Why wrong"},{"text":"Correct secure action","isCorrect":true,"explanation":"Why correct"},{"text":"Wrong option B","isCorrect":false,"explanation":"Why wrong"}]},{"question":"Question 2 scenario?","options":[{"text":"...","isCorrect":false,"explanation":"..."},{"text":"...","isCorrect":true,"explanation":"..."}]}],"threatAnalysis":{"psychology":"Psychological manipulation tactic used","payload":"What attacker gains","defense":"Best defense habit"}}}`,
+        swipe: `Generate a swipe card cybersecurity game about "${title}" (${diff} difficulty, exactly ${swipeCount} distinct items) styled like Tinder for Scam vs Safe items. Return ONLY valid JSON:\n{"description":"Engaging 1-2 sentence description inviting players to swipe Safe or Scam","thumbnail":"🎣","data":{"items":[{"content":"sender@example.com - Subject: Urgent Account Lockout","isScam":true,"explanation":"Domain lookalike and urgency."},{"content":"Legitimate notification item","isScam":false,"explanation":"Why safe."},{"content":"Suspicious SMS/URL item","isScam":true,"explanation":"Why scam."},{"content":"Official safe portal link","isScam":false,"explanation":"Why safe."},{"content":"Phishing bait message","isScam":true,"explanation":"Why scam."}],"threatAnalysis":{"psychology":"Urgency & Brand Trust","payload":"Credential theft","defense":"Always check full sender domain and URL."}}}`,
+        chat: `Generate a WhatsApp-style chat scam simulation about "${title}" (${diff} difficulty). Return ONLY valid JSON:\n{"description":"Engaging 1-2 sentence scenario description","thumbnail":"💬","data":{"messages":[{"sender":"scammer","text":"Hi! This is IT support..."},{"sender":"scammer","text":"We need you to verify your password immediately..."}],"choices":[{"text":"Sure, sending credentials now.","isCorrect":false,"explanation":"Never share passwords in chat."},{"text":"I will verify through official IT support desk first.","isCorrect":true,"explanation":"Always verify through official channels."},{"text":"Can you send a link instead?","isCorrect":false,"explanation":"Links can lead to phishing."}],"threatAnalysis":{"psychology":"Authority Impersonation","payload":"Account takeover","defense":"IT Support never asks for passwords via chat."}}}`,
+        audio: `Generate a vishing (voice phishing) phone call script about "${title}" (${diff} difficulty). Return ONLY valid JSON:\n{"description":"Engaging 1-2 sentence description of the phone call scenario","thumbnail":"📞","data":{"script":[{"text":"Hello, this is the fraud department calling...","isRedFlag":false},{"text":"We detected suspicious activity on your card...","isRedFlag":false},{"text":"Please read out the OTP sent to your phone immediately to block it.","isRedFlag":true},{"text":"Failure to read the OTP will result in permanent account freeze.","isRedFlag":true}],"threatAnalysis":{"psychology":"Fear of financial loss + urgency","payload":"OTP authorization for scam transfer","defense":"Banks never ask for OTP over the phone."}}}`,
         'spot-flag': `Generate a Spot The Flag cybersecurity game about "${title}" (${diff} difficulty).
 Return ONLY valid JSON matching this exact structure:
 {
   "description": "Examine this suspicious email/document. Click all the red flags to win.",
-  "thumbnail": "ðŸ“§",
+  "thumbnail": "📧",
   "data": {
     "scenario": "Suspicious Email Notification",
     "content": "<div style='font-family:Arial,sans-serif;padding:24px;background:#ffffff;color:#222222;border-radius:12px;border:1px solid #e2e8f0;box-shadow:0 4px 6px rgba(0,0,0,0.05)'><div style='background:#1a73e8;color:white;padding:16px;border-radius:8px 8px 0 0;margin:-24px -24px 20px -24px'><strong>From:</strong> security@g00gle-verify.net</div><p>Dear Valued Custmer,</p><p>We detected unusual login activity. Your account will be <b style='color:#dc2626'>PERMANENTLY BLOCKED</b> within 24 hours.</p><p style='margin:20px 0'><a style='background:#1a73e8;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;display:inline-block'>Verify Identity Now</a></p><p style='font-size:12px;color:#64748b'>Link target: http://g00gle-verify.net/login.php</p></div>",
@@ -474,11 +474,11 @@ CRITICAL REQUIREMENTS FOR spot-flag:
 1. You MUST include an HTML string inside 'content' representing a realistic email or notification.
 2. You MUST include an array inside 'flags' with at least 3 flag objects.
 3. Every single 'text' value in 'flags' MUST be an EXACT, literal substring inside the 'content' HTML string so the player can click on it!`,
-        visual: `Generate a visual deepfake / forgery detection game about "${title}" (${diff} difficulty). Create an HTML mockup. Return ONLY valid JSON:\n{"description":"Examine this suspicious video call or payment screenshot. Can you detect the forgery?","thumbnail":"ðŸ”","data":{"content":"<div style='background:#1a1a2e;padding:30px;border-radius:12px;text-align:center;color:white;border:2px solid #e94560'><div style='background:#16213e;padding:20px;border-radius:8px;margin-bottom:15px'><h3 style='color:#e94560'>EMERGENCY VIDEO CONFERENCE</h3><div style='font-size:70px;margin:15px'>ðŸ‘¤</div><p>Executive Officer</p><p style='font-size:12px;color:#888'>Connected server: meet-secure-external.io</p></div><p style='color:#e94560;font-size:14px'>Notice: Audio latency mismatch and unnatural blinking patterns</p></div>","flaws":["meet-secure-external.io â€” unverified external server","Unnatural lip-sync and audio latency mismatch","Urgent demand to wire funds during low-quality video call"],"isFake":true,"threatAnalysis":{"psychology":"Executive authority impersonation via deepfake","payload":"Unauthorized wire transfer","defense":"Verify executive financial requests via a secondary communication channel."}}}`,
-        password: `Generate a password security challenge about "${title}" (${diff} difficulty). Return ONLY valid JSON:\n{"description":"Test your password security against modern cracking tools.","thumbnail":"ðŸ”","data":{"threatAnalysis":{"psychology":"Users choose convenience over security","payload":"Brute force dictionary attacks","defense":"Use 16+ character passphrases with mixed symbols and numbers."}}}`,
-        terminal: `Generate a cyber incident response terminal game about "${title}" (${diff} difficulty). Return ONLY valid JSON:\n{"description":"You are logged into a compromised server terminal. Select the correct mitigation command.","thumbnail":"âš¡","data":{"scenario":"Suspicious cryptominer process and unauthorized SSH root login attempt detected.","commands":[{"cmd":"$ kill -9 4412 && ufw deny from 185.220.101.4","isCorrect":true,"output":"[SUCCESS] Malicious process isolated and IP blocked.","explanation":"Isolating the rogue process and firewall IP prevents lateral exfiltration."},{"cmd":"$ reboot --force","isCorrect":false,"output":"[FATAL] Reboot triggered boot-sector ransomware encryption!","explanation":"Rebooting during an active ransomware intrusion executes bootloader encryption."},{"cmd":"$ chmod -R 777 /var/www","isCorrect":false,"output":"[CRITICAL] World-writable permissions exposed!","explanation":"Never loosen system permissions during an attack."}],"threatAnalysis":{"psychology":"Panic and Time Pressure","payload":"Server compromise or cryptomining","defense":"Isolate network interfaces immediately before rebooting."}}}`,
-        forensics: `Generate an email header and DNS forensics lab game about "${title}" (${diff} difficulty). Return ONLY valid JSON:\n{"description":"Inspect raw email headers and SPF/DKIM verification results to spot anomalies.","thumbnail":"ðŸ”¬","data":{"headers":[{"label":"Received (Origin)","value":"from mail-relay.proxy-scam.ru by mx.corporate.com","isSuspicious":true,"explanation":"Originates from an unauthorized residential proxy server."},{"label":"Authentication-Results","value":"spf=softfail; dkim=none","isSuspicious":true,"explanation":"SPF check failed and DKIM signature is missing."},{"label":"From","value":"\"IT Security\" <admin@g00gle-verify.net>","isSuspicious":true,"explanation":"Lookalike domain homoglyph."}],"threatAnalysis":{"psychology":"Brand Trust & Authority","payload":"Credential harvesting via reverse proxy","defense":"Check SPF/DKIM authentication and full raw header traces."}}}`,
-        'wire-audit': `Generate a corporate treasury BEC wire fraud audit game about "${title}" (${diff} difficulty). Return ONLY valid JSON:\n{"description":"Audit a high-value pending wire request against internal treasury security rules.","thumbnail":"ðŸ¦","data":{"invoice":{"vendor":"Global Supply Chain Partners","invoiceNo":"INV-2024-9912","amount":"$148,500.00","requestedBy":"CFO Executive Office (Urgent Email)","destinationBank":"Apex Offshore Holdings (Account #9941-002-88)","previousBank":"Standard Corporate Bank (Account #1104-882-10)","isFraud":true,"redFlagReason":"Sudden request to change wire destination to an unknown offshore bank via email without secondary voice verification."},"threatAnalysis":{"psychology":"Executive Urgency & Authority","payload":"Irrecoverable wire redirection","defense":"Always require out-of-band verbal confirmation for banking detail changes."}}}`
+        visual: `Generate a visual deepfake / forgery detection game about "${title}" (${diff} difficulty). Create an HTML mockup. Return ONLY valid JSON:\n{"description":"Examine this suspicious video call or payment screenshot. Can you detect the forgery?","thumbnail":"🔍","data":{"content":"<div style='background:#1a1a2e;padding:30px;border-radius:12px;text-align:center;color:white;border:2px solid #e94560'><div style='background:#16213e;padding:20px;border-radius:8px;margin-bottom:15px'><h3 style='color:#e94560'>EMERGENCY VIDEO CONFERENCE</h3><div style='font-size:70px;margin:15px'>👤</div><p>Executive Officer</p><p style='font-size:12px;color:#888'>Connected server: meet-secure-external.io</p></div><p style='color:#e94560;font-size:14px'>Notice: Audio latency mismatch and unnatural blinking patterns</p></div>","flaws":["meet-secure-external.io — unverified external server","Unnatural lip-sync and audio latency mismatch","Urgent demand to wire funds during low-quality video call"],"isFake":true,"threatAnalysis":{"psychology":"Executive authority impersonation via deepfake","payload":"Unauthorized wire transfer","defense":"Verify executive financial requests via a secondary communication channel."}}}`,
+        password: `Generate a password security challenge about "${title}" (${diff} difficulty). Return ONLY valid JSON:\n{"description":"Test your password security against modern cracking tools.","thumbnail":"🔐","data":{"threatAnalysis":{"psychology":"Users choose convenience over security","payload":"Brute force dictionary attacks","defense":"Use 16+ character passphrases with mixed symbols and numbers."}}}`,
+        terminal: `Generate a cyber incident response terminal game about "${title}" (${diff} difficulty). Return ONLY valid JSON:\n{"description":"You are logged into a compromised server terminal. Select the correct mitigation command.","thumbnail":"⚡","data":{"scenario":"Suspicious cryptominer process and unauthorized SSH root login attempt detected.","commands":[{"cmd":"$ kill -9 4412 && ufw deny from 185.220.101.4","isCorrect":true,"output":"[SUCCESS] Malicious process isolated and IP blocked.","explanation":"Isolating the rogue process and firewall IP prevents lateral exfiltration."},{"cmd":"$ reboot --force","isCorrect":false,"output":"[FATAL] Reboot triggered boot-sector ransomware encryption!","explanation":"Rebooting during an active ransomware intrusion executes bootloader encryption."},{"cmd":"$ chmod -R 777 /var/www","isCorrect":false,"output":"[CRITICAL] World-writable permissions exposed!","explanation":"Never loosen system permissions during an attack."}],"threatAnalysis":{"psychology":"Panic and Time Pressure","payload":"Server compromise or cryptomining","defense":"Isolate network interfaces immediately before rebooting."}}}`,
+        forensics: `Generate an email header and DNS forensics lab game about "${title}" (${diff} difficulty). Return ONLY valid JSON:\n{"description":"Inspect raw email headers and SPF/DKIM verification results to spot anomalies.","thumbnail":"🔬","data":{"headers":[{"label":"Received (Origin)","value":"from mail-relay.proxy-scam.ru by mx.corporate.com","isSuspicious":true,"explanation":"Originates from an unauthorized residential proxy server."},{"label":"Authentication-Results","value":"spf=softfail; dkim=none","isSuspicious":true,"explanation":"SPF check failed and DKIM signature is missing."},{"label":"From","value":"\"IT Security\" <admin@g00gle-verify.net>","isSuspicious":true,"explanation":"Lookalike domain homoglyph."}],"threatAnalysis":{"psychology":"Brand Trust & Authority","payload":"Credential harvesting via reverse proxy","defense":"Check SPF/DKIM authentication and full raw header traces."}}}`,
+        'wire-audit': `Generate a corporate treasury BEC wire fraud audit game about "${title}" (${diff} difficulty). Return ONLY valid JSON:\n{"description":"Audit a high-value pending wire request against internal treasury security rules.","thumbnail":"🏦","data":{"invoice":{"vendor":"Global Supply Chain Partners","invoiceNo":"INV-2024-9912","amount":"$148,500.00","requestedBy":"CFO Executive Office (Urgent Email)","destinationBank":"Apex Offshore Holdings (Account #9941-002-88)","previousBank":"Standard Corporate Bank (Account #1104-882-10)","isFraud":true,"redFlagReason":"Sudden request to change wire destination to an unknown offshore bank via email without secondary voice verification."},"threatAnalysis":{"psychology":"Executive Urgency & Authority","payload":"Irrecoverable wire redirection","defense":"Always require out-of-band verbal confirmation for banking detail changes."}}}`
       };
       const prompt = prompts[t] || prompts.quiz;
       const res = await fetch(`${apiUrl}/api/ai/chat`, {
@@ -513,10 +513,10 @@ CRITICAL REQUIREMENTS FOR spot-flag:
           setNewGame(prev => ({
             ...prev,
             description: parsed.description || prev.description || 'Can you spot the social engineering manipulation in this scenario?',
-            thumbnail: parsed.thumbnail || prev.thumbnail || 'ðŸŽ¯',
+            thumbnail: parsed.thumbnail || prev.thumbnail || '🎯',
             data: gameData
           }));
-          alert(`âœ¨ AI generated full ${t.toUpperCase()} game content matching Arcade style! Description, emoji & scenario are ready.`);
+          alert(`✨ AI generated full ${t.toUpperCase()} game content matching Arcade style! Description, emoji & scenario are ready.`);
         } else {
           throw new Error('No JSON found in AI response');
         }
@@ -525,7 +525,7 @@ CRITICAL REQUIREMENTS FOR spot-flag:
       }
     } catch (e) {
       console.error('AI game content error:', e);
-      alert('âš ï¸ AI content generation failed: ' + e.message + '. You can still add content manually below.');
+      alert('⚠️ AI content generation failed: ' + e.message + '. You can still add content manually below.');
     } finally {
       setAiGeneratingContent(false);
     }
@@ -554,10 +554,10 @@ Return ONLY a valid JSON object with exactly two keys:
         } catch (e) { /* ignore */ }
         if (parsed && parsed.subject) {
           setNewCampaign(prev => ({ ...prev, customSubject: parsed.subject, customMessage: parsed.body }));
-          alert("âœ¨ AI successfully crafted a custom phishing drill subject and body! Review below.");
+          alert("✨ AI successfully crafted a custom phishing drill subject and body! Review below.");
         } else {
           setNewCampaign(prev => ({ ...prev, customMessage: data.reply }));
-          alert("âœ¨ AI generated custom email content!");
+          alert("✨ AI generated custom email content!");
         }
       }
     } catch (err) {
@@ -638,15 +638,15 @@ Return ONLY a valid JSON object with exactly two keys:
       });
       const data = await res.json();
       if (data.ok && data.sent) {
-        alert(`ðŸš€ Phishing Drill "${created.name}" dispatched to ${target} via Google SMTP server! Check your inbox!`);
+        alert(`🚀 Phishing Drill "${created.name}" dispatched to ${target} via Google SMTP server! Check your inbox!`);
       } else if (data.ok && data.simulated) {
-        alert(`ðŸš€ Broadcast Drill "${created.name}" simulated across user database!`);
+        alert(`🚀 Broadcast Drill "${created.name}" simulated across user database!`);
       } else {
-        alert(`âš ï¸ Email Delivery Note: ${data.err || 'Simulated local delivery without real SMTP credentials.'}`);
+        alert(`⚠️ Email Delivery Note: ${data.err || 'Simulated local delivery without real SMTP credentials.'}`);
       }
       loadPhishingDrills();
     } catch (e) {
-      alert(`ðŸš€ Phishing Drill "${created.name}" dispatched! Check metrics table below.`);
+      alert(`🚀 Phishing Drill "${created.name}" dispatched! Check metrics table below.`);
       loadPhishingDrills();
     }
 
@@ -668,7 +668,7 @@ Return ONLY a valid JSON object with exactly two keys:
         body: JSON.stringify(updated)
       });
     } catch (e) { /* ignore */ }
-    alert("ðŸ“¡ CRITICAL THREAT BROADCAST LIVE! Synced to global cloud server â€” appearing on all user screens!");
+    alert("📡 CRITICAL THREAT BROADCAST LIVE! Synced to global cloud server — appearing on all user screens!");
   };
 
   const handleStopBroadcast = async () => {
@@ -684,7 +684,7 @@ Return ONLY a valid JSON object with exactly two keys:
         body: JSON.stringify(updated)
       });
     } catch (e) { /* ignore */ }
-    alert("â¹ï¸ Broadcast terminated. Removed globally from all user screens.");
+    alert("⏹️ Broadcast terminated. Removed globally from all user screens.");
   };
 
   const filteredProfiles = profiles.filter(p =>
@@ -700,11 +700,11 @@ Return ONLY a valid JSON object with exactly two keys:
   }
 
   const tabs = [
-    { key: 'overview', label: 'ðŸ“Š Overview' },
-    { key: 'users', label: 'ðŸ‘¥ Users & Cloud DB' },
-    { key: 'phishing', label: 'ðŸŽ£ Phishing Simulator' },
-    { key: 'broadcast', label: 'ðŸš¨ Live Threat Broadcast' },
-    { key: 'content', label: 'ðŸŽ® Content' },
+    { key: 'overview', label: '📊 Overview' },
+    { key: 'users', label: '👥 Users & Cloud DB' },
+    { key: 'phishing', label: '🎣 Phishing Simulator' },
+    { key: 'broadcast', label: '🚨 Live Threat Broadcast' },
+    { key: 'content', label: '🎮 Content' },
   ];
 
   return (
@@ -716,7 +716,7 @@ Return ONLY a valid JSON object with exactly two keys:
             <h1 style={s.pageTitle}>Admin Dashboard</h1>
           </div>
           <button style={s.backBtn} onClick={() => navigate('/dashboard')}>
-            â† Back to App
+            ← Back to App
           </button>
         </div>
 
@@ -740,17 +740,17 @@ Return ONLY a valid JSON object with exactly two keys:
             <>
               <div style={s.grid3}>
                 <div style={s.statCard}>
-                  <div style={{ ...s.statIcon, background: 'rgba(102,126,234,0.15)' }}>ðŸ‘¥</div>
+                  <div style={{ ...s.statIcon, background: 'rgba(102,126,234,0.15)' }}>👥</div>
                   <div style={s.statValue}>{stats.totalUsers}</div>
                   <div style={s.statLabel}>Online DB Users</div>
                 </div>
                 <div style={s.statCard}>
-                  <div style={{ ...s.statIcon, background: 'rgba(236,201,75,0.15)' }}>âš¡</div>
+                  <div style={{ ...s.statIcon, background: 'rgba(236,201,75,0.15)' }}>⚡</div>
                   <div style={s.statValue}>{stats.avgXp}</div>
                   <div style={s.statLabel}>Average XP</div>
                 </div>
                 <div style={s.statCard}>
-                  <div style={{ ...s.statIcon, background: 'rgba(72,187,120,0.15)' }}>ðŸŽ®</div>
+                  <div style={{ ...s.statIcon, background: 'rgba(72,187,120,0.15)' }}>🎮</div>
                   <div style={s.statValue}>{stats.totalGames}</div>
                   <div style={s.statLabel}>Games Played</div>
                 </div>
@@ -759,7 +759,7 @@ Return ONLY a valid JSON object with exactly two keys:
               <div style={{ ...s.card, marginTop: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                   <div>
-                    <h2 style={s.cardTitle}>ðŸ” Platform Auth & XP Management</h2>
+                    <h2 style={s.cardTitle}>🔐 Platform Auth & XP Management</h2>
                     <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', margin: '4px 0 0 0' }}>
                       Manage platform-wide gamification settings and check Supabase / Google OAuth status.
                     </p>
@@ -768,13 +768,13 @@ Return ONLY a valid JSON object with exactly two keys:
                     style={{ ...s.actionBtn, background: 'linear-gradient(135deg, #ef4444, #b91c1c)', color: 'white', padding: '10px 18px', fontWeight: 'bold', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
                     onClick={resetAllUsersXp}
                   >
-                    âš ï¸ Reset All Platform Users XP to 0
+                    ⚠️ Reset All Platform Users XP to 0
                   </button>
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginTop: '1.5rem', background: 'rgba(255,255,255,0.03)', padding: '1rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
                   <div>
                     <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>Google OAuth Provider</div>
-                    <div style={{ fontSize: '15px', color: '#4ade80', fontWeight: 'bold', marginTop: '4px' }}>ðŸŸ¢ Active (Supabase Cloud)</div>
+                    <div style={{ fontSize: '15px', color: '#4ade80', fontWeight: 'bold', marginTop: '4px' }}>🟢 Active (Supabase Cloud)</div>
                   </div>
                   <div>
                     <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>Initial Sign-up Bonus</div>
@@ -872,7 +872,7 @@ Return ONLY a valid JSON object with exactly two keys:
             <div>
               <div style={s.card}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
-                  <h2 style={s.cardTitle}>ðŸŽ£ Individual & Workforce Phishing Drill Simulator</h2>
+                  <h2 style={s.cardTitle}>🎣 Individual & Workforce Phishing Drill Simulator</h2>
                 </div>
                 <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', marginBottom: '16px' }}>
                   Target any individual user email or a list of emails to test whether they recognize social engineering triggers. You can preview exactly what the email looks like before dispatching!
@@ -896,10 +896,10 @@ Return ONLY a valid JSON object with exactly two keys:
                         onChange={e => setNewCampaign({ ...newCampaign, targetEmail: e.target.value })}
                       >
                         <option value="" style={{ background: '#1e1e2e', color: '#fff' }}>-- Select from Registered Users ({profiles.length}) --</option>
-                        <option value="all@company.com" style={{ background: '#1e1e2e', color: '#38bdf8' }}>ðŸŒ All Registered Users (Broadcast Drill)</option>
+                        <option value="all@company.com" style={{ background: '#1e1e2e', color: '#38bdf8' }}>🌐 All Registered Users (Broadcast Drill)</option>
                         {profiles.map(p => (
                           <option key={p.id || p.email} value={p.email} style={{ background: '#1e1e2e', color: '#fff' }}>
-                            ðŸ‘¤ {p.username || p.email?.split('@')[0]} ({p.email}) [{p.role || 'user'}]
+                            👤 {p.username || p.email?.split('@')[0]} ({p.email}) [{p.role || 'user'}]
                           </option>
                         ))}
                       </select>
@@ -912,14 +912,14 @@ Return ONLY a valid JSON object with exactly two keys:
                       value={newCampaign.template}
                       onChange={e => setNewCampaign({ ...newCampaign, template: e.target.value })}
                     >
-                      <option value="Password Reset Urgency">ðŸš¨ Urgent IT Domain Password Reset</option>
-                      <option value="HR Salary Phish">ðŸ“„ HR Q3 Compensation & Salary Schedule</option>
-                      <option value="CEO Gift Card Request">ðŸŽ CEO Gift Card Purchase Favor</option>
-                      <option value="IT Shadow API Phish">ðŸ¤– Free Enterprise AI Summarizer Access</option>
-                      <option value="Mandatory VPN Client Upgrade">ðŸ›¡ï¸ Critical Patch: Corporate VPN Client</option>
-                      <option value="Urgent Package Delivery Exception">ðŸ“¦ Delivery Failed: Signature Required</option>
-                      <option value="Executive Deepfake Video Meeting Alert">ðŸŽ¥ Confidential Executive Video Conference</option>
-                      <option value="Crypto Wallet Security Drainer Alert">ðŸ›‘ Security Alert: Wallet Withdrawal Attempt</option>
+                      <option value="Password Reset Urgency">🚨 Urgent IT Domain Password Reset</option>
+                      <option value="HR Salary Phish">📄 HR Q3 Compensation & Salary Schedule</option>
+                      <option value="CEO Gift Card Request">🎁 CEO Gift Card Purchase Favor</option>
+                      <option value="IT Shadow API Phish">🤖 Free Enterprise AI Summarizer Access</option>
+                      <option value="Mandatory VPN Client Upgrade">🛡️ Critical Patch: Corporate VPN Client</option>
+                      <option value="Urgent Package Delivery Exception">📦 Delivery Failed: Signature Required</option>
+                      <option value="Executive Deepfake Video Meeting Alert">🎥 Confidential Executive Video Conference</option>
+                      <option value="Crypto Wallet Security Drainer Alert">🛑 Security Alert: Wallet Withdrawal Attempt</option>
                     </select>
                   </div>
                 </div>
@@ -928,7 +928,7 @@ Return ONLY a valid JSON object with exactly two keys:
                 <div style={{ marginTop: '16px', background: 'rgba(255,255,255,0.03)', padding: '16px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap', gap: '10px' }}>
                     <label style={{ ...s.formLabel, color: '#38bdf8', margin: 0 }}>
-                      âœï¸ Custom Email Subject & Message Body (Optional Overrides / AI Output)
+                      ✍️ Custom Email Subject & Message Body (Optional Overrides / AI Output)
                     </label>
                     <button
                       type="button"
@@ -949,7 +949,7 @@ Return ONLY a valid JSON object with exactly two keys:
                         boxShadow: '0 2px 8px rgba(168, 85, 247, 0.3)'
                       }}
                     >
-                      {aiCrafting ? 'ðŸ¤– AI Crafting...' : 'âœ¨ AI Craft Phishing Email'}
+                      {aiCrafting ? '🤖 AI Crafting...' : '✨ AI Craft Phishing Email'}
                     </button>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -963,7 +963,7 @@ Return ONLY a valid JSON object with exactly two keys:
                       style={{ ...s.formInput, minHeight: '100px', resize: 'vertical', fontFamily: 'monospace', fontSize: '13px' }}
                       value={newCampaign.customMessage}
                       onChange={e => setNewCampaign({ ...newCampaign, customMessage: e.target.value })}
-                      placeholder={`Type custom email message or click 'âœ¨ AI Craft Phishing Email' above to auto-write a hyper-persuasive drill script...`}
+                      placeholder={`Type custom email message or click '✨ AI Craft Phishing Email' above to auto-write a hyper-persuasive drill script...`}
                     />
                   </div>
                 </div>
@@ -973,7 +973,7 @@ Return ONLY a valid JSON object with exactly two keys:
                     style={{ ...s.submitBtn, background: 'linear-gradient(135deg, #10b981, #059669)', display: 'flex', alignItems: 'center', gap: '8px' }}
                     onClick={handleLaunchCampaign}
                   >
-                    <span>ðŸš€</span>
+                    <span>🚀</span>
                     <span>Launch Drill to Targeted Email</span>
                   </button>
 
@@ -981,7 +981,7 @@ Return ONLY a valid JSON object with exactly two keys:
                     style={{ ...s.submitBtn, background: 'rgba(168, 85, 247, 0.2)', border: '1px solid rgba(168, 85, 247, 0.5)', color: '#d8b4fe', display: 'flex', alignItems: 'center', gap: '8px' }}
                     onClick={() => setPreviewTemplate(newCampaign.template)}
                   >
-                    <span>ðŸ“§</span>
+                    <span>📧</span>
                     <span>Preview What Email Looks Like</span>
                   </button>
                 </div>
@@ -1033,9 +1033,9 @@ Return ONLY a valid JSON object with exactly two keys:
           {activeTab === 'broadcast' && (
             <div style={s.card}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                <h2 style={s.cardTitle}>ðŸš¨ Live Emergency Threat Broadcast</h2>
+                <h2 style={s.cardTitle}>🚨 Live Emergency Threat Broadcast</h2>
                 <span style={{ background: broadcast.active ? 'rgba(239, 68, 68, 0.25)' : 'rgba(148, 163, 184, 0.2)', color: broadcast.active ? '#f87171' : '#94a3b8', padding: '4px 14px', borderRadius: '12px', fontWeight: 'bold', fontSize: '13px' }}>
-                  {broadcast.active ? 'ðŸ”´ BROADCAST ACTIVE ON ALL SCREENS' : 'âš« NO ACTIVE BROADCAST'}
+                  {broadcast.active ? '🔴 BROADCAST ACTIVE ON ALL SCREENS' : '⚫ NO ACTIVE BROADCAST'}
                 </span>
               </div>
               <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', marginBottom: '20px' }}>
@@ -1059,9 +1059,9 @@ Return ONLY a valid JSON object with exactly two keys:
                     value={broadcast.level}
                     onChange={e => setBroadcast({ ...broadcast, level: e.target.value })}
                   >
-                    <option value="CRITICAL">ðŸ”´ CRITICAL (Red Banner)</option>
-                    <option value="WARNING">ðŸŸ¡ WARNING (Yellow Banner)</option>
-                    <option value="INFO">ðŸ”µ INFO (Blue Banner)</option>
+                    <option value="CRITICAL">🔴 CRITICAL (Red Banner)</option>
+                    <option value="WARNING">🟡 WARNING (Yellow Banner)</option>
+                    <option value="INFO">🔵 INFO (Blue Banner)</option>
                   </select>
                 </div>
                 <div style={s.formGroup}>
@@ -1089,7 +1089,7 @@ Return ONLY a valid JSON object with exactly two keys:
                   style={{ ...s.submitBtn, background: 'linear-gradient(135deg, #ef4444, #b91c1c)', flex: 1, display: 'flex', alignItems: 'center', justify: 'center', gap: '8px' }}
                   onClick={handleStartBroadcast}
                 >
-                  <span>ðŸ“¡</span>
+                  <span>📡</span>
                   <span>Broadcast to All Screens Now</span>
                 </button>
                 {broadcast.active && (
@@ -1097,7 +1097,7 @@ Return ONLY a valid JSON object with exactly two keys:
                     style={{ ...s.submitBtn, background: 'rgba(255, 255, 255, 0.1)', border: '1px solid rgba(255, 255, 255, 0.3)', flex: 1 }}
                     onClick={handleStopBroadcast}
                   >
-                    â¹ï¸ Stop & Clear Broadcast
+                    ⏹️ Stop & Clear Broadcast
                   </button>
                 )}
               </div>
@@ -1168,7 +1168,7 @@ Return ONLY a valid JSON object with exactly two keys:
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap', gap: '10px' }}>
                     <div>
                       <label style={{ ...s.formLabel, color: '#d8b4fe', margin: 0, fontSize: '14px', fontWeight: 'bold' }}>
-                        ðŸŽ® Game Content & Questions ({newGame.type.toUpperCase()} Engine)
+                        🎮 Game Content & Questions ({newGame.type.toUpperCase()} Engine)
                       </label>
                       <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px', margin: '4px 0 0' }}>
                         {newGame.type === 'quiz' && 'Add a question with multiple-choice options. One must be correct.'}
@@ -1177,7 +1177,7 @@ Return ONLY a valid JSON object with exactly two keys:
                         {newGame.type === 'audio' && 'Write a phone call script with red flag triggers.'}
                         {newGame.type === 'spot-flag' && 'Design an HTML email mockup with hidden flags to click.'}
                         {newGame.type === 'visual' && 'Create an HTML visual with deepfake detection elements.'}
-                        {newGame.type === 'password' && 'Password games are self-contained â€” no content needed! Just add a description.'}
+                        {newGame.type === 'password' && 'Password games are self-contained — no content needed! Just add a description.'}
                         {newGame.type === 'terminal' && 'Incident response terminal commands and mitigation outcomes.'}
                         {newGame.type === 'forensics' && 'Email header traces and DNS authentication inspection fields.'}
                         {newGame.type === 'wire-audit' && 'Corporate treasury BEC invoice audit review items.'}
@@ -1203,14 +1203,14 @@ Return ONLY a valid JSON object with exactly two keys:
                         opacity: newGame.type === 'password' ? 0.5 : 1
                       }}
                     >
-                      {aiGeneratingContent ? 'ðŸ¤– AI Generating Content...' : 'âœ¨ AI Generate Full Game Content'}
+                      {aiGeneratingContent ? '🤖 AI Generating Content...' : '✨ AI Generate Full Game Content'}
                     </button>
                   </div>
 
                   {/* Content Status Indicator */}
                   {newGame.data ? (
                     <div style={{ background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.3)', borderRadius: '8px', padding: '10px 14px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ color: '#4ade80', fontWeight: 'bold', fontSize: '13px' }}>âœ… Game content loaded!</span>
+                      <span style={{ color: '#4ade80', fontWeight: 'bold', fontSize: '13px' }}>✅ Game content loaded!</span>
                       <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px' }}>
                         {newGame.type === 'quiz' && `Question: "${(newGame.data.question || '').substring(0, 60)}..."`}
                         {newGame.type === 'swipe' && `${(newGame.data.items || []).length} swipe items`}
@@ -1227,12 +1227,12 @@ Return ONLY a valid JSON object with exactly two keys:
                         onClick={() => setNewGame(prev => ({ ...prev, data: null }))}
                         style={{ marginLeft: 'auto', background: 'rgba(239,68,68,0.2)', color: '#f87171', border: '1px solid rgba(239,68,68,0.3)', borderRadius: '6px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer' }}
                       >
-                        âœ• Clear
+                        ✕ Clear
                       </button>
                     </div>
                   ) : newGame.type !== 'password' && (
                     <div style={{ background: 'rgba(234, 179, 8, 0.1)', border: '1px solid rgba(234, 179, 8, 0.2)', borderRadius: '8px', padding: '10px 14px', marginBottom: '12px' }}>
-                      <span style={{ color: '#facc15', fontSize: '12px' }}>âš ï¸ No custom content yet â€” click "âœ¨ AI Generate" above or paste JSON below. Without content, the game will use a generic default quiz.</span>
+                      <span style={{ color: '#facc15', fontSize: '12px' }}>⚠️ No custom content yet — click "✨ AI Generate" above or paste JSON below. Without content, the game will use a generic default quiz.</span>
                     </div>
                   )}
 
@@ -1250,10 +1250,10 @@ Return ONLY a valid JSON object with exactly two keys:
                             const parsed = JSON.parse(e.target.value);
                             setNewGame(prev => ({ ...prev, data: parsed }));
                           } catch (err) {
-                            // Allow typing â€” only update state when valid JSON
+                            // Allow typing — only update state when valid JSON
                           }
                         }}
-                        placeholder={`Click "âœ¨ AI Generate Full Game Content" to auto-fill, or paste valid JSON here...\n\nExample for ${newGame.type}:\n${newGame.type === 'quiz' ? '{"question":"...","options":[{"text":"...","isCorrect":true}],"threatAnalysis":{...}}' : ''
+                        placeholder={`Click "✨ AI Generate Full Game Content" to auto-fill, or paste valid JSON here...\n\nExample for ${newGame.type}:\n${newGame.type === 'quiz' ? '{"question":"...","options":[{"text":"...","isCorrect":true}],"threatAnalysis":{...}}' : ''
                         }${newGame.type === 'swipe' ? '{"items":[{"content":"...","isScam":true,"explanation":"..."}]}' : ''
                         }${newGame.type === 'chat' ? '{"messages":[{"text":"..."}],"choices":[{"text":"...","isCorrect":true}]}' : ''
                         }${newGame.type === 'audio' ? '{"script":[{"text":"...","isRedFlag":true}],"threatAnalysis":{...}}' : ''
@@ -1272,7 +1272,7 @@ Return ONLY a valid JSON object with exactly two keys:
               {/* Detailed Explanation of How Custom Games Work & Get Layouts */}
               <div style={{ ...s.card, marginTop: '1.5rem', background: 'rgba(56, 189, 248, 0.05)', border: '1px solid rgba(56, 189, 248, 0.2)' }}>
                 <h3 style={{ color: '#38bdf8', marginTop: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span>âš™ï¸</span>
+                  <span>⚙️</span>
                   <span>How Custom Games Working & Layouts Function</span>
                 </h3>
                 <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '13.5px', lineHeight: '1.6', margin: '8px 0 12px 0' }}>
@@ -1280,31 +1280,31 @@ Return ONLY a valid JSON object with exactly two keys:
                 </p>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px', fontSize: '12.5px', color: 'rgba(255,255,255,0.7)' }}>
                   <div style={{ background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '8px', borderLeft: '3px solid #38bdf8' }}>
-                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>âš¡ Quiz Engine (`quiz`)</strong>
+                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>⚡ Quiz Engine (`quiz`)</strong>
                     Presents a situational scenario where users must pick the safest defense strategy from multiple choices.
                   </div>
                   <div style={{ background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '8px', borderLeft: '3px solid #a855f7' }}>
-                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>ðŸƒ Swipe Engine (`swipe`)</strong>
+                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>🃏 Swipe Engine (`swipe`)</strong>
                     A Tinder-style card deck where users drag left/right to judge whether emails and domains are Safe or Scams.
                   </div>
                   <div style={{ background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '8px', borderLeft: '3px solid #4ade80' }}>
-                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>ðŸ” Password Engine (`password`)</strong>
+                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>🔐 Password Engine (`password`)</strong>
                     A hacker console measuring real-time entropy and brute-force resistance as users type passwords.
                   </div>
                   <div style={{ background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '8px', borderLeft: '3px solid #facc15' }}>
-                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>ðŸš© Visual Flag Engine (`spot-flag`)</strong>
+                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>🚩 Visual Flag Engine (`spot-flag`)</strong>
                     A UI mock where users inspect corporate interfaces and click on hidden phishing indicators.
                   </div>
                   <div style={{ background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '8px', borderLeft: '3px solid #10b981' }}>
-                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>âš¡ Incident Terminal (`terminal`)</strong>
+                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>⚡ Incident Terminal (`terminal`)</strong>
                     An interactive command-line console where incident responders execute countermeasures during live server attacks.
                   </div>
                   <div style={{ background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '8px', borderLeft: '3px solid #0ea5e9' }}>
-                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>ðŸ”¬ Email Forensics (`forensics`)</strong>
+                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>🔬 Email Forensics (`forensics`)</strong>
                     A digital lab workbench where users inspect raw email header traces, SPF/DKIM verification, and lookalike domains.
                   </div>
                   <div style={{ background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '8px', borderLeft: '3px solid #f59e0b' }}>
-                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>ðŸ¦ Wire &amp; BEC Audit (`wire-audit`)</strong>
+                    <strong style={{ color: '#fff', display: 'block', marginBottom: '4px' }}>🏦 Wire &amp; BEC Audit (`wire-audit`)</strong>
                     A treasury escrow portal where auditors review pending high-value corporate wire requests and freeze BEC fraud.
                   </div>
                 </div>
@@ -1322,7 +1322,7 @@ Return ONLY a valid JSON object with exactly two keys:
                         <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem', margin: '0.3rem 0 0' }}>{g.description}</p>
                       </div>
                       <div style={{ display: 'flex', gap: '8px' }}>
-                        <button style={{ ...s.actionBtn, background: 'rgba(56, 189, 248, 0.2)', color: '#38bdf8', border: '1px solid rgba(56, 189, 248, 0.4)' }} onClick={() => setPreviewGame(g)}>ðŸ‘ï¸ Preview</button>
+                        <button style={{ ...s.actionBtn, background: 'rgba(56, 189, 248, 0.2)', color: '#38bdf8', border: '1px solid rgba(56, 189, 248, 0.4)' }} onClick={() => setPreviewGame(g)}>👁️ Preview</button>
                         <button style={{ ...s.actionBtn, ...s.dangerBtn }} onClick={() => deleteCustomGame(g.id)}>Delete</button>
                       </div>
                     </div>
@@ -1351,7 +1351,7 @@ Return ONLY a valid JSON object with exactly two keys:
                 onClick={() => setPreviewGame(null)}
                 style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', border: 'none', color: '#fff', fontSize: '20px', cursor: 'pointer' }}
               >
-                âœ•
+                ✕
               </button>
               <span style={{ background: 'rgba(168,85,247,0.2)', color: '#d8b4fe', padding: '4px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: 'bold' }}>
                 GAME PREVIEW ({previewGame.type.toUpperCase()})
@@ -1359,14 +1359,14 @@ Return ONLY a valid JSON object with exactly two keys:
               <h3 style={{ margin: '12px 0 8px 0', fontSize: '20px' }}>{previewGame.title}</h3>
               <p style={{ color: '#94a3b8', fontSize: '14px', lineHeight: '1.5', marginBottom: '16px' }}>{previewGame.description || 'No description provided.'}</p>
               <div style={{ background: '#0f172a', padding: '16px', borderRadius: '8px', border: '1px dashed rgba(255,255,255,0.2)', textAlign: 'center', margin: '16px 0' }}>
-                <p style={{ margin: 0, color: '#38bdf8', fontWeight: 'bold' }}>ðŸŽ® Interactive Sandbox Ready</p>
+                <p style={{ margin: 0, color: '#38bdf8', fontWeight: 'bold' }}>🎮 Interactive Sandbox Ready</p>
                 <p style={{ margin: '8px 0 0 0', fontSize: '12px', color: '#64748b' }}>Difficulty: {previewGame.difficulty} | Reward: +{previewGame.xpReward} XP</p>
               </div>
               <button
                 onClick={() => setPreviewGame(null)}
                 style={{ width: '100%', padding: '10px', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}
               >
-                Looks Good â€” Return to Content Manager
+                Looks Good — Return to Content Manager
               </button>
             </div>
           </div>
@@ -1398,14 +1398,14 @@ Return ONLY a valid JSON object with exactly two keys:
               {/* Email Header Bar */}
               <div style={{ background: '#0f172a', padding: '16px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#fff' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span style={{ fontSize: '20px' }}>ðŸ“§</span>
+                  <span style={{ fontSize: '20px' }}>📧</span>
                   <span style={{ fontWeight: '700', fontSize: '15px' }}>Simulated Phishing Email Preview</span>
                 </div>
                 <button
                   onClick={() => setPreviewTemplate(null)}
                   style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', width: '32px', height: '32px', borderRadius: '50%', cursor: 'pointer', fontSize: '16px' }}
                 >
-                  âœ•
+                  ✕
                 </button>
               </div>
 
@@ -1424,7 +1424,7 @@ Return ONLY a valid JSON object with exactly two keys:
                   <span style={{ color: '#dc2626', fontWeight: '700' }}>{newCampaign.customSubject || EMAIL_TEMPLATES[previewTemplate].subject}</span>
                 </div>
                 {newCampaign.customSubject && (
-                  <div style={{ fontSize: '11px', color: '#a855f7', marginBottom: '4px' }}>âœ¨ AI / Custom Subject Override Active</div>
+                  <div style={{ fontSize: '11px', color: '#a855f7', marginBottom: '4px' }}>✨ AI / Custom Subject Override Active</div>
                 )}
                 <div style={{ fontSize: '12px', color: '#94a3b8' }}>
                   {EMAIL_TEMPLATES[previewTemplate].date}
@@ -1436,14 +1436,14 @@ Return ONLY a valid JSON object with exactly two keys:
                 {newCampaign.customMessage || EMAIL_TEMPLATES[previewTemplate].body}
                 {newCampaign.customMessage && (
                   <div style={{ marginTop: '16px', padding: '8px 12px', background: '#f3e8ff', border: '1px solid #d8b4fe', borderRadius: '8px', fontSize: '12px', color: '#7c3aed' }}>
-                    âœ¨ This preview reflects your custom / AI-crafted message. The actual email sent to the target will use this content.
+                    ✨ This preview reflects your custom / AI-crafted message. The actual email sent to the target will use this content.
                   </div>
                 )}
 
                 <div style={{ marginTop: '28px', textAlign: 'center' }}>
                   <button
                     onClick={() => {
-                      alert("ðŸš¨ SCAMSHIELD PHISHING DRILL TRIGGERED!\n\nIf an employee clicked this link in real life, ScamShield would record a 'Failed Drill' in the Admin metrics table and automatically assign them a 5-minute refresher training module!");
+                      alert("🚨 SCAMSHIELD PHISHING DRILL TRIGGERED!\n\nIf an employee clicked this link in real life, ScamShield would record a 'Failed Drill' in the Admin metrics table and automatically assign them a 5-minute refresher training module!");
                       setPreviewTemplate(null);
                     }}
                     style={{
@@ -1467,7 +1467,7 @@ Return ONLY a valid JSON object with exactly two keys:
               {/* Red Flags Explainer Footnote */}
               <div style={{ padding: '16px 24px', background: '#fef2f2', borderTop: '1px solid #fee2e2' }}>
                 <h4 style={{ margin: '0 0 8px 0', color: '#991b1b', fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  ðŸš© Why This Is A Phishing Trap (ScamShield Trainer Note):
+                  🚩 Why This Is A Phishing Trap (ScamShield Trainer Note):
                 </h4>
                 <ul style={{ margin: 0, paddingLeft: '20px', color: '#b91c1c', fontSize: '13px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   {EMAIL_TEMPLATES[previewTemplate].redFlags.map((flag, i) => (
@@ -1688,6 +1688,3 @@ const s = {
     gap: '1rem',
   },
 };
-
-
-

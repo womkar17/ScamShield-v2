@@ -1,4 +1,4 @@
-﻿import { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import AuthForm from '../components/AuthForm';
@@ -29,7 +29,7 @@ export default function AuthPage() {
         </div>
 
         <div style={styles.footer}>
-          ðŸ”’ 256-Bit Encrypted Google Cloud &amp; Supabase Security
+          🔒 256-Bit Encrypted Google Cloud &amp; Supabase Security
         </div>
       </div>
     </div>
@@ -89,4 +89,3 @@ const styles = {
     gap: '0.5rem',
   }
 };
-
