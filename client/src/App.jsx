@@ -18,6 +18,7 @@ import { AuthContext } from './context/AuthContext';
 import Sidebar from './components/Sidebar';
 import AICopilot from './components/AICopilot';
 import LiveThreatBanner from './components/LiveThreatBanner';
+import NetworkBackground from './components/NetworkBackground';
 import { useState } from 'react';
 
 function ScrollToTop() {
@@ -128,6 +129,7 @@ export default function App() {
 
   return (
     <>
+      <NetworkBackground />
       <ScrollToTop />
       <Routes>
         {/* Public Routes */}

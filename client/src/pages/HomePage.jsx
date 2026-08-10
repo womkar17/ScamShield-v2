@@ -3,7 +3,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import StatsBar from '../components/StatsBar';
 import ProgressMap from '../components/ProgressMap';
 import BadgeGrid from '../components/BadgeGrid';
-import NetworkBackground from '../components/NetworkBackground';
 import { AuthContext } from '../context/AuthContext';
 import { GamificationContext } from '../context/GamificationContext';
 
@@ -36,7 +35,6 @@ export default function HomePage() {
 
   return (
     <div className="app-container">
-      <NetworkBackground />
       {/* Spotlight Overlay */}
       <div 
         style={{
