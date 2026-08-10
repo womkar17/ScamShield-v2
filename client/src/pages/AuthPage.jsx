@@ -67,6 +67,8 @@ const styles = {
     fontWeight: '800',
     color: 'var(--text-h)',
     margin: '0 0 0.75rem 0',
+    lineHeight: '1.2',
+    paddingBottom: '0.1em',
     background: 'linear-gradient(135deg, var(--blue), var(--purple))',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
