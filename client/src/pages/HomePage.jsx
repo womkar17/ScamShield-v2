@@ -47,7 +47,7 @@ export default function HomePage() {
           height: '100vh',
           pointerEvents: 'none',
           background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(168, 85, 247, 0.08), transparent 40%)`,
-          zIndex: 9999
+          zIndex: 1
         }}
       />
       <main className="main-content layout-home" style={{ paddingTop: '1rem' }}>

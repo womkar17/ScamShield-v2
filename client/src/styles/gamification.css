@@ -605,7 +605,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2000;
+  z-index: 100000;
   overflow: hidden;
 }
 
@@ -1029,3 +1029,23 @@
 .light-mode .xp-bar-fill::after {
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
 }
+
+/* --- CSS NETWORK BACKGROUND --- */
+.css-network-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; overflow: hidden; pointer-events: none; }
+.css-particle { position: absolute; width: 4px; height: 4px; background: rgba(168, 85, 247, 0.4); border-radius: 50%; box-shadow: 0 0 10px rgba(168, 85, 247, 0.6); animation: float-particle 15s infinite ease-in-out alternate; }
+@keyframes float-particle { 0% { transform: translate(0, 0) scale(1); opacity: 0.2; } 50% { transform: translate(30px, -40px) scale(1.5); opacity: 0.6; } 100% { transform: translate(-20px, 30px) scale(1); opacity: 0.2; } }
+.p1 { top: 10%; left: 10%; animation-delay: 0s; }
+.p2 { top: 20%; left: 80%; animation-delay: -2s; }
+.p3 { top: 40%; left: 30%; animation-delay: -5s; }
+.p4 { top: 60%; left: 70%; animation-delay: -1s; }
+.p5 { top: 80%; left: 20%; animation-delay: -7s; }
+.p6 { top: 90%; left: 80%; animation-delay: -3s; }
+.p7 { top: 30%; left: 50%; animation-delay: -4s; }
+.p8 { top: 70%; left: 40%; animation-delay: -6s; }
+.p9 { top: 15%; left: 90%; animation-delay: -8s; }
+.p10 { top: 85%; left: 10%; animation-delay: -9s; }
+.p11 { top: 50%; left: 10%; animation-delay: -10s; }
+.p12 { top: 50%; left: 90%; animation-delay: -11s; }
+.p13 { top: 5%; left: 50%; animation-delay: -12s; }
+.p14 { top: 95%; left: 50%; animation-delay: -13s; }
+.p15 { top: 30%; left: 20%; animation-delay: -14s; }
