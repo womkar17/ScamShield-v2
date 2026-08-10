@@ -23,8 +23,8 @@ export default function NetworkBackground() {
       constructor() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
+        this.vx = (Math.random() - 0.5) * 0.8;
+        this.vy = (Math.random() - 0.5) * 0.8;
         this.radius = Math.random() * 2 + 1;
       }
       
@@ -47,7 +47,7 @@ export default function NetworkBackground() {
     // Initialize particles
     const initParticles = () => {
       particles = [];
-      const numParticles = Math.min(Math.floor((window.innerWidth * window.innerHeight) / 15000), 100);
+      const numParticles = Math.min(Math.floor((window.innerWidth * window.innerHeight) / 9000), 180);
       for (let i = 0; i < numParticles; i++) {
         particles.push(new Particle());
       }
@@ -61,9 +61,9 @@ export default function NetworkBackground() {
           const dy = particles[i].y - particles[j].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
           
-          if (distance < 120) {
+          if (distance < 140) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(168, 85, 247, ${0.2 * (1 - distance / 120)})`;
+            ctx.strokeStyle = `rgba(168, 85, 247, ${0.35 * (1 - distance / 140)})`;
             ctx.lineWidth = 1;
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -100,11 +100,10 @@ export default function NetworkBackground() {
         position: 'fixed',
         top: 0,
         left: 0,
-        width: '100vw',
-        height: '100vh',
+        width: '100%',
+        height: '100%',
         zIndex: -1,
-        pointerEvents: 'none',
-        background: 'transparent'
+        pointerEvents: 'none'
       }}
     />
   );
