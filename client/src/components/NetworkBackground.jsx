@@ -19,6 +19,18 @@ export default function NetworkBackground() {
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
+    let mouse = { x: null, y: null };
+    const handleMouseMove = (e) => {
+      mouse.x = e.x;
+      mouse.y = e.y;
+    };
+    const handleMouseOut = () => {
+      mouse.x = null;
+      mouse.y = null;
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseout', handleMouseOut);
+
     class Particle {
       constructor() {
         this.x = Math.random() * canvas.width;
@@ -71,6 +83,30 @@ export default function NetworkBackground() {
           }
         }
       }
+
+      // Draw lines to mouse and add slight interactivity
+      if (mouse.x !== null && mouse.y !== null) {
+        for (let i = 0; i < particles.length; i++) {
+          const dx = particles[i].x - mouse.x;
+          const dy = particles[i].y - mouse.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < 160) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(168, 85, 247, ${0.6 * (1 - distance / 160)})`;
+            ctx.lineWidth = 1.5;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.stroke();
+            
+            // Subtle repel effect
+            if (distance < 80) {
+               particles[i].x += dx * 0.02;
+               particles[i].y += dy * 0.02;
+            }
+          }
+        }
+      }
     };
 
     const animate = () => {
@@ -89,6 +125,8 @@ export default function NetworkBackground() {
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseout', handleMouseOut);
       window.cancelAnimationFrame(animationFrameId);
     };
   }, []);
