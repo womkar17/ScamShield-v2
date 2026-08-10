@@ -17,7 +17,6 @@ export default function AuthPage() {
     <div style={styles.container}>
       <div className="auth-card" style={styles.card}>
         <div style={styles.header}>
-          <div style={styles.icon}>🛡️</div>
           <h1 style={styles.title}>ScamShield Portal</h1>
           <p style={styles.subtitle}>
             Choose your preferred authentication method to access interactive cyber drills and leaderboards.
