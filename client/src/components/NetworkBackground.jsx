@@ -54,7 +54,7 @@ export default function NetworkBackground() {
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(168, 85, 247, 0.2)';
+        ctx.fillStyle = 'rgba(168, 85, 247, 0.4)';
         ctx.fill();
       }
     }
@@ -78,7 +78,7 @@ export default function NetworkBackground() {
           
           if (distance < 140) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(168, 85, 247, ${0.15 * (1 - distance / 140)})`;
+            ctx.strokeStyle = `rgba(168, 85, 247, ${0.25 * (1 - distance / 140)})`;
             ctx.lineWidth = 1;
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -96,7 +96,7 @@ export default function NetworkBackground() {
           
           if (distance < 180) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(168, 85, 247, ${0.3 * (1 - distance / 180)})`;
+            ctx.strokeStyle = `rgba(168, 85, 247, ${0.5 * (1 - distance / 180)})`;
             ctx.lineWidth = 1.5;
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(mouse.x, mouse.y);

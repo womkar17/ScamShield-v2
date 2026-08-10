@@ -9,7 +9,7 @@ export default function BadgeGrid() {
   const unlockedCount = badges.filter(b => b.unlocked).length;
 
   return (
-    <TiltCard className="badge-section" style={{ backdropFilter: 'blur(10px)', boxShadow: '0 10px 30px rgba(0,0,0,0.3)', background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.7))' }}>
+    <TiltCard className="badge-section" style={{ backdropFilter: 'blur(4px)', boxShadow: '0 10px 30px rgba(0,0,0,0.3)', background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.3), rgba(15, 23, 42, 0.3))' }}>
       <div className="badge-section-header">
         <h3 className="badge-section-title">🏆 Achievements</h3>
         <span className="badge-section-count">
