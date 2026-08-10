@@ -128,6 +128,13 @@ const RoomScan = ({ onComplete }) => {
     };
   }, []);
 
+  // Re-attach stream to video element if it remounts (e.g. on retake)
+  useEffect(() => {
+    if (videoRef.current && streamRef.current && videoRef.current.srcObject !== streamRef.current) {
+      videoRef.current.srcObject = streamRef.current;
+    }
+  }, [isComplete]);
+
   // Motion detection
   useEffect(() => {
     if (isComplete) return;
