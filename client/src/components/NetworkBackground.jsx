@@ -44,14 +44,17 @@ export default function NetworkBackground() {
         this.x += this.vx;
         this.y += this.vy;
         
-        if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx;
-        if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy;
+        // Bounce off walls
+        if (this.x < 0) { this.x = 0; this.vx *= -1; }
+        if (this.x > canvas.width) { this.x = canvas.width; this.vx *= -1; }
+        if (this.y < 0) { this.y = 0; this.vy *= -1; }
+        if (this.y > canvas.height) { this.y = canvas.height; this.vy *= -1; }
       }
       
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(168, 85, 247, 0.5)';
+        ctx.fillStyle = 'rgba(168, 85, 247, 0.2)';
         ctx.fill();
       }
     }
@@ -75,7 +78,7 @@ export default function NetworkBackground() {
           
           if (distance < 140) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(168, 85, 247, ${0.35 * (1 - distance / 140)})`;
+            ctx.strokeStyle = `rgba(168, 85, 247, ${0.15 * (1 - distance / 140)})`;
             ctx.lineWidth = 1;
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -91,18 +94,19 @@ export default function NetworkBackground() {
           const dy = particles[i].y - mouse.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
           
-          if (distance < 160) {
+          if (distance < 180) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(168, 85, 247, ${0.6 * (1 - distance / 160)})`;
+            ctx.strokeStyle = `rgba(168, 85, 247, ${0.3 * (1 - distance / 180)})`;
             ctx.lineWidth = 1.5;
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(mouse.x, mouse.y);
             ctx.stroke();
             
-            // Subtle repel effect
-            if (distance < 80) {
-               particles[i].x += dx * 0.02;
-               particles[i].y += dy * 0.02;
+            // Dynamic fluid repel effect
+            if (distance < 120) {
+               const force = (120 - distance) / 120;
+               particles[i].x += (dx / distance) * force * 4;
+               particles[i].y += (dy / distance) * force * 4;
             }
           }
         }
