@@ -291,9 +291,9 @@ export const useEyeTracking = ({ isActive, onWarning }) => {
     faceAbsentTicksRef.current = 0;
     gazeOffTicksRef.current = 0;
 
-    // Time-based warm-up: skip violations for first 4 seconds
+    // Time-based warm-up: skip violations for first 8 seconds
     const warmUpStartTime = Date.now();
-    const WARM_UP_MS = 4000;
+    const WARM_UP_MS = 8000;
 
     trackingIntervalRef.current = setInterval(() => {
       let result;
@@ -324,7 +324,7 @@ export const useEyeTracking = ({ isActive, onWarning }) => {
       // Face absence — cumulative tick counter
       if (!result.faceDetected) {
         faceAbsentTicksRef.current++;
-        if (faceAbsentTicksRef.current >= 5) {
+        if (faceAbsentTicksRef.current >= 8) {
           if (onWarningRef.current) {
             onWarningRef.current('Face not detected — camera may be covered or you left the frame');
           }

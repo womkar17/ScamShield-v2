@@ -55,6 +55,11 @@ export const useFaceDetection = ({ isActive, onMiss }) => {
     let multiplePersonsFrames = 0;
     let obstructionTicks = 0;
 
+    // Warm-up: cameras need time to adjust exposure/white balance.
+    // First frames are often dark or uniform → skip detection during this window.
+    const warmUpStart = Date.now();
+    const WARM_UP_MS = 6000; // 6 seconds grace period
+
     // Create a small offscreen canvas for pixel analysis
     const canvas = document.createElement('canvas');
     canvas.width = 80;
@@ -102,7 +107,7 @@ export const useFaceDetection = ({ isActive, onMiss }) => {
         const avgBrightness = totalBrightness / pixelCount;
         
         // Check 1: Very dark frame (camera covered)
-        if (avgBrightness < 25) {
+        if (avgBrightness < 15) {
           return true;
         }
         
@@ -114,8 +119,8 @@ export const useFaceDetection = ({ isActive, onMiss }) => {
         const stdDev = Math.sqrt(sumSquaredDiff / pixelCount);
         
         // Normal webcam feed has stdDev > 15-20. 
-        // Phone/hand pressed against lens has stdDev < 8.
-        if (stdDev < 8) {
+        // Phone/hand pressed against lens has stdDev < 5.
+        if (stdDev < 5 && avgBrightness < 40) {
           return true;
         }
         
@@ -131,10 +136,13 @@ export const useFaceDetection = ({ isActive, onMiss }) => {
 
       statusRef.current.framesProcessed++;
 
+      // Skip all violation detection during warm-up
+      if (Date.now() - warmUpStart < WARM_UP_MS) return;
+
       // === Layer 1: Camera obstruction detection (always runs, no ML needed) ===
       if (isCameraObstructed(video)) {
         obstructionTicks++;
-        if (obstructionTicks >= 3 && onMissRef.current) {
+        if (obstructionTicks >= 5 && onMissRef.current) {
           onMissRef.current('Camera obstructed — lens appears to be blocked');
           obstructionTicks = 0;
         }
