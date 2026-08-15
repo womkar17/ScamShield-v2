@@ -57,8 +57,8 @@ const ExamHUD = ({ currentSimNum, totalSims, score, timeLeftFormatted, isUrgent,
           <span title="ML model loaded" style={{ color: diagnostics.ml ? '#22c55e' : '#f59e0b' }}>
             🧠 {diagnostics.ml ? '✓' : '…'}
           </span>
-          <span title="Face detected" style={{ color: diagnostics.etFrames === 0 ? '#f59e0b' : (diagnostics.face ? '#22c55e' : '#ef4444') }}>
-            👤 {diagnostics.etFrames === 0 ? '…' : (diagnostics.face ? '✓' : '✗')}
+          <span title="Face detected" style={{ color: (!diagnostics.ml && diagnostics.etFrames < 10) ? '#f59e0b' : (diagnostics.face ? '#22c55e' : '#ef4444') }}>
+            👤 {(!diagnostics.ml && diagnostics.etFrames < 10) ? '…' : (diagnostics.face ? '✓' : '✗')}
           </span>
           <span title="Frames processed" style={{ color: 'var(--text2)', fontFamily: 'monospace', fontSize: '0.75rem' }}>
             f:{diagnostics.frames}

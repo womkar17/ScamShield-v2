@@ -120,43 +120,52 @@ export const useEyeTracking = ({ isActive, onWarning }) => {
   }, []);
 
   // ─── Fallback: Brightness Heuristic ───────────────────────────────
+  // NOTE: This fallback runs while MediaPipe is downloading. It should be
+  // very lenient — assume the face IS present as long as the camera shows
+  // a normal (non-black, non-uniform) frame. Real face detection is
+  // MediaPipe's job. The fallback only catches blatant camera obstruction.
   const checkFacePresenceFallback = useCallback(() => {
     const video = videoRef.current;
-    if (!video || video.readyState < 2) return { faceDetected: false, gazeOff: false };
+    if (!video || video.readyState < 2) return { faceDetected: true, gazeOff: false };
 
     const canvas = document.createElement('canvas');
-    canvas.width = 160;
-    canvas.height = 120;
+    canvas.width = 80;
+    canvas.height = 60;
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
-    ctx.drawImage(video, 0, 0, 160, 120);
-    const frame = ctx.getImageData(0, 0, 160, 120);
+    ctx.drawImage(video, 0, 0, 80, 60);
+    const frame = ctx.getImageData(0, 0, 80, 60);
     const data = frame.data;
 
-    let centerBrightness = 0, edgeBrightness = 0;
-    let centerCount = 0, edgeCount = 0;
+    let totalBrightness = 0;
+    let pixelCount = 0;
+    const brightnesses = [];
 
-    for (let y = 0; y < 120; y++) {
-      for (let x = 0; x < 160; x += 4) {
-        const idx = (y * 160 + x) * 4;
-        const brightness = (data[idx] + data[idx+1] + data[idx+2]) / 3;
-        
-        const isCenter = x > 40 && x < 120 && y > 30 && y < 90;
-        if (isCenter) {
-          centerBrightness += brightness;
-          centerCount++;
-        } else {
-          edgeBrightness += brightness;
-          edgeCount++;
-        }
-      }
+    for (let i = 0; i < data.length; i += 16) {
+      const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
+      totalBrightness += brightness;
+      brightnesses.push(brightness);
+      pixelCount++;
     }
 
-    const avgCenter = centerCount > 0 ? centerBrightness / centerCount : 0;
-    const avgEdge = edgeCount > 0 ? edgeBrightness / edgeCount : 0;
-    const totalAvg = (avgCenter + avgEdge) / 2;
-    const hasFace = totalAvg > 30 && Math.abs(avgCenter - avgEdge) > 5;
+    const avgBrightness = totalBrightness / pixelCount;
 
-    return { faceDetected: hasFace, gazeOff: false };
+    // Only flag as "no face" if camera is clearly blocked (very dark)
+    if (avgBrightness < 10) {
+      return { faceDetected: false, gazeOff: false };
+    }
+
+    // Check for completely uniform frame (object pressed against lens)
+    let sumSquaredDiff = 0;
+    for (const b of brightnesses) {
+      sumSquaredDiff += (b - avgBrightness) ** 2;
+    }
+    const stdDev = Math.sqrt(sumSquaredDiff / pixelCount);
+    if (stdDev < 3 && avgBrightness < 30) {
+      return { faceDetected: false, gazeOff: false };
+    }
+
+    // Normal camera frame — assume face is present (MediaPipe will handle real detection)
+    return { faceDetected: true, gazeOff: false };
   }, []);
 
   // ─── Face Bounding Box Area (for occlusion detection) ─────────────
