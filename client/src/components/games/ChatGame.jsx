@@ -13,13 +13,16 @@ export default function ChatGame({ game, onComplete }) {
         { sender: 'scammer', text: 'Hi! This is IT Support. We detected unusual activity on your account.' },
         { sender: 'scammer', text: 'Please send your current password immediately so we can lock down the account.' }
       ];
-  const choices = (Array.isArray(rawData.choices) && rawData.choices.length > 0)
-    ? rawData.choices
-    : [
-        { text: 'Sure, sending credentials now.', isCorrect: false, explanation: 'Never share passwords in chat.' },
-        { text: 'I will verify through the official IT Helpdesk portal first.', isCorrect: true, explanation: 'Always verify through official channels.' },
-        { text: 'Can you send a link instead?', isCorrect: false, explanation: 'Links can lead to credential harvesting.' }
-      ];
+  const [choices] = useState(() => {
+    const arr = (Array.isArray(rawData.choices) && rawData.choices.length > 0)
+      ? rawData.choices
+      : [
+          { text: 'Sure, sending credentials now.', isCorrect: false, explanation: 'Never share passwords in chat.' },
+          { text: 'I will verify through the official IT Helpdesk portal first.', isCorrect: true, explanation: 'Always verify through official channels.' },
+          { text: 'Can you send a link instead?', isCorrect: false, explanation: 'Links can lead to credential harvesting.' }
+        ];
+    return [...arr].sort(() => Math.random() - 0.5);
+  });
   
   const [chatHistory, setChatHistory] = useState([]);
   const [messageIndex, setMessageIndex] = useState(0);

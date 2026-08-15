@@ -98,7 +98,18 @@ export function AuthProvider({ children }) {
 
         // 3. In-memory fallback if all queries fail
         if (!profile) {
-          profile = { id: session.user.id, email: session.user.email, username, role: 'user', xp: 0, level: 1, streak: 1 };
+          profile = { 
+            id: session.user.id, 
+            email: session.user.email, 
+            username, 
+            role: 'user', 
+            xp: 0, 
+            level: 1, 
+            streak: 1,
+            exam_attempts: 0,
+            exam_passed: false,
+            last_failed_exam: null
+          };
         }
 
         // Apply local storage overrides if backend didn't have them

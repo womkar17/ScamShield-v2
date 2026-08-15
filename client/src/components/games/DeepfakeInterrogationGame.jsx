@@ -9,12 +9,15 @@ export default function DeepfakeInterrogationGame({ game, onComplete }) {
 
   const transcript = rawData.transcript || "Hey [0.2s silence] John. This is [metallic artifact] the CEO. I need you to wire [monotone] $50,000 to the new vendor [0.5s silence] immediately. Don't call me back, I am [metallic artifact] in a meeting.";
   
-  const options = rawData.options || [
-    { id: 'glitch', text: 'Metallic voice glitches / Audio artifacts', isCorrect: true },
-    { id: 'breathing', text: 'Heavy breathing', isCorrect: false },
-    { id: 'emotion', text: 'Flat emotional delivery / Monotone', isCorrect: true },
-    { id: 'urgency', text: 'Creating false urgency', isCorrect: true }
-  ];
+  const [options] = useState(() => {
+    const arr = rawData.options || [
+      { id: 'glitch', text: 'Metallic voice glitches / Audio artifacts', isCorrect: true },
+      { id: 'breathing', text: 'Heavy breathing', isCorrect: false },
+      { id: 'emotion', text: 'Flat emotional delivery / Monotone', isCorrect: true },
+      { id: 'urgency', text: 'Creating false urgency', isCorrect: true }
+    ];
+    return [...arr].sort(() => Math.random() - 0.5);
+  });
 
   const requiredCorrect = options.filter(o => o.isCorrect).length;
 

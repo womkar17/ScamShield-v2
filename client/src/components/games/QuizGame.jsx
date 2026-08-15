@@ -57,31 +57,39 @@ const QuizGame = ({ game, onComplete, isExamMode }) => {
     : (game.data || {});
 
   const questions = useMemo(() => {
+    let result = [];
     // 1. If explicit questions array exists
     if (Array.isArray(rawData.questions) && rawData.questions.length > 0) {
-      return rawData.questions;
+      result = rawData.questions;
+    } else {
+      // 2. Base question from rawData or game
+      const baseQ = rawData.question || game.question || 'Which of the following is a key red flag of a social engineering attack?';
+      const baseOpts = (Array.isArray(rawData.options) && rawData.options.length > 0)
+        ? rawData.options
+        : [
+            { text: 'An urgent request to bypass normal security procedures', isCorrect: true, explanation: 'Scammers create artificial urgency to force hasty decisions.' },
+            { text: 'An email from a known colleague signed with their standard signature', isCorrect: false, explanation: 'Standard internal communication is normally safe.' },
+            { text: 'A scheduled security update notification from IT', isCorrect: false, explanation: 'Scheduled IT updates are routine.' }
+          ];
+
+      const initialArr = [{ question: baseQ, options: baseOpts }];
+      const diff = String(game.difficulty || 'Medium').toLowerCase();
+
+      // 3. If Hard or Medium, dynamically expand the question pool
+      if (diff === 'hard') {
+        result = [...initialArr, ...FALLBACK_QUESTIONS.slice(0, 4)];
+      } else if (diff === 'medium') {
+        result = [...initialArr, ...FALLBACK_QUESTIONS.slice(0, 2)];
+      } else {
+        result = initialArr;
+      }
     }
 
-    // 2. Base question from rawData or game
-    const baseQ = rawData.question || game.question || 'Which of the following is a key red flag of a social engineering attack?';
-    const baseOpts = (Array.isArray(rawData.options) && rawData.options.length > 0)
-      ? rawData.options
-      : [
-          { text: 'An urgent request to bypass normal security procedures', isCorrect: true, explanation: 'Scammers create artificial urgency to force hasty decisions.' },
-          { text: 'An email from a known colleague signed with their standard signature', isCorrect: false, explanation: 'Standard internal communication is normally safe.' },
-          { text: 'A scheduled security update notification from IT', isCorrect: false, explanation: 'Scheduled IT updates are routine.' }
-        ];
-
-    const initialArr = [{ question: baseQ, options: baseOpts }];
-    const diff = String(game.difficulty || 'Medium').toLowerCase();
-
-    // 3. If Hard or Medium, dynamically expand the question pool so the user gets multiple rounds matching difficulty!
-    if (diff === 'hard') {
-      return [...initialArr, ...FALLBACK_QUESTIONS.slice(0, 4)];
-    } else if (diff === 'medium') {
-      return [...initialArr, ...FALLBACK_QUESTIONS.slice(0, 2)];
-    }
-    return initialArr;
+    // Jumble the options for each question
+    return result.map(q => ({
+      ...q,
+      options: [...(q.options || [])].sort(() => Math.random() - 0.5)
+    }));
   }, [rawData, game.question, game.difficulty]);
 
   const currentQ = questions[currentIndex] || questions[0];

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { supabase } from '../lib/supabase';
 import { MINIGAMES } from '../data/minigames';
 import EnvironmentCheck from '../components/exam/EnvironmentCheck';
 import RoomScan from '../components/exam/RoomScan';
@@ -30,7 +31,7 @@ import PermissionPurgeGame from '../components/games/PermissionPurgeGame';
 
 const ExamPage = () => {
   const navigate = useNavigate();
-  const { userProfile, currentUser } = useContext(AuthContext);
+  const { userProfile, currentUser, isAdmin } = useContext(AuthContext);
   const userName = userProfile?.username || userProfile?.email?.split('@')[0] || currentUser?.email?.split('@')[0] || 'Student';
 
   const [phase, setPhase] = useState('landing'); 
@@ -42,29 +43,56 @@ const ExamPage = () => {
   const [roomScanImages, setRoomScanImages] = useState([]);
   const [examResult, setExamResult] = useState(null);
 
-  // --- Exam Setup ---
+  // --- Exam Setup & Cooldown Check ---
+  const [cooldownTimeLeft, setCooldownTimeLeft] = useState(null);
+
   useEffect(() => {
+    // Check 24-hour cooldown for normal users from DB
+    if (!isAdmin && userProfile) {
+      const lastFailed = userProfile.last_failed_exam;
+      if (lastFailed) {
+        const timeSinceFail = Date.now() - new Date(lastFailed).getTime();
+        const cooldownMs = 24 * 60 * 60 * 1000;
+        if (timeSinceFail < cooldownMs) {
+          const hoursLeft = Math.ceil((cooldownMs - timeSinceFail) / (1000 * 60 * 60));
+          setCooldownTimeLeft(hoursLeft);
+          setPhase('cooldown');
+          return;
+        }
+      }
+    }
+
     if (phase === 'landing') {
       const EXAM_POOL = MINIGAMES.filter(g => g.difficulty === 'Hard' && g.id.startsWith('exam_hard_'));
       const shuffled = [...EXAM_POOL].sort(() => Math.random() - 0.5);
       setExamGames(shuffled); // All 30 hard simulations
     }
-  }, [phase]);
+  }, [phase, isAdmin, userProfile]);
 
   // --- Hooks Setup ---
   const isExamActive = phase === 'active';
 
-  const handleFail = (reason) => {
+  const handleFail = async (reason) => {
     // If we fail via strikes (3), we end immediately with 0 score
+    if (!isAdmin && userProfile) {
+      // Update Supabase DB
+      try {
+        const newAttempts = (userProfile.exam_attempts || 0) + 1;
+        await supabase.from('profiles').update({
+          last_failed_exam: new Date().toISOString(),
+          exam_attempts: newAttempts
+        }).eq('id', userProfile.id);
+      } catch (e) {
+        console.error('Failed to log exam failure to DB', e);
+      }
+    }
+
     setExamResult({
       score: 0,
       total: examGames.length,
       isPassed: false
     });
     setPhase('results');
-    
-    // Save fail time for cooldown
-    localStorage.setItem('ss_exam_last_fail', Date.now().toString());
   };
 
   const { strikes, violationLog, isLocked, enterFullscreen, addStrike, examContainerRef } = useSecureExam({
@@ -82,15 +110,18 @@ const ExamPage = () => {
     }
   });
 
-  const { missedCount } = useFaceDetection({
+  const { statusRef: faceDetectionStatus } = useFaceDetection({
     isActive: isExamActive,
     onMiss: (reason) => addStrike(reason)
   });
 
-  const { gazeWarnings, cleanup: cleanupGaze } = useEyeTracking({
+  const { gazeWarnings, cleanup: cleanupGaze, startCalibration: startEyeCalibration, markCalibrated: markEyeCalibrated, statusRef: eyeTrackingStatus } = useEyeTracking({
     isActive: isExamActive,
     onWarning: (reason) => addStrike(reason)
   });
+
+  // Camera streams are now managed internally by useFaceDetection and useEyeTracking
+  // via the shared camera singleton (sharedCamera.js). No manual wiring needed.
 
   // Cleanup on unmount
   useEffect(() => {
@@ -103,23 +134,36 @@ const ExamPage = () => {
   }, [cleanupGaze]);
 
   // --- Helpers ---
-  const finishExam = () => {
+  const finishExam = async () => {
     // 55% threshold of 30 games is 16.5 -> 17 correct required
     const totalGames = examGames.length;
     const requiredCorrect = Math.ceil(totalGames * 0.55);
     const isPassed = strikes < 1 && score >= requiredCorrect;
     
-    if (!isPassed) {
-      localStorage.setItem('ss_exam_last_fail', Date.now().toString());
+    if (userProfile && !isAdmin) {
+      try {
+        const newAttempts = (userProfile.exam_attempts || 0) + 1;
+        const updateData = { exam_attempts: newAttempts };
+        
+        if (isPassed) {
+          updateData.exam_passed = true;
+        } else {
+          updateData.last_failed_exam = new Date().toISOString();
+        }
+        
+        await supabase.from('profiles').update(updateData).eq('id', userProfile.id);
+      } catch (e) {
+        console.error('Failed to log exam finish to DB', e);
+      }
     }
-    
+
     setExamResult({
       score: strikes >= 1 ? 0 : score,
       total: examGames.length,
       isPassed
     });
     setPhase('results');
-    
+
     if (document.fullscreenElement) {
       document.exitFullscreen().catch(e => console.error(e));
     }
@@ -197,6 +241,26 @@ const ExamPage = () => {
         </div>
       )}
 
+      {phase === 'cooldown' && (
+        <div style={styles.centerContainer}>
+          <div style={styles.card}>
+            <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>⏳</div>
+            <h1 style={{ color: 'var(--text)', marginBottom: '1rem' }}>Exam on Cooldown</h1>
+            <p style={{ color: 'var(--text2)', marginBottom: '2rem', lineHeight: 1.6 }}>
+              You recently failed the proctored exam. To ensure academic integrity and encourage further study, there is a mandatory 24-hour waiting period before you can attempt it again.
+              <br/><br/>
+              <strong>Time remaining:</strong> ~{cooldownTimeLeft} hours
+            </p>
+            <button 
+              onClick={() => navigate('/dashboard')}
+              style={styles.primaryButton}
+            >
+              Return to Dashboard
+            </button>
+          </div>
+        </div>
+      )}
+
       {phase === 'envcheck' && (
         <div style={styles.centerContainer}>
           <EnvironmentCheck onComplete={() => setPhase('roomscan')} />
@@ -213,7 +277,10 @@ const ExamPage = () => {
       )}
 
       {phase === 'calibration' && (
-        <EyeCalibration onComplete={async () => {
+        <EyeCalibration 
+          startCalibration={startEyeCalibration}
+          markCalibrated={markEyeCalibrated}
+          onComplete={async () => {
           // Go to active phase and request fullscreen
           setPhase('active');
           if (examContainerRef.current) {
@@ -229,6 +296,7 @@ const ExamPage = () => {
           ref={examContainerRef} 
           style={{ width: '100vw', height: '100vh', background: 'var(--bg)', position: 'fixed', top: 0, left: 0, zIndex: 9999 }}
         >
+          {/* Video elements are now created internally by detection hooks */}
           {isLocked ? (
             <div style={styles.centerContainer}>
               <div style={styles.card}>
@@ -247,6 +315,8 @@ const ExamPage = () => {
                 isUrgent={isUrgent}
                 strikes={strikes}
                 gazeWarnings={gazeWarnings}
+                faceDetectionStatus={faceDetectionStatus}
+                eyeTrackingStatus={eyeTrackingStatus}
               />
               {renderActiveGame()}
             </>
@@ -263,12 +333,6 @@ const ExamPage = () => {
           roomScanImages={roomScanImages}
           userName={userName}
           onRetake={() => {
-            // Check if cooldown is actually over
-            const lastAttempt = localStorage.getItem('ss_exam_last_fail');
-            if (lastAttempt) {
-              const diff = (parseInt(lastAttempt, 10) + 24 * 60 * 60 * 1000) - Date.now();
-              if (diff > 0) return; // Still in cooldown
-            }
             window.location.reload(); // Reload to reset all states cleanly
           }}
         />

@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useEyeTracking } from '../../hooks/useEyeTracking';
 
-const EyeCalibration = ({ onComplete }) => {
-  const { startCalibration, markCalibrated } = useEyeTracking({ isActive: false });
+const EyeCalibration = ({ startCalibration, markCalibrated, onComplete }) => {
   const [clickedDots, setClickedDots] = useState([]);
   const [showInstructions, setShowInstructions] = useState(true);
   

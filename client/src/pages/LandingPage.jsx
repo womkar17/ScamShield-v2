@@ -2,6 +2,9 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { MODULES } from '../data/modules';
+import TiltCard from '../components/TiltCard';
+import MatrixRain from '../components/MatrixRain';
+
 export default function LandingPage() {
   const navigate = useNavigate();
   const { isLoggedIn } = useContext(AuthContext);
@@ -33,9 +36,13 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section style={styles.hero}>
+      <section style={{...styles.hero, position: 'relative', overflow: 'hidden'}}>
+        
+        {/* Full Page Matrix Digital Rain Effect */}
+        <MatrixRain />
+
         <div style={styles.heroGlow}></div>
-        <div style={styles.heroContent}>
+        <div style={{...styles.heroContent, position: 'relative', zIndex: 1}}>
           <div style={styles.heroBadge}>🔒 Cybersecurity Awareness Platform</div>
           <h1 style={styles.heroTitle}>
             Don't Be the Next
@@ -83,38 +90,38 @@ export default function LandingPage() {
             personal information, financial data, and corporate secrets.
           </p>
           <div style={styles.cardGrid}>
-            <div style={styles.infoCard}>
+            <TiltCard style={styles.infoCard}>
               <div style={styles.cardIcon}>🎣</div>
               <h3 style={styles.cardTitle}>Phishing</h3>
               <p style={styles.cardText}>
                 Fraudulent emails and messages designed to trick you into revealing passwords, 
                 credit card numbers, or other sensitive information by impersonating trusted sources.
               </p>
-            </div>
-            <div style={styles.infoCard}>
+            </TiltCard>
+            <TiltCard style={styles.infoCard}>
               <div style={styles.cardIcon}>📞</div>
               <h3 style={styles.cardTitle}>Vishing</h3>
               <p style={styles.cardText}>
                 Voice phishing — scammers call you pretending to be from your bank, the IRS, 
                 or tech support to pressure you into giving up money or personal data.
               </p>
-            </div>
-            <div style={styles.infoCard}>
+            </TiltCard>
+            <TiltCard style={styles.infoCard}>
               <div style={styles.cardIcon}>🤖</div>
               <h3 style={styles.cardTitle}>Deepfakes</h3>
               <p style={styles.cardText}>
                 AI-generated fake videos and audio that can convincingly impersonate real people, 
                 used for fraud, blackmail, and disinformation campaigns.
               </p>
-            </div>
-            <div style={styles.infoCard}>
+            </TiltCard>
+            <TiltCard style={styles.infoCard}>
               <div style={styles.cardIcon}>🧠</div>
               <h3 style={styles.cardTitle}>Social Engineering</h3>
               <p style={styles.cardText}>
                 Psychological manipulation techniques that exploit human trust, fear, or urgency 
                 to bypass security measures and gain unauthorized access.
               </p>
-            </div>
+            </TiltCard>
           </div>
         </div>
       </section>
@@ -128,30 +135,30 @@ export default function LandingPage() {
             Learn at your own pace through interactive modules and games.
           </p>
           <div style={styles.featureGrid}>
-            <div style={styles.featureCard}>
+            <TiltCard style={styles.featureCard}>
               <div style={styles.featureNumber}>01</div>
               <h3 style={styles.featureTitle}>Learn</h3>
               <p style={styles.cardText}>
                 Complete {MODULES.length}+ educational modules covering every type of modern scam — from phishing 
                 emails to cryptocurrency fraud. Each module includes real examples and case studies.
               </p>
-            </div>
-            <div style={styles.featureCard}>
+            </TiltCard>
+            <TiltCard style={styles.featureCard}>
               <div style={styles.featureNumber}>02</div>
               <h3 style={styles.featureTitle}>Practice</h3>
               <p style={styles.cardText}>
                 Test your skills in our Arcade with 50+ interactive mini-games. Swipe on suspicious 
                 messages, analyze fake audio calls, spot deepfake videos, and build strong passwords.
               </p>
-            </div>
-            <div style={styles.featureCard}>
+            </TiltCard>
+            <TiltCard style={styles.featureCard}>
               <div style={styles.featureNumber}>03</div>
               <h3 style={styles.featureTitle}>Level Up</h3>
               <p style={styles.cardText}>
-                Earn XP, unlock badges, maintain daily streaks, and climb from Beginner to Shield Master. 
-                Track your progress on your personal dashboard and compete with yourself.
+                Earn points, unlock achievements, and track your progress. Once you're ready, 
+                take the Proctored Exam to earn your official ScamShield Certification.
               </p>
-            </div>
+            </TiltCard>
           </div>
         </div>
       </section>

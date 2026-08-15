@@ -2,35 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Certificate from './Certificate';
 
 const ExamResults = ({ score, total, isPassed, violationLog, roomScanImages, onRetake, userName }) => {
-  const [cooldownRemaining, setCooldownRemaining] = useState('');
   const percent = Math.round((score / total) * 100);
   const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-
-  useEffect(() => {
-    if (isPassed) return;
-    
-    // Check cooldown
-    const updateCooldown = () => {
-      const lastAttempt = localStorage.getItem('ss_exam_last_fail');
-      if (!lastAttempt) return;
-      
-      const failTime = parseInt(lastAttempt, 10);
-      const now = Date.now();
-      const diff = (failTime + 24 * 60 * 60 * 1000) - now;
-      
-      if (diff <= 0) {
-        setCooldownRemaining(null);
-      } else {
-        const hours = Math.floor(diff / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        setCooldownRemaining(`${hours}h ${minutes}m`);
-      }
-    };
-    
-    updateCooldown();
-    const interval = setInterval(updateCooldown, 60000); // update every minute
-    return () => clearInterval(interval);
-  }, [isPassed]);
 
   return (
     <div style={styles.container}>
@@ -92,15 +65,9 @@ const ExamResults = ({ score, total, isPassed, violationLog, roomScanImages, onR
                 <br/>Any strikes accrued during the exam result in an automatic failure (0 score).
               </p>
               
-              {cooldownRemaining ? (
-                <div style={styles.cooldownBox}>
-                  🔒 You must wait <strong>{cooldownRemaining}</strong> before retaking the exam.
-                </div>
-              ) : (
-                <button onClick={onRetake} style={styles.retakeButton}>
-                  Retake Exam
-                </button>
-              )}
+              <button onClick={() => window.location.href = '/dashboard'} style={styles.retakeButton}>
+                Return to Dashboard
+              </button>
             </div>
           )}
         </div>

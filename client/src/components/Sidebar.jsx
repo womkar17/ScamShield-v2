@@ -8,7 +8,22 @@ export default function Sidebar({ isOpen, setIsOpen }) {
   const location = useLocation();
   const { isAdmin, logout, userProfile, currentUser } = useContext(AuthContext);
   const { completedModules = [] } = useContext(AppContext);
-  const isExamUnlocked = isAdmin || completedModules.length >= 20;
+
+  // --- Exam Unlock & Cooldown Logic ---
+  const lastFailedExam = userProfile?.last_failed_exam ? new Date(userProfile.last_failed_exam).getTime() : null;
+  const cooldownMs = 24 * 60 * 60 * 1000; // 24 hours
+  let onCooldown = false;
+  let cooldownHoursLeft = 0;
+
+  if (!isAdmin && lastFailedExam) {
+    const timeSinceFail = Date.now() - lastFailedExam;
+    if (timeSinceFail < cooldownMs) {
+      onCooldown = true;
+      cooldownHoursLeft = Math.ceil((cooldownMs - timeSinceFail) / (1000 * 60 * 60));
+    }
+  }
+
+  const isExamUnlocked = isAdmin || (completedModules.length >= 20 && !onCooldown);
 
   const displayName = userProfile?.username || userProfile?.email?.split('@')[0] || currentUser?.email?.split('@')[0] || 'User';
 
@@ -25,7 +40,8 @@ export default function Sidebar({ isOpen, setIsOpen }) {
   if (isExamUnlocked) {
     menuItems.push({ name: 'Proctored Exam', icon: '🎓', path: '/exam' });
   } else {
-    menuItems.push({ name: 'Exam (Locked)', icon: '🔒', path: '#', locked: true });
+    const lockText = onCooldown ? `Exam (${cooldownHoursLeft}h Cooldown)` : 'Exam (Locked)';
+    menuItems.push({ name: lockText, icon: '🔒', path: '#', locked: true, onCooldown });
   }
   
   menuItems.push({ name: 'Settings', icon: '🔧', path: '/settings' });

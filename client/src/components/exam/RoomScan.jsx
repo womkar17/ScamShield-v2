@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { loadCocoSsd } from '../../utils/tfModelManager';
+
 
 const SCAN_PHASES = [
   { id: 'front', label: '📱 Show your desk area (front)', duration: 6 },
@@ -111,20 +113,40 @@ const RoomScan = ({ onComplete }) => {
   const videoRef = useRef(null);
   const streamRef = useRef(null);
   const prevFrameRef = useRef(null);
-  const animFrameRef = useRef(null);
   const capturedCanvases = useRef([]);
+  const modelRef = useRef(null);
 
-  // Start camera
+  // Load COCO-SSD model
   useEffect(() => {
+    let isMounted = true;
+    loadCocoSsd().then(model => {
+      if (isMounted) modelRef.current = model;
+    }).catch(err => console.error("Failed to load COCO-SSD:", err));
+    return () => { isMounted = false; };
+  }, []);
+
+  // Start camera — track when it's actually ready
+  const [cameraReady, setCameraReady] = useState(false);
+  useEffect(() => {
+    let cancelled = false;
     navigator.mediaDevices.getUserMedia({ video: true })
       .then(stream => {
+        if (cancelled) { stream.getTracks().forEach(t => t.stop()); return; }
         streamRef.current = stream;
-        if (videoRef.current) videoRef.current.srcObject = stream;
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          // Wait for actual video data before marking ready
+          const onPlaying = () => {
+            if (!cancelled) setCameraReady(true);
+          };
+          videoRef.current.addEventListener('playing', onPlaying, { once: true });
+          videoRef.current.play().catch(() => {});
+        }
       })
       .catch(err => console.error("Camera error:", err));
     return () => {
+      cancelled = true;
       if (streamRef.current) streamRef.current.getTracks().forEach(t => t.stop());
-      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
   }, []);
 
@@ -136,57 +158,97 @@ const RoomScan = ({ onComplete }) => {
   }, [isComplete]);
 
   // Motion detection
+  const [edgeMotionScore, setEdgeMotionScore] = useState(0);
+  const [centerMotionScore, setCenterMotionScore] = useState(0);
+
   useEffect(() => {
-    if (isComplete) return;
+    if (isComplete || !cameraReady) return;
     const canvas = document.createElement('canvas');
     canvas.width = 160; canvas.height = 120;
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
-    const detectMotion = () => {
-      if (!videoRef.current || videoRef.current.readyState < 2) {
-        animFrameRef.current = requestAnimationFrame(detectMotion);
-        return;
-      }
+
+    // Throttled motion detection at ~4fps (250ms) instead of 60fps (rAF)
+    // This prevents the heavy pixel processing from starving the UI timer
+    const motionInterval = setInterval(() => {
+      if (!videoRef.current || videoRef.current.readyState < 2) return;
+
       ctx.drawImage(videoRef.current, 0, 0, 160, 120);
       const currentFrame = ctx.getImageData(0, 0, 160, 120);
       if (prevFrameRef.current) {
-        let diff = 0;
+        let diff = 0, edgeDiff = 0, centerDiff = 0;
+        let edgeSamples = 0, centerSamples = 0;
         const prev = prevFrameRef.current.data, curr = currentFrame.data;
-        for (let i = 0; i < curr.length; i += 64) diff += Math.abs(curr[i] - prev[i]);
-        if (diff / (curr.length / 64) > 8) setMotionScore(prev => prev + 1);
+        
+        for (let y = 0; y < 120; y += 2) {
+          for (let x = 0; x < 160; x += 2) {
+            const i = (y * 160 + x) * 4;
+            const d = Math.abs(curr[i] - prev[i]) + Math.abs(curr[i+1] - prev[i+1]) + Math.abs(curr[i+2] - prev[i+2]);
+            diff += d;
+            
+            // Define center as middle 50% of the screen
+            if (x > 40 && x < 120 && y > 30 && y < 90) {
+              centerDiff += d;
+              centerSamples++;
+            } else {
+              edgeDiff += d;
+              edgeSamples++;
+            }
+          }
+        }
+        
+        const avgTotal = diff / (edgeSamples + centerSamples);
+        const avgCenter = centerDiff / centerSamples;
+        const avgEdge = edgeDiff / edgeSamples;
+        
+        if (avgTotal > 15) setMotionScore(prev => prev + 1);
+        if (avgCenter > 15) setCenterMotionScore(prev => prev + 1);
+        if (avgEdge > 15) setEdgeMotionScore(prev => prev + 1);
       }
       prevFrameRef.current = currentFrame;
-      animFrameRef.current = requestAnimationFrame(detectMotion);
-    };
-    animFrameRef.current = requestAnimationFrame(detectMotion);
-    return () => { if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current); };
-  }, [isComplete]);
+    }, 250);
+
+    return () => clearInterval(motionInterval);
+  }, [isComplete, cameraReady]);
 
   const phaseIdxRef = useRef(0);
   const timeLeftRef = useRef(SCAN_PHASES[0].duration);
 
+  // Phase timer — only starts once camera is actually ready
   useEffect(() => {
-    if (isComplete) return;
+    if (isComplete || !cameraReady) return;
+    
+    // Reset timer state when camera becomes ready
+    phaseIdxRef.current = 0;
+    timeLeftRef.current = SCAN_PHASES[0].duration;
+    setCurrentPhaseIdx(0);
+    setPhaseTimeLeft(SCAN_PHASES[0].duration);
+
     const timer = setInterval(() => {
       timeLeftRef.current -= 1;
       const t = timeLeftRef.current;
       setPhaseTimeLeft(t);
       if (t <= 0) {
         const idx = phaseIdxRef.current;
-        setTimeout(() => captureFrame(SCAN_PHASES[idx].label), 0);
         if (idx + 1 < SCAN_PHASES.length) {
+          // Defer capture so it doesn't block the UI timer update
+          setTimeout(() => captureFrame(SCAN_PHASES[idx].label), 0);
           phaseIdxRef.current = idx + 1;
           timeLeftRef.current = SCAN_PHASES[idx + 1].duration;
           setCurrentPhaseIdx(idx + 1);
           setPhaseTimeLeft(SCAN_PHASES[idx + 1].duration);
         } else {
           clearInterval(timer);
-          setIsComplete(true);
+          // For the last frame, ensure capture finishes BEFORE unmounting the video
+          setTimeout(() => {
+            captureFrame(SCAN_PHASES[idx].label);
+            setIsComplete(true);
+          }, 0);
         }
       }
     }, 1000);
     return () => clearInterval(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isComplete]);
+  }, [isComplete, cameraReady]);
 
   // ─── Multi-signal analysis (runs silently, user only sees pass/fail) ───
   useEffect(() => {
@@ -203,13 +265,12 @@ const RoomScan = ({ onComplete }) => {
         const ctx = c.getContext('2d', { willReadFrequently: true });
         return buildHistogram(ctx.getImageData(0, 0, c.width, c.height));
       });
-      let totalHistDist = 0, histPairs = 0;
+      let minHistDist = Infinity;
       for (let i = 0; i < histograms.length; i++)
         for (let j = i + 1; j < histograms.length; j++) {
-          totalHistDist += histogramDistance(histograms[i], histograms[j]);
-          histPairs++;
+          minHistDist = Math.min(minHistDist, histogramDistance(histograms[i], histograms[j]));
         }
-      if (histPairs > 0 && totalHistDist / histPairs < 0.05) {
+      if (minHistDist < 0.05) {
         setAnalysisResult({ passed: false, failReason: 'Your captures appear to show the same scene. Please pan your camera to show different areas of your room.' });
         return;
       }
@@ -219,13 +280,12 @@ const RoomScan = ({ onComplete }) => {
         const ctx = c.getContext('2d', { willReadFrequently: true });
         return buildSpatialGrid(ctx.getImageData(0, 0, c.width, c.height), c.width, c.height);
       });
-      let totalGridDist = 0, gridPairs = 0;
+      let minGridDist = Infinity;
       for (let i = 0; i < grids.length; i++)
         for (let j = i + 1; j < grids.length; j++) {
-          totalGridDist += spatialGridDistance(grids[i], grids[j]);
-          gridPairs++;
+          minGridDist = Math.min(minGridDist, spatialGridDistance(grids[i], grids[j]));
         }
-      if (gridPairs > 0 && totalGridDist / gridPairs < 0.06) {
+      if (minGridDist < 0.06) {
         setAnalysisResult({ passed: false, failReason: 'Insufficient variation detected. Please physically rotate your camera to show your entire surroundings.' });
         return;
       }
@@ -240,10 +300,38 @@ const RoomScan = ({ onComplete }) => {
         return;
       }
 
-      // 4. Motion check
+      // 4. Motion check (and Mobile Phone Bypass detection)
       if (motionScore < 15) {
         setAnalysisResult({ passed: false, failReason: 'No significant camera movement was detected during the scan. Please physically move/rotate your camera while scanning.' });
         return;
+      }
+      
+      // If center motion is high but edge motion is extremely low, they are likely holding a phone screen in front of a stationary laptop
+      if (centerMotionScore > 15 && edgeMotionScore < 5) {
+        setAnalysisResult({ passed: false, failReason: 'Unnatural motion detected. Please pan the laptop/webcam itself, do not hold a screen in front of the camera.' });
+        return;
+      }
+
+      // 5. ML Object Detection (COCO-SSD)
+      if (modelRef.current) {
+        let forbiddenFound = null;
+        for (const canvas of canvases) {
+          try {
+            const predictions = await modelRef.current.detect(canvas);
+            for (const p of predictions) {
+              if (p.class === 'cell phone') forbiddenFound = 'Mobile phone';
+              if (p.class === 'laptop') forbiddenFound = 'Laptop';
+            }
+          } catch (e) {
+            console.error(e);
+          }
+          if (forbiddenFound) break;
+        }
+
+        if (forbiddenFound) {
+          setAnalysisResult({ passed: false, failReason: `Forbidden object detected during room scan: ${forbiddenFound}. Please clear your desk.` });
+          return;
+        }
       }
 
       // All checks passed
@@ -255,8 +343,8 @@ const RoomScan = ({ onComplete }) => {
   const captureFrame = useCallback((label) => {
     if (!videoRef.current) return;
     const canvas = document.createElement('canvas');
-    canvas.width = videoRef.current.videoWidth;
-    canvas.height = videoRef.current.videoHeight;
+    canvas.width = videoRef.current.videoWidth || 640;
+    canvas.height = videoRef.current.videoHeight || 480;
     canvas.getContext('2d').drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
     setImages(prev => [...prev, { src: canvas.toDataURL('image/jpeg', 0.6), label }]);
 
@@ -300,8 +388,8 @@ const RoomScan = ({ onComplete }) => {
               : "Environment verification failed."}
       </p>
 
-      {/* Phase progress bar */}
-      {!isComplete && (
+      {/* Phase progress bar — only show once camera is ready */}
+      {!isComplete && cameraReady && (
         <div style={styles.phaseTracker}>
           {SCAN_PHASES.map((phase, i) => (
             <div key={phase.id} style={{
@@ -315,11 +403,19 @@ const RoomScan = ({ onComplete }) => {
         </div>
       )}
 
-      {/* Current direction */}
+      {/* Current direction — show "Connecting" until camera is ready */}
       {!isComplete && currentPhase && (
         <div style={styles.directionBanner}>
-          <span style={{ fontSize: '1.3rem' }}>{currentPhase.label}</span>
-          <span style={styles.phaseTimer}>{phaseTimeLeft}s</span>
+          {!cameraReady ? (
+            <span style={{ fontSize: '1.1rem', color: 'rgba(255,255,255,0.6)', animation: 'pulse 1.5s infinite' }}>
+              📡 Connecting to camera...
+            </span>
+          ) : (
+            <>
+              <span style={{ fontSize: '1.3rem' }}>{currentPhase.label}</span>
+              <span style={styles.phaseTimer}>{phaseTimeLeft}s</span>
+            </>
+          )}
         </div>
       )}
 
@@ -327,10 +423,23 @@ const RoomScan = ({ onComplete }) => {
       {!isComplete && (
         <div style={styles.videoWrapper}>
           <video ref={videoRef} autoPlay playsInline muted style={styles.video} />
-          <div style={styles.overlay}>
-            <div style={styles.recordingIndicator}>🔴 Recording</div>
-            <div style={styles.timerOverlay}>{phaseTimeLeft}s</div>
-          </div>
+          {!cameraReady ? (
+            <div style={{
+              position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+              background: '#000', gap: '12px'
+            }}>
+              <div style={styles.spinner} />
+              <span style={{ color: 'rgba(255,255,255,0.7)', fontWeight: 'bold' }}>
+                Starting camera...
+              </span>
+            </div>
+          ) : (
+            <div style={styles.overlay}>
+              <div style={styles.recordingIndicator}>🔴 Recording</div>
+              <div style={styles.timerOverlay}>{phaseTimeLeft}s</div>
+            </div>
+          )}
         </div>
       )}
 

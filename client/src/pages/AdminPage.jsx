@@ -819,13 +819,15 @@ Return ONLY a valid JSON object with exactly two keys:
                       <th style={s.th}>Role</th>
                       <th style={s.th}>Level / XP</th>
                       <th style={s.th}>Streak</th>
+                      <th style={s.th}>Exam Status</th>
+                      <th style={s.th}>Attempts</th>
                       <th style={s.th}>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredProfiles.length === 0 ? (
                       <tr>
-                        <td colSpan={5} style={{ ...s.td, textAlign: 'center', color: 'rgba(255,255,255,0.4)', padding: '40px' }}>
+                        <td colSpan={7} style={{ ...s.td, textAlign: 'center', color: 'rgba(255,255,255,0.4)', padding: '40px' }}>
                           {dataLoading ? 'Connecting to Supabase Cloud...' : 'No online database users registered yet. As soon as your site is hosted and users sign up, they will appear here!'}
                         </td>
                       </tr>
@@ -844,6 +846,16 @@ Return ONLY a valid JSON object with exactly two keys:
                           </td>
                           <td style={s.td}>Lvl {p.level || 1} ({p.xp || 0} XP)</td>
                           <td style={s.td}>{p.streak || 0} days</td>
+                          <td style={s.td}>
+                            <span style={{
+                              ...s.badge,
+                              background: p.exam_passed ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)',
+                              color: p.exam_passed ? '#4ade80' : '#f87171',
+                            }}>
+                              {p.exam_passed ? '✅ Passed' : '❌ Failed / None'}
+                            </span>
+                          </td>
+                          <td style={s.td}>{p.exam_attempts || 0}</td>
                           <td style={{ ...s.td, display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                             <button style={s.actionBtn} onClick={() => toggleRole(p.id, p.role)}>
                               {p.role === 'admin' ? 'Demote' : 'Promote'}

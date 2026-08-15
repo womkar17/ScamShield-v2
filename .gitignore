@@ -30,3 +30,4 @@ dist-ssr
 # Vercel build output
 public/
 .vercel/
+temp_check/

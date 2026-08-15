@@ -7,22 +7,29 @@ export default function ScamSimulatorGame({ game, onComplete }) {
     ? (() => { try { return JSON.parse(game.data); } catch (e) { return {}; } })()
     : (game.data || {});
 
-  const stages = rawData.stages || [
-    {
-      prompt: 'TARGET ACQUIRED: GlobalTech HR Department. Objective: Steal employee database. \n\nSelect Initial Access Vector:',
-      options: [
-        { text: 'run exploit_eternalblue -target 192.168.1.0/24', isCorrect: false, feedback: '[FAILED] GlobalTech patched this vulnerability years ago. Intrusion Detection System triggered.' },
-        { text: 'send_phish -template "Urgent Payroll Update" -target hr_group', isCorrect: true, feedback: '[SUCCESS] Phishing email bypassed spam filters. One user clicked the link.' }
-      ]
-    },
-    {
-      prompt: 'We have a hook. The user is at the fake login page. What payload do we serve?',
-      options: [
-        { text: 'serve_payload -type "Ransomware"', isCorrect: false, feedback: '[FAILED] Endpoint detection quarantined the ransomware payload immediately. Access lost.' },
-        { text: 'serve_payload -type "CredentialHarvester"', isCorrect: true, feedback: '[SUCCESS] User entered credentials. We have HR_Admin access.' }
-      ]
-    }
-  ];
+  const [stages] = useState(() => {
+    const rawStages = rawData.stages || [
+      {
+        prompt: 'TARGET ACQUIRED: GlobalTech HR Department. Objective: Steal employee database. \n\nSelect Initial Access Vector:',
+        options: [
+          { text: 'run exploit_eternalblue -target 192.168.1.0/24', isCorrect: false, feedback: '[FAILED] GlobalTech patched this vulnerability years ago. Intrusion Detection System triggered.' },
+          { text: 'send_phish -template "Urgent Payroll Update" -target hr_group', isCorrect: true, feedback: '[SUCCESS] Phishing email bypassed spam filters. One user clicked the link.' }
+        ]
+      },
+      {
+        prompt: 'We have a hook. The user is at the fake login page. What payload do we serve?',
+        options: [
+          { text: 'serve_payload -type "Ransomware"', isCorrect: false, feedback: '[FAILED] Endpoint detection quarantined the ransomware payload immediately. Access lost.' },
+          { text: 'serve_payload -type "CredentialHarvester"', isCorrect: true, feedback: '[SUCCESS] User entered credentials. We have HR_Admin access.' }
+        ]
+      }
+    ];
+
+    return rawStages.map(stage => ({
+      ...stage,
+      options: [...stage.options].sort(() => Math.random() - 0.5)
+    }));
+  });
 
   const [currentStage, setCurrentStage] = useState(0);
   const [history, setHistory] = useState([]);

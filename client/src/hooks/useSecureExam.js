@@ -5,24 +5,10 @@ export const useSecureExam = ({ isActive, onFail }) => {
   const [violationLog, setViolationLog] = useState([]);
   const [isLocked, setIsLocked] = useState(false);
   const examContainerRef = useRef(null);
-  
-  // Cooldown to prevent multiple events (blur + visibility + fullscreen) 
-  // from firing as separate strikes within the same user action
-  const lastStrikeTime = useRef(0);
-  const STRIKE_COOLDOWN_MS = 5000; // 5-second cooldown between strikes
-  
+
   const addStrike = useCallback((reason) => {
     if (!isActive || isLocked) return;
     
-    const now = Date.now();
-    if (now - lastStrikeTime.current < STRIKE_COOLDOWN_MS) {
-      // Log the violation but DON'T add another strike — cooldown active
-      const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      setViolationLog(prev => [...prev, `[${timestamp}] 📝 ${reason} (suppressed — cooldown)`]);
-      return;
-    }
-    
-    lastStrikeTime.current = now;
     const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     const logEntry = `[${timestamp}] ⚠️ ${reason}`;
     

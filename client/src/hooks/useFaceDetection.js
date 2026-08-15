@@ -1,102 +1,200 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
+import { loadCocoSsd } from '../utils/tfModelManager';
+import { getSharedCamera, releaseCamera } from '../utils/sharedCamera';
 
+/**
+ * Object detection hook for proctored exam.
+ * 
+ * Detection layers (defense in depth):
+ * 1. Camera obstruction detector: Pixel-level analysis that catches when the 
+ *    camera is blocked by a phone, hand, or any object (very dark / very uniform frame).
+ * 2. COCO-SSD ML model: Detects phones, multiple people at normal distances.
+ * 
+ * Uses the shared camera singleton — no more competing streams.
+ */
 export const useFaceDetection = ({ isActive, onMiss }) => {
-  const [isFacePresent, setIsFacePresent] = useState(true);
-  const [missedCount, setMissedCount] = useState(0);
   const videoRef = useRef(null);
-  const streamRef = useRef(null);
+  const modelRef = useRef(null);
+  const canvasRef = useRef(null);
+  const statusRef = useRef({ cameraReady: false, modelLoaded: false, framesProcessed: 0 });
 
-  const startDetection = useCallback(async () => {
+  // Store callback in ref so it doesn't trigger effect re-runs.
+  // Without this, every ExamPage render creates a new onMiss arrow function,
+  // which was causing the effect to tear down and re-create everything on EVERY frame.
+  const onMissRef = useRef(onMiss);
+  onMissRef.current = onMiss;
+
+  // Create and manage hidden video element internally
+  const setupVideo = useCallback(async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      streamRef.current = stream;
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        videoRef.current.play();
-      }
+      const stream = await getSharedCamera();
+      
+      // Create a hidden video element that Chrome will still process
+      const video = document.createElement('video');
+      video.srcObject = stream;
+      video.setAttribute('playsinline', '');
+      video.muted = true;
+      // CRITICAL: Cannot use display:none — Chrome won't decode frames.
+      video.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;';
+      document.body.appendChild(video);
+      
+      await video.play();
+      videoRef.current = video;
+      statusRef.current.cameraReady = true;
+      console.log('[useFaceDetection] Video element ready, readyState:', video.readyState);
     } catch (err) {
-      console.error('Failed to start face detection stream:', err);
-    }
-  }, []);
-
-  const stopDetection = useCallback(() => {
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop());
+      console.error('[useFaceDetection] Failed to setup video:', err);
     }
   }, []);
 
   useEffect(() => {
-    if (!isActive) {
-      stopDetection();
-      return;
-    }
+    if (!isActive) return;
 
-    startDetection();
+    let isMounted = true;
+    let cellPhoneFrames = 0;
+    let multiplePersonsFrames = 0;
+    let obstructionTicks = 0;
 
-    // Fallback face detection using canvas brightness if FaceDetector API is unavailable
-    const checkFaceFallback = (video) => {
-      const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-      
-      let r, g, b, avg;
-      let colorSum = 0;
-      
-      for (let x = 0, len = data.length; x < len; x += 4) {
-        r = data[x];
-        g = data[x + 1];
-        b = data[x + 2];
-        avg = Math.floor((r + g + b) / 3);
-        colorSum += avg;
+    // Create a small offscreen canvas for pixel analysis
+    const canvas = document.createElement('canvas');
+    canvas.width = 80;
+    canvas.height = 60;
+    canvasRef.current = canvas;
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+    // Load COCO-SSD model
+    const loadModel = async () => {
+      try {
+        modelRef.current = await loadCocoSsd();
+        if (!isMounted) return;
+        statusRef.current.modelLoaded = true;
+        console.log('[useFaceDetection] COCO-SSD model loaded.');
+      } catch (err) {
+        console.error('[useFaceDetection] Failed to load COCO-SSD:', err);
       }
-      
-      const brightness = Math.floor(colorSum / (video.videoWidth * video.videoHeight));
-      // Very crude heuristic: if brightness is extremely low, user might have covered the webcam
-      return brightness > 10; 
+    };
+
+    // Start camera and model in parallel
+    setupVideo();
+    loadModel();
+
+    /**
+     * Camera obstruction detection via pixel analysis.
+     * Returns true if the camera appears to be blocked.
+     */
+    const isCameraObstructed = (video) => {
+      try {
+        ctx.drawImage(video, 0, 0, 80, 60);
+        const imageData = ctx.getImageData(0, 0, 80, 60);
+        const data = imageData.data;
+        
+        let totalBrightness = 0;
+        let pixelCount = 0;
+        const brightnesses = [];
+        
+        for (let i = 0; i < data.length; i += 16) {
+          const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
+          totalBrightness += brightness;
+          brightnesses.push(brightness);
+          pixelCount++;
+        }
+        
+        const avgBrightness = totalBrightness / pixelCount;
+        
+        // Check 1: Very dark frame (camera covered)
+        if (avgBrightness < 25) {
+          return true;
+        }
+        
+        // Check 2: Very uniform frame (object pressed against lens)
+        let sumSquaredDiff = 0;
+        for (const b of brightnesses) {
+          sumSquaredDiff += (b - avgBrightness) ** 2;
+        }
+        const stdDev = Math.sqrt(sumSquaredDiff / pixelCount);
+        
+        // Normal webcam feed has stdDev > 15-20. 
+        // Phone/hand pressed against lens has stdDev < 8.
+        if (stdDev < 8) {
+          return true;
+        }
+        
+        return false;
+      } catch (e) {
+        return false;
+      }
     };
 
     const interval = setInterval(async () => {
-      if (!videoRef.current || videoRef.current.readyState < 2) return;
+      const video = videoRef.current;
+      if (!video || video.readyState < 2) return;
 
-      let faceFound = false;
+      statusRef.current.framesProcessed++;
 
-      if ('FaceDetector' in window) {
-        try {
-          const faceDetector = new window.FaceDetector({ maxDetectedFaces: 1 });
-          const faces = await faceDetector.detect(videoRef.current);
-          faceFound = faces.length > 0;
-        } catch (e) {
-          faceFound = checkFaceFallback(videoRef.current);
+      // === Layer 1: Camera obstruction detection (always runs, no ML needed) ===
+      if (isCameraObstructed(video)) {
+        obstructionTicks++;
+        if (obstructionTicks >= 3 && onMissRef.current) {
+          onMissRef.current('Camera obstructed — lens appears to be blocked');
+          obstructionTicks = 0;
         }
       } else {
-        faceFound = checkFaceFallback(videoRef.current);
+        obstructionTicks = Math.max(0, obstructionTicks - 1);
       }
 
-      setIsFacePresent(faceFound);
+      // === Layer 2: COCO-SSD object detection (only if model loaded) ===
+      if (!modelRef.current) return;
 
-      if (!faceFound) {
-        setMissedCount(prev => {
-          const count = prev + 1;
-          if (count >= 2 && onMiss) {
-            onMiss('Face not detected or webcam covered');
-            return 0; // Reset after triggering
+      try {
+        const predictions = await modelRef.current.detect(video);
+        
+        let personCount = 0;
+        let phoneFound = false;
+        
+        for (const p of predictions) {
+          if (p.class === 'person') personCount++;
+          if (p.class === 'cell phone') phoneFound = true;
+        }
+
+        if (personCount > 1) {
+          multiplePersonsFrames++;
+          if (multiplePersonsFrames >= 3 && onMissRef.current) {
+            onMissRef.current('Multiple people detected in frame');
+            multiplePersonsFrames = 0;
           }
-          return count;
-        });
-      } else {
-        setMissedCount(0); // Reset if face found
-      }
+        } else {
+          multiplePersonsFrames = Math.max(0, multiplePersonsFrames - 1);
+        }
 
-    }, 10000); // Check every 10 seconds
+        if (phoneFound) {
+          cellPhoneFrames++;
+          if (cellPhoneFrames >= 2 && onMissRef.current) {
+            onMissRef.current('Mobile phone detected in camera frame');
+            cellPhoneFrames = 0;
+          }
+        } else {
+          cellPhoneFrames = Math.max(0, cellPhoneFrames - 1);
+        }
+      } catch (err) {
+        console.error("[useFaceDetection] Detection error", err);
+      }
+    }, 400);
 
     return () => {
+      isMounted = false;
       clearInterval(interval);
-      stopDetection();
+      // Clean up the video element
+      if (videoRef.current) {
+        videoRef.current.pause();
+        if (videoRef.current.parentNode) {
+          videoRef.current.parentNode.removeChild(videoRef.current);
+        }
+        videoRef.current.srcObject = null;
+        videoRef.current = null;
+      }
+      releaseCamera();
     };
-  }, [isActive, onMiss, startDetection, stopDetection]);
+  }, [isActive, setupVideo]); // onMiss deliberately excluded — stored in onMissRef
 
-  return { isFacePresent, missedCount, videoRef };
+  return { statusRef };
 };

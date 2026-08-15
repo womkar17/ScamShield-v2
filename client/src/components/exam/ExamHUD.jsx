@@ -1,6 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-const ExamHUD = ({ currentSimNum, totalSims, score, timeLeftFormatted, isUrgent, strikes, gazeWarnings }) => {
+const ExamHUD = ({ currentSimNum, totalSims, score, timeLeftFormatted, isUrgent, strikes, gazeWarnings, faceDetectionStatus, eyeTrackingStatus }) => {
+  // Live diagnostic state — polls statusRefs every second
+  const [diagnostics, setDiagnostics] = useState({ camera: false, ml: false, face: false, frames: 0 });
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const fd = faceDetectionStatus?.current || {};
+      const et = eyeTrackingStatus?.current || {};
+      setDiagnostics({
+        camera: fd.cameraReady || et.cameraReady,
+        ml: et.mlLoaded,
+        face: et.faceDetected,
+        frames: (fd.framesProcessed || 0) + (et.framesProcessed || 0),
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [faceDetectionStatus, eyeTrackingStatus]);
+
   return (
     <>
       {/* Top HUD */}
@@ -15,10 +32,6 @@ const ExamHUD = ({ currentSimNum, totalSims, score, timeLeftFormatted, isUrgent,
             <span style={styles.statLabel}>Simulation</span>
             <span style={styles.statValue}>{currentSimNum} / {totalSims}</span>
           </div>
-          <div style={styles.statBox}>
-            <span style={styles.statLabel}>Score</span>
-            <span style={styles.statValue}>{score} / {totalSims}</span>
-          </div>
         </div>
 
         <div style={{ ...styles.timer, color: isUrgent ? '#ef4444' : 'var(--text)', animation: isUrgent ? 'pulse 1.5s infinite' : 'none' }}>
@@ -31,9 +44,26 @@ const ExamHUD = ({ currentSimNum, totalSims, score, timeLeftFormatted, isUrgent,
         <div style={styles.strikes}>
           ⚠️ Strikes: 
           <span style={{ color: strikes > 0 ? '#ef4444' : 'var(--text2)', fontWeight: 'bold', marginLeft: '5px' }}>
-            {strikes} / 3
+            {strikes} (1 = Fail)
           </span>
         </div>
+        
+        {/* Live diagnostic badge */}
+        <div style={styles.diagnosticBadge}>
+          <span title="Camera active" style={{ color: diagnostics.camera ? '#22c55e' : '#ef4444' }}>
+            📷 {diagnostics.camera ? '✓' : '✗'}
+          </span>
+          <span title="ML model loaded" style={{ color: diagnostics.ml ? '#22c55e' : '#f59e0b' }}>
+            🧠 {diagnostics.ml ? '✓' : '…'}
+          </span>
+          <span title="Face detected" style={{ color: diagnostics.face ? '#22c55e' : '#ef4444' }}>
+            👤 {diagnostics.face ? '✓' : '✗'}
+          </span>
+          <span title="Frames processed" style={{ color: 'var(--text2)', fontFamily: 'monospace', fontSize: '0.75rem' }}>
+            f:{diagnostics.frames}
+          </span>
+        </div>
+
         <div style={styles.tracking}>
           👁️ Eye Tracking:
           <span style={{ color: gazeWarnings > 0 ? '#f59e0b' : '#22c55e', fontWeight: 'bold', marginLeft: '5px' }}>
@@ -121,6 +151,16 @@ const styles = {
     color: 'var(--text2)',
     display: 'flex',
     alignItems: 'center'
+  },
+  diagnosticBadge: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    fontSize: '0.8rem',
+    padding: '2px 10px',
+    background: 'rgba(0,0,0,0.2)',
+    borderRadius: '12px',
+    border: '1px solid var(--border)',
   },
   tracking: {
     color: 'var(--text2)',
