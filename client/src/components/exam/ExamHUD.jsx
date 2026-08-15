@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const ExamHUD = ({ currentSimNum, totalSims, score, timeLeftFormatted, isUrgent, strikes, gazeWarnings, faceDetectionStatus, eyeTrackingStatus }) => {
   // Live diagnostic state — polls statusRefs every second
-  const [diagnostics, setDiagnostics] = useState({ camera: false, ml: false, face: false, frames: 0 });
+  const [diagnostics, setDiagnostics] = useState({ camera: false, ml: false, face: false, frames: 0, etFrames: 0 });
   
   useEffect(() => {
     const interval = setInterval(() => {
@@ -13,6 +13,7 @@ const ExamHUD = ({ currentSimNum, totalSims, score, timeLeftFormatted, isUrgent,
         ml: et.mlLoaded,
         face: et.faceDetected,
         frames: (fd.framesProcessed || 0) + (et.framesProcessed || 0),
+        etFrames: et.framesProcessed || 0,
       });
     }, 1000);
     return () => clearInterval(interval);
@@ -56,8 +57,8 @@ const ExamHUD = ({ currentSimNum, totalSims, score, timeLeftFormatted, isUrgent,
           <span title="ML model loaded" style={{ color: diagnostics.ml ? '#22c55e' : '#f59e0b' }}>
             🧠 {diagnostics.ml ? '✓' : '…'}
           </span>
-          <span title="Face detected" style={{ color: diagnostics.face ? '#22c55e' : '#ef4444' }}>
-            👤 {diagnostics.face ? '✓' : '✗'}
+          <span title="Face detected" style={{ color: diagnostics.etFrames === 0 ? '#f59e0b' : (diagnostics.face ? '#22c55e' : '#ef4444') }}>
+            👤 {diagnostics.etFrames === 0 ? '…' : (diagnostics.face ? '✓' : '✗')}
           </span>
           <span title="Frames processed" style={{ color: 'var(--text2)', fontFamily: 'monospace', fontSize: '0.75rem' }}>
             f:{diagnostics.frames}
