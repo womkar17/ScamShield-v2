@@ -36,7 +36,7 @@ export const useEyeTracking = ({ isActive, onWarning }) => {
   const statusRef = useRef({ 
     mlLoaded: false, 
     cameraReady: false, 
-    faceDetected: false, 
+    faceDetected: true,  // Default true — assume face present until tracking proves otherwise
     faceOccluded: false,
     lastCheckTime: 0,
     framesProcessed: 0 
